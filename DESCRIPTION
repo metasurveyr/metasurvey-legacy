@@ -52,6 +52,7 @@ Imports:
 Suggests:
     archive,
     convey,
+    digest,
     httr2 (>= 1.0.0),
     haven,
     openxlsx,
