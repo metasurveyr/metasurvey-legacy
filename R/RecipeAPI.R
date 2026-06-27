@@ -108,20 +108,23 @@ RecipeBackend <- R6::R6Class(
     #' @param edition Character or NULL
     #' @param category Character or NULL
     #' @param certification_level Character or NULL
+    #' @param topic Character or NULL
     #' @return List of matching Recipe objects
     filter = function(survey_type = NULL,
                       edition = NULL,
                       category = NULL,
-                      certification_level = NULL) {
+                      certification_level = NULL,
+                      topic = NULL) {
       if (self$type == "local") {
         private$.registry$filter(
           survey_type = survey_type, edition = edition,
-          category = category, certification_level = certification_level
+          category = category, certification_level = certification_level,
+          topic = topic
         )
       } else if (self$type == "api") {
         tryCatch(
           api_list_recipes(
-            survey_type = survey_type, topic = category,
+            survey_type = survey_type, topic = topic %||% category,
             certification = certification_level
           ),
           error = function(e) list()
@@ -148,9 +151,9 @@ RecipeBackend <- R6::R6Class(
 
     #' @description Load local backend from disk
     load = function() {
-      if (self$type == "local" &&
-        !is.null(private$.path) &&
-        file.exists(private$.path)) {
+      is_local_with_path <- self$type == "local" &&
+        !is.null(private$.path) && file.exists(private$.path)
+      if (is_local_with_path) {
         private$.registry$load(private$.path)
       }
     }

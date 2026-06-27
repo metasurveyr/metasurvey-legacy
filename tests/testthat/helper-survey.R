@@ -36,6 +36,22 @@ make_test_data <- function(n = 10) {
   )
 }
 
+make_eco_recipe <- function(name, user, svy_type = "ech", edition = "2023",
+                            topic = NULL, downloads = 0L,
+                            categories = list(), certification = NULL,
+                            user_info = NULL) {
+  Recipe$new(
+    name = name, edition = edition, survey_type = svy_type,
+    default_engine = "data.table", depends_on = list(),
+    user = user, description = paste("Test recipe:", name),
+    steps = list(), id = stats::runif(1), doi = NULL,
+    topic = topic, categories = categories,
+    downloads = as.integer(downloads),
+    certification = certification,
+    user_info = user_info
+  )
+}
+
 make_test_panel <- function() {
   # Create a minimal RotativePanelSurvey object for testing
   implantation <- make_test_survey(n = 20)

@@ -338,6 +338,7 @@ rank_recipes <- function(n = NULL) {
 #' @param edition Character edition or NULL.
 #' @param category Character category name or NULL.
 #' @param certification_level Character certification level or NULL.
+#' @param topic Character topic name or NULL.
 #'
 #' @return List of matching Recipe objects.
 #'
@@ -350,10 +351,12 @@ rank_recipes <- function(n = NULL) {
 #' @family tidy-api
 #' @export
 filter_recipes <- function(survey_type = NULL, edition = NULL,
-                           category = NULL, certification_level = NULL) {
+                           category = NULL, certification_level = NULL,
+                           topic = NULL) {
   get_backend()$filter(
     survey_type = survey_type, edition = edition,
-    category = category, certification_level = certification_level
+    category = category, certification_level = certification_level,
+    topic = topic
   )
 }
 

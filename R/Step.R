@@ -49,6 +49,8 @@
 #' @param comments `r lifecycle::badge("deprecated")` Use `comment` instead.
 #' @param bake A logical value indicating whether the step
 #'   has been executed.
+#' @param by_vars Character vector of grouping variables for
+#'   grouped computations, or NULL.
 Step <- R6Class("Step",
   public = list(
     name = NULL,
@@ -63,6 +65,7 @@ Step <- R6Class("Step",
     depends_on = list(),
     comment = NULL,
     bake = NULL,
+    #' @field by_vars Character vector of grouping variables or NULL.
     by_vars = NULL,
     #' @description Create a new Step object
     #' @param name The name of the step.

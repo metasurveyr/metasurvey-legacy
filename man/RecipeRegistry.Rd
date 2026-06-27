@@ -103,7 +103,8 @@ Filter recipes by criteria
   survey_type = NULL,
   edition = NULL,
   category = NULL,
-  certification_level = NULL
+  certification_level = NULL,
+  topic = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -117,6 +118,8 @@ Filter recipes by criteria
 \item{\code{category}}{Character category name or NULL}
 
 \item{\code{certification_level}}{Character certification level or NULL}
+
+\item{\code{topic}}{Character topic name or NULL}
 }
 \if{html}{\out{</div>}}
 }
