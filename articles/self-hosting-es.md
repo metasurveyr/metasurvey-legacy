@@ -131,6 +131,7 @@ ejecutar un workflow y publicar el resultado como indicador con
 trazabilidad completa.
 
 ``` r
+
 library(metasurvey)
 
 # 1. Cargar datos de la encuesta (privado -- se queda en tu servidor)
@@ -167,6 +168,7 @@ result <- workflow(
 Publicar el indicador en la API:
 
 ``` r
+
 # Conectar a la API local
 configure_api("http://localhost:8787")
 api_login("admin@example.com", "tu-password")
@@ -313,14 +315,14 @@ acceder a los microdatos.
 
 ## Referencia de la API de indicadores
 
-| Metodo | Endpoint                   | Auth | Descripcion                                      |
-|--------|----------------------------|------|--------------------------------------------------|
-| `GET`  | `/indicators`              | No   | Listar y buscar indicadores publicados           |
-| `GET`  | `/indicators/:id`          | No   | Obtener un indicador con metadatos               |
-| `GET`  | `/indicators/:id/recipe`   | No   | Obtener la receta que construyo las variables    |
-| `GET`  | `/indicators/:id/workflow` | No   | Obtener el workflow (estimacion + diseno)        |
-| `POST` | `/indicators`              | Si   | Publicar un indicador computado                  |
-| `POST` | `/indicators/compute`      | Si   | Estimar bajo demanda via el Worker (con filtros) |
+| Metodo | Endpoint | Auth | Descripcion |
+|----|----|----|----|
+| `GET` | `/indicators` | No | Listar y buscar indicadores publicados |
+| `GET` | `/indicators/:id` | No | Obtener un indicador con metadatos |
+| `GET` | `/indicators/:id/recipe` | No | Obtener la receta que construyo las variables |
+| `GET` | `/indicators/:id/workflow` | No | Obtener el workflow (estimacion + diseno) |
+| `POST` | `/indicators` | Si | Publicar un indicador computado |
+| `POST` | `/indicators/compute` | Si | Estimar bajo demanda via el Worker (con filtros) |
 
 ### Parametros de consulta para `GET /indicators`
 
@@ -336,24 +338,24 @@ acceder a los microdatos.
 
 ### Campos del documento indicador
 
-| Campo             | Tipo   | Requerido | Descripcion                                   |
-|-------------------|--------|-----------|-----------------------------------------------|
-| `id`              | string | Auto      | Identificador unico                           |
-| `name`            | string | Si        | Nombre del indicador                          |
-| `workflow_id`     | string | Si        | Workflow que lo produjo                       |
-| `value`           | number | Si        | Estimacion puntual                            |
-| `recipe_id`       | string | No        | Receta que construyo las variables            |
-| `description`     | string | No        | Descripcion legible                           |
-| `survey_type`     | string | No        | Tipo de encuesta                              |
-| `edition`         | string | No        | Edicion de la encuesta                        |
-| `estimation_type` | string | No        | `annual`, `quarterly`, `monthly`              |
-| `stat`            | string | No        | Etiqueta del estadistico (ej., `svymean: pd`) |
-| `se`              | number | No        | Error estandar                                |
-| `cv`              | number | No        | Coeficiente de variacion                      |
-| `confint_lower`   | number | No        | Limite inferior del intervalo de confianza    |
-| `confint_upper`   | number | No        | Limite superior del intervalo de confianza    |
-| `metadata`        | object | No        | Contexto adicional (formula, notas)           |
-| `published_at`    | string | Auto      | Marca de tiempo ISO                           |
+| Campo | Tipo | Requerido | Descripcion |
+|----|----|----|----|
+| `id` | string | Auto | Identificador unico |
+| `name` | string | Si | Nombre del indicador |
+| `workflow_id` | string | Si | Workflow que lo produjo |
+| `value` | number | Si | Estimacion puntual |
+| `recipe_id` | string | No | Receta que construyo las variables |
+| `description` | string | No | Descripcion legible |
+| `survey_type` | string | No | Tipo de encuesta |
+| `edition` | string | No | Edicion de la encuesta |
+| `estimation_type` | string | No | `annual`, `quarterly`, `monthly` |
+| `stat` | string | No | Etiqueta del estadistico (ej., `svymean: pd`) |
+| `se` | number | No | Error estandar |
+| `cv` | number | No | Coeficiente de variacion |
+| `confint_lower` | number | No | Limite inferior del intervalo de confianza |
+| `confint_upper` | number | No | Limite superior del intervalo de confianza |
+| `metadata` | object | No | Contexto adicional (formula, notas) |
+| `published_at` | string | Auto | Marca de tiempo ISO |
 
 ## Despliegue con Minikube
 
@@ -881,10 +883,10 @@ La API soporta variables de entorno para controlar que modulos estan
 disponibles. Esto permite usar la misma imagen en diferentes
 configuraciones:
 
-| Variable                       | Default | Descripcion                                         |
-|--------------------------------|---------|-----------------------------------------------------|
-| `METASURVEY_ENABLE_INDICATORS` | `1`     | Habilitar endpoints `/indicators`                   |
-| `METASURVEY_ENABLE_WORKER`     | `0`     | Habilitar `POST /indicators/compute` (bajo demanda) |
+| Variable | Default | Descripcion |
+|----|----|----|
+| `METASURVEY_ENABLE_INDICATORS` | `1` | Habilitar endpoints `/indicators` |
+| `METASURVEY_ENABLE_WORKER` | `0` | Habilitar `POST /indicators/compute` (bajo demanda) |
 
 Por ejemplo, la API publica de metasurvey en Railway solo sirve recetas
 y workflows – indicadores y worker estan deshabilitados:

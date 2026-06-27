@@ -135,39 +135,3 @@ if (requireNamespace("gt", quietly = TRUE)) {
 
 Survey Estimation Results
 ```
-
-Statistic
-
-variable
-
-Estimate
-
-SE
-
-CI Lower
-
-CI Upper
-
-CV (%)
-
-Quality
-
-:svymean: x
-
-x
-
-−0.04
-
-0.098
-
-−0.23
-
-0.16
-
-−2.8
-
-Excellent
-
-metasurvey 0.0.23 \| CI: 95% \| 2026-04-23
-
-\# }

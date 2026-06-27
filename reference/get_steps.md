@@ -48,6 +48,7 @@ get_steps(svy) # list of Step objects
 #> <Step>
 #>   Public:
 #>     bake: FALSE
+#>     by_vars: NULL
 #>     call: call
 #>     clone: function (deep = FALSE) 
 #>     comment: Compute step

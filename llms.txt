@@ -17,11 +17,11 @@ over time (rotating panels, repeated cross-sections).
 
 The full stack is deployed and publicly available:
 
-| Service             | URL                                                                                              | Description                                                                                                                                                      |
-|---------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Recipe Explorer** | [metasurvey-shiny-production.up.railway.app](https://metasurvey-shiny-production.up.railway.app) | Interactive Shiny app to browse, search and inspect community recipes and workflows                                                                              |
-| **REST API**        | [API reference](https://metasurveyr.github.io/metasurvey/articles/api-database.html)             | Plumber API backed by MongoDB for publishing and discovering recipes ([self-hosting guide](https://metasurveyr.github.io/metasurvey/articles/self-hosting.html)) |
-| **pkgdown site**    | [metasurveyr.github.io/metasurvey](https://metasurveyr.github.io/metasurvey/)                    | Full package documentation and vignettes                                                                                                                         |
+| Service | URL | Description |
+|----|----|----|
+| **Recipe Explorer** | [metasurvey-shiny-production.up.railway.app](https://metasurvey-shiny-production.up.railway.app) | Interactive Shiny app to browse, search and inspect community recipes and workflows |
+| **REST API** | [API reference](https://metasurveyr.github.io/metasurvey/articles/api-database.html) | Plumber API backed by MongoDB for publishing and discovering recipes ([self-hosting guide](https://metasurveyr.github.io/metasurvey/articles/self-hosting.html)) |
+| **pkgdown site** | [metasurveyr.github.io/metasurvey](https://metasurveyr.github.io/metasurvey/) | Full package documentation and vignettes |
 
 ------------------------------------------------------------------------
 
@@ -66,16 +66,17 @@ The step pipeline and workflow system are survey-agnostic. The same
 verbs process Argentina’s EPH, Chile’s CASEN, Brazil’s PNAD-C, the US
 CPS, Mexico’s ENIGH, or DHS data from 90+ countries.
 
-|                                                   | EPH | CASEN | PNAD-C | CPS | ENIGH | DHS |
-|---------------------------------------------------|:---:|:-----:|:------:|:---:|:-----:|:---:|
-| Steps (compute / recode / rename / remove / join) | ✅  |  ✅   |   ✅   | ✅  |  ✅   | ✅  |
-| Weights (`add_weight`)                            | ✅  |  ✅   |   ✅   | ✅  |  ✅   | ✅  |
-| Stratified + cluster designs                      | ✅  |  ✅   |   ✅   |  –  |  ✅   | ✅  |
-| Replicate weights (`add_replicate`)               |  –  |   –   |   ✅   | ✅  |   –   |  –  |
-| Rotating panels (`RotativePanelSurvey`)           | ✅  |   –   |   ✅   | ✅  |   –   |  –  |
-| Recipes & workflows                               | ✅  |  ✅   |   ✅   | ✅  |  ✅   | ✅  |
+|  | EPH | CASEN | PNAD-C | CPS | ENIGH | DHS |
+|----|:--:|:--:|:--:|:--:|:--:|:--:|
+| Steps (compute / recode / rename / remove / join) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Weights (`add_weight`) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Stratified + cluster designs | ✅ | ✅ | ✅ | – | ✅ | ✅ |
+| Replicate weights (`add_replicate`) | – | – | ✅ | ✅ | – | – |
+| Rotating panels (`RotativePanelSurvey`) | ✅ | – | ✅ | ✅ | – | – |
+| Recipes & workflows | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ``` r
+
 # Same pipeline, different surveys ─────────────────────────
 
 # Argentina (eph)
@@ -112,12 +113,14 @@ for reproducible examples with all seven surveys.
 Install the stable version from CRAN:
 
 ``` r
+
 install.packages("metasurvey")
 ```
 
 Or the development version from GitHub:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("metasurveyR/metasurvey")
 ```
@@ -127,6 +130,7 @@ devtools::install_github("metasurveyR/metasurvey")
 ## Quick example
 
 ``` r
+
 library(metasurvey)
 
 # Create a survey with sample data
@@ -168,6 +172,7 @@ de Hogares*](https://www.gub.uy/instituto-nacional-estadistica/) (ECH)
 with bootstrap replicate weights. First, download the example data:
 
 ``` r
+
 download_example_ech <- function() {
   zip_url <- "https://informe-tfg.s3.us-east-2.amazonaws.com/example-data.zip"
   dest_zip <- "example-data.zip"
@@ -190,6 +195,7 @@ download_example_ech()
 With the data downloaded:
 
 ``` r
+
 library(metasurvey)
 library(magrittr)
 
@@ -262,6 +268,7 @@ household survey microdata. The metasurvey transpiler converts these
 scripts into reproducible Recipe objects.
 
 ``` r
+
 library(metasurvey)
 
 # Transpile a .do file to metasurvey steps
@@ -324,13 +331,13 @@ for the full reference.
 
 ## Related work
 
-| Package                                               | Focus                             | metasurvey adds                                        |
-|-------------------------------------------------------|-----------------------------------|--------------------------------------------------------|
-| [survey](https://cran.r-project.org/package=survey)   | Sampling designs and estimation   | Lazy step pipeline, recipe system, rotating panels     |
-| [srvyr](https://cran.r-project.org/package=srvyr)     | dplyr-style interface to survey   | Portable recipes, workflow registry, panel support     |
+| Package | Focus | metasurvey adds |
+|----|----|----|
+| [survey](https://cran.r-project.org/package=survey) | Sampling designs and estimation | Lazy step pipeline, recipe system, rotating panels |
+| [srvyr](https://cran.r-project.org/package=srvyr) | dplyr-style interface to survey | Portable recipes, workflow registry, panel support |
 | [recipes](https://cran.r-project.org/package=recipes) | Feature engineering for modelling | Survey-aware steps, complex designs, community sharing |
-| [eph](https://cran.r-project.org/package=eph)         | Argentina’s EPH survey            | Survey-agnostic: works with any household survey       |
-| [targets](https://cran.r-project.org/package=targets) | General pipeline orchestration    | Domain-specific steps, built-in survey semantics       |
+| [eph](https://cran.r-project.org/package=eph) | Argentina’s EPH survey | Survey-agnostic: works with any household survey |
+| [targets](https://cran.r-project.org/package=targets) | General pipeline orchestration | Domain-specific steps, built-in survey semantics |
 
 metasurvey is **not** a wrapper around `survey`. It adds a
 reproducibility layer (steps, recipes, workflows) that is
@@ -344,6 +351,7 @@ CPS, ENIGH, or DHS data without survey-specific code.
 To cite metasurvey in publications use:
 
 ``` r
+
 citation("metasurvey")
 ```
 
@@ -484,6 +492,8 @@ Search, filter, and publish recipes
   : Search recipes
 - [`filter_recipes()`](https://metasurveyr.github.io/metasurvey/reference/filter_recipes.md)
   : Filter recipes by criteria
+- [`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md)
+  : Harmonize surveys using registry recipes
 - [`rank_recipes()`](https://metasurveyr.github.io/metasurvey/reference/rank_recipes.md)
   : Rank recipes by downloads
 - [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md)

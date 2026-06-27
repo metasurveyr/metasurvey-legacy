@@ -128,6 +128,7 @@ The typical flow: load survey data, apply a recipe, run a workflow, and
 publish the result as an indicator with full traceability.
 
 ``` r
+
 library(metasurvey)
 
 # 1. Load survey data (private -- stays on your server)
@@ -164,6 +165,7 @@ result <- workflow(
 Now publish the indicator to the API:
 
 ``` r
+
 # Connect to your local API
 configure_api("http://localhost:8787")
 api_login("admin@example.com", "your-password")
@@ -309,14 +311,14 @@ verify the full computation chain without accessing the microdata.
 
 ## Indicator API Reference
 
-| Method | Endpoint                   | Auth | Description                                        |
-|--------|----------------------------|------|----------------------------------------------------|
-| `GET`  | `/indicators`              | No   | List and search published indicators               |
-| `GET`  | `/indicators/:id`          | No   | Get a single indicator with metadata               |
-| `GET`  | `/indicators/:id/recipe`   | No   | Get the recipe that built the variables            |
-| `GET`  | `/indicators/:id/workflow` | No   | Get the workflow (estimation + design)             |
-| `POST` | `/indicators`              | Yes  | Publish a computed indicator                       |
-| `POST` | `/indicators/compute`      | Yes  | On-demand estimation via the Worker (with filters) |
+| Method | Endpoint | Auth | Description |
+|----|----|----|----|
+| `GET` | `/indicators` | No | List and search published indicators |
+| `GET` | `/indicators/:id` | No | Get a single indicator with metadata |
+| `GET` | `/indicators/:id/recipe` | No | Get the recipe that built the variables |
+| `GET` | `/indicators/:id/workflow` | No | Get the workflow (estimation + design) |
+| `POST` | `/indicators` | Yes | Publish a computed indicator |
+| `POST` | `/indicators/compute` | Yes | On-demand estimation via the Worker (with filters) |
 
 ### Query parameters for `GET /indicators`
 
@@ -877,10 +879,10 @@ The API supports feature flags via environment variables to control
 which modules are available. This lets you run the same API image in
 different configurations:
 
-| Variable                       | Default | Description                                   |
-|--------------------------------|---------|-----------------------------------------------|
-| `METASURVEY_ENABLE_INDICATORS` | `1`     | Enable `/indicators` endpoints                |
-| `METASURVEY_ENABLE_WORKER`     | `0`     | Enable `POST /indicators/compute` (on-demand) |
+| Variable | Default | Description |
+|----|----|----|
+| `METASURVEY_ENABLE_INDICATORS` | `1` | Enable `/indicators` endpoints |
+| `METASURVEY_ENABLE_WORKER` | `0` | Enable `POST /indicators/compute` (on-demand) |
 
 For example, the public metasurvey API on Railway only serves recipes
 and workflows – indicators and worker are disabled:

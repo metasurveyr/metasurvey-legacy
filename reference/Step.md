@@ -63,6 +63,10 @@ workflow.
 
   A logical value indicating whether the step has been executed.
 
+- `by_vars`:
+
+  Character vector of grouping variables or NULL.
+
 ## Methods
 
 ### Public methods
@@ -92,7 +96,8 @@ Create a new Step object
       depends_on,
       comment = NULL,
       bake = !lazy_default(),
-      comments = NULL
+      comments = NULL,
+      by_vars = NULL
     )
 
 #### Arguments
@@ -150,6 +155,11 @@ Create a new Step object
 - `comments`:
 
   **\[deprecated\]** Use `comment` instead.
+
+- `by_vars`:
+
+  Character vector of grouping variables for grouped computations, or
+  NULL.
 
 ------------------------------------------------------------------------
 

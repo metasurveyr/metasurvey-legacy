@@ -21,6 +21,7 @@ Un `RotativePanelSurvey` requiere un `Survey` de implantación y uno o
 más objetos `Survey` de seguimiento.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 set_use_copy(TRUE)
@@ -72,6 +73,7 @@ y
 para obtener las encuestas individuales:
 
 ``` r
+
 # Implantation survey
 imp <- get_implantation(panel)
 class(imp)
@@ -85,6 +87,7 @@ head(get_data(imp), 3)
 ```
 
 ``` r
+
 # Follow-up surveys
 follow_ups <- get_follow_up(panel)
 cat("Number of follow-ups:", length(follow_ups), "\n")
@@ -98,6 +101,7 @@ mismas funciones de pasos funcionan tanto en la encuesta de implantación
 como en las de seguimiento:
 
 ``` r
+
 # Transform the implantation survey
 panel$implantation <- step_compute(panel$implantation,
   income_k = income / 1000,
@@ -120,6 +124,7 @@ corte transversal o de series de tiempo.
 ### Análisis de corte transversal (Implantación)
 
 ``` r
+
 result_impl <- workflow(
   list(panel$implantation),
   survey::svymean(~income, na.rm = TRUE),
@@ -138,6 +143,7 @@ result_impl
 ### Comparación entre seguimientos
 
 ``` r
+
 results <- rbindlist(lapply(seq_along(panel$follow_up), function(i) {
   r <- workflow(
     list(panel$follow_up[[i]]),
@@ -167,6 +173,7 @@ El constructor recibe una lista anidada:
 `list(estimation_type = list(group = list(surveys)))`.
 
 ``` r
+
 s1 <- make_survey("2023")
 s2 <- make_survey("2023")
 s3 <- make_survey("2023")
@@ -182,6 +189,7 @@ class(pool)
 ### Estimación agrupada
 
 ``` r
+
 pool_result <- workflow(
   pool,
   survey::svymean(~income, na.rm = TRUE),
@@ -206,6 +214,7 @@ pool_result
 Es posible organizar las encuestas en múltiples grupos:
 
 ``` r
+
 s4 <- make_survey("2023")
 s5 <- make_survey("2023")
 s6 <- make_survey("2023")
@@ -249,6 +258,7 @@ Utilice
 para seleccionar períodos específicos de un `RotativePanelSurvey`:
 
 ``` r
+
 # Extract specific follow-ups by index
 first_two <- extract_surveys(panel, index = 1:2)
 class(first_two)
@@ -256,6 +266,7 @@ class(first_two)
 ```
 
 ``` r
+
 # Extract by month (requires Date-format editions)
 march_data <- extract_surveys(panel, monthly = 3)
 ```
@@ -266,6 +277,7 @@ metasurvey proporciona utilidades para trabajar con las fechas de
 edición de las encuestas:
 
 ``` r
+
 # Extract periodicity from edition strings
 extract_time_pattern("2023")
 #> $year
@@ -285,6 +297,7 @@ extract_time_pattern("2023-06")
 ```
 
 ``` r
+
 # Validate edition format
 validate_time_pattern(svy_type = "ech", svy_edition = "2023")
 #> $svy_type
@@ -298,6 +311,7 @@ validate_time_pattern(svy_type = "ech", svy_edition = "2023")
 ```
 
 ``` r
+
 # Group dates by period
 dates <- as.Date(c(
   "2023-01-15", "2023-03-20", "2023-06-10",
@@ -317,6 +331,7 @@ En la práctica, los datos de panel se cargan desde archivos utilizando
 [`load_panel_survey()`](https://metasurveyr.github.io/metasurvey/reference/load_panel_survey.md):
 
 ``` r
+
 panel <- load_panel_survey(
   path_implantation = "data/ECH_implantacion_2023.csv",
   path_follow_up = "data/seguimiento/",
@@ -340,6 +355,7 @@ dentro de
 para configurar la estimación robusta de la varianza:
 
 ``` r
+
 panel <- load_panel_survey(
   path_implantation = "data/ECH_implantacion_2023.csv",
   path_follow_up = "data/seguimiento/",

@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Estimation Workflows">
@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.23</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Estimation Workflows</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/conf-level-per-call/vignettes/workflows-and-estimation.Rmd" class="external-link"><code>vignettes/workflows-and-estimation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-test-failures/vignettes/workflows-and-estimation.Rmd" class="external-link"><code>vignettes/workflows-and-estimation.Rmd</code></a></small>
       <div class="d-none name"><code>workflows-and-estimation.Rmd</code></div>
     </div>
 
@@ -551,19 +551,19 @@ data.</p>
 <span><span class="va">prov</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/provenance.html">provenance</a></span><span class="op">(</span><span class="va">svy_full</span><span class="op">)</span></span>
 <span><span class="va">prov</span></span>
 <span><span class="co">#&gt; ── Data Provenance ─────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Loaded: 2026-04-23T01:11:44 </span></span>
+<span><span class="co">#&gt; Loaded: 2026-06-27T16:05:30 </span></span>
 <span><span class="co">#&gt; Initial rows: 200 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Environment:</span></span>
-<span><span class="co">#&gt;   metasurvey: 0.0.23 </span></span>
-<span><span class="co">#&gt;   R: 4.5.3 </span></span>
+<span><span class="co">#&gt;   metasurvey: 0.0.24 </span></span>
+<span><span class="co">#&gt;   R: 4.6.1 </span></span>
 <span><span class="co">#&gt;   survey: 4.5</span></span></code></pre></div>
 <p>Provenance is also attached to <code><a href="../reference/workflow.html">workflow()</a></code> results, so
 you can always inspect the full lineage of an estimate:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prov_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/provenance.html">provenance</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"metasurvey version:"</span>, <span class="va">prov_wf</span><span class="op">$</span><span class="va">environment</span><span class="op">$</span><span class="va">metasurvey_version</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; metasurvey version: 0.0.23</span></span>
+<span><span class="co">#&gt; metasurvey version: 0.0.24</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Steps applied:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">prov_wf</span><span class="op">$</span><span class="va">steps</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Steps applied: 0</span></span></code></pre></div>
 <p>For audit trails, export provenance to JSON:</p>
@@ -1073,7 +1073,7 @@ provenance-based source notes.</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="8">metasurvey 0.0.23 | CI: 95% | 2026-04-23</td>
+<td class="gt_sourcenote" colspan="8">metasurvey 0.0.24 | CI: 95% | 2026-06-27</td>
     </tr></tfoot>
 </table>
 </div>
@@ -1575,7 +1575,7 @@ provenance-based source notes.</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="7">metasurvey 0.0.23 | CI: 95% | 2026-04-23</td>
+<td class="gt_sourcenote" colspan="7">metasurvey 0.0.24 | CI: 95% | 2026-06-27</td>
     </tr></tfoot>
 </table>
 </div>
@@ -2085,7 +2085,7 @@ automatically:</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="9">metasurvey 0.0.23 | CI: 95% | 2026-04-23</td>
+<td class="gt_sourcenote" colspan="9">metasurvey 0.0.24 | CI: 95% | 2026-06-27</td>
     </tr></tfoot>
 </table>
 </div>

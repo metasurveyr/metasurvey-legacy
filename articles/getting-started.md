@@ -36,11 +36,13 @@ infrastructure.
 ## Installation
 
 ``` r
+
 # Install from GitHub
 devtools::install_github("metaSurveyR/metasurvey")
 ```
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 ```
@@ -67,6 +69,7 @@ The ECH is a rotating-panel household survey. Key variables include:
 - **W_ANO**: Annual expansion factor (weight)
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -92,6 +95,7 @@ different survey editions.
 You can inspect the data at any time:
 
 ``` r
+
 head(get_data(svy), 3)
 #>       ID  nper  anio   mes region  dpto   nom_dpto   e26   e27   e30 e51_2
 #>    <int> <int> <int> <int>  <int> <int>     <char> <int> <int> <int> <int>
@@ -127,6 +131,7 @@ to create derived variables. The package automatically:
 - Optimizes expressions for performance
 
 ``` r
+
 svy <- step_compute(svy,
   # Convert income to thousands for readability
   ht11_thousands = HT11 / 1000,
@@ -144,6 +149,7 @@ You can group computations using the `.by` parameter (similar to
 `data.table`):
 
 ``` r
+
 # Calculate mean household income per department
 svy <- step_compute(svy,
   mean_income_dept = mean(HT11, na.rm = TRUE),
@@ -160,6 +166,7 @@ to create categorical variables from conditions. Conditions are
 evaluated **top to bottom**, and the first match applies.
 
 ``` r
+
 # Recode labor force status (POBPCOAC) into meaningful categories
 svy <- step_recode(svy, labor_status,
   POBPCOAC == 2 ~ "Employed",
@@ -197,6 +204,7 @@ to subset rows based on logical conditions. Multiple conditions are
 combined with AND. Like other steps, filters are lazy by default.
 
 ``` r
+
 # Keep only working-age individuals (14+)
 svy <- step_filter(svy,
   e27 >= 14,
@@ -209,6 +217,7 @@ svy <- step_filter(svy,
 Rename variables for clarity or consistency:
 
 ``` r
+
 svy <- step_rename(svy,
   age = e27, # Rename e27 to age
   sex_code = e26 # Keep original as sex_code
@@ -218,6 +227,7 @@ svy <- step_rename(svy,
 Remove variables that are no longer needed:
 
 ``` r
+
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
@@ -236,6 +246,7 @@ Note that real ECH microdata already includes `nom_dpto` and `region`.
 Here we demonstrate a join with a poverty-line lookup as an example:
 
 ``` r
+
 # Poverty lines by region (illustrative values in UYU, 2023)
 poverty_lines <- data.table(
   region = 1:3,
@@ -260,6 +271,7 @@ Call
 to execute all pending transformations:
 
 ``` r
+
 svy <- bake_steps(svy)
 head(get_data(svy), 3)
 #>    region  dpto    ID  nper  anio   mes   nom_dpto sex_code   age   e30 e51_2
@@ -287,6 +299,7 @@ head(get_data(svy), 3)
 The step history is preserved for documentation and reproducibility:
 
 ``` r
+
 steps <- get_steps(svy)
 length(steps) # Number of transformation steps
 #> [1] 9
@@ -303,6 +316,7 @@ cat("Comment:", steps[[1]]$comment, "\n")
 You can visualize the transformation pipeline as a directed graph:
 
 ``` r
+
 view_graph(svy, init_step = "Load ECH 2023")
 ```
 
@@ -330,6 +344,7 @@ results with standard errors and coefficients of variation.
 ### Basic estimates
 
 ``` r
+
 # Estimate mean household income
 result <- workflow(
   list(svy),
@@ -359,6 +374,7 @@ The output includes:
 You can compute several statistics in a single call:
 
 ``` r
+
 results <- workflow(
   list(svy),
   survey::svymean(~HT11, na.rm = TRUE),
@@ -390,6 +406,7 @@ Compute estimates for subpopulations using
 [`survey::svyby()`](https://rdrr.io/pkg/survey/man/svyby.html):
 
 ``` r
+
 # Mean income by gender
 income_by_gender <- workflow(
   list(svy),
@@ -429,6 +446,7 @@ Use
 to classify estimate quality:
 
 ``` r
+
 # Check quality of mean income estimate
 cv_percentage <- results$cv[1] * 100
 quality <- evaluate_cv(cv_percentage)
@@ -463,6 +481,7 @@ it into a recipe that can be:
 Create a recipe from the steps you have developed:
 
 ``` r
+
 # Convert current steps to a recipe
 labor_recipe <- steps_to_recipe(
   name = "ECH Labor Force Indicators",
@@ -485,6 +504,7 @@ labor_recipe$name
 Or you can define a recipe from scratch:
 
 ``` r
+
 minimal_recipe <- recipe(
   name = "Basic Demographics - ECH",
   user = "analyst",
@@ -514,6 +534,7 @@ Once published, anyone can retrieve a recipe by ID and apply it to their
 data:
 
 ``` r
+
 # Get a recipe by ID from the API (requires server)
 r <- api_get_recipe("ech_labor_001")
 
@@ -527,6 +548,7 @@ processed <- bake_recipes(new_svy)
 Recipes automatically document their transformations:
 
 ``` r
+
 doc <- labor_recipe$doc()
 names(doc)
 #> [1] "meta"             "input_variables"  "output_variables" "pipeline"
@@ -547,6 +569,7 @@ metasurvey provides global settings that can be adjusted to suit your
 workflow:
 
 ``` r
+
 # Check current lazy-processing setting
 lazy_default() # TRUE = steps recorded but not executed immediately
 #> [1] TRUE
@@ -563,6 +586,7 @@ show_engines() # "data.table", "dplyr", etc.
 You can modify settings for the current session:
 
 ``` r
+
 # Disable lazy evaluation (execute steps immediately)
 set_lazy_processing(FALSE)
 
@@ -583,6 +607,7 @@ and reuse it. The package connects to a public API where recipes and
 workflows are stored:
 
 ``` r
+
 # Browse existing recipes (requires API server)
 ech_recipes <- api_list_recipes(survey_type = "ech")
 length(ech_recipes)

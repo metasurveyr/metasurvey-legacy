@@ -30,6 +30,7 @@ Other recipes:
 [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md),
 [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md),
 [`get_recipe()`](https://metasurveyr.github.io/metasurvey/reference/get_recipe.md),
+[`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md),
 [`print.Recipe()`](https://metasurveyr.github.io/metasurvey/reference/print.Recipe.md),
 [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md),
 [`recipe()`](https://metasurveyr.github.io/metasurvey/reference/recipe.md),
@@ -46,7 +47,7 @@ r <- recipe(
 )
 f <- tempfile(fileext = ".json")
 save_recipe(r, f)
-#> The recipe has been saved in /tmp/RtmpSaEV4j/file2865546ecad0.json
+#> The recipe has been saved in /tmp/RtmpsNAdMI/file23aa2d9a5db7.json
 r2 <- read_recipe(f)
 #> Warning: Failed to parse recipe steps: invalid length 0 argument. Using raw strings as fallback.
 r2

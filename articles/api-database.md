@@ -18,6 +18,7 @@ documentation, see the sections below.
 ## Configuration
 
 ``` r
+
 library(metasurvey)
 
 # Point to your self-hosted API
@@ -40,6 +41,7 @@ be generated for automated scripts.
 ### Registration
 
 ``` r
+
 # Individual account (auto-approved)
 api_register("Ana Garcia", "ana@example.com", "password123")
 
@@ -55,15 +57,16 @@ api_register(
 
 Account types:
 
-| Type                   | Description                        | Approval              |
-|------------------------|------------------------------------|-----------------------|
-| `individual`           | Independent researcher             | Automatic             |
+| Type | Description | Approval |
+|----|----|----|
+| `individual` | Independent researcher | Automatic |
 | `institutional_member` | Member of a recognized institution | Requires admin review |
-| `institution`          | Institutional account              | Requires admin review |
+| `institution` | Institutional account | Requires admin review |
 
 ### Login
 
 ``` r
+
 api_login("ana@example.com", "password123")
 ```
 
@@ -74,6 +77,7 @@ their expiration.
 ### Session Management
 
 ``` r
+
 # View current user profile
 api_me()
 
@@ -90,6 +94,7 @@ For automated scripts and CI/CD, generate a 90-day token from the Shiny
 application (Profile tab) or use it directly:
 
 ``` r
+
 Sys.setenv(METASURVEY_TOKEN = "your-long-lived-token")
 
 # API calls work without interactive login
@@ -110,6 +115,7 @@ recipes <- api_list_recipes(survey_type = "ech")
 #### List Recipes
 
 ``` r
+
 # All recipes
 all <- api_list_recipes()
 
@@ -131,25 +137,27 @@ page2 <- api_list_recipes(limit = 10, offset = 10)
 
 Query parameters:
 
-| Parameter       | Type    | Description                                                                |
-|-----------------|---------|----------------------------------------------------------------------------|
-| `search`        | string  | Regex search on recipe name                                                |
-| `survey_type`   | string  | `ech`, `eaii`, `eph`, `eai`                                                |
-| `topic`         | string  | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
-| `certification` | string  | `community`, `reviewed`, `official`                                        |
-| `user`          | string  | Filter by author email                                                     |
-| `limit`         | integer | Maximum results (default 50)                                               |
-| `offset`        | integer | Skip N results (default 0)                                                 |
+| Parameter | Type | Description |
+|----|----|----|
+| `search` | string | Regex search on recipe name |
+| `survey_type` | string | `ech`, `eaii`, `eph`, `eai` |
+| `topic` | string | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
+| `certification` | string | `community`, `reviewed`, `official` |
+| `user` | string | Filter by author email |
+| `limit` | integer | Maximum results (default 50) |
+| `offset` | integer | Skip N results (default 0) |
 
 #### Get Recipe
 
 ``` r
+
 recipe <- api_get_recipe("ech_employment_001")
 ```
 
 #### Publish Recipe
 
 ``` r
+
 api_login("ana@example.com", "password123")
 api_publish_recipe(my_recipe)
 ```
@@ -168,6 +176,7 @@ The server automatically sets the `user` field from the JWT, initializes
 | `POST` | `/workflows/:id/download` | No   | Increment download counter |
 
 ``` r
+
 # List workflows for ECH
 wf <- api_list_workflows(survey_type = "ech")
 
@@ -198,6 +207,7 @@ labels, value categories, and type information.
 | `GET`  | `/anda/variables` | No   | Get variable metadata |
 
 ``` r
+
 # Get all ECH variables
 vars <- api_get_anda_variables(survey_type = "ech")
 
@@ -229,11 +239,11 @@ Each variable document contains:
 
 ### Administration
 
-| Method | Endpoint                | Auth  | Description                                |
-|--------|-------------------------|-------|--------------------------------------------|
-| `GET`  | `/admin/pending-users`  | Admin | List institutional accounts pending review |
-| `POST` | `/admin/approve/:email` | Admin | Approve an institutional account           |
-| `POST` | `/admin/reject/:email`  | Admin | Reject an institutional account            |
+| Method | Endpoint | Auth | Description |
+|----|----|----|----|
+| `GET` | `/admin/pending-users` | Admin | List institutional accounts pending review |
+| `POST` | `/admin/approve/:email` | Admin | Approve an institutional account |
+| `POST` | `/admin/reject/:email` | Admin | Reject an institutional account |
 
 Admin access is controlled via the `METASURVEY_ADMIN_EMAIL` environment
 variable on the server.
@@ -309,42 +319,42 @@ relationships:
 
 #### `users`
 
-| Field           | Type    | Required | Description                                         |
-|-----------------|---------|----------|-----------------------------------------------------|
-| `name`          | string  | Yes      | Display name                                        |
-| `email`         | string  | Yes      | Email (unique, validated)                           |
-| `password_hash` | string  | Yes      | SHA-256 hash (64 characters)                        |
-| `user_type`     | enum    | Yes      | `individual`, `institutional_member`, `institution` |
-| `institution`   | string  | No       | Institution name                                    |
-| `verified`      | boolean | No       | Whether identity is verified                        |
-| `review_status` | enum    | No       | `approved`, `pending`, `rejected`                   |
-| `reviewed_by`   | string  | No       | Reviewing admin’s email                             |
-| `reviewed_at`   | string  | No       | ISO timestamp                                       |
-| `created_at`    | string  | Yes      | ISO timestamp                                       |
+| Field | Type | Required | Description |
+|----|----|----|----|
+| `name` | string | Yes | Display name |
+| `email` | string | Yes | Email (unique, validated) |
+| `password_hash` | string | Yes | SHA-256 hash (64 characters) |
+| `user_type` | enum | Yes | `individual`, `institutional_member`, `institution` |
+| `institution` | string | No | Institution name |
+| `verified` | boolean | No | Whether identity is verified |
+| `review_status` | enum | No | `approved`, `pending`, `rejected` |
+| `reviewed_by` | string | No | Reviewing admin’s email |
+| `reviewed_at` | string | No | ISO timestamp |
+| `created_at` | string | Yes | ISO timestamp |
 
 **Indexes:** unique on `email`.
 
 #### `recipes`
 
-| Field                | Type         | Required | Description                                                                |
-|----------------------|--------------|----------|----------------------------------------------------------------------------|
-| `id`                 | string       | No       | Unique identifier (auto-generated)                                         |
-| `name`               | string       | Yes      | Recipe name                                                                |
-| `user`               | string       | Yes      | Author email                                                               |
-| `survey_type`        | enum         | Yes      | `ech`, `eaii`, `eph`, `eai`                                                |
-| `edition`            | string/array | No       | Survey edition(s)                                                          |
-| `description`        | string       | No       | Description                                                                |
-| `topic`              | enum         | No       | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
-| `version`            | string       | No       | Semantic version (default `"1.0.0"`)                                       |
-| `downloads`          | number       | No       | Download counter (default `0`)                                             |
-| `steps`              | array        | No       | Step expressions as strings                                                |
-| `depends_on`         | array        | No       | Required input variable names                                              |
-| `depends_on_recipes` | array        | No       | IDs of dependent recipes                                                   |
-| `categories`         | array        | No       | Category objects                                                           |
-| `certification`      | object       | No       | `{level, certified_at, certified_by, notes}`                               |
-| `user_info`          | object       | No       | `{name, user_type, email, url, verified}`                                  |
-| `doc`                | object       | No       | `{input_variables, output_variables, pipeline}`                            |
-| `data_source`        | object       | No       | `{s3_bucket, s3_prefix, file_pattern, provider}`                           |
+| Field | Type | Required | Description |
+|----|----|----|----|
+| `id` | string | No | Unique identifier (auto-generated) |
+| `name` | string | Yes | Recipe name |
+| `user` | string | Yes | Author email |
+| `survey_type` | enum | Yes | `ech`, `eaii`, `eph`, `eai` |
+| `edition` | string/array | No | Survey edition(s) |
+| `description` | string | No | Description |
+| `topic` | enum | No | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
+| `version` | string | No | Semantic version (default `"1.0.0"`) |
+| `downloads` | number | No | Download counter (default `0`) |
+| `steps` | array | No | Step expressions as strings |
+| `depends_on` | array | No | Required input variable names |
+| `depends_on_recipes` | array | No | IDs of dependent recipes |
+| `categories` | array | No | Category objects |
+| `certification` | object | No | `{level, certified_at, certified_by, notes}` |
+| `user_info` | object | No | `{name, user_type, email, url, verified}` |
+| `doc` | object | No | `{input_variables, output_variables, pipeline}` |
+| `data_source` | object | No | `{s3_bucket, s3_prefix, file_pattern, provider}` |
 
 **Indexes:** unique on `id`; on `user`, `survey_type`, `topic`,
 `downloads` (desc), `certification.level`; compound on
@@ -411,12 +421,12 @@ is idempotent: existing collections are skipped.
 
 ### Environment Variables
 
-| Variable                 | Required | Default                     | Description                                 |
-|--------------------------|----------|-----------------------------|---------------------------------------------|
-| `METASURVEY_MONGO_URI`   | Yes      | —                           | MongoDB connection string                   |
-| `METASURVEY_DB`          | No       | `metasurvey`                | Database name                               |
-| `METASURVEY_JWT_SECRET`  | No       | `metasurvey-dev-secret-...` | JWT signing secret (override in production) |
-| `METASURVEY_ADMIN_EMAIL` | No       | —                           | Admin email for institutional review        |
+| Variable | Required | Default | Description |
+|----|----|----|----|
+| `METASURVEY_MONGO_URI` | Yes | — | MongoDB connection string |
+| `METASURVEY_DB` | No | `metasurvey` | Database name |
+| `METASURVEY_JWT_SECRET` | No | `metasurvey-dev-secret-...` | JWT signing secret (override in production) |
+| `METASURVEY_ADMIN_EMAIL` | No | — | Admin email for institutional review |
 
 ### Running Locally
 

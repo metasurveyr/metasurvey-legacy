@@ -1,5 +1,26 @@
 # Changelog
 
+## metasurvey 0.0.24
+
+### Breaking changes
+
+- [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md):
+  parameter `conf.level` renamed to `level` to match
+  [`stats::confint()`](https://rdrr.io/r/stats/confint.html) and
+  `survey` package conventions. Per-call overrides now use `level` as
+  well (e.g., `svymean(~x, level = 0.90)`).
+
+### Bug fixes
+
+- `step_compute(.by=)`: grouped computations now survive
+  [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
+  Previously the `.by` parameter was not stored in the `Step` object, so
+  re-baking would re-execute without grouping, producing wrong results.
+- `compute()` with `.by`: fixed
+  [`merge()`](https://rdrr.io/r/base/merge.html) creating `.x`/`.y`
+  suffix columns when the target column already existed in the data
+  (e.g., during re-baking).
+
 ## metasurvey 0.0.23
 
 ### New features
@@ -752,7 +773,8 @@ CRAN release: 2026-02-25
 ### Bug fixes
 
 - Fixed Codecov GitHub Actions workflow: replaced deprecated
-  `covr::codecov()` with `covr::package_coverage()` +
+  [`covr::codecov()`](http://covr.r-lib.org/reference/codecov.md) with
+  [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.md) +
   `codecov/codecov-action@v5` for reliable coverage uploads with token
   authentication.
 - Added CI guard to `.Rprofile` to skip example-data setup in GitHub

@@ -21,6 +21,7 @@ A `RotativePanelSurvey` requires an implantation `Survey` and one or
 more follow-up `Survey` objects.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 set_use_copy(TRUE)
@@ -72,6 +73,7 @@ and
 to retrieve the individual surveys:
 
 ``` r
+
 # Implantation survey
 imp <- get_implantation(panel)
 class(imp)
@@ -85,6 +87,7 @@ head(get_data(imp), 3)
 ```
 
 ``` r
+
 # Follow-up surveys
 follow_ups <- get_follow_up(panel)
 cat("Number of follow-ups:", length(follow_ups), "\n")
@@ -97,6 +100,7 @@ Apply transformations to individual panel components. The same step
 functions work on both the implantation and follow-up surveys:
 
 ``` r
+
 # Transform the implantation survey
 panel$implantation <- step_compute(panel$implantation,
   income_k = income / 1000,
@@ -119,6 +123,7 @@ analysis.
 ### Cross-sectional analysis (Implantation)
 
 ``` r
+
 result_impl <- workflow(
   list(panel$implantation),
   survey::svymean(~income, na.rm = TRUE),
@@ -137,6 +142,7 @@ result_impl
 ### Comparison across follow-ups
 
 ``` r
+
 results <- rbindlist(lapply(seq_along(panel$follow_up), function(i) {
   r <- workflow(
     list(panel$follow_up[[i]]),
@@ -165,6 +171,7 @@ The constructor takes a nested list:
 `list(estimation_type = list(group = list(surveys)))`.
 
 ``` r
+
 s1 <- make_survey("2023")
 s2 <- make_survey("2023")
 s3 <- make_survey("2023")
@@ -180,6 +187,7 @@ class(pool)
 ### Pooled estimation
 
 ``` r
+
 pool_result <- workflow(
   pool,
   survey::svymean(~income, na.rm = TRUE),
@@ -204,6 +212,7 @@ pool_result
 Surveys can be organized into multiple groups:
 
 ``` r
+
 s4 <- make_survey("2023")
 s5 <- make_survey("2023")
 s6 <- make_survey("2023")
@@ -247,6 +256,7 @@ Use
 to select specific periods from a `RotativePanelSurvey`:
 
 ``` r
+
 # Extract specific follow-ups by index
 first_two <- extract_surveys(panel, index = 1:2)
 class(first_two)
@@ -254,6 +264,7 @@ class(first_two)
 ```
 
 ``` r
+
 # Extract by month (requires Date-format editions)
 march_data <- extract_surveys(panel, monthly = 3)
 ```
@@ -263,6 +274,7 @@ march_data <- extract_surveys(panel, monthly = 3)
 metasurvey provides utilities for working with survey edition dates:
 
 ``` r
+
 # Extract periodicity from edition strings
 extract_time_pattern("2023")
 #> $year
@@ -282,6 +294,7 @@ extract_time_pattern("2023-06")
 ```
 
 ``` r
+
 # Validate edition format
 validate_time_pattern(svy_type = "ech", svy_edition = "2023")
 #> $svy_type
@@ -295,6 +308,7 @@ validate_time_pattern(svy_type = "ech", svy_edition = "2023")
 ```
 
 ``` r
+
 # Group dates by period
 dates <- as.Date(c(
   "2023-01-15", "2023-03-20", "2023-06-10",
@@ -314,6 +328,7 @@ In practice, panel data is loaded from files using
 [`load_panel_survey()`](https://metasurveyr.github.io/metasurvey/reference/load_panel_survey.md):
 
 ``` r
+
 panel <- load_panel_survey(
   path_implantation = "data/ECH_implantacion_2023.csv",
   path_follow_up = "data/seguimiento/",
@@ -337,6 +352,7 @@ inside
 to configure robust variance estimation:
 
 ``` r
+
 panel <- load_panel_survey(
   path_implantation = "data/ECH_implantacion_2023.csv",
   path_follow_up = "data/seguimiento/",

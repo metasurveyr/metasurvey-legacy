@@ -160,7 +160,8 @@ Filter recipes by criteria
       survey_type = NULL,
       edition = NULL,
       category = NULL,
-      certification_level = NULL
+      certification_level = NULL,
+      topic = NULL
     )
 
 #### Arguments
@@ -178,6 +179,10 @@ Filter recipes by criteria
   Character or NULL
 
 - `certification_level`:
+
+  Character or NULL
+
+- `topic`:
 
   Character or NULL
 

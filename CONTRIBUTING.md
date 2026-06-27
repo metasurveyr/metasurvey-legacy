@@ -39,6 +39,7 @@ it to new editions.
 ### Publish a recipe to the registry
 
 ``` r
+
 library(metasurvey)
 
 # 1. Connect to the registry
@@ -63,6 +64,7 @@ api_publish_recipe(r)
 ### Browse existing recipes
 
 ``` r
+
 # From R
 configure_api("https://metasurvey-api.onrender.com")
 list_recipes()
@@ -175,33 +177,33 @@ Run `make help` to see all available targets.
 
 Pre-commit runs automatically on every commit. The hooks enforce:
 
-| Hook                      | What it does                                                                                                   |
-|---------------------------|----------------------------------------------------------------------------------------------------------------|
-| **R code quality**        |                                                                                                                |
-| `style-files`             | Formats R code with `styler::tidyverse_style()`                                                                |
-| `roxygenize`              | Regenerates `man/` and `NAMESPACE`                                                                             |
-| `lintr`                   | Lints R files against `.lintr` rules                                                                           |
-| `use-tidy-description`    | Keeps `DESCRIPTION` fields sorted                                                                              |
-| `spell-check`             | Spell-checks documentation (uses `inst/WORDLIST`)                                                              |
-| `parsable-R`              | Checks R files parse without errors                                                                            |
-| `no-browser-statement`    | Blocks [`browser()`](https://rdrr.io/r/base/browser.html) calls in source                                      |
-| `no-print-statement`      | Blocks [`print()`](https://rdrr.io/r/base/print.html) in source (tests/vignettes excluded)                     |
-| `no-debug-statement`      | Blocks [`debug()`](https://rdrr.io/r/base/debug.html)/[`debugonce()`](https://rdrr.io/r/base/debug.html) calls |
-| `deps-in-desc`            | Checks all used packages are in `DESCRIPTION`                                                                  |
-| **File quality**          |                                                                                                                |
-| `end-of-file-fixer`       | Ensures files end with a newline                                                                               |
-| `trailing-whitespace`     | Removes trailing whitespace                                                                                    |
-| `mixed-line-ending`       | Enforces LF line endings                                                                                       |
-| `check-yaml`              | Validates YAML syntax                                                                                          |
-| `check-json`              | Validates JSON syntax                                                                                          |
-| `check-merge-conflict`    | Detects unresolved merge markers                                                                               |
-| `check-case-conflict`     | Detects files that differ only in case                                                                         |
-| `check-added-large-files` | Blocks files \> 200 KB                                                                                         |
-| `detect-private-key`      | Blocks accidental key commits                                                                                  |
-| **Branch protection**     |                                                                                                                |
-| `no-commit-to-branch`     | Prevents direct commits to `main`                                                                              |
-| `forbid-to-commit`        | Blocks `.Rhistory`, `.RData`, `.rds` artifacts                                                                 |
-| `forbid-secrets`          | Blocks `.env`, credentials, key files                                                                          |
+| Hook | What it does |
+|----|----|
+| **R code quality** |  |
+| `style-files` | Formats R code with `styler::tidyverse_style()` |
+| `roxygenize` | Regenerates `man/` and `NAMESPACE` |
+| `lintr` | Lints R files against `.lintr` rules |
+| `use-tidy-description` | Keeps `DESCRIPTION` fields sorted |
+| `spell-check` | Spell-checks documentation (uses `inst/WORDLIST`) |
+| `parsable-R` | Checks R files parse without errors |
+| `no-browser-statement` | Blocks [`browser()`](https://rdrr.io/r/base/browser.html) calls in source |
+| `no-print-statement` | Blocks [`print()`](https://rdrr.io/r/base/print.html) in source (tests/vignettes excluded) |
+| `no-debug-statement` | Blocks [`debug()`](https://rdrr.io/r/base/debug.html)/[`debugonce()`](https://rdrr.io/r/base/debug.html) calls |
+| `deps-in-desc` | Checks all used packages are in `DESCRIPTION` |
+| **File quality** |  |
+| `end-of-file-fixer` | Ensures files end with a newline |
+| `trailing-whitespace` | Removes trailing whitespace |
+| `mixed-line-ending` | Enforces LF line endings |
+| `check-yaml` | Validates YAML syntax |
+| `check-json` | Validates JSON syntax |
+| `check-merge-conflict` | Detects unresolved merge markers |
+| `check-case-conflict` | Detects files that differ only in case |
+| `check-added-large-files` | Blocks files \> 200 KB |
+| `detect-private-key` | Blocks accidental key commits |
+| **Branch protection** |  |
+| `no-commit-to-branch` | Prevents direct commits to `main` |
+| `forbid-to-commit` | Blocks `.Rhistory`, `.RData`, `.rds` artifacts |
+| `forbid-secrets` | Blocks `.env`, credentials, key files |
 
 If the renv cache inside pre-commit gets corrupted (lock errors):
 

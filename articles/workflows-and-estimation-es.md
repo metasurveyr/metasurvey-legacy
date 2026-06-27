@@ -25,6 +25,7 @@ paquete `survey`, que contiene datos reales de escuelas estratificadas
 de California.
 
 ``` r
+
 library(metasurvey)
 library(survey)
 library(data.table)
@@ -49,6 +50,7 @@ svy <- Survey$new(
 Estimamos la media poblacional del puntaje API en el ano 2000:
 
 ``` r
+
 result <- workflow(
   list(svy),
   survey::svymean(~api00, na.rm = TRUE),
@@ -69,6 +71,7 @@ result
 Estimamos la matriculacion total en todas las escuelas:
 
 ``` r
+
 result_total <- workflow(
   list(svy),
   survey::svytotal(~enroll, na.rm = TRUE),
@@ -91,6 +94,7 @@ Es posible pasar varias llamadas de estimacion a
 para calcularlas en un unico paso:
 
 ``` r
+
 results <- workflow(
   list(svy),
   survey::svymean(~api00, na.rm = TRUE),
@@ -116,6 +120,7 @@ Utilizamos
 calcular estimaciones por subpoblaciones (dominios):
 
 ``` r
+
 # Mean API score by school type
 api_by_type <- workflow(
   list(svy),
@@ -137,6 +142,7 @@ api_by_type
 ```
 
 ``` r
+
 # Mean enrollment by awards status
 enroll_by_award <- workflow(
   list(svy),
@@ -172,6 +178,7 @@ para clasificar la calidad siguiendo las directrices estandar:
 | \>= 35%     | No confiable | No publicar                            |
 
 ``` r
+
 # Evaluate quality of the API score estimate
 cv_pct <- results$cv[1] * 100
 quality <- evaluate_cv(cv_pct)
@@ -194,6 +201,7 @@ hace que el analisis sea reproducible y compartible. Registra:
 ### Creacion de un RecipeWorkflow
 
 ``` r
+
 wf <- RecipeWorkflow$new(
   name = "API Score Analysis 2000",
   description = "Mean API score estimation by school type",
@@ -228,6 +236,7 @@ wf
 Publicamos el workflow para que otros puedan descubrirlo y reutilizarlo:
 
 ``` r
+
 # Configure a local backend
 wf_path <- tempfile(fileext = ".json")
 set_workflow_backend("local", path = wf_path)
@@ -258,6 +267,7 @@ publicadas para el mismo, se puede utilizar
 [`find_workflows_for_recipe()`](https://metasurveyr.github.io/metasurvey/reference/find_workflows_for_recipe.md):
 
 ``` r
+
 # Create a workflow that references a recipe
 wf2 <- RecipeWorkflow$new(
   name            = "Labor Market Estimates",
@@ -285,6 +295,7 @@ Para una difusion mas amplia, es posible publicar workflows en la API de
 metasurvey:
 
 ``` r
+
 # Requires authentication
 api_login("you@example.com", "password")
 
@@ -302,6 +313,7 @@ A continuacion se presenta un pipeline completo desde los datos crudos
 hasta la estimacion publicable, utilizando el conjunto de datos API:
 
 ``` r
+
 # 1. Create survey from real data
 dt_full <- data.table(apistrat)
 
@@ -349,6 +361,7 @@ estimates
 ```
 
 ``` r
+
 # 4. Domain estimation (by school type)
 by_school <- workflow(
   list(svy_full),
@@ -370,6 +383,7 @@ by_school
 ```
 
 ``` r
+
 # 5. Assess quality
 for (i in seq_len(nrow(estimates))) {
   cv_val <- estimates$cv[i] * 100
@@ -391,16 +405,17 @@ a cada paso y que versiones de R y metasurvey se utilizaron. Esto
 permite rastrear cualquier estimacion hasta los datos originales.
 
 ``` r
+
 # El provenance se completa automaticamente despues de bake_steps()
 prov <- provenance(svy_full)
 prov
 #> ── Data Provenance ─────────────────────────────────────────────────────────────
-#> Loaded: 2026-04-23T01:11:38 
+#> Loaded: 2026-06-27T16:05:24 
 #> Initial rows: 200 
 #> 
 #> Environment:
-#>   metasurvey: 0.0.23 
-#>   R: 4.5.3 
+#>   metasurvey: 0.0.24 
+#>   R: 4.6.1 
 #>   survey: 4.5
 ```
 
@@ -410,9 +425,10 @@ de modo que siempre es posible inspeccionar el linaje completo de una
 estimacion:
 
 ``` r
+
 prov_wf <- provenance(estimates)
 cat("metasurvey version:", prov_wf$environment$metasurvey_version, "\n")
-#> metasurvey version: 0.0.23
+#> metasurvey version: 0.0.24
 cat("Steps applied:", length(prov_wf$steps), "\n")
 #> Steps applied: 0
 ```
@@ -420,6 +436,7 @@ cat("Steps applied:", length(prov_wf$steps), "\n")
 Para pistas de auditoria, se exporta el provenance a JSON:
 
 ``` r
+
 provenance_to_json(prov, "audit_trail.json")
 ```
 
@@ -428,6 +445,7 @@ utiliza
 [`provenance_diff()`](https://metasurveyr.github.io/metasurvey/reference/provenance_diff.md):
 
 ``` r
+
 diff <- provenance_diff(prov_2022, prov_2023)
 diff$steps_changed
 diff$n_final_changed
@@ -441,19 +459,21 @@ usando el paquete `gt`. Agrega intervalos de confianza, clasificacion de
 calidad del CV con colores y notas al pie basadas en el provenance.
 
 ``` r
+
 workflow_table(estimates)
 ```
 
-| Survey Estimation Results                  |             |          |       |          |          |        |           |
-|--------------------------------------------|-------------|----------|-------|----------|----------|--------|-----------|
-| Statistic                                  | variable    | Estimate | SE    | CI Lower | CI Upper | CV (%) | Quality   |
-| :svymean: api_growth                       | api_growth  | 32.89    | 2.158 | 28.66    | 37.12    | 6.6    | Very good |
-| :svymean: high_growth                      | high_growth | 0.29     | 0.036 | 0.22     | 0.37     | 12.4   | Good      |
-| metasurvey 0.0.23 \| CI: 95% \| 2026-04-23 |             |          |       |          |          |        |           |
+| Survey Estimation Results |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|
+| Statistic | variable | Estimate | SE | CI Lower | CI Upper | CV (%) | Quality |
+| :svymean: api_growth | api_growth | 32.89 | 2.158 | 28.66 | 37.12 | 6.6 | Very good |
+| :svymean: high_growth | high_growth | 0.29 | 0.036 | 0.22 | 0.37 | 12.4 | Good |
+| metasurvey 0.0.24 \| CI: 95% \| 2026-06-27 |  |  |  |  |  |  |  |
 
 Se puede personalizar la salida:
 
 ``` r
+
 # Locale en espaniol, ocultar SE, titulo personalizado
 workflow_table(
   estimates,
@@ -464,33 +484,35 @@ workflow_table(
 )
 ```
 
-| Indicadores de crecimiento API             |             |          |          |          |        |           |
-|--------------------------------------------|-------------|----------|----------|----------|--------|-----------|
-| Escuelas de California, 2000               |             |          |          |          |        |           |
-| Statistic                                  | variable    | Estimate | CI Lower | CI Upper | CV (%) | Quality   |
-| :svymean: api_growth                       | api_growth  | 32,89    | 28,66    | 37,12    | 6,6    | Very good |
-| :svymean: high_growth                      | high_growth | 0,29     | 0,22     | 0,37     | 12,4   | Good      |
-| metasurvey 0.0.23 \| CI: 95% \| 2026-04-23 |             |          |          |          |        |           |
+| Indicadores de crecimiento API |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|
+| Escuelas de California, 2000 |  |  |  |  |  |  |
+| Statistic | variable | Estimate | CI Lower | CI Upper | CV (%) | Quality |
+| :svymean: api_growth | api_growth | 32,89 | 28,66 | 37,12 | 6,6 | Very good |
+| :svymean: high_growth | high_growth | 0,29 | 0,22 | 0,37 | 12,4 | Good |
+| metasurvey 0.0.24 \| CI: 95% \| 2026-06-27 |  |  |  |  |  |  |
 
 Para estimaciones por dominio, la tabla detecta automaticamente las
 columnas de grupo:
 
 ``` r
+
 workflow_table(by_school)
 ```
 
-| Survey Estimation Results                  |          |       |          |        |          |          |        |           |
-|--------------------------------------------|----------|-------|----------|--------|----------|----------|--------|-----------|
-| Statistic                                  | variable | stype | Estimate | SE     | CI Lower | CI Upper | CV (%) | Quality   |
-| :svyby: api00                              | api00    | E     | 674.43   | 12.493 | 649.94   | 698.92   | 1.9    | Excellent |
-| :svyby: api00                              | api00    | H     | 625.82   | 15.341 | 595.75   | 655.89   | 2.5    | Excellent |
-| :svyby: api00                              | api00    | M     | 636.60   | 16.502 | 604.26   | 668.94   | 2.6    | Excellent |
-| metasurvey 0.0.23 \| CI: 95% \| 2026-04-23 |          |       |          |        |          |          |        |           |
+| Survey Estimation Results |  |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|
+| Statistic | variable | stype | Estimate | SE | CI Lower | CI Upper | CV (%) | Quality |
+| :svyby: api00 | api00 | E | 674.43 | 12.493 | 649.94 | 698.92 | 1.9 | Excellent |
+| :svyby: api00 | api00 | H | 625.82 | 15.341 | 595.75 | 655.89 | 2.5 | Excellent |
+| :svyby: api00 | api00 | M | 636.60 | 16.502 | 604.26 | 668.94 | 2.6 | Excellent |
+| metasurvey 0.0.24 \| CI: 95% \| 2026-06-27 |  |  |  |  |  |  |  |  |
 
 Se exporta a cualquier formato soportado por
 [`gt::gtsave()`](https://gt.rstudio.com/reference/gtsave.html):
 
 ``` r
+
 tbl <- workflow_table(estimates)
 gt::gtsave(tbl, "estimates.html")
 gt::gtsave(tbl, "estimates.docx")

@@ -22,6 +22,7 @@ paquete `survey`. Este incluye versiones estratificadas, por
 conglomerados y de muestreo aleatorio simple.
 
 ``` r
+
 library(metasurvey)
 library(survey)
 library(data.table)
@@ -38,6 +39,7 @@ El diseño más sencillo utiliza ponderadores de probabilidad sin
 conglomerados ni estratificación:
 
 ``` r
+
 svy_simple <- Survey$new(
   data = dt_strat,
   edition = "2000",
@@ -57,6 +59,7 @@ Muchas encuestas nacionales utilizan muestreo estratificado
 multietapico. Se pasan `strata` y `psu` a `Survey$new()`:
 
 ``` r
+
 dt_clus <- data.table(apiclus1)
 
 svy_strat_clus <- Survey$new(
@@ -76,6 +79,7 @@ cat_design(svy_strat_clus)
 Validacion cruzada con el paquete `survey`:
 
 ``` r
+
 design_strat <- svydesign(
   id = ~1, strata = ~stype, weights = ~pw,
   data = dt_strat
@@ -107,6 +111,7 @@ datos de CASEN, PNADc, ENIGH y DHS, ver
 ### Inspeccion del diseno
 
 ``` r
+
 # Check design type
 cat_design_type(svy_simple, "annual")
 #> [1] "None"
@@ -131,6 +136,7 @@ de análisis (por ejemplo, anual vs. mensual). metasurvey asocia
 etiquetas de periodicidad a columnas de ponderadores:
 
 ``` r
+
 set.seed(42)
 dt_multi <- copy(dt_strat)
 dt_multi[, pw_monthly := pw * runif(.N, 0.9, 1.1)]
@@ -172,6 +178,7 @@ dentro de
 [`add_weight()`](https://metasurveyr.github.io/metasurvey/reference/add_weight.md):
 
 ``` r
+
 # This example requires external files
 svy_boot <- load_survey(
   path = "data/main_survey.csv",
@@ -202,6 +209,7 @@ metasurvey utiliza `data.table` por defecto para una manipulación rápida
 de los datos:
 
 ``` r
+
 # Current engine
 get_engine()
 #> [1] "data.table"
@@ -219,6 +227,7 @@ invoca
 Esto permite realizar validaciones antes de la ejecución:
 
 ``` r
+
 # Check current setting
 lazy_default()
 #> [1] TRUE
@@ -233,6 +242,7 @@ Se puede controlar si las operaciones de steps modifican los datos
 in-place o trabajan sobre copias:
 
 ``` r
+
 # Current setting
 use_copy_default()
 #> [1] TRUE
@@ -248,6 +258,7 @@ use_copy_default()
 Estimación estándar de varianza utilizando el diseño muestral:
 
 ``` r
+
 results <- workflow(
   list(svy_simple),
   survey::svymean(~api00, na.rm = TRUE),
@@ -272,6 +283,7 @@ Se pueden calcular estimaciones para subpoblaciones utilizando
 [`survey::svyby()`](https://rdrr.io/pkg/survey/man/svyby.html):
 
 ``` r
+
 domain_results <- workflow(
   list(svy_simple),
   survey::svyby(~api00, ~stype, survey::svymean, na.rm = TRUE),
@@ -294,6 +306,7 @@ domain_results
 ### Razones
 
 ``` r
+
 ratio_result <- workflow(
   list(svy_simple),
   survey::svyratio(~api00, ~api99),
@@ -317,6 +330,7 @@ Al construir pipelines complejos, conviene verificar cada paso de forma
 independiente:
 
 ``` r
+
 # Step 1: Compute new variable
 svy_v <- step_compute(svy_simple,
   api_diff = api00 - api99,
@@ -336,6 +350,7 @@ Se pueden comparar los resultados de
 de metasurvey con llamadas directas al paquete `survey`:
 
 ``` r
+
 # Method 1: Direct survey package
 design <- svydesign(id = ~1, weights = ~pw, data = dt_strat)
 direct_mean <- svymean(~api00, design)
@@ -366,6 +381,7 @@ Se puede utilizar
 para visualizar el grafo de dependencias entre steps:
 
 ``` r
+
 # Requires the visNetwork package
 svy_viz <- step_compute(svy_simple,
   api_diff = api00 - api99,
@@ -380,6 +396,7 @@ Se puede evaluar la calidad de las estimaciones utilizando el
 coeficiente de variación:
 
 ``` r
+
 results_quality <- workflow(
   list(svy_simple),
   survey::svymean(~api00, na.rm = TRUE),
@@ -404,6 +421,7 @@ for (i in seq_len(nrow(results_quality))) {
 Se puede verificar que los recipes y sus steps sean consistentes:
 
 ``` r
+
 # Create steps and recipe
 svy_rt <- step_compute(svy_simple, api_diff = api00 - api99)
 
@@ -446,6 +464,7 @@ se recomienda verificar lo siguiente:
     variación elevados
 
 ``` r
+
 validate_pipeline <- function(svy) {
   data <- get_data(svy)
   checks <- list(

@@ -10,6 +10,7 @@ comunidad, o funciona en modo offline con datos de ejemplo incorporados.
 ## Iniciar la aplicación
 
 ``` r
+
 library(metasurvey)
 
 # Open in your default browser
@@ -51,12 +52,12 @@ tarjeta con:
 
 La parte superior de la pestaña de Recetas ofrece cuatro filtros:
 
-| Filtro        | Opciones                                                       | Propósito                                        |
-|---------------|----------------------------------------------------------------|--------------------------------------------------|
-| Search        | Texto libre                                                    | Busca en el nombre y la descripción de la receta |
-| Survey type   | ECH, EAII, EPH, EAI                                            | Filtrar por encuesta                             |
-| Category      | Labor Market, Income, Education, Health, Demographics, Housing | Filtrar por tema                                 |
-| Certification | Official, Reviewed, Community                                  | Filtrar por nivel de confianza                   |
+| Filtro | Opciones | Propósito |
+|----|----|----|
+| Search | Texto libre | Busca en el nombre y la descripción de la receta |
+| Survey type | ECH, EAII, EPH, EAI | Filtrar por encuesta |
+| Category | Labor Market, Income, Education, Health, Demographics, Housing | Filtrar por tema |
+| Certification | Official, Reviewed, Community | Filtrar por nivel de confianza |
 
 Los filtros se aplican del lado del cliente para obtener resultados
 instantáneos. Utilice el botón de actualización para recargar los datos
@@ -149,6 +150,7 @@ Desde la pestaña de Perfil, haga clic en “Generate API Token” para crear
 un token de 90 días para usar en scripts de R:
 
 ``` r
+
 # Use the token generated from the app
 Sys.setenv(METASURVEY_TOKEN = "your-token-here")
 

@@ -32,6 +32,7 @@ Other recipes:
 [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md),
 [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md),
 [`get_recipe()`](https://metasurveyr.github.io/metasurvey/reference/get_recipe.md),
+[`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md),
 [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md),
 [`read_recipe()`](https://metasurveyr.github.io/metasurvey/reference/read_recipe.md),
 [`recipe()`](https://metasurveyr.github.io/metasurvey/reference/recipe.md),

@@ -96,6 +96,7 @@ Other recipes:
 [`add_recipe()`](https://metasurveyr.github.io/metasurvey/reference/add_recipe.md),
 [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md),
 [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md),
+[`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md),
 [`print.Recipe()`](https://metasurveyr.github.io/metasurvey/reference/print.Recipe.md),
 [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md),
 [`read_recipe()`](https://metasurveyr.github.io/metasurvey/reference/read_recipe.md),

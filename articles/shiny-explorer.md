@@ -10,6 +10,7 @@ in offline mode with built-in sample data.
 ## Launching the application
 
 ``` r
+
 library(metasurvey)
 
 # Open in your default browser
@@ -48,12 +49,12 @@ grid of published recipes, each presented as a card with:
 
 The top of the Recipes tab offers four filters:
 
-| Filter        | Options                                                        | Purpose                              |
-|---------------|----------------------------------------------------------------|--------------------------------------|
-| Search        | Free text                                                      | Searches recipe name and description |
-| Survey type   | ECH, EAII, EPH, EAI                                            | Filter by survey                     |
-| Category      | Labor Market, Income, Education, Health, Demographics, Housing | Filter by topic                      |
-| Certification | Official, Reviewed, Community                                  | Filter by trust level                |
+| Filter | Options | Purpose |
+|----|----|----|
+| Search | Free text | Searches recipe name and description |
+| Survey type | ECH, EAII, EPH, EAI | Filter by survey |
+| Category | Labor Market, Income, Education, Health, Demographics, Housing | Filter by topic |
+| Certification | Official, Reviewed, Community | Filter by trust level |
 
 Filters are applied client-side for instant results. Use the refresh
 button to reload data from the API.
@@ -136,6 +137,7 @@ From the Profile tab, click “Generate API Token” to create a 90-day
 token for use in R scripts:
 
 ``` r
+
 # Use the token generated from the app
 Sys.setenv(METASURVEY_TOKEN = "your-token-here")
 

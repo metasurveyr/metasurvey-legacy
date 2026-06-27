@@ -22,6 +22,7 @@ consulte las secciones a continuacion.
 ## Configuracion
 
 ``` r
+
 library(metasurvey)
 
 # Point to the production API (default)
@@ -45,6 +46,7 @@ larga duracion (90 dias) para scripts automatizados.
 ### Registro
 
 ``` r
+
 # Individual account (auto-approved)
 api_register("Ana Garcia", "ana@example.com", "password123")
 
@@ -60,15 +62,16 @@ api_register(
 
 Tipos de cuenta:
 
-| Tipo                   | Descripcion                           | Aprobacion                         |
-|------------------------|---------------------------------------|------------------------------------|
-| `individual`           | Investigador independiente            | Automatica                         |
+| Tipo | Descripcion | Aprobacion |
+|----|----|----|
+| `individual` | Investigador independiente | Automatica |
 | `institutional_member` | Miembro de una institucion reconocida | Requiere revision de administrador |
-| `institution`          | Cuenta institucional                  | Requiere revision de administrador |
+| `institution` | Cuenta institucional | Requiere revision de administrador |
 
 ### Inicio de sesion
 
 ``` r
+
 api_login("ana@example.com", "password123")
 ```
 
@@ -79,6 +82,7 @@ automaticamente dentro de los 5 minutos previos a su expiracion.
 ### Gestion de sesion
 
 ``` r
+
 # View current user profile
 api_me()
 
@@ -95,6 +99,7 @@ Para scripts automatizados y CI/CD, genere un token de 90 dias desde la
 aplicacion Shiny (pestana Perfil) o utilicelo directamente:
 
 ``` r
+
 Sys.setenv(METASURVEY_TOKEN = "your-long-lived-token")
 
 # API calls work without interactive login
@@ -115,6 +120,7 @@ recipes <- api_list_recipes(survey_type = "ech")
 #### Listar recetas
 
 ``` r
+
 # All recipes
 all <- api_list_recipes()
 
@@ -136,25 +142,27 @@ page2 <- api_list_recipes(limit = 10, offset = 10)
 
 Parametros de consulta:
 
-| Parametro       | Tipo    | Descripcion                                                                |
-|-----------------|---------|----------------------------------------------------------------------------|
-| `search`        | string  | Busqueda regex sobre el nombre de la receta                                |
-| `survey_type`   | string  | `ech`, `eaii`, `eph`, `eai`                                                |
-| `topic`         | string  | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
-| `certification` | string  | `community`, `reviewed`, `official`                                        |
-| `user`          | string  | Filtrar por email del autor                                                |
-| `limit`         | integer | Resultados maximos (por defecto 50)                                        |
-| `offset`        | integer | Omitir N resultados (por defecto 0)                                        |
+| Parametro | Tipo | Descripcion |
+|----|----|----|
+| `search` | string | Busqueda regex sobre el nombre de la receta |
+| `survey_type` | string | `ech`, `eaii`, `eph`, `eai` |
+| `topic` | string | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
+| `certification` | string | `community`, `reviewed`, `official` |
+| `user` | string | Filtrar por email del autor |
+| `limit` | integer | Resultados maximos (por defecto 50) |
+| `offset` | integer | Omitir N resultados (por defecto 0) |
 
 #### Obtener receta
 
 ``` r
+
 recipe <- api_get_recipe("ech_employment_001")
 ```
 
 #### Publicar receta
 
 ``` r
+
 api_login("ana@example.com", "password123")
 api_publish_recipe(my_recipe)
 ```
@@ -173,6 +181,7 @@ asigna la certificacion `community` por defecto.
 | `POST` | `/workflows/:id/download` | No   | Incrementar contador de descargas |
 
 ``` r
+
 # List workflows for ECH
 wf <- api_list_workflows(survey_type = "ech")
 
@@ -205,6 +214,7 @@ tipo.
 | `GET`  | `/anda/variables` | No   | Obtener metadatos de variables |
 
 ``` r
+
 # Get all ECH variables
 vars <- api_get_anda_variables(survey_type = "ech")
 
@@ -217,10 +227,10 @@ vars <- api_get_anda_variables(
 
 Parametros de consulta:
 
-| Parametro     | Tipo   | Descripcion                                                   |
-|---------------|--------|---------------------------------------------------------------|
-| `survey_type` | string | Tipo de encuesta (por defecto `"ech"`)                        |
-| `names`       | string | Nombres de variables separados por coma (todas si esta vacio) |
+| Parametro | Tipo | Descripcion |
+|----|----|----|
+| `survey_type` | string | Tipo de encuesta (por defecto `"ech"`) |
+| `names` | string | Nombres de variables separados por coma (todas si esta vacio) |
 
 Cada documento de variable contiene:
 
@@ -236,11 +246,11 @@ Cada documento de variable contiene:
 
 ### Administracion
 
-| Metodo | Endpoint                | Auth  | Descripcion                                           |
-|--------|-------------------------|-------|-------------------------------------------------------|
-| `GET`  | `/admin/pending-users`  | Admin | Listar cuentas institucionales pendientes de revision |
-| `POST` | `/admin/approve/:email` | Admin | Aprobar una cuenta institucional                      |
-| `POST` | `/admin/reject/:email`  | Admin | Rechazar una cuenta institucional                     |
+| Metodo | Endpoint | Auth | Descripcion |
+|----|----|----|----|
+| `GET` | `/admin/pending-users` | Admin | Listar cuentas institucionales pendientes de revision |
+| `POST` | `/admin/approve/:email` | Admin | Aprobar una cuenta institucional |
+| `POST` | `/admin/reject/:email` | Admin | Rechazar una cuenta institucional |
 
 El acceso de administrador se controla mediante la variable de entorno
 `METASURVEY_ADMIN_EMAIL` en el servidor.
@@ -316,42 +326,42 @@ erDiagram
 
 #### `users`
 
-| Campo           | Tipo    | Requerido | Descripcion                                         |
-|-----------------|---------|-----------|-----------------------------------------------------|
-| `name`          | string  | Si        | Nombre para mostrar                                 |
-| `email`         | string  | Si        | Email (unico, validado)                             |
-| `password_hash` | string  | Si        | Hash SHA-256 (64 caracteres)                        |
-| `user_type`     | enum    | Si        | `individual`, `institutional_member`, `institution` |
-| `institution`   | string  | No        | Nombre de la institucion                            |
-| `verified`      | boolean | No        | Si la identidad esta verificada                     |
-| `review_status` | enum    | No        | `approved`, `pending`, `rejected`                   |
-| `reviewed_by`   | string  | No        | Email del administrador que reviso                  |
-| `reviewed_at`   | string  | No        | Marca de tiempo ISO                                 |
-| `created_at`    | string  | Si        | Marca de tiempo ISO                                 |
+| Campo | Tipo | Requerido | Descripcion |
+|----|----|----|----|
+| `name` | string | Si | Nombre para mostrar |
+| `email` | string | Si | Email (unico, validado) |
+| `password_hash` | string | Si | Hash SHA-256 (64 caracteres) |
+| `user_type` | enum | Si | `individual`, `institutional_member`, `institution` |
+| `institution` | string | No | Nombre de la institucion |
+| `verified` | boolean | No | Si la identidad esta verificada |
+| `review_status` | enum | No | `approved`, `pending`, `rejected` |
+| `reviewed_by` | string | No | Email del administrador que reviso |
+| `reviewed_at` | string | No | Marca de tiempo ISO |
+| `created_at` | string | Si | Marca de tiempo ISO |
 
 **Indices:** unico en `email`.
 
 #### `recipes`
 
-| Campo                | Tipo         | Requerido | Descripcion                                                                |
-|----------------------|--------------|-----------|----------------------------------------------------------------------------|
-| `id`                 | string       | No        | Identificador unico (auto-generado)                                        |
-| `name`               | string       | Si        | Nombre de la receta                                                        |
-| `user`               | string       | Si        | Email del autor                                                            |
-| `survey_type`        | enum         | Si        | `ech`, `eaii`, `eph`, `eai`                                                |
-| `edition`            | string/array | No        | Edicion(es) de la encuesta                                                 |
-| `description`        | string       | No        | Descripcion                                                                |
-| `topic`              | enum         | No        | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
-| `version`            | string       | No        | Version semantica (por defecto `"1.0.0"`)                                  |
-| `downloads`          | number       | No        | Contador de descargas (por defecto `0`)                                    |
-| `steps`              | array        | No        | Expresiones de pasos como cadenas de texto                                 |
-| `depends_on`         | array        | No        | Nombres de variables de entrada requeridas                                 |
-| `depends_on_recipes` | array        | No        | IDs de recetas de las que depende                                          |
-| `categories`         | array        | No        | Objetos de categoria                                                       |
-| `certification`      | object       | No        | `{level, certified_at, certified_by, notes}`                               |
-| `user_info`          | object       | No        | `{name, user_type, email, url, verified}`                                  |
-| `doc`                | object       | No        | `{input_variables, output_variables, pipeline}`                            |
-| `data_source`        | object       | No        | `{s3_bucket, s3_prefix, file_pattern, provider}`                           |
+| Campo | Tipo | Requerido | Descripcion |
+|----|----|----|----|
+| `id` | string | No | Identificador unico (auto-generado) |
+| `name` | string | Si | Nombre de la receta |
+| `user` | string | Si | Email del autor |
+| `survey_type` | enum | Si | `ech`, `eaii`, `eph`, `eai` |
+| `edition` | string/array | No | Edicion(es) de la encuesta |
+| `description` | string | No | Descripcion |
+| `topic` | enum | No | `labor_market`, `income`, `education`, `health`, `demographics`, `housing` |
+| `version` | string | No | Version semantica (por defecto `"1.0.0"`) |
+| `downloads` | number | No | Contador de descargas (por defecto `0`) |
+| `steps` | array | No | Expresiones de pasos como cadenas de texto |
+| `depends_on` | array | No | Nombres de variables de entrada requeridas |
+| `depends_on_recipes` | array | No | IDs de recetas de las que depende |
+| `categories` | array | No | Objetos de categoria |
+| `certification` | object | No | `{level, certified_at, certified_by, notes}` |
+| `user_info` | object | No | `{name, user_type, email, url, verified}` |
+| `doc` | object | No | `{input_variables, output_variables, pipeline}` |
+| `data_source` | object | No | `{s3_bucket, s3_prefix, file_pattern, provider}` |
 
 **Indices:** unico en `id`; en `user`, `survey_type`, `topic`,
 `downloads` (desc), `certification.level`; compuesto en
@@ -360,23 +370,23 @@ erDiagram
 
 #### `workflows`
 
-| Campo             | Tipo         | Requerido | Descripcion                                  |
-|-------------------|--------------|-----------|----------------------------------------------|
-| `id`              | string       | No        | Identificador unico (auto-generado)          |
-| `name`            | string       | Si        | Nombre del workflow                          |
-| `user`            | string       | Si        | Email del autor                              |
-| `survey_type`     | enum         | Si        | `ech`, `eaii`, `eph`, `eai`                  |
-| `edition`         | string/array | No        | Edicion(es) de la encuesta                   |
-| `description`     | string       | No        | Descripcion                                  |
-| `version`         | string       | No        | Version semantica                            |
-| `downloads`       | number       | No        | Contador de descargas                        |
-| `estimation_type` | string/array | No        | `annual`, `quarterly`, `monthly`             |
-| `recipe_ids`      | array        | No        | IDs de recetas referenciadas                 |
-| `calls`           | array        | No        | Llamadas de estimacion como cadenas de texto |
-| `call_metadata`   | array        | No        | Descripciones de las llamadas                |
-| `categories`      | array        | No        | Objetos de categoria                         |
-| `certification`   | object       | No        | Igual que en recetas                         |
-| `user_info`       | object       | No        | Igual que en recetas                         |
+| Campo | Tipo | Requerido | Descripcion |
+|----|----|----|----|
+| `id` | string | No | Identificador unico (auto-generado) |
+| `name` | string | Si | Nombre del workflow |
+| `user` | string | Si | Email del autor |
+| `survey_type` | enum | Si | `ech`, `eaii`, `eph`, `eai` |
+| `edition` | string/array | No | Edicion(es) de la encuesta |
+| `description` | string | No | Descripcion |
+| `version` | string | No | Version semantica |
+| `downloads` | number | No | Contador de descargas |
+| `estimation_type` | string/array | No | `annual`, `quarterly`, `monthly` |
+| `recipe_ids` | array | No | IDs de recetas referenciadas |
+| `calls` | array | No | Llamadas de estimacion como cadenas de texto |
+| `call_metadata` | array | No | Descripciones de las llamadas |
+| `categories` | array | No | Objetos de categoria |
+| `certification` | object | No | Igual que en recetas |
+| `user_info` | object | No | Igual que en recetas |
 
 **Indices:** unico en `id`; en `user`, `survey_type`, `recipe_ids`,
 `downloads` (desc); compuesto en `(survey_type, edition)`; busqueda de
@@ -419,12 +429,12 @@ indices. Es idempotente: las colecciones existentes se omiten.
 
 ### Variables de entorno
 
-| Variable                 | Requerida | Por defecto                 | Descripcion                                          |
-|--------------------------|-----------|-----------------------------|------------------------------------------------------|
-| `METASURVEY_MONGO_URI`   | Si        | —                           | Cadena de conexion a MongoDB                         |
-| `METASURVEY_DB`          | No        | `metasurvey`                | Nombre de la base de datos                           |
-| `METASURVEY_JWT_SECRET`  | No        | `metasurvey-dev-secret-...` | Secreto para firma JWT (sobreescribir en produccion) |
-| `METASURVEY_ADMIN_EMAIL` | No        | —                           | Email del administrador para revision institucional  |
+| Variable | Requerida | Por defecto | Descripcion |
+|----|----|----|----|
+| `METASURVEY_MONGO_URI` | Si | — | Cadena de conexion a MongoDB |
+| `METASURVEY_DB` | No | `metasurvey` | Nombre de la base de datos |
+| `METASURVEY_JWT_SECRET` | No | `metasurvey-dev-secret-...` | Secreto para firma JWT (sobreescribir en produccion) |
+| `METASURVEY_ADMIN_EMAIL` | No | — | Email del administrador para revision institucional |
 
 ### Ejecucion local
 

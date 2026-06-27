@@ -25,6 +25,7 @@ variable for inequality measures, and `meals` (percent of students
 eligible for subsidized meals) works as an income-like proxy.
 
 ``` r
+
 library(metasurvey)
 library(survey)
 library(convey)
@@ -52,6 +53,7 @@ Build the design with `ensure_design()` and then replace the
 estimation-type entry:
 
 ``` r
+
 svy$ensure_design()
 svy$design[["annual"]] <- convey_prep(svy$design[["annual"]])
 ```
@@ -63,6 +65,7 @@ svy$design[["annual"]] <- convey_prep(svy$design[["annual"]])
 The Gini index measures overall inequality on a 0–1 scale:
 
 ``` r
+
 gini <- workflow(
   list(svy),
   convey::svygini(~api00, na.rm = TRUE),
@@ -84,6 +87,7 @@ The Atkinson index uses an inequality aversion parameter `epsilon`.
 Higher epsilon gives more weight to the lower tail:
 
 ``` r
+
 atk_05 <- workflow(
   list(svy),
   convey::svyatk(~api00, epsilon = 0.5),
@@ -112,6 +116,7 @@ rbind(atk_05, atk_1)
 The QSR compares income at the top 20% with the bottom 20%:
 
 ``` r
+
 qsr <- workflow(
   list(svy),
   convey::svyqsr(~api00, na.rm = TRUE),
@@ -133,6 +138,7 @@ The GEI family includes the Theil index (`alpha = 1`) and the mean log
 deviation (`alpha = 0`):
 
 ``` r
+
 theil <- workflow(
   list(svy),
   convey::svygei(~api00, epsilon = 1),
@@ -168,6 +174,7 @@ threshold at 50%.
 at-risk-of-poverty threshold (60% of the median by default):
 
 ``` r
+
 arpt <- workflow(
   list(svy),
   convey::svyarpt(~meals, na.rm = TRUE),
@@ -189,6 +196,7 @@ arpt
 proportion of units below the ARPT:
 
 ``` r
+
 arpr <- workflow(
   list(svy),
   convey::svyarpr(~meals, na.rm = TRUE),
@@ -213,6 +221,7 @@ The Foster-Greer-Thorbecke (FGT) family provides:
 - **FGT(2)**: severity (squared poverty gap, penalizes extreme poverty)
 
 ``` r
+
 threshold <- 50
 
 fgt0 <- workflow(
@@ -252,6 +261,7 @@ A complete pipeline with data transformations followed by inequality
 estimation:
 
 ``` r
+
 dt_full <- data.table(apistrat)
 
 svy_full <- Survey$new(
@@ -298,6 +308,7 @@ results
 ### Quality assessment
 
 ``` r
+
 for (i in seq_len(nrow(results))) {
   cv_val <- results$cv[i] * 100
   cat(
@@ -313,6 +324,7 @@ for (i in seq_len(nrow(results))) {
 ### Publication table
 
 ``` r
+
 workflow_table(
   results,
   title = "Inequality of API Score Growth",
@@ -320,13 +332,13 @@ workflow_table(
 )
 ```
 
-| Inequality of API Score Growth             |          |          |       |          |          |        |           |
-|--------------------------------------------|----------|----------|-------|----------|----------|--------|-----------|
-| California Schools, 2000                   |          |          |       |          |          |        |           |
-| Statistic                                  | variable | Estimate | SE    | CI Lower | CI Upper | CV (%) | Quality   |
-| :svygini: gini                             | gini     | 0.48     | 0.033 | 0.42     | 0.55     | 6.9    | Very good |
-| :svyatk: atkinson                          | atkinson | 0.02     | 0.002 | 0.01     | 0.02     | 8.8    | Very good |
-| metasurvey 0.0.23 \| CI: 95% \| 2026-04-23 |          |          |       |          |          |        |           |
+| Inequality of API Score Growth |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|
+| California Schools, 2000 |  |  |  |  |  |  |  |
+| Statistic | variable | Estimate | SE | CI Lower | CI Upper | CV (%) | Quality |
+| :svygini: gini | gini | 0.48 | 0.033 | 0.42 | 0.55 | 6.9 | Very good |
+| :svyatk: atkinson | atkinson | 0.02 | 0.002 | 0.01 | 0.02 | 8.8 | Very good |
+| metasurvey 0.0.24 \| CI: 95% \| 2026-06-27 |  |  |  |  |  |  |  |
 
 ## Provenance
 
@@ -334,10 +346,11 @@ Provenance is tracked automatically. The full lineage — steps applied,
 convey estimates computed, and package versions — is available:
 
 ``` r
+
 prov <- provenance(results)
 prov
 #> ── Data Provenance ─────────────────────────────────────────────────────────────
-#> Loaded: 2026-04-23T01:10:10 
+#> Loaded: 2026-06-27T16:04:01 
 #> Initial rows: 200 
 #> 
 #> Pipeline:
@@ -345,14 +358,14 @@ prov
 #> 
 #> Estimation:
 #>   Type: annual 
-#>   Timestamp: 2026-04-23T01:10:10 
+#>   Timestamp: 2026-06-27T16:04:01 
 #> 
 #> Environment:
-#>   metasurvey: 0.0.23 
-#>   R: 4.5.3 
+#>   metasurvey: 0.0.24 
+#>   R: 4.6.1 
 #>   survey: 4.5
 cat("metasurvey version:", prov$environment$metasurvey_version, "\n")
-#> metasurvey version: 0.0.23
+#> metasurvey version: 0.0.24
 cat("Steps applied:", length(prov$steps), "\n")
 #> Steps applied: 1
 ```

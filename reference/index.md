@@ -116,6 +116,8 @@ Search, filter, and publish recipes
   : Search recipes
 - [`filter_recipes()`](https://metasurveyr.github.io/metasurvey/reference/filter_recipes.md)
   : Filter recipes by criteria
+- [`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md)
+  : Harmonize surveys using registry recipes
 - [`rank_recipes()`](https://metasurveyr.github.io/metasurvey/reference/rank_recipes.md)
   : Rank recipes by downloads
 - [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md)

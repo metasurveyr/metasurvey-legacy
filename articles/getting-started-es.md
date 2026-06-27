@@ -38,11 +38,13 @@ infraestructura.
 ## Instalacion
 
 ``` r
+
 # Install from GitHub
 devtools::install_github("metaSurveyR/metasurvey")
 ```
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 ```
@@ -70,6 +72,7 @@ incluyen:
 - **W_ANO**: Factor de expansion anual (peso)
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -95,6 +98,7 @@ receta funcione con distintas ediciones de la encuesta.
 Es posible inspeccionar los datos en cualquier momento:
 
 ``` r
+
 head(get_data(svy), 3)
 #>       ID  nper  anio   mes region  dpto   nom_dpto   e26   e27   e30 e51_2
 #>    <int> <int> <int> <int>  <int> <int>     <char> <int> <int> <int> <int>
@@ -131,6 +135,7 @@ para crear variables derivadas. El paquete automaticamente:
 - Optimiza las expresiones para mejorar el rendimiento
 
 ``` r
+
 svy <- step_compute(svy,
   # Convert income to thousands for readability
   ht11_thousands = HT11 / 1000,
@@ -148,6 +153,7 @@ Es posible agrupar calculos usando el parametro `.by` (similar a
 `data.table`):
 
 ``` r
+
 # Calculate mean household income per department
 svy <- step_compute(svy,
   mean_income_dept = mean(HT11, na.rm = TRUE),
@@ -165,6 +171,7 @@ condiciones se evaluan **de arriba hacia abajo**, y la primera
 coincidencia es la que se aplica.
 
 ``` r
+
 # Recode labor force status (POBPCOAC) into meaningful categories
 svy <- step_recode(svy, labor_status,
   POBPCOAC == 2 ~ "Employed",
@@ -203,6 +210,7 @@ se combinan con AND. Al igual que los demas steps, los filtros son lazy
 por defecto.
 
 ``` r
+
 # Mantener solo individuos en edad de trabajar (14+)
 svy <- step_filter(svy,
   e27 >= 14,
@@ -215,6 +223,7 @@ svy <- step_filter(svy,
 Se renombran variables para mayor claridad o consistencia:
 
 ``` r
+
 svy <- step_rename(svy,
   age = e27, # Rename e27 to age
   sex_code = e26 # Keep original as sex_code
@@ -224,6 +233,7 @@ svy <- step_rename(svy,
 Se eliminan variables que ya no son necesarias:
 
 ``` r
+
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
@@ -242,6 +252,7 @@ Los microdatos reales de la ECH ya incluyen `nom_dpto` y `region`. Aqui
 demostramos un join con lineas de pobreza como ejemplo:
 
 ``` r
+
 # Lineas de pobreza por region (valores ilustrativos en UYU, 2023)
 poverty_lines <- data.table(
   region = 1:3,
@@ -266,6 +277,7 @@ Se llama a
 para ejecutar todas las transformaciones pendientes:
 
 ``` r
+
 svy <- bake_steps(svy)
 head(get_data(svy), 3)
 #>    region  dpto    ID  nper  anio   mes   nom_dpto sex_code   age   e30 e51_2
@@ -293,6 +305,7 @@ head(get_data(svy), 3)
 El historial de steps se preserva para documentacion y reproducibilidad:
 
 ``` r
+
 steps <- get_steps(svy)
 length(steps) # Number of transformation steps
 #> [1] 9
@@ -310,6 +323,7 @@ Es posible visualizar el pipeline de transformacion como un grafo
 dirigido:
 
 ``` r
+
 view_graph(svy, init_step = "Load ECH 2023")
 ```
 
@@ -335,6 +349,7 @@ variacion.
 ### Estimaciones basicas
 
 ``` r
+
 # Estimate mean household income
 result <- workflow(
   list(svy),
@@ -364,6 +379,7 @@ La salida incluye:
 Es posible calcular varias estadisticas en una sola llamada:
 
 ``` r
+
 results <- workflow(
   list(svy),
   survey::svymean(~HT11, na.rm = TRUE), # Mean income
@@ -395,6 +411,7 @@ Se calculan estimaciones para subpoblaciones usando
 [`survey::svyby()`](https://rdrr.io/pkg/survey/man/svyby.html):
 
 ``` r
+
 # Mean income by gender
 income_by_gender <- workflow(
   list(svy),
@@ -420,20 +437,21 @@ estimaciones. Un CV mas bajo indica estimaciones mas precisas. Siguiendo
 las pautas del INE Uruguay ([Instituto Nacional de Estadística (INE)
 2023](#ref-ine2023)):
 
-| Rango de CV | Categoria de calidad | Recomendacion                                |
-|-------------|----------------------|----------------------------------------------|
-| \< 5%       | Excelente            | Usar sin restricciones                       |
-| 5%–10%      | Muy buena            | Usar con confianza                           |
-| 10%–15%     | Buena                | Usar para la mayoria de los propositos       |
-| 15%–25%     | Aceptable            | Usar con precaucion, senialando limitaciones |
-| 25%–35%     | Pobre                | Usar solo para tendencias generales          |
-| \>= 35%     | No confiable         | No publicar                                  |
+| Rango de CV | Categoria de calidad | Recomendacion |
+|----|----|----|
+| \< 5% | Excelente | Usar sin restricciones |
+| 5%–10% | Muy buena | Usar con confianza |
+| 10%–15% | Buena | Usar para la mayoria de los propositos |
+| 15%–25% | Aceptable | Usar con precaucion, senialando limitaciones |
+| 25%–35% | Pobre | Usar solo para tendencias generales |
+| \>= 35% | No confiable | No publicar |
 
 Se utiliza
 [`evaluate_cv()`](https://metasurveyr.github.io/metasurvey/reference/evaluate_cv.md)
 para clasificar la calidad de las estimaciones:
 
 ``` r
+
 # Check quality of mean income estimate
 cv_percentage <- results$cv[1] * 100
 quality <- evaluate_cv(cv_percentage)
@@ -468,6 +486,7 @@ convertir en una receta que puede ser:
 Se crea una receta a partir de los steps desarrollados:
 
 ``` r
+
 # Convert current steps to a recipe
 labor_recipe <- steps_to_recipe(
   name = "ECH Labor Force Indicators",
@@ -490,6 +509,7 @@ labor_recipe$name
 O se puede definir una receta desde cero:
 
 ``` r
+
 minimal_recipe <- recipe(
   name = "Basic Demographics - ECH",
   user = "analyst",
@@ -519,6 +539,7 @@ Una vez publicada, cualquier persona puede recuperar una receta por ID y
 aplicarla a sus datos:
 
 ``` r
+
 # Obtener una receta por ID desde la API (requiere servidor)
 r <- api_get_recipe("ech_labor_001")
 
@@ -532,6 +553,7 @@ processed <- bake_recipes(new_svy)
 Las recetas documentan automaticamente sus transformaciones:
 
 ``` r
+
 doc <- labor_recipe$doc()
 names(doc)
 #> [1] "meta"             "input_variables"  "output_variables" "pipeline"
@@ -552,6 +574,7 @@ metasurvey ofrece configuraciones globales que se pueden ajustar segun
 el flujo de trabajo:
 
 ``` r
+
 # Check current lazy-processing setting
 lazy_default() # TRUE = steps recorded but not executed immediately
 #> [1] TRUE
@@ -568,6 +591,7 @@ show_engines() # "data.table", "dplyr", etc.
 Se pueden modificar las configuraciones para la sesion actual:
 
 ``` r
+
 # Disable lazy evaluation (execute steps immediately)
 set_lazy_processing(FALSE)
 
@@ -588,6 +612,7 @@ que otros lo encuentren y reutilicen. El paquete se conecta a una API
 publica donde se almacenan recipes y workflows:
 
 ``` r
+
 # Buscar recipes existentes (requiere servidor API)
 ech_recipes <- api_list_recipes(survey_type = "ech")
 length(ech_recipes)

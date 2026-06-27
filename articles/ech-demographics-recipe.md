@@ -37,6 +37,7 @@ edition without loading any data yet – the recipe will work on whatever
 data we feed it later.
 
 ``` r
+
 library(metasurvey)
 
 svy <- survey_empty(type = "ech", edition = "2023")
@@ -47,6 +48,7 @@ Now let’s attach some sample data. In production this would come from
 `anda_download_microdata("2023")` or a local file; here we simulate it.
 
 ``` r
+
 set.seed(42)
 n <- 200
 dt <- data.table::data.table(
@@ -78,6 +80,7 @@ want, not the commands we need to type.
 ### Rename identifiers
 
 ``` r
+
 svy <- svy |>
   step_rename(
     hh_id = "id", person_id = "nper",
@@ -88,6 +91,7 @@ svy <- svy |>
 Nothing happened to the data yet:
 
 ``` r
+
 names(get_data(svy))[1:4]
 ```
 
@@ -101,6 +105,7 @@ commands). With `step_recode` it’s a single, declarative mapping that
 produces human-readable labels:
 
 ``` r
+
 svy <- svy |>
   step_recode(sex,
     e26 == 1 ~ "Male",
@@ -117,6 +122,7 @@ The STATA equivalent uses five `replace` lines with
 write the same logic as a single recode with readable conditions:
 
 ``` r
+
 svy <- svy |>
   step_recode(age_group,
     e27 >= 0 & e27 <= 13 ~ "Child",
@@ -132,6 +138,7 @@ svy <- svy |>
 ### Relationship to head of household
 
 ``` r
+
 svy <- svy |>
   step_recode(relationship,
     e30 == 1 ~ "Head",
@@ -147,6 +154,7 @@ svy <- svy |>
 ### Education level
 
 ``` r
+
 svy <- svy |>
   step_recode(edu_level,
     e51_2 == 0 ~ "None",
@@ -161,6 +169,7 @@ svy <- svy |>
 ### Geographic area
 
 ``` r
+
 svy <- svy |>
   step_recode(area,
     region_4 == 1 ~ "Montevideo",
@@ -180,6 +189,7 @@ scratch lets you choose the representation that makes analysis easier.
 ### Remove raw variables
 
 ``` r
+
 svy <- svy |>
   step_remove(e26, e27, e30, e51_2, region_4,
     comment = "Drop raw ECH variables"
@@ -191,6 +201,7 @@ svy <- svy |>
 At this point we have seven pending steps. Let’s see what was recorded:
 
 ``` r
+
 length(get_steps(svy))
 ```
 
@@ -205,6 +216,7 @@ renders it as an interactive network – each node is a step, and edges
 show variable dependencies:
 
 ``` r
+
 view_graph(svy)
 ```
 
@@ -219,6 +231,7 @@ a glance.
 For static output we can inspect the step list:
 
 ``` r
+
 for (s in get_steps(svy)) {
   cat(sprintf("[%s] %s\n", s$type, s$comment %||% ""))
 }
@@ -231,6 +244,7 @@ same pipeline on different data. We create the recipe **before** baking
 – the lazy steps are the pipeline:
 
 ``` r
+
 rec <- steps_to_recipe(
   name = "ECH Demographics (minimal)",
   user = "research_team",
@@ -249,6 +263,7 @@ rec
 The recipe auto-generates documentation from the steps:
 
 ``` r
+
 doc <- rec$doc()
 cat("Input variables: ", paste(doc$input_variables, collapse = ", "), "\n")
 cat("Output variables:", paste(doc$output_variables, collapse = ", "), "\n")
@@ -262,12 +277,14 @@ Now let’s execute the steps.
 runs all pending steps in order and returns the transformed survey:
 
 ``` r
+
 svy <- bake_steps(svy)
 ```
 
 The data has the new columns with readable labels:
 
 ``` r
+
 head(get_data(svy)[, .(
   hh_id, person_id, sex, age_group, relationship,
   edu_level, area
@@ -277,6 +294,7 @@ head(get_data(svy)[, .(
 The raw variables are gone:
 
 ``` r
+
 "e26" %in% names(get_data(svy))
 ```
 
@@ -285,11 +303,13 @@ The raw variables are gone:
 Recipes serialize to JSON for version control and sharing:
 
 ``` r
+
 f <- tempfile(fileext = ".json")
 save_recipe(rec, f)
 ```
 
 ``` r
+
 rec2 <- read_recipe(f)
 rec2$name
 length(rec2$steps)
@@ -298,6 +318,7 @@ length(rec2$steps)
 The JSON is human-readable and diffable in git:
 
 ``` r
+
 cat(readLines(f, n = 15), sep = "\n")
 ```
 
@@ -307,6 +328,7 @@ The same recipe works on any edition. Load the recipe from JSON, attach
 it to new data, and bake:
 
 ``` r
+
 rec_loaded <- read_recipe(f)
 
 svy_2024 <- survey_empty(type = "ech", edition = "2024") |>
@@ -330,16 +352,16 @@ No code changes needed. The recipe encodes the *logic*, not the data.
 
 ## Transpiler vs hand-crafted: when to use each
 
-|                       | Transpiler ([`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)) | Hand-crafted recipe                      |
-|-----------------------|-----------------------------------------------------------------------------------------------------------|------------------------------------------|
-| **Speed**             | Seconds – instant migration                                                                               | Hours – requires understanding the logic |
-| **Steps**             | 80-200 per module (one per STATA line)                                                                    | 5-20 (one per concept)                   |
-| **Variable names**    | Inherits STATA names (`bc_pe2`, `bc_pe3`)                                                                 | Your own names (`sex`, `age_group`)      |
-| **Labels**            | Numeric codes (`1`, `2`, `3`)                                                                             | Readable labels (`"Male"`, `"Female"`)   |
-| **Readability**       | Faithful to original, verbose                                                                             | Clean, self-documenting                  |
-| **Maintenance**       | Hard to modify individual steps                                                                           | Easy to change any mapping               |
-| **DAG visualization** | Large, hard to read                                                                                       | Compact, meaningful nodes                |
-| **Best for**          | Migrating legacy code fast                                                                                | New projects, critical pipelines         |
+|  | Transpiler ([`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)) | Hand-crafted recipe |
+|----|----|----|
+| **Speed** | Seconds – instant migration | Hours – requires understanding the logic |
+| **Steps** | 80-200 per module (one per STATA line) | 5-20 (one per concept) |
+| **Variable names** | Inherits STATA names (`bc_pe2`, `bc_pe3`) | Your own names (`sex`, `age_group`) |
+| **Labels** | Numeric codes (`1`, `2`, `3`) | Readable labels (`"Male"`, `"Female"`) |
+| **Readability** | Faithful to original, verbose | Clean, self-documenting |
+| **Maintenance** | Hard to modify individual steps | Easy to change any mapping |
+| **DAG visualization** | Large, hard to read | Compact, meaningful nodes |
+| **Best for** | Migrating legacy code fast | New projects, critical pipelines |
 
 **Recommended workflow**: use
 [`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)
@@ -350,14 +372,14 @@ running; the hand-crafted version is where you want to end up.
 
 ## What metasurvey gives you
 
-| Manual STATA scripts            | metasurvey recipe                                                                                             |
-|---------------------------------|---------------------------------------------------------------------------------------------------------------|
-| Copy-paste `.do` files per year | One recipe, any edition                                                                                       |
-| Undocumented variable names     | Auto-generated input/output docs                                                                              |
-| No dependency tracking          | DAG visualization with [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md)     |
-| Flat scripts, no validation     | `validate()` checks required variables                                                                        |
+| Manual STATA scripts | metasurvey recipe |
+|----|----|
+| Copy-paste `.do` files per year | One recipe, any edition |
+| Undocumented variable names | Auto-generated input/output docs |
+| No dependency tracking | DAG visualization with [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md) |
+| Flat scripts, no validation | `validate()` checks required variables |
 | Email `.do` files to colleagues | [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md) to shared registry |
-| Re-run entire script to test    | Lazy steps: inspect before baking                                                                             |
+| Re-run entire script to test | Lazy steps: inspect before baking |
 
 ## Next steps
 

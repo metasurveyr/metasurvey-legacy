@@ -39,6 +39,7 @@ y la edicion sin cargar datos todavia – la receta funcionara con
 cualquier dato que le proporcionemos despues.
 
 ``` r
+
 library(metasurvey)
 
 svy <- survey_empty(type = "ech", edition = "2023")
@@ -50,6 +51,7 @@ de `anda_download_microdata("2023")` o un archivo local; aqui los
 simulamos.
 
 ``` r
+
 set.seed(42)
 n <- 200
 dt <- data.table::data.table(
@@ -81,6 +83,7 @@ salida* que queremos, no de los comandos que necesitamos escribir.
 ### Renombrar identificadores
 
 ``` r
+
 svy <- svy |>
   step_rename(
     hh_id = "id", person_id = "nper",
@@ -91,6 +94,7 @@ svy <- svy |>
 Nada le paso a los datos todavia:
 
 ``` r
+
 names(get_data(svy))[1:4]
 #> [1] "id"      "nper"    "pesoano" "e26"
 ```
@@ -105,6 +109,7 @@ Con `step_recode` es un unico mapeo declarativo que produce etiquetas
 legibles:
 
 ``` r
+
 svy <- svy |>
   step_recode(sex,
     e26 == 1 ~ "Hombre",
@@ -122,6 +127,7 @@ escribimos la misma logica como un unico recode con condiciones
 legibles:
 
 ``` r
+
 svy <- svy |>
   step_recode(age_group,
     e27 >= 0 & e27 <= 13 ~ "Ninio",
@@ -137,6 +143,7 @@ svy <- svy |>
 ### Relacion con el jefe de hogar
 
 ``` r
+
 svy <- svy |>
   step_recode(relationship,
     e30 == 1 ~ "Jefe",
@@ -152,6 +159,7 @@ svy <- svy |>
 ### Nivel educativo
 
 ``` r
+
 svy <- svy |>
   step_recode(edu_level,
     e51_2 == 0 ~ "Sin instruccion",
@@ -166,6 +174,7 @@ svy <- svy |>
 ### Area geografica
 
 ``` r
+
 svy <- svy |>
   step_recode(area,
     region_4 == 1 ~ "Montevideo",
@@ -186,6 +195,7 @@ representacion que facilita el analisis.
 ### Remover variables crudas
 
 ``` r
+
 svy <- svy |>
   step_remove(e26, e27, e30, e51_2, region_4,
     comment = "Eliminar variables crudas de ECH"
@@ -197,6 +207,7 @@ svy <- svy |>
 En este punto tenemos siete steps pendientes. Veamos que se registro:
 
 ``` r
+
 length(get_steps(svy))
 #> [1] 7
 ```
@@ -212,6 +223,7 @@ lo renderiza como una red interactiva – cada nodo es un step, y las
 aristas muestran dependencias de variables:
 
 ``` r
+
 view_graph(svy)
 ```
 
@@ -222,6 +234,7 @@ auditoria, pero mucho mas dificil de leer de un vistazo.
 Para salida estatica podemos inspeccionar la lista de steps:
 
 ``` r
+
 for (s in get_steps(svy)) {
   cat(sprintf("[%s] %s\n", s$type, s$comment %||% ""))
 }
@@ -241,6 +254,7 @@ reproducir el mismo pipeline con datos diferentes. Creamos la receta
 **antes** de hacer bake – los steps lazy son el pipeline:
 
 ``` r
+
 rec <- steps_to_recipe(
   name = "ECH Demografia (minima)",
   user = "equipo_investigacion",
@@ -282,6 +296,7 @@ rec
 La receta auto-genera documentacion a partir de los steps:
 
 ``` r
+
 doc <- rec$doc()
 cat("Variables de entrada: ", paste(doc$input_variables, collapse = ", "), "\n")
 #> Variables de entrada:  e26, e27, e30, e51_2, region_4
@@ -299,12 +314,14 @@ ejecuta todos los steps pendientes en orden y devuelve la encuesta
 transformada:
 
 ``` r
+
 svy <- bake_steps(svy)
 ```
 
 Los datos tienen las nuevas columnas con etiquetas legibles:
 
 ``` r
+
 head(get_data(svy)[, .(
   hh_id, person_id, sex, age_group, relationship,
   edu_level, area
@@ -322,6 +339,7 @@ head(get_data(svy)[, .(
 Las variables crudas ya no estan:
 
 ``` r
+
 "e26" %in% names(get_data(svy))
 #> [1] FALSE
 ```
@@ -331,11 +349,13 @@ Las variables crudas ya no estan:
 Las recetas se serializan a JSON para control de versiones y compartir:
 
 ``` r
+
 f <- tempfile(fileext = ".json")
 save_recipe(rec, f)
 ```
 
 ``` r
+
 rec2 <- read_recipe(f)
 rec2$name
 #> [1] "ECH Demografia (minima)"
@@ -346,6 +366,7 @@ length(rec2$steps)
 El JSON es legible y diffeable en git:
 
 ``` r
+
 cat(readLines(f, n = 15), sep = "\n")
 #> {
 #>   "name": "ECH Demografia (minima)",
@@ -355,13 +376,13 @@ cat(readLines(f, n = 15), sep = "\n")
 #>   "description": "Demografia armonizada: sexo, grupo de edad, relacion, nivel educativo y area geografica.",
 #>   "topic": "demographics",
 #>   "doi": {},
-#>   "id": "r_1776906625_663",
+#>   "id": "r_1782576256_663",
 #>   "version": "1.0.0",
 #>   "downloads": 0,
 #>   "categories": [],
 #>   "certification": {
 #>     "level": "community",
-#>     "certified_at": "2026-04-23 01:10:25.761797"
+#>     "certified_at": "2026-06-27 16:04:16.261346"
 ```
 
 ## Aplicando a una nueva edicion
@@ -370,6 +391,7 @@ La misma receta funciona con cualquier edicion. Cargar la receta desde
 JSON, adjuntarla a nuevos datos y hacer bake:
 
 ``` r
+
 rec_loaded <- read_recipe(f)
 
 svy_2024 <- survey_empty(type = "ech", edition = "2024") |>
@@ -402,16 +424,16 @@ los datos.
 
 ## Transpilador vs artesanal: cuando usar cada uno
 
-|                          | Transpilador ([`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)) | Receta artesanal                           |
-|--------------------------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------|
-| **Velocidad**            | Segundos – migracion instantanea                                                                            | Horas – requiere entender la logica        |
-| **Steps**                | 80-200 por modulo (uno por linea STATA)                                                                     | 5-20 (uno por concepto)                    |
-| **Nombres de variables** | Hereda nombres STATA (`bc_pe2`, `bc_pe3`)                                                                   | Nombres propios (`sex`, `age_group`)       |
-| **Etiquetas**            | Codigos numericos (`1`, `2`, `3`)                                                                           | Etiquetas legibles (`"Hombre"`, `"Mujer"`) |
-| **Legibilidad**          | Fiel al original, verboso                                                                                   | Limpio, auto-documentado                   |
-| **Mantenimiento**        | Dificil modificar steps individuales                                                                        | Facil cambiar cualquier mapeo              |
-| **Visualizacion DAG**    | Grande, dificil de leer                                                                                     | Compacto, nodos significativos             |
-| **Mejor para**           | Migrar codigo legacy rapido                                                                                 | Proyectos nuevos, pipelines criticos       |
+|  | Transpilador ([`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)) | Receta artesanal |
+|----|----|----|
+| **Velocidad** | Segundos – migracion instantanea | Horas – requiere entender la logica |
+| **Steps** | 80-200 por modulo (uno por linea STATA) | 5-20 (uno por concepto) |
+| **Nombres de variables** | Hereda nombres STATA (`bc_pe2`, `bc_pe3`) | Nombres propios (`sex`, `age_group`) |
+| **Etiquetas** | Codigos numericos (`1`, `2`, `3`) | Etiquetas legibles (`"Hombre"`, `"Mujer"`) |
+| **Legibilidad** | Fiel al original, verboso | Limpio, auto-documentado |
+| **Mantenimiento** | Dificil modificar steps individuales | Facil cambiar cualquier mapeo |
+| **Visualizacion DAG** | Grande, dificil de leer | Compacto, nodos significativos |
+| **Mejor para** | Migrar codigo legacy rapido | Proyectos nuevos, pipelines criticos |
 
 **Flujo de trabajo recomendado**: usar
 [`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)
@@ -423,14 +445,14 @@ donde se quiere llegar.
 
 ## Lo que metasurvey ofrece
 
-| Scripts STATA manuales                 | Receta metasurvey                                                                                                |
-|----------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| Copiar-pegar archivos `.do` por anio   | Una receta, cualquier edicion                                                                                    |
-| Nombres de variables sin documentar    | Documentacion auto-generada de entrada/salida                                                                    |
-| Sin seguimiento de dependencias        | Visualizacion DAG con [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md)         |
-| Scripts planos, sin validacion         | `validate()` verifica variables requeridas                                                                       |
-| Enviar archivos `.do` por email        | [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md) a registro compartido |
-| Re-ejecutar todo el script para probar | Steps lazy: inspeccionar antes de bake                                                                           |
+| Scripts STATA manuales | Receta metasurvey |
+|----|----|
+| Copiar-pegar archivos `.do` por anio | Una receta, cualquier edicion |
+| Nombres de variables sin documentar | Documentacion auto-generada de entrada/salida |
+| Sin seguimiento de dependencias | Visualizacion DAG con [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md) |
+| Scripts planos, sin validacion | `validate()` verifica variables requeridas |
+| Enviar archivos `.do` por email | [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md) a registro compartido |
+| Re-ejecutar todo el script para probar | Steps lazy: inspeccionar antes de bake |
 
 ## Proximos pasos
 

@@ -35,6 +35,7 @@ GitHub. Sections for unavailable packages are skipped automatically.
 Install them manually to see all examples:
 
 ``` r
+
 # CRAN packages
 install.packages(c("eph", "PNADcIBGE", "ipumsr", "rdhs"))
 
@@ -49,6 +50,7 @@ The ECH (Encuesta Continua de Hogares) is the primary survey metasurvey
 was built for. A bundled sample is included in the package.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -102,6 +104,7 @@ force survey. The `eph` package
 [GitHub](https://github.com/ropensci/eph)) includes a bundled toybase.
 
 ``` r
+
 library(eph)
 
 data("toybase_individual_2016_04", package = "eph")
@@ -163,6 +166,7 @@ includes a bundled sample from the Los Rios region.
 Install with `remotes::install_github("pachadotdev/casen")`.
 
 ``` r
+
 # Requires: remotes::install_github("pachadotdev/casen")
 data("casen_2017_los_rios")
 dt_casen <- data.table(casen_2017_los_rios)
@@ -217,6 +221,7 @@ The `PNADcIBGE` package
 example microdata.
 
 ``` r
+
 library(PNADcIBGE)
 
 dt_pnadc <- data.table(read_pnadc(
@@ -273,6 +278,7 @@ survey. The `ipumsr` package
 extract.
 
 ``` r
+
 library(ipumsr)
 
 ddi <- read_ipums_ddi(
@@ -330,6 +336,7 @@ data is available from
 example that mirrors the real structure.
 
 ``` r
+
 set.seed(42)
 dt_enigh <- data.table(
   id = 1:200,
@@ -387,6 +394,7 @@ datasets (no authentication needed) are available at
 <https://dhsprogram.com/data/model-datasets.cfm>.
 
 ``` r
+
 library(haven)
 
 # Download the model Individual Recode (no credentials needed)
@@ -448,6 +456,7 @@ package handles API authentication. Weights (v005) must be divided by
 The same `Recipe` structure works regardless of the source survey:
 
 ``` r
+
 set.seed(42)
 dt_demo <- data.table(
   id     = 1:100,

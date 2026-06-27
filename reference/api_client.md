@@ -8,6 +8,7 @@ functions.
 
 ## Setup
 
+
     # 1. Point to the deployed API
     configure_api(url = "https://metasurvey-api.example.com")
 

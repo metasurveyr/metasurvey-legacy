@@ -68,6 +68,7 @@ g bc_pe4 = -9
 El equivalente en metasurvey:
 
 ``` r
+
 svy <- step_rename(svy, sex = e26, age = e27)
 
 svy <- step_recode(svy, relationship,
@@ -85,14 +86,14 @@ svy <- step_recode(svy, relationship,
 
 Las diferencias clave:
 
-| Aspecto          | Archivo `.do` de STATA                 | Recipe de metasurvey               |
-|------------------|----------------------------------------|------------------------------------|
-| Formato          | Script plano con rutas hardcodeadas    | JSON portable con metadatos        |
-| Validación       | Verificaciones manuales con `assert`   | Método automático `validate()`     |
-| Documentación    | Comentarios en el código               | Método auto-generado `doc()`       |
-| Compartir        | Copiar archivos por email/servidor     | Registry con búsqueda y versionado |
-| Reproducibilidad | Depende de rutas de archivos y entorno | Autocontenido, cualquier máquina   |
-| Inter-ediciones  | Duplicar script por año                | Un recipe, múltiples ediciones     |
+| Aspecto | Archivo `.do` de STATA | Recipe de metasurvey |
+|----|----|----|
+| Formato | Script plano con rutas hardcodeadas | JSON portable con metadatos |
+| Validación | Verificaciones manuales con `assert` | Método automático `validate()` |
+| Documentación | Comentarios en el código | Método auto-generado `doc()` |
+| Compartir | Copiar archivos por email/servidor | Registry con búsqueda y versionado |
+| Reproducibilidad | Depende de rutas de archivos y entorno | Autocontenido, cualquier máquina |
+| Inter-ediciones | Duplicar script por año | Un recipe, múltiples ediciones |
 
 ## Carga de microdatos reales de la ECH
 
@@ -101,6 +102,7 @@ por el INE. La muestra contiene 200 hogares (~500 personas) con las
 variables clave necesarias para el analisis del mercado laboral.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -134,6 +136,7 @@ Recodificar los códigos crudos del INE a nombres legibles y recodificar
 variables categóricas:
 
 ``` r
+
 # Recode sex from INE codes (e26: 1=Male, 2=Female)
 svy <- step_recode(svy, sex,
   e26 == 1 ~ "Male",
@@ -169,6 +172,7 @@ clasificación central del estado laboral en la ECH. Códigos del INE:
 Esto replica el marco estándar de fuerza laboral de la OIT:
 
 ``` r
+
 svy <- step_recode(svy, labor_status,
   POBPCOAC == 2 ~ "Employed",
   POBPCOAC %in% 3:5 ~ "Unemployed",
@@ -193,6 +197,7 @@ Construir indicadores de ingreso siguiendo la metodología estándar
 utilizada con datos de la ECH:
 
 ``` r
+
 svy <- step_compute(svy,
   income_pc = HT11 / nper,
   income_thousands = HT11 / 1000,
@@ -208,6 +213,7 @@ departamento) y `region` (1-3). Demostramos un join con lineas de
 pobreza por region:
 
 ``` r
+
 poverty_lines <- data.table(
   region = 1:3,
   poverty_line = c(19000, 12500, 11000),
@@ -227,6 +233,7 @@ svy <- step_join(svy,
 Convertir todas las transformaciones en un recipe portable:
 
 ``` r
+
 ech_recipe <- steps_to_recipe(
   name = "ECH Labor Market Indicators",
   user = "Research Team",
@@ -268,6 +275,7 @@ ech_recipe
 ### Documentación automática
 
 ``` r
+
 doc <- ech_recipe$doc()
 
 # What variables does the recipe need?
@@ -287,6 +295,7 @@ Publicar el recipe para que otras personas puedan descubrirlo y
 reutilizarlo:
 
 ``` r
+
 # Set up a local registry
 set_backend("local", path = tempfile(fileext = ".json"))
 publish_recipe(ech_recipe)
@@ -302,6 +311,7 @@ print(r)
 Ahora calculamos indicadores estándar del mercado laboral:
 
 ``` r
+
 # Mean household income
 result_income <- workflow(
   list(svy),
@@ -319,6 +329,7 @@ result_income
 ```
 
 ``` r
+
 # Employment rate (proportion employed among total population)
 result_employment <- workflow(
   list(svy),
@@ -340,6 +351,7 @@ result_employment
 Calcular estimaciones por subpoblación:
 
 ``` r
+
 # Mean income by region name
 income_region <- workflow(
   list(svy),
@@ -361,6 +373,7 @@ income_region
 ```
 
 ``` r
+
 # Employment by sex
 employment_sex <- workflow(
   list(svy),
@@ -382,6 +395,7 @@ employment_sex
 ### Evaluación de calidad
 
 ``` r
+
 results_all <- workflow(
   list(svy),
   survey::svymean(~HT11, na.rm = TRUE),
@@ -408,6 +422,7 @@ nuevos. En un flujo de trabajo real, se cargarían los datos de otra
 edicion y se aplicaría el mismo recipe:
 
 ``` r
+
 # Cargar microdatos de la ECH 2024 (cuando esten disponibles)
 svy_2024 <- load_survey(
   path = "ECH_2024.csv",
@@ -435,19 +450,19 @@ Mismo recipe, datos diferentes, metodología consistente.
 Si estás haciendo la transición de STATA a R para análisis de encuestas,
 aquí hay un mapeo de operaciones comunes:
 
-| STATA                        | metasurvey                                                                                             | Notas                                                                                                                       |
-|------------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `gen var = expr`             | `step_compute(svy, var = expr)`                                                                        | Lazy por defecto; llamar a [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md) para ejecutar |
-| `replace var = x if cond`    | `step_compute(svy, var = ifelse(cond, x, var))`                                                        | Asignación condicional                                                                                                      |
-| `recode var (old=new)`       | `step_recode(svy, new_var, old == val ~ "label")`                                                      | Crea una nueva variable                                                                                                     |
-| `rename old new`             | `step_rename(svy, new = old)`                                                                          |                                                                                                                             |
-| `drop var1 var2`             | `step_remove(svy, var1, var2)`                                                                         |                                                                                                                             |
-| `merge using file`           | `step_join(svy, data, by = "key")`                                                                     | Left join por defecto                                                                                                       |
-| `svy: mean var`              | `workflow(list(svy), svymean(~var))`                                                                   | Devuelve data.table con SE, CV                                                                                              |
-| `svy: total var`             | `workflow(list(svy), svytotal(~var))`                                                                  |                                                                                                                             |
-| `svy: mean var, over(group)` | `workflow(list(svy), svyby(~var, ~group, svymean))`                                                    |                                                                                                                             |
-| `.do` file                   | [`steps_to_recipe()`](https://metasurveyr.github.io/metasurvey/reference/steps_to_recipe.md) + publish | Portable, descubrible, con control de versiones                                                                             |
-| `use "data.dta"`             | `load_survey(path = "data.dta")`                                                                       | Lee STATA, CSV, RDS, etc.                                                                                                   |
+| STATA | metasurvey | Notas |
+|----|----|----|
+| `gen var = expr` | `step_compute(svy, var = expr)` | Lazy por defecto; llamar a [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md) para ejecutar |
+| `replace var = x if cond` | `step_compute(svy, var = ifelse(cond, x, var))` | Asignación condicional |
+| `recode var (old=new)` | `step_recode(svy, new_var, old == val ~ "label")` | Crea una nueva variable |
+| `rename old new` | `step_rename(svy, new = old)` |  |
+| `drop var1 var2` | `step_remove(svy, var1, var2)` |  |
+| `merge using file` | `step_join(svy, data, by = "key")` | Left join por defecto |
+| `svy: mean var` | `workflow(list(svy), svymean(~var))` | Devuelve data.table con SE, CV |
+| `svy: total var` | `workflow(list(svy), svytotal(~var))` |  |
+| `svy: mean var, over(group)` | `workflow(list(svy), svyby(~var, ~group, svymean))` |  |
+| `.do` file | [`steps_to_recipe()`](https://metasurveyr.github.io/metasurvey/reference/steps_to_recipe.md) + publish | Portable, descubrible, con control de versiones |
+| `use "data.dta"` | `load_survey(path = "data.dta")` | Lee STATA, CSV, RDS, etc. |
 
 ### Diferencias clave
 

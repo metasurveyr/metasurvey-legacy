@@ -10,7 +10,8 @@ filter_recipes(
   survey_type = NULL,
   edition = NULL,
   category = NULL,
-  certification_level = NULL
+  certification_level = NULL,
+  topic = NULL
 )
 ```
 
@@ -31,6 +32,10 @@ filter_recipes(
 - certification_level:
 
   Character certification level or NULL.
+
+- topic:
+
+  Character topic name or NULL.
 
 ## Value
 

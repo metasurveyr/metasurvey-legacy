@@ -8,7 +8,7 @@ periodicities.
 ## Usage
 
 ``` r
-workflow(svy, ..., estimation_type = "monthly", conf.level = 0.95)
+workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 ```
 
 ## Arguments
@@ -31,12 +31,12 @@ workflow(svy, ..., estimation_type = "monthly", conf.level = 0.95)
   to use. Options: `"monthly"`, `"quarterly"`, `"annual"`, or vector
   with multiple types
 
-- conf.level:
+- level:
 
   Confidence level for the interval (default `0.95`). Passed to
   [`confint`](https://rdrr.io/r/stats/confint.html). Can also be set
   per-call inside the estimation function (e.g.,
-  `svymean(~x, na.rm = TRUE, conf.level = 0.90)`), which overrides the
+  `svymean(~x, na.rm = TRUE, level = 0.90)`), which overrides the
   `workflow()` default for that estimation.
 
 ## Value
@@ -136,13 +136,13 @@ result_90 <- workflow(
   svy = list(svy),
   survey::svymean(~x, na.rm = TRUE),
   estimation_type = "annual",
-  conf.level = 0.90
+  level = 0.90
 )
 
 # Per-call confidence level (overrides workflow default)
 result_mixed <- workflow(
   svy = list(svy),
-  survey::svymean(~x, na.rm = TRUE, conf.level = 0.80),
+  survey::svymean(~x, na.rm = TRUE, level = 0.80),
   estimation_type = "annual"
 )
 ```

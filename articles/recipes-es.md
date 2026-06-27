@@ -46,6 +46,7 @@ El punto de partida típico es cargar una encuesta con
 Se pueden cargar datos de ejemplo o apuntar a archivos propios:
 
 ``` r
+
 library(metasurvey)
 
 # Cargar ECH 2022 con datos de ejemplo
@@ -73,6 +74,7 @@ transformaciones de forma interactiva sobre una encuesta y luego
 convertir los steps registrados en una recipe.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -163,12 +165,14 @@ sus steps. El método `doc()` devuelve una lista con las variables de
 entrada, las variables de salida y el pipeline paso a paso:
 
 ``` r
+
 doc <- labor_recipe$doc()
 names(doc)
 #> [1] "meta"             "input_variables"  "output_variables" "pipeline"
 ```
 
 ``` r
+
 # ¿Qué variables necesita la recipe?
 doc$input_variables
 #> [1] "income"   "activity" "age"
@@ -249,6 +253,7 @@ todas las variables requeridas existan. El método `validate()` se
 detiene con un error claro si falta alguna dependencia:
 
 ``` r
+
 labor_recipe$validate(svy)
 #> [1] TRUE
 ```
@@ -259,6 +264,7 @@ Se pueden adjuntar una o más recipes a una encuesta y aplicarlas con
 [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md):
 
 ``` r
+
 # Crear una encuesta nueva con la misma estructura (simulando una nueva edición)
 set.seed(99)
 dt2 <- data.table(
@@ -301,6 +307,7 @@ En la práctica, se puede cargar una encuesta y aplicar recipes
 publicadas en una sola llamada:
 
 ``` r
+
 # Cargar ECH 2023 y aplicar la recipe laboral del registry
 ech_2023 <- load_survey(
   load_survey_example("ech", "ech_2023"),
@@ -317,6 +324,7 @@ ech_2023 <- load_survey(
 Las categorías ayudan a organizar las recipes por tema:
 
 ``` r
+
 cats <- default_categories()
 vapply(cats, function(c) c$name, character(1))
 #> [1] "labor_market" "income"       "education"    "health"       "demographics"
@@ -327,6 +335,7 @@ Agregar categorías a una recipe con
 [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md):
 
 ``` r
+
 labor_recipe <- add_category(labor_recipe, "labor_market", "Analisis del mercado laboral")
 labor_recipe <- add_category(labor_recipe, "income", "Indicadores de ingreso")
 labor_recipe
@@ -379,6 +388,7 @@ Cualquier persona puede explorar recipes sin cuenta; para publicar se
 necesita registro:
 
 ``` r
+
 # Una sola vez: registrarse y autenticarse
 api_register("Tu Nombre", "tu@email.com", "password")
 api_login("tu@email.com", "password")
@@ -399,6 +409,7 @@ las recipes compartidas.
 No se necesita autenticación para explorar y descargar recipes:
 
 ``` r
+
 # Explorar todas las recipes de la ECH
 ech_recipes <- api_list_recipes(survey_type = "ech")
 
@@ -412,6 +423,7 @@ La app Shiny provee una interfaz visual para explorar recipes y
 workflows:
 
 ``` r
+
 explore_recipes()
 ```
 
@@ -427,6 +439,7 @@ acceso restringido** pueden necesitar un registry privado. metasurvey
 soporta esto mediante un backend propio con MongoDB:
 
 ``` r
+
 # Apuntar a la API privada de tu institución
 configure_api("https://tu-institucion.example.com/api")
 

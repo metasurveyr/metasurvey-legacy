@@ -37,6 +37,7 @@ automaticamente al construir esta vigneta, pero tambien se pueden
 instalar manualmente:
 
 ``` r
+
 # Paquetes de CRAN
 install.packages(c("eph", "PNADcIBGE", "ipumsr", "rdhs"))
 
@@ -51,6 +52,7 @@ La ECH (Encuesta Continua de Hogares) es la encuesta principal para la
 que se construyo metasurvey. Una muestra viene incluida en el paquete.
 
 ``` r
+
 library(metasurvey)
 library(data.table)
 
@@ -104,6 +106,7 @@ fuerza laboral de Argentina. El paquete `eph`
 [GitHub](https://github.com/ropensci/eph)) incluye una base de juguete.
 
 ``` r
+
 library(eph)
 
 data("toybase_individual_2016_04", package = "eph")
@@ -166,6 +169,7 @@ la region de Los Rios.
 Instalar con `remotes::install_github("pachadotdev/casen")`.
 
 ``` r
+
 # Requiere: remotes::install_github("pachadotdev/casen")
 data("casen_2017_los_rios")
 dt_casen <- data.table(casen_2017_los_rios)
@@ -220,6 +224,7 @@ estratificado por conglomerados. El paquete `PNADcIBGE`
 microdatos de ejemplo.
 
 ``` r
+
 library(PNADcIBGE)
 
 dt_pnadc <- data.table(read_pnadc(
@@ -275,6 +280,7 @@ laboral de Estados Unidos. El paquete `ipumsr`
 [GitHub](https://github.com/ipums/ipumsr)) incluye un extracto de CPS.
 
 ``` r
+
 library(ipumsr)
 
 ddi <- read_ipums_ddi(
@@ -333,6 +339,7 @@ dedicado; los datos estan disponibles en
 presenta un ejemplo sintetico que replica la estructura real.
 
 ``` r
+
 set.seed(42)
 dt_enigh <- data.table(
   id = 1:200,
@@ -390,6 +397,7 @@ Los datasets modelo (sin necesidad de autenticacion) estan disponibles
 en <https://dhsprogram.com/data/model-datasets.cfm>.
 
 ``` r
+
 library(haven)
 
 # Descargar el modelo Individual Recode (sin credenciales)
@@ -452,6 +460,7 @@ La misma estructura `Recipe` funciona independientemente de la encuesta
 de origen:
 
 ``` r
+
 set.seed(42)
 dt_demo <- data.table(
   id     = 1:100,

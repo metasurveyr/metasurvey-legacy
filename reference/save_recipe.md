@@ -34,6 +34,7 @@ Other recipes:
 [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md),
 [`explore_recipes()`](https://metasurveyr.github.io/metasurvey/reference/explore_recipes.md),
 [`get_recipe()`](https://metasurveyr.github.io/metasurvey/reference/get_recipe.md),
+[`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md),
 [`print.Recipe()`](https://metasurveyr.github.io/metasurvey/reference/print.Recipe.md),
 [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md),
 [`read_recipe()`](https://metasurveyr.github.io/metasurvey/reference/read_recipe.md),
@@ -50,5 +51,5 @@ r <- recipe(
 )
 f <- tempfile(fileext = ".json")
 save_recipe(r, f)
-#> The recipe has been saved in /tmp/RtmpSaEV4j/file28651d19420.json
+#> The recipe has been saved in /tmp/RtmpsNAdMI/file23aa53eade2b.json
 ```

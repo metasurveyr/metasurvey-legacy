@@ -28,6 +28,7 @@ faltantes y extraccion de etiquetas.
 ## Inicio rapido
 
 ``` r
+
 library(metasurvey)
 
 # Transpilar un archivo .do
@@ -40,12 +41,12 @@ result$steps[1:3]
 
 El resultado es una lista con cuatro elementos:
 
-| Elemento   | Descripcion                                                     |
-|------------|-----------------------------------------------------------------|
-| `steps`    | Vector de caracteres con llamadas a steps de metasurvey         |
-| `labels`   | Etiquetas de variables y valores extraidas del archivo `.do`    |
-| `warnings` | Comandos que requieren revision manual                          |
-| `stats`    | Conteos de comandos traducidos, omitidos y para revision manual |
+| Elemento | Descripcion |
+|----|----|
+| `steps` | Vector de caracteres con llamadas a steps de metasurvey |
+| `labels` | Etiquetas de variables y valores extraidas del archivo `.do` |
+| `warnings` | Comandos que requieren revision manual |
+| `stats` | Conteos de comandos traducidos, omitidos y para revision manual |
 
 ## Pipeline de transpilacion
 
@@ -80,6 +81,7 @@ lee un archivo `.do` y produce una lista de objetos de comando. Maneja:
   comandos (`g` por `gen`, `cap` por `capture`)
 
 ``` r
+
 commands <- parse_do_file("demographics.do")
 commands[[1]]
 #> $cmd
@@ -113,6 +115,7 @@ gen byte age_group = -9
 ```
 
 ``` r
+
 step_compute(svy, sex = q01)
 step_compute(svy, is_urban = (region < 3))
 step_compute(svy, age_group = -9L)
@@ -126,6 +129,7 @@ gen employed = hours_worked if age >= 14
 ```
 
 ``` r
+
 step_compute(svy, employed = data.table::fifelse(age >= 14, hours_worked, NA))
 ```
 
@@ -146,6 +150,7 @@ Cuando **todos** los lados derechos son constantes, el transpilador
 emite un unico `step_recode`:
 
 ``` r
+
 step_recode(svy, relationship,
     q05 == 1 ~ 1L,
     q05 == 2 ~ 2L,
@@ -164,6 +169,7 @@ replace labour_inc = wage + bonus if job_type == 2
 ```
 
 ``` r
+
 step_compute(svy, labour_inc = 0L)
 step_compute(svy, labour_inc = data.table::fifelse(
     job_type == 1, wage, labour_inc))
@@ -182,6 +188,7 @@ recode var1 var2 var3 .=0
 ```
 
 ``` r
+
 step_compute(svy, urban_filter = data.table::fifelse(
     urban_filter == 0, 2, urban_filter))
 
@@ -204,6 +211,7 @@ egen max_age = max(age), by(household)
 ```
 
 ``` r
+
 step_compute(svy, hh_income = sum(income, na.rm = TRUE),
     .by = "household")
 step_compute(svy, max_age = max(age, na.rm = TRUE),
@@ -230,6 +238,7 @@ Se expande a 4 pares de gen+replace, cada uno transpilado
 independientemente:
 
 ``` r
+
 step_recode(svy, contrib1, provider == 1 ~ amount, .default = 0L)
 step_recode(svy, contrib2, provider == 2 ~ amount, .default = 0L)
 step_recode(svy, contrib3, provider == 3 ~ amount, .default = 0L)
@@ -243,6 +252,7 @@ mvencode income_1 income_2 income_3, mv(0)
 ```
 
 ``` r
+
 step_compute(svy, income_1 = data.table::fifelse(
     is.na(income_1), 0, income_1))
 step_compute(svy, income_2 = data.table::fifelse(
@@ -258,6 +268,7 @@ destring wage bonus, replace force
 ```
 
 ``` r
+
 step_compute(svy, wage = suppressWarnings(
     as.numeric(as.character(wage))))
 step_compute(svy, bonus = suppressWarnings(
@@ -272,6 +283,7 @@ drop aux1 aux2 aux3
 ```
 
 ``` r
+
 step_rename(svy, hh_id = "id")
 step_remove(svy, aux1, aux2, aux3)
 ```
@@ -308,6 +320,7 @@ drop contrib1-contrib4
 ```
 
 ``` r
+
 step_remove(svy, contrib1, contrib2, contrib3, contrib4)
 ```
 
@@ -323,6 +336,7 @@ lab val sex sex_lbl
 ```
 
 ``` r
+
 result$labels
 #> $var_labels
 #> $var_labels$sex
@@ -417,6 +431,7 @@ lab val relationship rel_lbl
 ```
 
 ``` r
+
 library(metasurvey)
 
 # Escribir el archivo .do de ejemplo en una ubicacion temporal
@@ -464,6 +479,7 @@ result <- transpile_stata(do_file)
 ### Inspeccionando la salida
 
 ``` r
+
 cat("Traducidos:", result$stats$translated, "\n")
 #> Traducidos: 27
 cat("Omitidos:  ", result$stats$skipped, "\n")
@@ -473,6 +489,7 @@ cat("Manual:    ", result$stats$manual_review, "\n")
 ```
 
 ``` r
+
 # Imprimir los steps generados
 for (s in result$steps) cat(s, "\n")
 #> step_rename(svy, hh_id = "id", person_id = "nper") 
@@ -493,6 +510,7 @@ for (s in result$steps) cat(s, "\n")
 ### Etiquetas
 
 ``` r
+
 str(result$labels$var_labels)
 #> List of 2
 #>  $ sex         : chr "Sexo"
@@ -513,6 +531,7 @@ str(result$labels$val_labels)
 ### Construir una Recipe a partir de los steps transpilados
 
 ``` r
+
 rec <- Recipe$new(
   id = "example_demographics",
   name = "Demografia (transpilada)",
@@ -544,6 +563,7 @@ procesa un directorio de un anio completo y agrupa los resultados en
 objetos Recipe separados:
 
 ``` r
+
 recipes <- transpile_stata_module(
   year_dir = "do_files/2022",
   year = 2022,
@@ -567,6 +587,7 @@ reporta cuantos comandos en un archivo `.do` (o directorio) pueden
 transpilarse automaticamente:
 
 ``` r
+
 transpile_coverage("do_files/")
 #>                               file total translated skipped manual coverage
 #> 1   2022/2_correc_datos.do             82        60      22      0   100.00
@@ -598,21 +619,21 @@ Los comandos que quedan fuera del alcance del transpilador se marcan con
 
 ## Resumen
 
-| Funcionalidad                    | Estado                                       |
-|----------------------------------|----------------------------------------------|
-| gen / generate                   | Completamente soportado                      |
-| replace (condicional)            | Completamente soportado                      |
-| Cadenas gen + replace            | Auto-agrupadas en step_recode o step_compute |
-| recode (simple y multi-variable) | Completamente soportado                      |
-| egen con by-groups               | Completamente soportado                      |
-| foreach / forvalues              | Expandidos durante el parsing                |
-| mvencode                         | Completamente soportado                      |
-| destring / tostring              | Completamente soportado                      |
-| rename / drop / keep             | Completamente soportado                      |
-| Etiquetas de variables y valores | Extraidas a metadatos de la receta           |
-| Expresiones STATA                | inrange, inlist, missing, lag/lead, \_N      |
-| Rangos de variables              | Expandidos (ej., var1-var4)                  |
-| Loops anidados                   | Expansion recursiva                          |
-| Continuacion de linea (///)      | Unidas durante el parsing                    |
-| Prefijo capture                  | Manejado (errores suprimidos)                |
-| Prefijo bysort                   | Convertido a parametro .by                   |
+| Funcionalidad | Estado |
+|----|----|
+| gen / generate | Completamente soportado |
+| replace (condicional) | Completamente soportado |
+| Cadenas gen + replace | Auto-agrupadas en step_recode o step_compute |
+| recode (simple y multi-variable) | Completamente soportado |
+| egen con by-groups | Completamente soportado |
+| foreach / forvalues | Expandidos durante el parsing |
+| mvencode | Completamente soportado |
+| destring / tostring | Completamente soportado |
+| rename / drop / keep | Completamente soportado |
+| Etiquetas de variables y valores | Extraidas a metadatos de la receta |
+| Expresiones STATA | inrange, inlist, missing, lag/lead, \_N |
+| Rangos de variables | Expandidos (ej., var1-var4) |
+| Loops anidados | Expansion recursiva |
+| Continuacion de linea (///) | Unidas durante el parsing |
+| Prefijo capture | Manejado (errores suprimidos) |
+| Prefijo bysort | Convertido a parametro .by |

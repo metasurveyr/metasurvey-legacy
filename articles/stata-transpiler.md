@@ -27,6 +27,7 @@ extraction.
 ## Quick start
 
 ``` r
+
 library(metasurvey)
 
 # Transpile a single .do file
@@ -77,6 +78,7 @@ reads a `.do` file and produces a list of command objects. It handles:
   abbreviations (`g` for `gen`, `cap` for `capture`)
 
 ``` r
+
 commands <- parse_do_file("demographics.do")
 commands[[1]]
 #> $cmd
@@ -110,6 +112,7 @@ gen byte age_group = -9
 ```
 
 ``` r
+
 step_compute(svy, sex = q01)
 step_compute(svy, is_urban = (region < 3))
 step_compute(svy, age_group = -9L)
@@ -123,6 +126,7 @@ gen employed = hours_worked if age >= 14
 ```
 
 ``` r
+
 step_compute(svy, employed = data.table::fifelse(age >= 14, hours_worked, NA))
 ```
 
@@ -143,6 +147,7 @@ When **all** right-hand sides are constants, the transpiler emits a
 single `step_recode`:
 
 ``` r
+
 step_recode(svy, relationship,
     q05 == 1 ~ 1L,
     q05 == 2 ~ 2L,
@@ -161,6 +166,7 @@ replace labour_inc = wage + bonus if job_type == 2
 ```
 
 ``` r
+
 step_compute(svy, labour_inc = 0L)
 step_compute(svy, labour_inc = data.table::fifelse(
     job_type == 1, wage, labour_inc))
@@ -179,6 +185,7 @@ recode var1 var2 var3 .=0
 ```
 
 ``` r
+
 step_compute(svy, urban_filter = data.table::fifelse(
     urban_filter == 0, 2, urban_filter))
 
@@ -201,6 +208,7 @@ egen max_age = max(age), by(household)
 ```
 
 ``` r
+
 step_compute(svy, hh_income = sum(income, na.rm = TRUE),
     .by = "household")
 step_compute(svy, max_age = max(age, na.rm = TRUE),
@@ -225,6 +233,7 @@ foreach i of numlist 1/4 {
 Expands to 4 pairs of gen+replace, each transpiled independently:
 
 ``` r
+
 step_recode(svy, contrib1, provider == 1 ~ amount, .default = 0L)
 step_recode(svy, contrib2, provider == 2 ~ amount, .default = 0L)
 step_recode(svy, contrib3, provider == 3 ~ amount, .default = 0L)
@@ -238,6 +247,7 @@ mvencode income_1 income_2 income_3, mv(0)
 ```
 
 ``` r
+
 step_compute(svy, income_1 = data.table::fifelse(
     is.na(income_1), 0, income_1))
 step_compute(svy, income_2 = data.table::fifelse(
@@ -253,6 +263,7 @@ destring wage bonus, replace force
 ```
 
 ``` r
+
 step_compute(svy, wage = suppressWarnings(
     as.numeric(as.character(wage))))
 step_compute(svy, bonus = suppressWarnings(
@@ -267,6 +278,7 @@ drop aux1 aux2 aux3
 ```
 
 ``` r
+
 step_rename(svy, hh_id = "id")
 step_remove(svy, aux1, aux2, aux3)
 ```
@@ -301,6 +313,7 @@ drop contrib1-contrib4
 ```
 
 ``` r
+
 step_remove(svy, contrib1, contrib2, contrib3, contrib4)
 ```
 
@@ -316,6 +329,7 @@ lab val sex sex_lbl
 ```
 
 ``` r
+
 result$labels
 #> $var_labels
 #> $var_labels$sex
@@ -409,6 +423,7 @@ lab val relationship rel_lbl
 ```
 
 ``` r
+
 library(metasurvey)
 
 # Write the example do-file to a temp location
@@ -456,12 +471,14 @@ result <- transpile_stata(do_file)
 ### Inspecting the output
 
 ``` r
+
 cat("Translated:", result$stats$translated, "\n")
 cat("Skipped:   ", result$stats$skipped, "\n")
 cat("Manual:    ", result$stats$manual_review, "\n")
 ```
 
 ``` r
+
 # Print the generated steps
 for (s in result$steps) cat(s, "\n")
 ```
@@ -469,6 +486,7 @@ for (s in result$steps) cat(s, "\n")
 ### Labels
 
 ``` r
+
 str(result$labels$var_labels)
 str(result$labels$val_labels)
 ```
@@ -476,6 +494,7 @@ str(result$labels$val_labels)
 ### Building a Recipe from transpiled steps
 
 ``` r
+
 rec <- Recipe$new(
   id = "example_demographics",
   name = "Demographics (transpiled)",
@@ -507,6 +526,7 @@ processes an entire year directory and groups the results into separate
 Recipe objects:
 
 ``` r
+
 recipes <- transpile_stata_module(
   year_dir = "do_files/2022",
   year = 2022,
@@ -530,6 +550,7 @@ reports how many commands in a `.do` file (or directory) can be
 automatically transpiled:
 
 ``` r
+
 transpile_coverage("do_files/")
 #>                               file total translated skipped manual coverage
 #> 1   2022/2_correc_datos.do             82        60      22      0   100.00
