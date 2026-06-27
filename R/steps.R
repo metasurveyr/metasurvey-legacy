@@ -1716,6 +1716,150 @@ step_filter_rotative <- function(
 }
 
 
+#' Apply survey weights from a weightflow specification
+#'
+#' Integrates the \pkg{weightflow} package into the metasurvey step pipeline.
+#' Accepts a \code{weighting_spec} object and, at bake time, prepares it and
+#' adds the resulting weight column to the survey data.
+#'
+#' @details
+#' By default, \code{step_weight()} uses lazy evaluation: it records the
+#' weighting specification as a step without executing it. The weights are
+#' computed when \code{bake_steps()} is called. Set
+#' \code{options(metasurvey.lazy_processing = FALSE)} to apply immediately.
+#'
+#' The \code{spec} must be created with the same data that is loaded into the
+#' survey via \code{set_data()}, and \code{step_weight()} should be called
+#' before any row-filtering steps to ensure row alignment.
+#'
+#' @param svy A \code{\link{Survey}} or \code{\link{RotativePanelSurvey}} object.
+#' @param spec A \code{weighting_spec} from \pkg{weightflow}.
+#' @param weight_var Character. Name for the final weight column
+#'   (default \code{".weight"}).
+#' @param .copy Logical. If \code{TRUE}, returns a cloned survey
+#'   (default \code{use_copy_default()}).
+#' @param comment Character. Documentation for the step.
+#' @param lazy Logical. Whether to defer execution (default \code{lazy_default()}).
+#' @param record Logical. Internal; set to \code{FALSE} during baking to
+#'   prevent double-recording.
+#' @return The survey object (invisibly) with the weighting step recorded
+#'   or applied.
+#' @family steps
+#' @export
+step_weight <- function(
+    svy,
+    spec,
+    weight_var = ".weight",
+    .copy = use_copy_default(),
+    comment = "Weight step (weightflow)",
+    lazy = lazy_default(),
+    record = TRUE) {
+  if (!requireNamespace("weightflow", quietly = TRUE)) {
+    stop(
+      "Package 'weightflow' is required for step_weight(). ",
+      "Install it with: install.packages('weightflow')",
+      call. = FALSE
+    )
+  }
+
+  if (!inherits(spec, "weighting_spec")) {
+    stop("'spec' must be a weighting_spec object from weightflow", call. = FALSE)
+  }
+
+  .call <- match.call()
+
+  # RotativePanelSurvey: apply to implantation and each follow_up
+  if (methods::is(svy, "RotativePanelSurvey")) {
+    svy$implantation <- step_weight(
+      svy = svy$implantation, spec = spec, weight_var = weight_var,
+      .copy = .copy, comment = comment
+    )
+    svy$follow_up <- lapply(
+      svy$follow_up,
+      function(fu) {
+        step_weight(
+          fu,
+          spec = spec, weight_var = weight_var,
+          .copy = .copy, comment = comment
+        )
+      }
+    )
+    return(svy)
+  }
+
+  # If no data yet, return the call (pipeline build)
+  if (is.null(get_data(svy))) {
+    return(.call)
+  }
+
+  out <- if (.copy) svy$shallow_clone() else svy
+
+  # Apply weights when not lazy (i.e., during baking)
+  if (!lazy) {
+    prepped <- weightflow::prep(spec)
+    wf_data <- weightflow::collect_weights(
+      prepped,
+      drop_zero = FALSE,
+      weight_name = weight_var
+    )
+
+    weight_col <- wf_data[[weight_var]]
+    if (is.null(weight_col)) {
+      stop(
+        "Weight column '", weight_var, "' not found in weightflow output. ",
+        "Available: ", paste(names(wf_data), collapse = ", "),
+        call. = FALSE
+      )
+    }
+
+    current_data <- get_data(out)
+    if (nrow(current_data) != length(weight_col)) {
+      stop(
+        "Row count mismatch: survey has ", nrow(current_data),
+        " rows but weightflow produced ", length(weight_col), " weights",
+        call. = FALSE
+      )
+    }
+
+    data.table::set(current_data, j = weight_var, value = weight_col)
+    out$set_data(current_data)
+
+    # Update weight specification for all estimation periods
+    wt_names <- names(out$weight)
+    if (is.null(wt_names) || length(wt_names) == 0) {
+      wt_names <- "annual"
+    }
+    new_weight <- stats::setNames(
+      as.list(rep(weight_var, length(wt_names))),
+      wt_names
+    )
+    out$weight <- new_weight
+    out$design_initialized <- FALSE
+  }
+
+  # Record step
+  if (isTRUE(record)) {
+    step <- Step$new(
+      name = paste0("Weight (weightflow): ", weight_var),
+      edition = get_edition(out),
+      survey_type = get_type(out),
+      type = "step_weight",
+      new_var = weight_var,
+      exprs = list(spec = spec, weight_var = weight_var),
+      call = .call,
+      svy_before = NULL,
+      default_engine = get_engine(),
+      depends_on = character(0),
+      comment = comment,
+      bake = !lazy
+    )
+    out$add_step(step)
+  }
+
+  invisible(out)
+}
+
+
 #' View graph
 #' @param svy Survey object
 #' @param init_step Initial step label (default: "Load survey")
