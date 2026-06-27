@@ -14,10 +14,10 @@
 #'   determines which weight to use. Options:
 #'   `"monthly"`, `"quarterly"`, `"annual"`, or vector
 #'   with multiple types
-#' @param conf.level Confidence level for the interval (default `0.95`).
+#' @param level Confidence level for the interval (default `0.95`).
 #'   Passed to \code{\link[stats]{confint}}.
 #'   Can also be set per-call inside the estimation function
-#'   (e.g., `svymean(~x, na.rm = TRUE, conf.level = 0.90)`),
+#'   (e.g., `svymean(~x, na.rm = TRUE, level = 0.90)`),
 #'   which overrides the `workflow()` default for that estimation.
 #'
 #' @return \code{data.table} with results from all
@@ -81,13 +81,13 @@
 #'   svy = list(svy),
 #'   survey::svymean(~x, na.rm = TRUE),
 #'   estimation_type = "annual",
-#'   conf.level = 0.90
+#'   level = 0.90
 #' )
 #'
 #' # Per-call confidence level (overrides workflow default)
 #' result_mixed <- workflow(
 #'   svy = list(svy),
-#'   survey::svymean(~x, na.rm = TRUE, conf.level = 0.80),
+#'   survey::svymean(~x, na.rm = TRUE, level = 0.80),
 #'   estimation_type = "annual"
 #' )
 #'
@@ -103,18 +103,18 @@
 #' @export
 
 workflow <- function(svy, ..., estimation_type = "monthly",
-                     conf.level = 0.95) {
+                     level = 0.95) {
   if (is(svy, "PoolSurvey")) {
     return(workflow_pool(
       svy, ...,
       estimation_type = estimation_type,
-      conf.level = conf.level
+      level = level
     ))
   } else {
     return(workflow_default(
       svy, ...,
       estimation_type = estimation_type,
-      conf.level = conf.level
+      level = level
     ))
   }
 }
@@ -131,7 +131,7 @@ workflow <- function(svy, ..., estimation_type = "monthly",
 #' @noRd
 
 workflow_default <- function(survey, ..., estimation_type = "monthly",
-                             conf.level = 0.95) {
+                             level = 0.95) {
   .calls <- substitute(list(...))
 
   result <- rbindlist(
@@ -152,7 +152,7 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
                   function(i) {
                     call <- as.list(.calls[[i]])
                     name_function <- deparse(call[[1]])
-                    extracted <- .extract_conf_level(call, conf.level)
+                    extracted <- .extract_level(call, level)
                     call <- as.list(extracted$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
@@ -163,7 +163,7 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
 
                     return(cat_estimation(
                       estimation, name_function,
-                      conf.level = extracted$conf.level
+                      level = extracted$level
                     ))
                   }
                 ),
@@ -212,7 +212,7 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
 
 
 workflow_pool <- function(survey, ..., estimation_type = "monthly",
-                          conf.level = 0.95) {
+                          level = 0.95) {
   if (grepl(":", estimation_type)) {
     estimation_type_first <- strsplit(estimation_type, ":")[[1]][1]
     estimation_type <- strsplit(estimation_type, ":")[[1]][2]
@@ -253,7 +253,7 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
                   function(j) {
                     call <- as.list(.calls[[j]])
                     name_function <- deparse(call[[1]])
-                    extracted <- .extract_conf_level(call, conf.level)
+                    extracted <- .extract_level(call, level)
                     call <- as.list(extracted$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
@@ -265,7 +265,7 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
                     )
                     return(cat_estimation(
                       estimation, name_function,
-                      conf.level = extracted$conf.level
+                      level = extracted$level
                     ))
                   }
                 )
@@ -321,17 +321,17 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
 }
 
 
-.extract_conf_level <- function(call_args, default) {
-  if ("conf.level" %in% names(call_args)) {
-    cl <- eval(call_args[["conf.level"]])
-    call_args[["conf.level"]] <- NULL
-    list(conf.level = cl, call = as.call(call_args))
+.extract_level <- function(call_args, default) {
+  if ("level" %in% names(call_args)) {
+    cl <- eval(call_args[["level"]])
+    call_args[["level"]] <- NULL
+    list(level = cl, call = as.call(call_args))
   } else {
-    list(conf.level = default, call = as.call(call_args))
+    list(level = default, call = as.call(call_args))
   }
 }
 
-cat_estimation <- function(estimation, call, conf.level = 0.95) {
+cat_estimation <- function(estimation, call, level = 0.95) {
   class_estimation <- class(estimation)[1]
 
   if (!class_estimation %in% c("svyby", "svyratio", "cvystat")) {
@@ -346,7 +346,7 @@ cat_estimation <- function(estimation, call, conf.level = 0.95) {
     list(
       estimation,
       call,
-      conf.level = conf.level
+      level = level
     )
   )
 }
@@ -358,7 +358,7 @@ cat_estimation <- function(estimation, call, conf.level = 0.95) {
 #' @keywords internal
 #' @noRd
 
-cat_estimation.svyby <- function(estimation, call, conf.level = 0.95) {
+cat_estimation.svyby <- function(estimation, call, level = 0.95) {
   by_vars <- attr(estimation, "svyby")$margins
   all_names <- names(estimation)
 
@@ -372,7 +372,7 @@ cat_estimation.svyby <- function(estimation, call, conf.level = 0.95) {
   se_cols <- grep("^se(\\.|$)", all_names, value = TRUE)
   stat_cols <- setdiff(all_names, c(by_vars, se_cols))
 
-  ci <- tryCatch(stats::confint(estimation, level = conf.level), error = function(e) NULL)
+  ci <- tryCatch(stats::confint(estimation, level = level), error = function(e) NULL)
   cv_mat <- tryCatch(survey::cv(estimation), error = function(e) NULL)
 
   n_groups <- nrow(estimation)
@@ -414,7 +414,7 @@ cat_estimation.svyby <- function(estimation, call, conf.level = 0.95) {
       ci_lo <- ci[ci_start:ci_end, 1]
       ci_hi <- ci[ci_start:ci_end, 2]
     } else {
-      z <- stats::qnorm((1 + conf.level) / 2)
+      z <- stats::qnorm((1 + level) / 2)
       ci_lo <- vals - z * ses
       ci_hi <- vals + z * ses
     }
@@ -450,8 +450,8 @@ cat_estimation.svyby <- function(estimation, call, conf.level = 0.95) {
 #' @importFrom stats coef
 #' @keywords internal
 
-cat_estimation.default <- function(estimation, call, conf.level = 0.95) {
-  confint_estimation <- stats::confint(estimation, level = conf.level)
+cat_estimation.default <- function(estimation, call, level = 0.95) {
+  confint_estimation <- stats::confint(estimation, level = level)
 
 
   var_names <- names(estimation)
@@ -475,19 +475,19 @@ cat_estimation.default <- function(estimation, call, conf.level = 0.95) {
 #' @importFrom data.table data.table
 #' @keywords internal
 #' @noRd
-cat_estimation.cvystat <- function(estimation, call, conf.level = 0.95) {
+cat_estimation.cvystat <- function(estimation, call, level = 0.95) {
   val <- as.numeric(estimation)
   var_mat <- attr(estimation, "var")
   se_val <- if (!is.null(var_mat)) sqrt(var_mat[1, 1]) else NA_real_
   cv_val <- if (!is.na(se_val) && abs(val) > 0) se_val / abs(val) else NA_real_
   stat_name <- attr(estimation, "statistic") %||% "estimate"
 
-  ci <- tryCatch(stats::confint(estimation, level = conf.level), error = function(e) NULL)
+  ci <- tryCatch(stats::confint(estimation, level = level), error = function(e) NULL)
   if (!is.null(ci)) {
     ci_lo <- ci[1, 1]
     ci_hi <- ci[1, 2]
   } else {
-    z <- stats::qnorm((1 + conf.level) / 2)
+    z <- stats::qnorm((1 + level) / 2)
     ci_lo <- val - z * se_val
     ci_hi <- val + z * se_val
   }
@@ -513,8 +513,8 @@ cat_estimation.cvystat <- function(estimation, call, conf.level = 0.95) {
 #' @keywords internal
 #' @noRd
 
-cat_estimation.svyratio <- function(estimation, call, conf.level = 0.95) {
-  confint_estimation <- stats::confint(estimation, level = conf.level)
+cat_estimation.svyratio <- function(estimation, call, level = 0.95) {
+  confint_estimation <- stats::confint(estimation, level = level)
 
 
 

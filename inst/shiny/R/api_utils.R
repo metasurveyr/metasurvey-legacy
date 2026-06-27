@@ -1,7 +1,7 @@
 # Plumber API utilities for Shiny app
 # All network calls go through the deployed plumber API.
-# Fallback to example_recipes()/example_workflows()
-# when API is unavailable.
+# Example recipes/workflows used as initial display
+# while API loads (replaced once API responds).
 
 # ── API base URL ──────────────────────────────────────
 
@@ -60,7 +60,8 @@ shiny_api_request <- function(method,
   )
   req <- httr2::req_user_agent(req, ua)
   req <- httr2::req_headers(req, !!!as.list(headers))
-  req <- httr2::req_timeout(req, 10)
+  req <- httr2::req_timeout(req, 15)
+  req <- httr2::req_retry(req, max_tries = 3, backoff = ~2)
   req <- httr2::req_error(req, is_error = function(resp) FALSE)
 
   resp <- tryCatch(
@@ -184,9 +185,10 @@ shiny_register <- function(name,
     ))
   }
 
-  if (!isTRUE(result$ok) &&
+  offline <- !isTRUE(result$ok) &&
     !is.null(result$error) &&
-    grepl("Connection failed", result$error)) {
+    grepl("Connection failed", result$error)
+  if (offline) {
     # Offline fallback
     if (email %in% names(.local_users$data)) {
       return(list(
@@ -237,12 +239,13 @@ shiny_login <- function(email, password) {
     )
   )
 
-  if (isTRUE(result$ok) &&
-    !is.null(result$user)) {
+  has_user <- isTRUE(result$ok) && !is.null(result$user)
+  if (has_user) {
     doc <- result$user
     inst <- NULL
-    if (doc$user_type == "institutional_member" &&
-      !is.null(doc$institution)) {
+    is_member <- doc$user_type == "institutional_member" &&
+      !is.null(doc$institution)
+    if (is_member) {
       inst <- metasurvey::RecipeUser$new(
         name = doc$institution,
         user_type = "institution"
@@ -261,18 +264,20 @@ shiny_login <- function(email, password) {
     ))
   }
 
-  if (!isTRUE(result$ok) &&
+  login_offline <- !isTRUE(result$ok) &&
     !is.null(result$error) &&
-    grepl("Connection failed", result$error)) {
+    grepl("Connection failed", result$error)
+  if (login_offline) {
     # Offline fallback
     pw_hash <- hash_password(password)
     if (email %in% names(.local_users$data)) {
       local_u <- .local_users$data[[email]]
       if (identical(local_u$password_hash, pw_hash)) {
         inst <- NULL
-        if (local_u$user_type ==
+        is_local_member <- local_u$user_type ==
           "institutional_member" &&
-          !is.null(local_u$institution)) {
+          !is.null(local_u$institution)
+        if (is_local_member) {
           inst <- metasurvey::RecipeUser$new(
             name = local_u$institution,
             user_type = "institution"
@@ -363,15 +368,13 @@ shiny_fetch_recipes <- function(filter = list()) {
     params = params
   )
 
-  if (isTRUE(result$ok)) {
-    docs <- result$recipes %||% list()
-    recipes <- lapply(docs, parse_recipe_doc)
-    return(Filter(Negate(is.null), recipes))
+  if (!isTRUE(result$ok)) {
+    return(list())
   }
 
-  # Fallback: example recipes only when API
-  # is unreachable
-  example_recipes()
+  docs <- result$recipes %||% list()
+  recipes <- lapply(docs, parse_recipe_doc)
+  Filter(Negate(is.null), recipes)
 }
 
 parse_recipe_doc <- function(doc) {
@@ -484,30 +487,28 @@ shiny_fetch_workflows <- function(filter = list()) {
     params = params
   )
 
-  if (isTRUE(result$ok)) {
-    docs <- result$workflows %||% list()
-    workflows <- lapply(docs, function(doc) {
-      tryCatch(
-        metasurvey::workflow_from_list(doc),
-        error = function(e) NULL
-      )
-    })
-    return(Filter(Negate(is.null), workflows))
+  if (!isTRUE(result$ok)) {
+    return(list())
   }
 
-  # Fallback: example workflows only when API
-  # is unreachable
-  example_workflows()
+  docs <- result$workflows %||% list()
+  workflows <- lapply(docs, function(doc) {
+    tryCatch(
+      metasurvey::workflow_from_list(doc),
+      error = function(e) NULL
+    )
+  })
+  Filter(Negate(is.null), workflows)
 }
 
-shiny_fetch_workflows_for_recipe <- function(
+shiny_fetch_wf_for_recipe <- function(
     recipe_id) {
   shiny_fetch_workflows(
     filter = list(recipe_id = recipe_id)
   )
 }
 
-shiny_increment_workflow_downloads <- function(
+shiny_incr_wf_downloads <- function(
     workflow_id) {
   tryCatch(
     shiny_api_request(

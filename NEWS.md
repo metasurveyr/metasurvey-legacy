@@ -1,3 +1,17 @@
+# metasurvey 0.0.24
+
+## Breaking changes
+* `workflow()`: parameter `conf.level` renamed to `level` to match
+  `stats::confint()` and `survey` package conventions. Per-call overrides now
+  use `level` as well (e.g., `svymean(~x, level = 0.90)`).
+
+## Bug fixes
+* `step_compute(.by=)`: grouped computations now survive `bake_steps()`.
+  Previously the `.by` parameter was not stored in the `Step` object, so
+  re-baking would re-execute without grouping, producing wrong results.
+* `compute()` with `.by`: fixed `merge()` creating `.x`/`.y` suffix columns
+  when the target column already existed in the data (e.g., during re-baking).
+
 # metasurvey 0.0.23
 
 ## New features

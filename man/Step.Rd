@@ -80,7 +80,8 @@ Create a new Step object
   depends_on,
   comment = NULL,
   bake = !lazy_default(),
-  comments = NULL
+  comments = NULL,
+  by_vars = NULL
 )}\if{html}{\out{</div>}}
 }
 

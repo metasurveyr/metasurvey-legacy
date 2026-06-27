@@ -16,8 +16,9 @@ compute <- function(svy, ..., .by = NULL,
       .data <- get_data(.clone)
     }
 
-    if (!is(.dots, "call") && !is(.dots, "name") &&
-      !is(.dots, "numeric") && !is(.dots, "logical")) {
+    is_simple_type <- !is(.dots, "call") && !is(.dots, "name") &&
+      !is(.dots, "numeric") && !is(.dots, "logical")
+    if (is_simple_type) {
       .exprs <- list()
       for (i in seq.int(2L, length(.dots))) {
         .exprs <- c(.exprs, .dots[[i]])
@@ -28,6 +29,13 @@ compute <- function(svy, ..., .by = NULL,
 
     if (!is.null(.by)) {
       .agg <- .data[, j, by = .by, env = list(j = .exprs)]
+
+      # Remove existing target columns before merge to avoid .x/.y suffixes
+      agg_cols <- setdiff(names(.agg), .by)
+      existing <- intersect(agg_cols, names(.data))
+      if (length(existing) > 0) {
+        .data[, (existing) := NULL]
+      }
 
       .data <- merge(.data, .agg, by = .by, all.x = TRUE)
     } else {
@@ -322,7 +330,8 @@ step_compute <- function(
         svy_before = NULL,
         default_engine = get_engine(),
         depends_on = depends_on,
-        comment = comment
+        comment = comment,
+        by_vars = .by
       )
 
       if (validate_step(svy, step)) {
@@ -359,7 +368,8 @@ step_compute <- function(
       svy_before = NULL,
       default_engine = get_engine(),
       comment = comment,
-      depends_on = depends_on
+      depends_on = depends_on,
+      by_vars = .by
     )
 
     svy$add_step(step)
@@ -1123,8 +1133,7 @@ step_remove <- function(
         eval(dots_list[[1]], parent.frame()),
         silent = TRUE
       )
-      if (!inherits(evald, "try-error") &&
-        is.character(evald)) {
+      if (!inherits(evald, "try-error") && is.character(evald)) {
         var_names <- as.character(evald)
       }
     }
@@ -2216,12 +2225,11 @@ find_dependencies <- function(call_expr, survey) {
         dependencies <- unique(c(dependencies, result))
       }
     }
-  } else if (is.name(call_expr) &&
-    as.character(call_expr) %in%
-      names(survey)) {
-    dependencies <- unique(
-      c(dependencies, as.character(call_expr))
-    )
+  } else if (is.name(call_expr)) {
+    expr_chr <- as.character(call_expr)
+    if (expr_chr %in% names(survey)) {
+      dependencies <- unique(c(dependencies, expr_chr))
+    }
   }
 
   return(unique(dependencies))

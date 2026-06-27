@@ -4,7 +4,7 @@
 \alias{cat_estimation.default}
 \title{cat_estimation_default}
 \usage{
-cat_estimation.default(estimation, call, conf.level = 0.95)
+cat_estimation.default(estimation, call, level = 0.95)
 }
 \arguments{
 \item{estimation}{Estimation}

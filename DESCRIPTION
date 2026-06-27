@@ -1,6 +1,6 @@
 Package: metasurvey
 Title: Reproducible Survey Data Processing with Step Pipelines
-Version: 0.0.23
+Version: 0.0.24
 URL: https://metasurveyr.github.io/metasurvey/, https://github.com/metasurveyr/metasurvey
 BugReports: https://github.com/metasurveyr/metasurvey/issues
 Authors@R:
@@ -52,6 +52,7 @@ Imports:
 Suggests:
     archive,
     convey,
+    digest,
     httr2 (>= 1.0.0),
     haven,
     openxlsx,

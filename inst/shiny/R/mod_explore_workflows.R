@@ -83,35 +83,32 @@ explore_workflows_server <- function(
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Reactive: all workflows from MongoDB
-    all_workflows <- shiny::reactiveVal(list())
+    # Reactive: all workflows — start with examples for instant display
+    all_workflows <- shiny::reactiveVal(example_workflows())
 
     # Track current modal workflow for star/comment observers
     current_modal_workflow <- shiny::reactiveValues(id = NULL)
 
     load_workflows <- function() {
-      shiny::withProgress(message = "Loading workflows...", {
-        workflows <- tryCatch(
-          shiny_fetch_workflows(),
-          error = function(e) {
-            shiny::showNotification(
-              paste("Could not load workflows:", e$message),
-              type = "error", duration = 5
-            )
-            list()
-          }
-        )
+      workflows <- tryCatch(
+        shiny_fetch_workflows(),
+        error = function(e) {
+          shiny::showNotification(
+            paste("Could not load workflows:", e$message),
+            type = "warning", duration = 5
+          )
+          list()
+        }
+      )
+      if (length(workflows) > 0) {
         all_workflows(workflows)
-      })
+      }
     }
 
-    # Load on startup
-    shiny::observe(
-      {
-        load_workflows()
-      },
-      priority = 100
-    )
+    # Try API after first render so examples show instantly
+    session$onFlushed(function() {
+      load_workflows()
+    }, once = TRUE)
 
     # Refresh button
     shiny::observeEvent(input$btn_refresh, {
@@ -223,7 +220,7 @@ explore_workflows_server <- function(
     open_workflow_modal <- function(wf) {
       # Increment downloads
       tryCatch(
-        shiny_increment_workflow_downloads(wf$id),
+        shiny_incr_wf_downloads(wf$id),
         error = function(e) NULL
       )
 
