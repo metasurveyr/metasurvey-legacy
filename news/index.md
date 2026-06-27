@@ -2,6 +2,8 @@
 
 ## metasurvey 0.0.24
 
+CRAN release: 2026-06-27
+
 ### Breaking changes
 
 - [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md):

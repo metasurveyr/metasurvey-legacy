@@ -350,7 +350,7 @@ convey estimates computed, and package versions — is available:
 prov <- provenance(results)
 prov
 #> ── Data Provenance ─────────────────────────────────────────────────────────────
-#> Loaded: 2026-06-27T16:24:47 
+#> Loaded: 2026-06-27T21:03:56 
 #> Initial rows: 200 
 #> 
 #> Pipeline:
@@ -358,7 +358,7 @@ prov
 #> 
 #> Estimation:
 #>   Type: annual 
-#>   Timestamp: 2026-06-27T16:24:48 
+#>   Timestamp: 2026-06-27T21:03:56 
 #> 
 #> Environment:
 #>   metasurvey: 0.0.24 
