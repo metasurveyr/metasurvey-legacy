@@ -8,7 +8,8 @@ filter_recipes(
   survey_type = NULL,
   edition = NULL,
   category = NULL,
-  certification_level = NULL
+  certification_level = NULL,
+  topic = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ filter_recipes(
 \item{category}{Character category name or NULL.}
 
 \item{certification_level}{Character certification level or NULL.}
+
+\item{topic}{Character topic name or NULL.}
 }
 \value{
 List of matching Recipe objects.

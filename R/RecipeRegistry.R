@@ -44,10 +44,12 @@ RecipeRegistry <- R6::R6Class(
     #' @param edition Character edition or NULL
     #' @param category Character category name or NULL
     #' @param certification_level Character certification level or NULL
+    #' @param topic Character topic name or NULL
     #' @return List of matching Recipe objects
     filter = function(survey_type = NULL, edition = NULL,
                       category = NULL,
-                      certification_level = NULL) {
+                      certification_level = NULL,
+                      topic = NULL) {
       results <- private$.recipes
       if (!is.null(survey_type)) {
         results <- Filter(function(r) r$survey_type == survey_type, results)
@@ -64,6 +66,11 @@ RecipeRegistry <- R6::R6Class(
       if (!is.null(certification_level)) {
         results <- Filter(function(r) {
           r$certification$level == certification_level
+        }, results)
+      }
+      if (!is.null(topic)) {
+        results <- Filter(function(r) {
+          identical(r$topic, topic)
         }, results)
       }
       results
@@ -219,13 +226,15 @@ RecipeRegistry <- R6::R6Class(
         if (is.null(r$user_info)) {
           return(FALSE)
         }
-        if (r$user_info$user_type == "institution" &&
-          r$user_info$name == institution_name) {
+        is_institution <- r$user_info$user_type == "institution" &&
+          r$user_info$name == institution_name
+        if (is_institution) {
           return(TRUE)
         }
-        if (r$user_info$user_type == "institutional_member" &&
+        is_member <- r$user_info$user_type == "institutional_member" &&
           !is.null(r$user_info$institution) &&
-          r$user_info$institution$name == institution_name) {
+          r$user_info$institution$name == institution_name
+        if (is_member) {
           return(TRUE)
         }
         FALSE

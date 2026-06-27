@@ -51,6 +51,8 @@ depends on.}
 
 \item{\code{bake}}{A logical value indicating whether the step
 has been executed.}
+
+\item{\code{by_vars}}{Character vector of grouping variables or NULL.}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,6 +123,9 @@ depends on.}
 step has been executed.}
 
 \item{\code{comments}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{comment} instead.}
+
+\item{\code{by_vars}}{Character vector of grouping variables for
+grouped computations, or NULL.}
 }
 \if{html}{\out{</div>}}
 }

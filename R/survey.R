@@ -217,9 +217,9 @@ Survey <- R6Class(
     #' @param bake Whether to bake lazily (internal flag)
     add_recipe = function(recipe, bake = lazy_default()) {
       # Validate survey_type match (if both are set)
-      if (!is.null(self$type) && !is.null(recipe$survey_type) &&
-        nzchar(self$type) && nzchar(recipe$survey_type) &&
-        tolower(self$type) != tolower(recipe$survey_type)) {
+      both_set <- !is.null(self$type) && !is.null(recipe$survey_type) &&
+        nzchar(self$type) && nzchar(recipe$survey_type)
+      if (both_set && tolower(self$type) != tolower(recipe$survey_type)) {
         stop(
           "Recipe survey type mismatch: survey is '", self$type,
           "' but recipe '", recipe$name, "' targets '", recipe$survey_type, "'",
@@ -1141,6 +1141,11 @@ bake_recipes <- function(svy) {
 
   eval_env <- new.env(parent = parent.frame())
   eval_env$svy <- svy
+
+  old_lazy <- getOption("metasurvey.lazy_processing")
+  options(metasurvey.lazy_processing = FALSE)
+  on.exit(options(metasurvey.lazy_processing = old_lazy), add = TRUE)
+
   for (i in seq_along(recipes)) {
     recipe <- recipes[[i]]
 
@@ -1176,18 +1181,15 @@ bake_recipes <- function(svy) {
       }
     }
 
-    old_lazy <- getOption("metasurvey.lazy_processing")
-    options(metasurvey.lazy_processing = FALSE)
-    on.exit(options(metasurvey.lazy_processing = old_lazy), add = TRUE)
-
     for (step in seq_along(recipe$steps)) {
       step_call <- recipe$steps[[step]]
       if (is.character(step_call)) {
         step_call <- parse(text = step_call)[[1]]
       }
       # Replace pipe placeholder '.' with 'svy' in call objects
-      if (is.call(step_call) && length(step_call) >= 2 &&
-        is.name(step_call[[2]]) && as.character(step_call[[2]]) == ".") {
+      is_pipe_call <- is.call(step_call) && length(step_call) >= 2 &&
+        is.name(step_call[[2]]) && as.character(step_call[[2]]) == "."
+      if (is_pipe_call) {
         step_call[[2]] <- as.name("svy")
       }
       eval_env$svy <- eval(step_call, envir = eval_env)
