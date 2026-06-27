@@ -527,16 +527,16 @@ test_that("workflow works with convey functions", {
   expect_true(result$value > 0 && result$value < 1)
 })
 
-# ── conf.level tests ─────────────────────────────────────────────────────────
+# ── level tests ──────────────────────────────────────────────────────────────
 
-test_that("conf.level changes confidence intervals", {
+test_that("level changes confidence intervals", {
   svy <- make_test_survey(100)
 
   r95 <- workflow(list(svy), survey::svymean(~x, na.rm = TRUE),
     estimation_type = "annual"
   )
   r90 <- workflow(list(svy), survey::svymean(~x, na.rm = TRUE),
-    estimation_type = "annual", conf.level = 0.90
+    estimation_type = "annual", level = 0.90
   )
 
   expect_equal(r95$value, r90$value)
@@ -544,14 +544,14 @@ test_that("conf.level changes confidence intervals", {
   expect_true(r90$confint_upper < r95$confint_upper)
 })
 
-test_that("conf.level inside estimation call is used", {
+test_that("level inside estimation call is used", {
   svy <- make_test_survey(100)
 
   r95 <- workflow(list(svy), survey::svymean(~x, na.rm = TRUE),
     estimation_type = "annual"
   )
   r80 <- workflow(list(svy),
-    survey::svymean(~x, na.rm = TRUE, conf.level = 0.80),
+    survey::svymean(~x, na.rm = TRUE, level = 0.80),
     estimation_type = "annual"
   )
 
@@ -560,7 +560,7 @@ test_that("conf.level inside estimation call is used", {
   expect_true(r80$confint_upper < r95$confint_upper)
 })
 
-test_that("conf.level inside svyby call is used", {
+test_that("level inside svyby call is used", {
   svy <- make_test_survey(100)
 
   r95 <- workflow(list(svy),
@@ -570,7 +570,7 @@ test_that("conf.level inside svyby call is used", {
   r80 <- workflow(list(svy),
     survey::svyby(~x, ~region, survey::svymean,
       na.rm = TRUE,
-      conf.level = 0.80
+      level = 0.80
     ),
     estimation_type = "annual"
   )
@@ -580,16 +580,16 @@ test_that("conf.level inside svyby call is used", {
   expect_true(all(r80$confint_upper < r95$confint_upper))
 })
 
-test_that("per-call conf.level overrides workflow default", {
+test_that("per-call level overrides workflow default", {
   svy <- make_test_survey(100)
 
   result <- workflow(list(svy),
-    survey::svymean(~x, na.rm = TRUE, conf.level = 0.80),
-    estimation_type = "annual", conf.level = 0.99
+    survey::svymean(~x, na.rm = TRUE, level = 0.80),
+    estimation_type = "annual", level = 0.99
   )
   r80 <- workflow(list(svy),
     survey::svymean(~x, na.rm = TRUE),
-    estimation_type = "annual", conf.level = 0.80
+    estimation_type = "annual", level = 0.80
   )
 
   expect_equal(result$confint_lower, r80$confint_lower)

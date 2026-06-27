@@ -63,6 +63,7 @@ Step <- R6Class("Step",
     depends_on = list(),
     comment = NULL,
     bake = NULL,
+    by_vars = NULL,
     #' @description Create a new Step object
     #' @param name The name of the step.
     #' @param edition The edition of the survey associated with the step.
@@ -91,7 +92,8 @@ Step <- R6Class("Step",
                           svy_before, default_engine,
                           depends_on, comment = NULL,
                           bake = !lazy_default(),
-                          comments = NULL) {
+                          comments = NULL,
+                          by_vars = NULL) {
       self$name <- name
       self$edition <- edition
       self$survey_type <- survey_type
@@ -104,6 +106,7 @@ Step <- R6Class("Step",
       self$depends_on <- depends_on
       self$comment <- comment %||% comments
       self$bake <- bake
+      self$by_vars <- by_vars
     }
   )
 )
@@ -161,8 +164,9 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
   args$lazy <- FALSE
   args$.copy <- .copy
 
-  if (is.call(step$exprs) &&
-    identical(step$exprs[[1]], as.name("list"))) {
+  is_list_call <- is.call(step$exprs) &&
+    identical(step$exprs[[1]], as.name("list"))
+  if (is_list_call) {
     args <- c(args, as.list(step$exprs)[-1])
   } else if (is.list(step$exprs)) {
     args <- c(args, step$exprs)
@@ -190,8 +194,9 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
 
   if (step$type == "filter") {
     filter_args <- list(svy = svy, lazy = FALSE, .copy = .copy)
-    if (is.call(step$exprs) &&
-      identical(step$exprs[[1]], as.name("list"))) {
+    is_filter_list_call <- is.call(step$exprs) &&
+      identical(step$exprs[[1]], as.name("list"))
+    if (is_filter_list_call) {
       filter_args <- c(filter_args, as.list(step$exprs)[-1])
     } else if (is.list(step$exprs)) {
       filter_args <- c(filter_args, step$exprs)
@@ -202,6 +207,10 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
 
   if (step$type %in% c("step_join", "step_remove", "step_rename")) {
     args$record <- FALSE
+  }
+
+  if (!is.null(step$by_vars) && step$type == "compute") {
+    args$.by <- step$by_vars
   }
 
   updated_svy <- do.call(step$type, args)

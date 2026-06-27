@@ -4,7 +4,7 @@
 \alias{workflow}
 \title{Execute estimation workflow for surveys}
 \usage{
-workflow(svy, ..., estimation_type = "monthly", conf.level = 0.95)
+workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 }
 \arguments{
 \item{svy}{A \strong{list} of Survey objects, or a PoolSurvey.
@@ -20,10 +20,10 @@ determines which weight to use. Options:
 \code{"monthly"}, \code{"quarterly"}, \code{"annual"}, or vector
 with multiple types}
 
-\item{conf.level}{Confidence level for the interval (default \code{0.95}).
+\item{level}{Confidence level for the interval (default \code{0.95}).
 Passed to \code{\link[stats]{confint}}.
 Can also be set per-call inside the estimation function
-(e.g., \code{svymean(~x, na.rm = TRUE, conf.level = 0.90)}),
+(e.g., \code{svymean(~x, na.rm = TRUE, level = 0.90)}),
 which overrides the \code{workflow()} default for that estimation.}
 }
 \value{
@@ -93,13 +93,13 @@ result_90 <- workflow(
   svy = list(svy),
   survey::svymean(~x, na.rm = TRUE),
   estimation_type = "annual",
-  conf.level = 0.90
+  level = 0.90
 )
 
 # Per-call confidence level (overrides workflow default)
 result_mixed <- workflow(
   svy = list(svy),
-  survey::svymean(~x, na.rm = TRUE, conf.level = 0.80),
+  survey::svymean(~x, na.rm = TRUE, level = 0.80),
   estimation_type = "annual"
 )
 

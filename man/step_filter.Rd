@@ -47,7 +47,9 @@ svy <- Survey$new(
   edition = "2023", type = "test", psu = NULL,
   engine = "data.table", weight = add_weight(annual = "w")
 )
-svy <- svy |> step_filter(age >= 18) |> bake_steps()
+svy <- svy |>
+  step_filter(age >= 18) |>
+  bake_steps()
 nrow(get_data(svy))
 
 }

@@ -34,6 +34,7 @@ Other recipes:
 \code{\link{bake_recipes}()},
 \code{\link{explore_recipes}()},
 \code{\link{get_recipe}()},
+\code{\link{harmonize}()},
 \code{\link{publish_recipe}()},
 \code{\link{read_recipe}()},
 \code{\link{recipe}()},

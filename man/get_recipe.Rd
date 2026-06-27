@@ -126,6 +126,7 @@ Other recipes:
 \code{\link{add_recipe}()},
 \code{\link{bake_recipes}()},
 \code{\link{explore_recipes}()},
+\code{\link{harmonize}()},
 \code{\link{print.Recipe}()},
 \code{\link{publish_recipe}()},
 \code{\link{read_recipe}()},
