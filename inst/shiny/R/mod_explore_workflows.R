@@ -83,8 +83,9 @@ explore_workflows_server <- function(
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Reactive: all workflows — start with examples for instant display
-    all_workflows <- shiny::reactiveVal(example_workflows())
+    # Reactive: all workflows — start empty, load from API
+    all_workflows <- shiny::reactiveVal(list())
+    workflows_loaded <- shiny::reactiveVal(FALSE)
 
     # Track current modal workflow for star/comment observers
     current_modal_workflow <- shiny::reactiveValues(id = NULL)
@@ -93,22 +94,24 @@ explore_workflows_server <- function(
       workflows <- tryCatch(
         shiny_fetch_workflows(),
         error = function(e) {
-          shiny::showNotification(
-            paste("Could not load workflows:", e$message),
-            type = "warning", duration = 5
-          )
           list()
         }
       )
       if (length(workflows) > 0) {
         all_workflows(workflows)
+        workflows_loaded(TRUE)
       }
     }
 
-    # Try API after first render so examples show instantly
-    session$onFlushed(function() {
-      load_workflows()
-    }, once = TRUE)
+    # Load from API, auto-retry every 5s until workflows arrive
+    shiny::observe({
+      if (!workflows_loaded()) {
+        load_workflows()
+        if (!workflows_loaded()) {
+          shiny::invalidateLater(5000)
+        }
+      }
+    })
 
     # Refresh button
     shiny::observeEvent(input$btn_refresh, {
@@ -201,6 +204,14 @@ explore_workflows_server <- function(
       workflows <- filtered()
 
       if (length(workflows) == 0) {
+        if (!workflows_loaded()) {
+          return(htmltools::tags$div(
+            class = "empty-state",
+            bsicons::bs_icon("arrow-repeat", size = "4rem"),
+            htmltools::tags$h5("Loading workflows..."),
+            htmltools::tags$p("Connecting to the workflow registry.")
+          ))
+        }
         return(htmltools::tags$div(
           class = "empty-state",
           bsicons::bs_icon("bar-chart-line", size = "4rem"),

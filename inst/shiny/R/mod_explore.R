@@ -85,8 +85,9 @@ explore_server <- function(
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Reactive: all recipes from MongoDB
+    # Reactive: all recipes — start empty, load from API
     all_recipes <- shiny::reactiveVal(list())
+    recipes_loaded <- shiny::reactiveVal(FALSE)
 
     # Counter for unique graph IDs
     graph_counter <- shiny::reactiveVal(0)
@@ -95,28 +96,27 @@ explore_server <- function(
     current_modal_recipe <- shiny::reactiveValues(id = NULL)
 
     load_recipes <- function() {
-      shiny::withProgress(message = "Loading recipes...", {
-        recipes <- tryCatch(
-          shiny_fetch_recipes(),
-          error = function(e) {
-            shiny::showNotification(
-              paste("Could not load recipes:", e$message),
-              type = "error", duration = 5
-            )
-            list()
-          }
-        )
+      recipes <- tryCatch(
+        shiny_fetch_recipes(),
+        error = function(e) {
+          list()
+        }
+      )
+      if (length(recipes) > 0) {
         all_recipes(recipes)
-      })
+        recipes_loaded(TRUE)
+      }
     }
 
-    # Load on startup
-    shiny::observe(
-      {
+    # Load from API, auto-retry every 5s until recipes arrive
+    shiny::observe({
+      if (!recipes_loaded()) {
         load_recipes()
-      },
-      priority = 100
-    )
+        if (!recipes_loaded()) {
+          shiny::invalidateLater(5000)
+        }
+      }
+    })
 
     # Refresh button
     shiny::observeEvent(input$btn_refresh, {
@@ -218,6 +218,14 @@ explore_server <- function(
       recipes <- filtered()
 
       if (length(recipes) == 0) {
+        if (!recipes_loaded()) {
+          return(htmltools::tags$div(
+            class = "empty-state",
+            bsicons::bs_icon("arrow-repeat", size = "4rem"),
+            htmltools::tags$h5("Loading recipes..."),
+            htmltools::tags$p("Connecting to the recipe registry.")
+          ))
+        }
         return(htmltools::tags$div(
           class = "empty-state",
           bsicons::bs_icon("journal-x", size = "4rem"),
