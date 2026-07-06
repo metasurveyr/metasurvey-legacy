@@ -775,7 +775,8 @@ CRAN release: 2026-02-25
 ### Bug fixes
 
 - Fixed Codecov GitHub Actions workflow: replaced deprecated
-  `covr::codecov()` with `covr::package_coverage()` +
+  [`covr::codecov()`](http://covr.r-lib.org/reference/codecov.md) with
+  [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.md) +
   `codecov/codecov-action@v5` for reliable coverage uploads with token
   authentication.
 - Added CI guard to `.Rprofile` to skip example-data setup in GitHub
