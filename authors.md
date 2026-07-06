@@ -16,7 +16,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/metasurveyr/metasurvey/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/inst/CITATION)
 
 Loprete M, da Silva N, Machado F (2026). *metasurvey: Reproducible
 Survey Data Processing with Step Pipelines*. R package version 0.0.24,
