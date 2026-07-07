@@ -1579,8 +1579,9 @@ recipe_code_snippet <- function(recipe) {
   lines <- c(lines, "")
 
   # Build weight code — recipes don't have weight_spec, use heuristic
+  edition_num <- suppressWarnings(as.integer(edition_str))
   if (tolower(stype) == "ech") {
-    weight_name <- if (as.integer(edition_str) >= 2022) "W_ANO" else "pesoano"
+    weight_name <- if (!is.na(edition_num) && edition_num >= 2022) "W_ANO" else "pesoano"
     weight_code <- paste0(
       '<span class="code-func">',
       "add_weight</span>(annual = ",
