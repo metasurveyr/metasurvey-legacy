@@ -114,14 +114,25 @@ head(get_data(svy), 3)
 
 ## Trabajo con Steps
 
-Los steps son **lazy por defecto**: se registran pero no se ejecutan
-hasta que se llama a
+Los steps que transforman datos
+([`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
+[`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md),
+[`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md))
+**se ejecutan de inmediato** al crearse:
+[`get_data()`](https://metasurveyr.github.io/metasurvey/reference/get_data.md)
+justo despues de la llamada ya muestra las columnas nuevas. Los steps
+que afectan el diseno muestral
+([`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),
+[`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md))
+quedan **diferidos** y recien se materializan al llamar a
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
-Esto permite:
+En todos los casos el step queda registrado en el pipeline de la
+encuesta, lo que permite:
 
-1.  Construir un pipeline de transformacion completo
-2.  Inspeccionar y validar los steps antes de la ejecucion
-3.  Reutilizar secuencias de steps como recetas
+1.  Mantener un registro completo y documentado del pipeline de
+    transformacion
+2.  Inspeccionar y validar los steps en cualquier momento
+3.  Reutilizar secuencias de steps como recetas sobre datos nuevos
 4.  Asegurar que todas las dependencias existan antes del procesamiento
 
 ### Calculo de nuevas variables
@@ -206,8 +217,10 @@ svy <- step_recode(svy, gender,
 Se utiliza
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md)
 para seleccionar filas segun condiciones logicas. Multiples condiciones
-se combinan con AND. Al igual que los demas steps, los filtros son lazy
-por defecto.
+se combinan con AND. A diferencia de compute/recode/join, los filtros
+estan **siempre diferidos**: como eliminar filas cambia el diseno
+muestral, recien se aplican al llamar a
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
 
 ``` r
 
@@ -237,6 +250,15 @@ Se eliminan variables que ya no son necesarias:
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
+
+Tanto
+[`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md)
+como
+[`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md)
+respetan la configuracion de procesamiento diferido
+([`lazy_default()`](https://metasurveyr.github.io/metasurvey/reference/lazy_default.md),
+`TRUE` por defecto), por lo que quedan pendientes hasta
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
 
 ### Union con datos externos
 
@@ -274,17 +296,22 @@ svy <- step_join(svy,
 
 Se llama a
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-para ejecutar todas las transformaciones pendientes:
+para materializar los steps diferidos (filtros, renombres,
+eliminaciones) y actualizar el diseno muestral. Los steps que ya se
+ejecutaron de forma eager se saltean, asi que nunca hay doble ejecucion:
+llamar a
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+es seguro e idempotente, y sigue siendo parte del flujo recomendado:
 
 ``` r
 
 svy <- bake_steps(svy)
 head(get_data(svy), 3)
-#>    region  dpto    ID  nper  anio   mes   nom_dpto sex_code   age   e30 e51_2
+#>    region    ID  nper  anio   mes  dpto   nom_dpto sex_code   age   e30 e51_2
 #>     <int> <int> <int> <int> <int> <int>     <char>    <int> <int> <int> <int>
-#> 1:      1     1 34561     1  2023     1 Montevideo        2    26     1     6
-#> 2:      1     1 34561     2  2023     1 Montevideo        2    45     7     6
-#> 3:      1     1 34678     1  2023     1 Montevideo        1    48     1     6
+#> 1:      1 34561     1  2023     1     1 Montevideo        2    26     1     6
+#> 2:      1 34561     2  2023     1     1 Montevideo        2    45     7     6
+#> 3:      1 34678     1  2023     1     1 Montevideo        1    48     1     6
 #>    POBPCOAC SUBEMPLEO     HT11 pobre06 W_ANO ht11_thousands employed
 #>       <int>     <int>    <num>   <int> <int>          <num>    <num>
 #> 1:        2         0  55429.6       0    57        55.4296        1
@@ -581,7 +608,9 @@ el flujo de trabajo:
 ``` r
 
 # Check current lazy-processing setting
-lazy_default() # TRUE = steps recorded but not executed immediately
+# (only affects step_rename/step_remove; compute/recode/join are always
+# eager, and filter/validate are always deferred)
+lazy_default() # TRUE = rename/remove deferred until bake_steps()
 #> [1] TRUE
 
 # Check data-copy behavior
@@ -597,7 +626,7 @@ Se pueden modificar las configuraciones para la sesion actual:
 
 ``` r
 
-# Disable lazy evaluation (execute steps immediately)
+# Apply rename/remove steps immediately instead of deferring them
 set_lazy_processing(FALSE)
 
 # Modify inplace (faster, but modifies original data)

@@ -27,13 +27,16 @@ A visNetwork interactive graph of the survey processing steps.
 Other steps:
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md),
 [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md),
+[`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md),
 [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),
 [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md),
+[`step_quantile()`](https://metasurveyr.github.io/metasurvey/reference/step_quantile.md),
 [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md),
 [`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md),
 [`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md),
-[`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md)
+[`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md),
+[`step_weight()`](https://metasurveyr.github.io/metasurvey/reference/step_weight.md)
 
 ## Examples
 

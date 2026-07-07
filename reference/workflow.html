@@ -17,7 +17,7 @@ metadata. Automatically handles different survey types and periodicities."><meta
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@ metadata. Automatically handles different survey types and periodicities."><meta
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -99,7 +100,7 @@ metadata. Automatically handles different survey types and periodicities."><meta
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Execute estimation workflow for surveys</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/R/workflow.R" class="external-link"><code>R/workflow.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/R/workflow.R" class="external-link"><code>R/workflow.R</code></a></small>
       <div class="d-none name"><code>workflow.Rd</code></div>
     </div>
 
@@ -119,9 +120,9 @@ metadata. Automatically handles different survey types and periodicities.</p>
 
 
 <dl><dt id="arg-svy">svy<a class="anchor" aria-label="anchor" href="#arg-svy"></a></dt>
-<dd><p>A <strong>list</strong> of Survey objects, or a PoolSurvey.
-Even for a single survey, wrap it in <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>:
-<code>workflow(svy = list(my_survey), ...)</code>.
+<dd><p>A Survey object, a <strong>list</strong> of Survey objects, a PoolSurvey,
+or a RotativePanelSurvey. A single Survey is automatically wrapped
+in <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.
 Must contain properly configured sample design.</p></dd>
 
 
@@ -134,7 +135,10 @@ Must contain properly configured sample design.</p></dd>
 <dd><p>Type of estimation (default <code>"monthly"</code>) that
 determines which weight to use. Options:
 <code>"monthly"</code>, <code>"quarterly"</code>, <code>"annual"</code>, or vector
-with multiple types</p></dd>
+with multiple types. For PoolSurvey and RotativePanelSurvey
+objects, compound types such as <code>"annual:monthly"</code> or
+<code>"annual:mean_of_months"</code> aggregate monthly estimates into an
+annual one (see Details)</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
@@ -169,7 +173,20 @@ it executes all functions specified in <code>...</code> and combines the results
 <p>Supported estimation types:</p><ul><li><p>"monthly": Monthly estimations</p></li>
 <li><p>"quarterly": Quarterly estimations</p></li>
 <li><p>"annual": Annual estimations</p></li>
-</ul><p>For PoolSurvey objects, it uses a specialized methodology that handles
+</ul><p>Each estimation call accepts an optional <code>domain</code> argument to
+restrict the estimation to a subpopulation (domain) while respecting
+the sampling design. The expression is captured unevaluated and applied
+with <code><a href="https://rdrr.io/pkg/survey/man/subset.survey.design.html" class="external-link">subset.survey.design</a></code> on the design — never by
+filtering the data — so standard errors and degrees of freedom are the
+correct ones for domain estimation:</p><div class="sourceCode"><pre><code><span><span class="fu"><a href="../reference/workflow.html">workflow</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span>,</span>
+<span>  <span class="fu">survey</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survey/man/surveysummary.html" class="external-link">svymean</a></span><span class="op">(</span><span class="op">~</span><span class="va">pea</span>, domain <span class="op">=</span> <span class="va">e27</span> <span class="op">&gt;=</span> <span class="fl">14</span><span class="op">)</span>,</span>
+<span>  estimation_type <span class="op">=</span> <span class="st">"annual"</span></span>
+<span><span class="op">)</span></span></code></pre></div><p><code>domain</code> works with any estimation function, including
+<code>svyby</code> (domain + groups). When a domain is used, the <code>stat</code>
+column includes the domain expression to disambiguate estimations of
+the same variable over different domains.</p>
+<p>For PoolSurvey objects, it uses a specialized methodology that handles
 pooling of multiple surveys. When a compound <code>estimation_type</code> is used
 (e.g. <code>"annual:monthly"</code>), point estimates are averaged across the <code>k</code>
 pooled surveys and the standard error is computed as
@@ -177,6 +194,18 @@ pooled surveys and the standard error is computed as
 (default <code>0</code>, passed as a named argument through <code>...</code>) is the
 correlation between waves of a rotating panel. The former <code>R</code> argument
 is deprecated and ignored.</p>
+<p>For RotativePanelSurvey objects with monthly follow-up surveys (e.g.
+ECH 2021+), <code>estimation_type = "annual:mean_of_months"</code> computes the
+annual estimate as the simple average of the monthly estimates: each
+follow-up is estimated with its monthly weight (replicate weights are
+used when the monthly design has them), the point estimates are
+averaged within each year, and the standard errors are combined
+assuming independence between months
+(<code>se = sqrt(mean(variance) / k)</code> for <code>k</code> months, or with the <code>rho</code>
+correction described above when <code>rho</code> is supplied). One row per year
+and statistic is returned, with the year in the <code>type</code> column. The
+alias <code>"annual:mean_of_months"</code> is also accepted for PoolSurvey
+objects, where it is equivalent to <code>"annual:monthly"</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -219,6 +248,13 @@ is deprecated and ignored.</p>
 <span class="r-in"><span><span class="va">result_by</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  svy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu">survey</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survey/man/svyby.html" class="external-link">svyby</a></span><span class="op">(</span><span class="op">~</span><span class="va">x</span>, <span class="op">~</span><span class="va">g</span>, <span class="fu">survey</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/survey/man/surveysummary.html" class="external-link">svymean</a></span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  estimation_type <span class="op">=</span> <span class="st">"annual"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Domain (subpopulation) estimation: subset applied on the design</span></span></span>
+<span class="r-in"><span><span class="va">result_domain</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  svy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">survey</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survey/man/surveysummary.html" class="external-link">svymean</a></span><span class="op">(</span><span class="op">~</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, domain <span class="op">=</span> <span class="va">g</span> <span class="op">==</span> <span class="st">"a"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  estimation_type <span class="op">=</span> <span class="st">"annual"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

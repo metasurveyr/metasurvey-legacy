@@ -15,7 +15,7 @@ from the survey data when baked."><meta property="og:image" content="https://met
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,7 @@ from the survey data when baked."><meta property="og:image" content="https://met
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -97,7 +98,7 @@ from the survey data when baked."><meta property="og:image" content="https://met
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Remove variables from survey data (step)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
       <div class="d-none name"><code>step_remove.Rd</code></div>
     </div>
 
@@ -169,7 +170,14 @@ removed (or queued for removal).</p>
 <strong>not executed</strong> until <code><a href="bake_steps.html">bake_steps()</a></code> is called.</p>
 <p>Variables can be specified in two ways:</p><ul><li><p><strong>Unquoted names:</strong> <code>step_remove(svy, age, income)</code></p></li>
 <li><p><strong>Character vector:</strong> <code>step_remove(svy, vars = c("age", "income"))</code></p></li>
-</ul><p>Variables that don't exist in the data produce a warning
+</ul><p><strong>Name resolution:</strong> bare symbols passed via <code>...</code> that match a
+column name always refer to that column, even if a variable with
+the same name exists in the calling environment (column takes
+precedence). Symbols that do not match any column are looked up in
+the calling environment and, if they hold a character vector, its
+values are used as column names. For fully programmatic use prefer
+<code>vars = c("age", "income")</code>, which skips symbol resolution entirely.</p>
+<p>Variables that don't exist in the data produce a warning
 (not an error), allowing pipelines to be robust to missing columns.</p>
     </div>
     <div class="section level2">
@@ -177,12 +185,15 @@ removed (or queued for removal).</p>
     <div class="dont-index"><p>Other steps:
 <code><a href="bake_steps.html">bake_steps()</a></code>,
 <code><a href="get_steps.html">get_steps()</a></code>,
+<code><a href="step_collapse.html">step_collapse()</a></code>,
 <code><a href="step_compute.html">step_compute()</a></code>,
 <code><a href="step_filter.html">step_filter()</a></code>,
 <code><a href="step_join.html">step_join()</a></code>,
+<code><a href="step_quantile.html">step_quantile()</a></code>,
 <code><a href="step_recode.html">step_recode()</a></code>,
 <code><a href="step_rename.html">step_rename()</a></code>,
 <code><a href="step_validate.html">step_validate()</a></code>,
+<code><a href="step_weight.html">step_weight()</a></code>,
 <code><a href="view_graph.html">view_graph()</a></code></p></div>
     </div>
 

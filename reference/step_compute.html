@@ -19,7 +19,7 @@ execution."><meta property="og:image" content="https://metasurveyr.github.io/met
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ execution."><meta property="og:image" content="https://metasurveyr.github.io/met
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -101,7 +102,7 @@ execution."><meta property="og:image" content="https://metasurveyr.github.io/met
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Create computation steps for survey variables</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
       <div class="d-none name"><code>step_compute.Rd</code></div>
     </div>
 
@@ -162,8 +163,7 @@ Markdown syntax. Defaults to "Compute step"</p></dd>
 <dt id="arg--level">.level<a class="anchor" aria-label="anchor" href="#arg--level"></a></dt>
 <dd><p>For RotativePanelSurvey objects (default <code>"auto"</code>),
 specifies the level where computations are
-applied: <code>"implantation"</code>, <code>"follow_up"</code>, <code>"quarter"</code>,
-<code>"month"</code>, or <code>"auto"</code></p></dd>
+applied: <code>"auto"</code> (both), <code>"implantation"</code>, or <code>"follow_up"</code></p></dd>
 
 
 <dt id="arg-use-copy">use_copy<a class="anchor" aria-label="anchor" href="#arg-use-copy"></a></dt>
@@ -183,10 +183,15 @@ step is created and the step is recorded as already executed
 steps are skipped, so expressions are never applied twice.</p>
 <p><strong>Expression processing:</strong>
 Expressions are evaluated using data.table's <code>:=</code> operator.
-Variable dependencies are detected automatically via <code><a href="https://rdrr.io/r/base/allnames.html" class="external-link">all.vars()</a></code>.
+Within a single call, expressions are evaluated sequentially, so a
+later expression can reference variables created by earlier ones
+(mutate semantics): <code>step_compute(svy, horamen = f85 * 4.3, yhora = pt4 / horamen)</code>. Variable dependencies are detected
+automatically via <code><a href="https://rdrr.io/r/base/allnames.html" class="external-link">all.vars()</a></code>; names created by earlier expressions
+of the same call are not reported as dependencies.
 Missing variables are caught before execution.</p>
 <p><strong>Grouped computations:</strong> Use <code>.by</code> to compute aggregated values
-(e.g., group means) that are automatically joined back to the data.</p>
+(e.g., group means) broadcast to all rows of each group. Row order
+is preserved.</p>
 <p>For RotativePanelSurvey objects, <code>.level</code> controls where computations
 are applied:</p><ul><li><p><code>"auto"</code> (default): applies to both implantation and follow-ups</p></li>
 <li><p><code>"implantation"</code>: household/dwelling level only</p></li>
@@ -199,12 +204,15 @@ are applied:</p><ul><li><p><code>"auto"</code> (default): applies to both implan
 <p>Other steps:
 <code><a href="bake_steps.html">bake_steps()</a></code>,
 <code><a href="get_steps.html">get_steps()</a></code>,
+<code><a href="step_collapse.html">step_collapse()</a></code>,
 <code><a href="step_filter.html">step_filter()</a></code>,
 <code><a href="step_join.html">step_join()</a></code>,
+<code><a href="step_quantile.html">step_quantile()</a></code>,
 <code><a href="step_recode.html">step_recode()</a></code>,
 <code><a href="step_remove.html">step_remove()</a></code>,
 <code><a href="step_rename.html">step_rename()</a></code>,
 <code><a href="step_validate.html">step_validate()</a></code>,
+<code><a href="step_weight.html">step_weight()</a></code>,
 <code><a href="view_graph.html">view_graph()</a></code></p></div>
     </div>
 

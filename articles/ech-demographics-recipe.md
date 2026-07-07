@@ -67,9 +67,12 @@ svy <- svy |> set_data(dt)
 
 ## Building the pipeline
 
-Every transformation is a **step**. By default, steps are **lazy**: they
-record what to do without executing it. This lets you inspect and modify
-the pipeline before materializing the results.
+Every transformation is a **step**. Data steps (`step_compute`,
+`step_recode`, `step_join`) execute when created and are recorded in the
+pipeline; `step_rename` and `step_remove` are deferred by default until
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
+The recorded pipeline is what lets you inspect, document, and reuse
+every transformation.
 
 Compare this with the transpiler approach:
 [`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)
@@ -88,7 +91,10 @@ svy <- svy |>
   )
 ```
 
-Nothing happened to the data yet:
+Nothing happened to the data yet: `step_rename` is deferred by default
+([`lazy_default()`](https://metasurveyr.github.io/metasurvey/reference/lazy_default.md)
+is `TRUE`) until
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md):
 
 ``` r
 
@@ -96,7 +102,8 @@ names(get_data(svy))[1:4]
 ```
 
 The original column names are still there because the step is pending.
-Let’s keep adding steps.
+The recodes that follow, by contrast, execute when created. Let’s keep
+adding steps.
 
 ### Recode sex
 
@@ -196,9 +203,11 @@ svy <- svy |>
   )
 ```
 
-## Inspecting the pipeline before execution
+## Inspecting the pipeline
 
-At this point we have seven pending steps. Let’s see what was recorded:
+At this point we have seven recorded steps: the five recodes already
+executed, while the rename and the remove are still pending. Let’s see
+what was recorded:
 
 ``` r
 
@@ -237,11 +246,13 @@ for (s in get_steps(svy)) {
 }
 ```
 
-## Packaging as a recipe (before baking)
+## Packaging as a recipe
 
 A recipe bundles the steps with metadata so anyone can reproduce the
-same pipeline on different data. We create the recipe **before** baking
-– the lazy steps are the pipeline:
+same pipeline on different data. The recorded steps are the pipeline:
+whether they already executed or not does not matter – the recipe
+re-runs every step when baked on new data, and that is where
+reproducibility lives:
 
 ``` r
 
@@ -270,11 +281,12 @@ cat("Output variables:", paste(doc$output_variables, collapse = ", "), "\n")
 cat("Pipeline steps:  ", length(doc$pipeline), "\n")
 ```
 
-## Baking: materializing the pipeline
+## Baking: materializing the pending steps
 
-Now let’s execute the steps.
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-runs all pending steps in order and returns the transformed survey:
+runs the deferred steps (here, the rename and the remove) and skips the
+ones that already executed, so there is never double execution. Calling
+it is safe and idempotent:
 
 ``` r
 
@@ -379,7 +391,7 @@ running; the hand-crafted version is where you want to end up.
 | No dependency tracking | DAG visualization with [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md) |
 | Flat scripts, no validation | `validate()` checks required variables |
 | Email `.do` files to colleagues | [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md) to shared registry |
-| Re-run entire script to test | Lazy steps: inspect before baking |
+| Re-run entire script to test | Recorded pipeline: inspect with [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md) |
 
 ## Next steps
 

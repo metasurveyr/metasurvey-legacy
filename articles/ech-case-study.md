@@ -447,7 +447,7 @@ mapping of common operations:
 
 | STATA | metasurvey | Notes |
 |----|----|----|
-| `gen var = expr` | `step_compute(svy, var = expr)` | Lazy by default; call [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md) to execute |
+| `gen var = expr` | `step_compute(svy, var = expr)` | Executes immediately and records the step in the pipeline |
 | `replace var = x if cond` | `step_compute(svy, var = ifelse(cond, x, var))` | Conditional assignment |
 | `recode var (old=new)` | `step_recode(svy, new_var, old == val ~ "label")` | Creates a new variable |
 | `rename old new` | `step_rename(svy, new = old)` |  |
@@ -461,10 +461,13 @@ mapping of common operations:
 
 ### Key differences
 
-1.  **Lazy evaluation**: In STATA, commands execute immediately. In
-    metasurvey, steps are recorded and executed together with
-    [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
-    This enables validation and optimization before execution.
+1.  **Recorded pipeline**: In STATA, commands execute and leave no
+    trace. In metasurvey, compute/recode/join also execute immediately,
+    but every step is recorded in the survey’s pipeline (provenance,
+    [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md),
+    recipes). Filters are deferred until
+    [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+    because they affect the sampling design.
 
 2.  **Immutability**: metasurvey creates new variables instead of
     modifying existing ones.

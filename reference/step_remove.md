@@ -74,6 +74,14 @@ Variables can be specified in two ways:
 
 - **Character vector:** `step_remove(svy, vars = c("age", "income"))`
 
+**Name resolution:** bare symbols passed via `...` that match a column
+name always refer to that column, even if a variable with the same name
+exists in the calling environment (column takes precedence). Symbols
+that do not match any column are looked up in the calling environment
+and, if they hold a character vector, its values are used as column
+names. For fully programmatic use prefer `vars = c("age", "income")`,
+which skips symbol resolution entirely.
+
 Variables that don't exist in the data produce a warning (not an error),
 allowing pipelines to be robust to missing columns.
 
@@ -82,12 +90,15 @@ allowing pipelines to be robust to missing columns.
 Other steps:
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md),
 [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md),
+[`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md),
 [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),
 [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md),
+[`step_quantile()`](https://metasurveyr.github.io/metasurvey/reference/step_quantile.md),
 [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md),
 [`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md),
 [`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md),
+[`step_weight()`](https://metasurveyr.github.io/metasurvey/reference/step_weight.md),
 [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md)
 
 ## Examples

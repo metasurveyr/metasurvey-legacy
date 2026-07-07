@@ -70,9 +70,13 @@ svy <- svy |> set_data(dt)
 
 ## Construyendo el pipeline
 
-Cada transformacion es un **step**. Por defecto, los steps son **lazy**:
-registran que hacer sin ejecutarlo. Esto permite inspeccionar y
-modificar el pipeline antes de materializar los resultados.
+Cada transformacion es un **step**. Los steps de datos (`step_compute`,
+`step_recode`, `step_join`) se ejecutan al crearse y quedan registrados
+en el pipeline; `step_rename` y `step_remove` quedan diferidos por
+defecto hasta
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
+El pipeline registrado es lo que permite inspeccionar, documentar y
+reutilizar cada transformacion.
 
 Comparar con el enfoque del transpilador:
 [`transpile_stata()`](https://metasurveyr.github.io/metasurvey/reference/transpile_stata.md)
@@ -91,7 +95,11 @@ svy <- svy |>
   )
 ```
 
-Nada le paso a los datos todavia:
+Nada le paso a los datos todavia: `step_rename` queda diferido por
+defecto
+([`lazy_default()`](https://metasurveyr.github.io/metasurvey/reference/lazy_default.md)
+es `TRUE`) hasta
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md):
 
 ``` r
 
@@ -100,7 +108,8 @@ names(get_data(svy))[1:4]
 ```
 
 Los nombres de columna originales siguen ahi porque el step esta
-pendiente. Sigamos agregando steps.
+pendiente. Los recodes que siguen, en cambio, se ejecutan al crearse.
+Sigamos agregando steps.
 
 ### Recodificar sexo
 
@@ -202,9 +211,11 @@ svy <- svy |>
   )
 ```
 
-## Inspeccionando el pipeline antes de ejecutar
+## Inspeccionando el pipeline
 
-En este punto tenemos siete steps pendientes. Veamos que se registro:
+En este punto tenemos siete steps registrados: los cinco recodes ya se
+ejecutaron, y el rename y el remove siguen pendientes. Veamos que se
+registro:
 
 ``` r
 
@@ -247,11 +258,13 @@ for (s in get_steps(svy)) {
 #> [step_remove] Eliminar variables crudas de ECH
 ```
 
-## Empaquetando como receta (antes de bake)
+## Empaquetando como receta
 
 Una receta empaqueta los steps con metadatos para que cualquiera pueda
-reproducir el mismo pipeline con datos diferentes. Creamos la receta
-**antes** de hacer bake – los steps lazy son el pipeline:
+reproducir el mismo pipeline con datos diferentes. Los steps registrados
+son el pipeline: no importa si ya se ejecutaron o no, la receta
+re-ejecuta cada step al hornearse sobre datos nuevos – ahi vive la
+reproducibilidad:
 
 ``` r
 
@@ -306,12 +319,12 @@ cat("Steps del pipeline:   ", length(doc$pipeline), "\n")
 #> Steps del pipeline:    7
 ```
 
-## Bake: materializando el pipeline
+## Bake: materializando los steps pendientes
 
-Ahora ejecutemos los steps.
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-ejecuta todos los steps pendientes en orden y devuelve la encuesta
-transformada:
+ejecuta los steps diferidos (aca, el rename y el remove) y saltea los
+que ya se ejecutaron, asi que nunca hay doble ejecucion. Llamarlo es
+seguro e idempotente:
 
 ``` r
 
@@ -376,13 +389,13 @@ cat(readLines(f, n = 15), sep = "\n")
 #>   "description": "Demografia armonizada: sexo, grupo de edad, relacion, nivel educativo y area geografica.",
 #>   "topic": "demographics",
 #>   "doi": {},
-#>   "id": "r_1783435525_663",
+#>   "id": "r_1783455831_663",
 #>   "version": "1.0.0",
 #>   "downloads": 0,
 #>   "categories": [],
 #>   "certification": {
 #>     "level": "community",
-#>     "certified_at": "2026-07-07 14:45:25.755984"
+#>     "certified_at": "2026-07-07 20:23:51.635226"
 ```
 
 ## Aplicando a una nueva edicion
@@ -452,7 +465,7 @@ donde se quiere llegar.
 | Sin seguimiento de dependencias | Visualizacion DAG con [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md) |
 | Scripts planos, sin validacion | `validate()` verifica variables requeridas |
 | Enviar archivos `.do` por email | [`publish_recipe()`](https://metasurveyr.github.io/metasurvey/reference/publish_recipe.md) a registro compartido |
-| Re-ejecutar todo el script para probar | Steps lazy: inspeccionar antes de bake |
+| Re-ejecutar todo el script para probar | Pipeline registrado: inspeccionar con [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md) |
 
 ## Proximos pasos
 

@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -133,7 +134,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Building an ECH Demographics Recipe</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/vignettes/ech-demographics-recipe.Rmd" class="external-link"><code>vignettes/ech-demographics-recipe.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/vignettes/ech-demographics-recipe.Rmd" class="external-link"><code>vignettes/ech-demographics-recipe.Rmd</code></a></small>
       <div class="d-none name"><code>ech-demographics-recipe.Rmd</code></div>
     </div>
 
@@ -205,10 +206,13 @@ simulate it.</p>
 <div class="section level2">
 <h2 id="building-the-pipeline">Building the pipeline<a class="anchor" aria-label="anchor" href="#building-the-pipeline"></a>
 </h2>
-<p>Every transformation is a <strong>step</strong>. By default, steps
-are <strong>lazy</strong>: they record what to do without executing it.
-This lets you inspect and modify the pipeline before materializing the
-results.</p>
+<p>Every transformation is a <strong>step</strong>. Data steps
+(<code>step_compute</code>, <code>step_recode</code>,
+<code>step_join</code>) execute when created and are recorded in the
+pipeline; <code>step_rename</code> and <code>step_remove</code> are
+deferred by default until <code><a href="../reference/bake_steps.html">bake_steps()</a></code>. The recorded
+pipeline is what lets you inspect, document, and reuse every
+transformation.</p>
 <p>Compare this with the transpiler approach:
 <code><a href="../reference/transpile_stata.html">transpile_stata()</a></code> would produce one step per STATA command,
 faithfully preserving every <code>gen</code> and <code>replace</code>.
@@ -223,11 +227,14 @@ commands we need to type.</p>
 <span>    hh_id <span class="op">=</span> <span class="st">"id"</span>, person_id <span class="op">=</span> <span class="st">"nper"</span>,</span>
 <span>    comment <span class="op">=</span> <span class="st">"Standardize identifiers"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Nothing happened to the data yet:</p>
+<p>Nothing happened to the data yet: <code>step_rename</code> is
+deferred by default (<code><a href="../reference/lazy_default.html">lazy_default()</a></code> is <code>TRUE</code>)
+until <code><a href="../reference/bake_steps.html">bake_steps()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></code></pre></div>
 <p>The original column names are still there because the step is
-pending. Let’s keep adding steps.</p>
+pending. The recodes that follow, by contrast, execute when created.
+Let’s keep adding steps.</p>
 </div>
 <div class="section level3">
 <h3 id="recode-sex">Recode sex<a class="anchor" aria-label="anchor" href="#recode-sex"></a>
@@ -322,10 +329,11 @@ makes analysis easier.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="inspecting-the-pipeline-before-execution">Inspecting the pipeline before execution<a class="anchor" aria-label="anchor" href="#inspecting-the-pipeline-before-execution"></a>
+<h2 id="inspecting-the-pipeline">Inspecting the pipeline<a class="anchor" aria-label="anchor" href="#inspecting-the-pipeline"></a>
 </h2>
-<p>At this point we have seven pending steps. Let’s see what was
-recorded:</p>
+<p>At this point we have seven recorded steps: the five recodes already
+executed, while the rename and the remove are still pending. Let’s see
+what was recorded:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_steps.html">get_steps</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This is one of the key advantages of building from scratch: <strong>7
@@ -349,11 +357,13 @@ useful for auditing, but much harder to read at a glance.</p>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="packaging-as-a-recipe-before-baking">Packaging as a recipe (before baking)<a class="anchor" aria-label="anchor" href="#packaging-as-a-recipe-before-baking"></a>
+<h2 id="packaging-as-a-recipe">Packaging as a recipe<a class="anchor" aria-label="anchor" href="#packaging-as-a-recipe"></a>
 </h2>
 <p>A recipe bundles the steps with metadata so anyone can reproduce the
-same pipeline on different data. We create the recipe
-<strong>before</strong> baking – the lazy steps are the pipeline:</p>
+same pipeline on different data. The recorded steps are the pipeline:
+whether they already executed or not does not matter – the recipe
+re-runs every step when baked on new data, and that is where
+reproducibility lives:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/steps_to_recipe.html">steps_to_recipe</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"ECH Demographics (minimal)"</span>,</span>
@@ -376,10 +386,11 @@ same pipeline on different data. We create the recipe
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Pipeline steps:  "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">doc</span><span class="op">$</span><span class="va">pipeline</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="baking-materializing-the-pipeline">Baking: materializing the pipeline<a class="anchor" aria-label="anchor" href="#baking-materializing-the-pipeline"></a>
+<h2 id="baking-materializing-the-pending-steps">Baking: materializing the pending steps<a class="anchor" aria-label="anchor" href="#baking-materializing-the-pending-steps"></a>
 </h2>
-<p>Now let’s execute the steps. <code><a href="../reference/bake_steps.html">bake_steps()</a></code> runs all
-pending steps in order and returns the transformed survey:</p>
+<p><code><a href="../reference/bake_steps.html">bake_steps()</a></code> runs the deferred steps (here, the rename
+and the remove) and skips the ones that already executed, so there is
+never double execution. Calling it is safe and idempotent:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">svy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bake_steps.html">bake_steps</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span></span></code></pre></div>
 <p>The data has the new columns with readable labels:</p>
@@ -535,7 +546,8 @@ you want to end up.</p>
 </tr>
 <tr class="even">
 <td>Re-run entire script to test</td>
-<td>Lazy steps: inspect before baking</td>
+<td>Recorded pipeline: inspect with <code><a href="../reference/get_steps.html">get_steps()</a></code>
+</td>
 </tr>
 </tbody>
 </table>

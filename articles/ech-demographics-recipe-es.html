@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -134,7 +135,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Construyendo una Receta de Demografia ECH (ES)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/vignettes/ech-demographics-recipe-es.Rmd" class="external-link"><code>vignettes/ech-demographics-recipe-es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/vignettes/ech-demographics-recipe-es.Rmd" class="external-link"><code>vignettes/ech-demographics-recipe-es.Rmd</code></a></small>
       <div class="d-none name"><code>ech-demographics-recipe-es.Rmd</code></div>
     </div>
 
@@ -208,10 +209,13 @@ local; aqui los simulamos.</p>
 <div class="section level2">
 <h2 id="construyendo-el-pipeline">Construyendo el pipeline<a class="anchor" aria-label="anchor" href="#construyendo-el-pipeline"></a>
 </h2>
-<p>Cada transformacion es un <strong>step</strong>. Por defecto, los
-steps son <strong>lazy</strong>: registran que hacer sin ejecutarlo.
-Esto permite inspeccionar y modificar el pipeline antes de materializar
-los resultados.</p>
+<p>Cada transformacion es un <strong>step</strong>. Los steps de datos
+(<code>step_compute</code>, <code>step_recode</code>,
+<code>step_join</code>) se ejecutan al crearse y quedan registrados en
+el pipeline; <code>step_rename</code> y <code>step_remove</code> quedan
+diferidos por defecto hasta <code><a href="../reference/bake_steps.html">bake_steps()</a></code>. El pipeline
+registrado es lo que permite inspeccionar, documentar y reutilizar cada
+transformacion.</p>
 <p>Comparar con el enfoque del transpilador:
 <code><a href="../reference/transpile_stata.html">transpile_stata()</a></code> produciria un step por cada comando
 STATA, preservando fielmente cada <code>gen</code> y
@@ -227,12 +231,15 @@ escribir.</p>
 <span>    hh_id <span class="op">=</span> <span class="st">"id"</span>, person_id <span class="op">=</span> <span class="st">"nper"</span>,</span>
 <span>    comment <span class="op">=</span> <span class="st">"Estandarizar identificadores"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Nada le paso a los datos todavia:</p>
+<p>Nada le paso a los datos todavia: <code>step_rename</code> queda
+diferido por defecto (<code><a href="../reference/lazy_default.html">lazy_default()</a></code> es <code>TRUE</code>)
+hasta <code><a href="../reference/bake_steps.html">bake_steps()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "id"      "nper"    "pesoano" "e26"</span></span></code></pre></div>
 <p>Los nombres de columna originales siguen ahi porque el step esta
-pendiente. Sigamos agregando steps.</p>
+pendiente. Los recodes que siguen, en cambio, se ejecutan al crearse.
+Sigamos agregando steps.</p>
 </div>
 <div class="section level3">
 <h3 id="recodificar-sexo">Recodificar sexo<a class="anchor" aria-label="anchor" href="#recodificar-sexo"></a>
@@ -326,9 +333,10 @@ la representacion que facilita el analisis.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="inspeccionando-el-pipeline-antes-de-ejecutar">Inspeccionando el pipeline antes de ejecutar<a class="anchor" aria-label="anchor" href="#inspeccionando-el-pipeline-antes-de-ejecutar"></a>
+<h2 id="inspeccionando-el-pipeline">Inspeccionando el pipeline<a class="anchor" aria-label="anchor" href="#inspeccionando-el-pipeline"></a>
 </h2>
-<p>En este punto tenemos siete steps pendientes. Veamos que se
+<p>En este punto tenemos siete steps registrados: los cinco recodes ya
+se ejecutaron, y el rename y el remove siguen pendientes. Veamos que se
 registro:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_steps.html">get_steps</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span><span class="op">)</span></span>
@@ -360,12 +368,13 @@ auditoria, pero mucho mas dificil de leer de un vistazo.</p>
 <span><span class="co">#&gt; [step_remove] Eliminar variables crudas de ECH</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="empaquetando-como-receta-antes-de-bake">Empaquetando como receta (antes de bake)<a class="anchor" aria-label="anchor" href="#empaquetando-como-receta-antes-de-bake"></a>
+<h2 id="empaquetando-como-receta">Empaquetando como receta<a class="anchor" aria-label="anchor" href="#empaquetando-como-receta"></a>
 </h2>
 <p>Una receta empaqueta los steps con metadatos para que cualquiera
-pueda reproducir el mismo pipeline con datos diferentes. Creamos la
-receta <strong>antes</strong> de hacer bake – los steps lazy son el
-pipeline:</p>
+pueda reproducir el mismo pipeline con datos diferentes. Los steps
+registrados son el pipeline: no importa si ya se ejecutaron o no, la
+receta re-ejecuta cada step al hornearse sobre datos nuevos – ahi vive
+la reproducibilidad:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/steps_to_recipe.html">steps_to_recipe</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"ECH Demografia (minima)"</span>,</span>
@@ -414,10 +423,11 @@ pipeline:</p>
 <span><span class="co">#&gt; Steps del pipeline:    7</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="bake-materializando-el-pipeline">Bake: materializando el pipeline<a class="anchor" aria-label="anchor" href="#bake-materializando-el-pipeline"></a>
+<h2 id="bake-materializando-los-steps-pendientes">Bake: materializando los steps pendientes<a class="anchor" aria-label="anchor" href="#bake-materializando-los-steps-pendientes"></a>
 </h2>
-<p>Ahora ejecutemos los steps. <code><a href="../reference/bake_steps.html">bake_steps()</a></code> ejecuta todos
-los steps pendientes en orden y devuelve la encuesta transformada:</p>
+<p><code><a href="../reference/bake_steps.html">bake_steps()</a></code> ejecuta los steps diferidos (aca, el rename
+y el remove) y saltea los que ya se ejecutaron, asi que nunca hay doble
+ejecucion. Llamarlo es seguro e idempotente:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">svy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bake_steps.html">bake_steps</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span></span></code></pre></div>
 <p>Los datos tienen las nuevas columnas con etiquetas legibles:</p>
@@ -464,13 +474,13 @@ compartir:</p>
 <span><span class="co">#&gt;   "description": "Demografia armonizada: sexo, grupo de edad, relacion, nivel educativo y area geografica.",</span></span>
 <span><span class="co">#&gt;   "topic": "demographics",</span></span>
 <span><span class="co">#&gt;   "doi": {},</span></span>
-<span><span class="co">#&gt;   "id": "r_1783435525_663",</span></span>
+<span><span class="co">#&gt;   "id": "r_1783455831_663",</span></span>
 <span><span class="co">#&gt;   "version": "1.0.0",</span></span>
 <span><span class="co">#&gt;   "downloads": 0,</span></span>
 <span><span class="co">#&gt;   "categories": [],</span></span>
 <span><span class="co">#&gt;   "certification": {</span></span>
 <span><span class="co">#&gt;     "level": "community",</span></span>
-<span><span class="co">#&gt;     "certified_at": "2026-07-07 14:45:25.755984"</span></span></code></pre></div>
+<span><span class="co">#&gt;     "certified_at": "2026-07-07 20:23:51.635226"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="aplicando-a-una-nueva-edicion">Aplicando a una nueva edicion<a class="anchor" aria-label="anchor" href="#aplicando-a-una-nueva-edicion"></a>
@@ -610,7 +620,8 @@ funcionando; la version artesanal es donde se quiere llegar.</p>
 </tr>
 <tr class="even">
 <td>Re-ejecutar todo el script para probar</td>
-<td>Steps lazy: inspeccionar antes de bake</td>
+<td>Pipeline registrado: inspeccionar con <code><a href="../reference/get_steps.html">get_steps()</a></code>
+</td>
 </tr>
 </tbody>
 </table>

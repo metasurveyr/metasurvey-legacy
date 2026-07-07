@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -133,7 +134,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Estudio de caso ECH: De STATA a R (ES)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/vignettes/ech-case-study-es.Rmd" class="external-link"><code>vignettes/ech-case-study-es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/vignettes/ech-case-study-es.Rmd" class="external-link"><code>vignettes/ech-case-study-es.Rmd</code></a></small>
       <div class="d-none name"><code>ech-case-study-es.Rmd</code></div>
     </div>
 
@@ -621,8 +622,7 @@ encuestas, aquí hay un mapeo de operaciones comunes:</p>
 <tr class="odd">
 <td><code>gen var = expr</code></td>
 <td><code>step_compute(svy, var = expr)</code></td>
-<td>Lazy por defecto; llamar a <code><a href="../reference/bake_steps.html">bake_steps()</a></code> para
-ejecutar</td>
+<td>Se ejecuta de inmediato y registra el step en el pipeline</td>
 </tr>
 <tr class="even">
 <td><code>replace var = x if cond</code></td>
@@ -682,10 +682,12 @@ ejecutar</td>
 <h3 id="diferencias-clave">Diferencias clave<a class="anchor" aria-label="anchor" href="#diferencias-clave"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li><p><strong>Evaluación lazy</strong>: En STATA, los comandos se
-ejecutan inmediatamente. En metasurvey, los steps se registran y se
-ejecutan juntos con <code><a href="../reference/bake_steps.html">bake_steps()</a></code>. Esto permite validación y
-optimización antes de la ejecución.</p></li>
+<li><p><strong>Pipeline registrado</strong>: En STATA, los comandos se
+ejecutan sin dejar rastro. En metasurvey, compute/recode/join también se
+ejecutan de inmediato, pero cada step queda registrado en el pipeline de
+la encuesta (provenance, <code><a href="../reference/view_graph.html">view_graph()</a></code>, recipes). Los
+filtros quedan diferidos hasta <code><a href="../reference/bake_steps.html">bake_steps()</a></code> porque afectan
+el diseño muestral.</p></li>
 <li><p><strong>Inmutabilidad</strong>: metasurvey crea nuevas variables
 en lugar de modificar las existentes. <code><a href="../reference/step_recode.html">step_recode()</a></code> crea
 una nueva columna; no sobreescribe la variable fuente.</p></li>

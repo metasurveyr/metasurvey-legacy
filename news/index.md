@@ -1,5 +1,97 @@
 # Changelog
 
+## metasurvey 0.2.0
+
+### Migration notes (from 0.0.x)
+
+Together with 0.1.0 (below), this release changes two behaviors you may
+rely on:
+
+1.  **Steps execute exactly once.**
+    [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md)/[`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)/
+    [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md)
+    run eagerly on creation and
+    [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+    no longer re-executes them. If your code depended on the double
+    execution (non-idempotent expressions like `age = age * 2` yielding
+    `age * 4`), results change — the new values are the correct ones.
+    [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+    is still part of the flow: it materializes deferred steps
+    (`step_filter`, `step_validate`, lazy `step_remove`/`step_rename`)
+    and refreshes the design.
+2.  **[`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
+    is first-match-wins** (`case_when()` semantics). If you ordered
+    overlapping conditions for the old last-match behavior, reverse
+    them.
+
+### New features
+
+- [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md)
+  chains expressions within a single call (`mutate()` semantics): later
+  expressions see columns created by earlier ones, with all-or-nothing
+  evaluation and internal names excluded from `depends_on`
+  ([\#215](https://github.com/metasurveyr/metasurvey/issues/215)).
+- [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md)
+  supports per-call `domain =` for subpopulation estimation via
+  [`survey::subset.survey.design()`](https://rdrr.io/pkg/survey/man/subset.survey.design.html)
+  — e.g. `svymean(~pea, domain = e27 >= 14)` — combinable with `level =`
+  and `svyby` grouping
+  ([\#219](https://github.com/metasurveyr/metasurvey/issues/219)).
+- [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md)
+  accepts a `RotativePanelSurvey` with
+  `estimation_type = "annual:mean_of_months"`: the UMAD annual estimator
+  (mean of monthly estimates with combined SEs), delegating to
+  `workflow_pool()`
+  ([\#223](https://github.com/metasurveyr/metasurvey/issues/223)).
+- New
+  [`step_quantile()`](https://metasurveyr.github.io/metasurvey/reference/step_quantile.md)
+  (weighted quantiles, optional `.by`) and
+  [`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md)
+  (one row per household within the pipeline)
+  ([\#222](https://github.com/metasurveyr/metasurvey/issues/222)).
+- `svyratio` results in
+  [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md)
+  now expose clean `variable`/`denominator` columns instead of packed
+  strings
+  ([\#224](https://github.com/metasurveyr/metasurvey/issues/224)).
+- New input-validation layer on exported functions with actionable error
+  messages;
+  [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md)
+  auto-wraps a single Survey in
+  [`list()`](https://rdrr.io/r/base/list.html)
+  ([\#218](https://github.com/metasurveyr/metasurvey/issues/218)).
+- Design RFC for the `metatable` lazy plan/optimizer engine in
+  `design/metatable-rfc.md`
+  ([\#214](https://github.com/metasurveyr/metasurvey/issues/214)).
+
+### Bug fixes
+
+- `step_compute(.by =)` no longer reorders rows, leaves a residual key,
+  or moves grouping columns to the front
+  ([\#221](https://github.com/metasurveyr/metasurvey/issues/221)).
+- [`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md)
+  resolves bare symbols as columns before the calling environment: a
+  local variable named like a column can no longer silently remove the
+  wrong column
+  ([\#216](https://github.com/metasurveyr/metasurvey/issues/216)).
+- `.level = "quarter"/"month"` now fail clearly via
+  [`match.arg()`](https://rdrr.io/r/base/match.arg.html) instead of
+  silently registering zero steps
+  ([\#217](https://github.com/metasurveyr/metasurvey/issues/217)).
+- [`load_survey()`](https://metasurveyr.github.io/metasurvey/reference/load_survey.md)
+  cache messages respect `options(metasurvey.verbose)`
+  ([\#224](https://github.com/metasurveyr/metasurvey/issues/224)).
+
+### Internal
+
+- 15 regression tests derived from mutation testing (recipe round-trips
+  with step content, `.by` recompute, replicate validation, CI fallback)
+  raise the suite to 3,340 passing tests
+  ([\#220](https://github.com/metasurveyr/metasurvey/issues/220)).
+- Pre-existing indentation lints cleaned in `R/utils.R` and
+  `inst/shiny/R/ui_components.R`
+  ([\#225](https://github.com/metasurveyr/metasurvey/issues/225)).
+
 ## metasurvey 0.1.0
 
 ### Breaking changes
@@ -27,6 +119,13 @@
 
 ### New features
 
+- [`step_weight()`](https://metasurveyr.github.io/metasurvey/reference/step_weight.md):
+  integrates the `weightflow` package into the step pipeline. Accepts a
+  `weighting_spec` object for nonresponse adjustment, calibration
+  (raking, post-stratification, GREG), and weight trimming — all as a
+  lazy, reproducible step.
+- New vignette: “Survey Weighting with weightflow” documents the
+  integration.
 - [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
   accepts non-character RHS values (numeric, integer, logical);
   previously anything but character failed with an internal `vapply`
@@ -70,6 +169,14 @@ CRAN release: 2026-06-27
   [`merge()`](https://rdrr.io/r/base/merge.html) creating `.x`/`.y`
   suffix columns when the target column already existed in the data
   (e.g., during re-baking).
+- [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md):
+  fixed global state leak where `lazy_processing` option was not
+  restored when baking multiple recipes, causing subsequent
+  `step_rename`/`step_remove` calls to fail.
+- [`filter_recipes()`](https://metasurveyr.github.io/metasurvey/reference/filter_recipes.md):
+  added missing `topic` parameter, fixing
+  [`harmonize()`](https://metasurveyr.github.io/metasurvey/reference/harmonize.md)
+  example failures.
 
 ## metasurvey 0.0.23
 
@@ -835,9 +942,8 @@ CRAN release: 2026-02-25
 
 ### Internal
 
-- Added `.claude/` directory with development agents and commands for
-  code review, testing, documentation auditing, and rOpenSci
-  preparation.
+- Added development agents and commands for code review, testing,
+  documentation auditing, and rOpenSci preparation.
 
 ## metasurvey 0.0.5
 

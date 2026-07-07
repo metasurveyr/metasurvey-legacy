@@ -219,16 +219,28 @@ show_engines()
 #> [1] "data.table" "tidyverse"  "dplyr"
 ```
 
-### Procesamiento diferido (lazy)
+### Ejecución de steps y procesamiento diferido
 
-Por defecto, los steps se registran pero no se ejecutan hasta que se
-invoca
-[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
-Esto permite realizar validaciones antes de la ejecución:
+[`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
+[`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
+y
+[`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md)
+se ejecutan de forma eager al crearse;
+[`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md)
+y
+[`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md)
+quedan siempre diferidos hasta
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md),
+porque el filtrado afecta el diseño muestral. La configuración de
+procesamiento diferido solo controla
+[`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md)
+y
+[`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md)
+(diferidos por defecto):
 
 ``` r
 
-# Check current setting
+# Check current setting (applies to rename/remove only)
 lazy_default()
 #> [1] TRUE
 
@@ -314,12 +326,12 @@ ratio_result <- workflow(
 )
 
 ratio_result
-#>                             stat    variable    value         se          cv
-#>                           <char>      <char>    <num>      <num>       <num>
-#> 1: survey::svyratio: api00/api99 api00/api99 1.052261 0.00379243 0.003604079
-#>    confint_lower confint_upper  evaluate
-#>            <num>         <num>    <char>
-#> 1:      1.044828      1.059694 Excellent
+#>                             stat variable denominator    value         se
+#>                           <char>   <char>      <char>    <num>      <num>
+#> 1: survey::svyratio: api00/api99    api00       api99 1.052261 0.00379243
+#>             cv confint_lower confint_upper  evaluate
+#>          <num>         <num>         <num>    <char>
+#> 1: 0.003604079      1.044828      1.059694 Excellent
 ```
 
 ## Validación del pipeline
@@ -337,10 +349,10 @@ svy_v <- step_compute(svy_simple,
   comment = "API score difference"
 )
 
-# Check that the step was recorded
+# The compute already executed; the step is recorded in the pipeline
 steps <- get_steps(svy_v)
-cat("Pending steps:", length(steps), "\n")
-#> Pending steps: 1
+cat("Recorded steps:", length(steps), "\n")
+#> Recorded steps: 1
 ```
 
 ### Validación cruzada con el paquete survey

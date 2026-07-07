@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -134,7 +135,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Diseños de encuestas y validación (ES)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/vignettes/complex-designs-es.Rmd" class="external-link"><code>vignettes/complex-designs-es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/vignettes/complex-designs-es.Rmd" class="external-link"><code>vignettes/complex-designs-es.Rmd</code></a></small>
       <div class="d-none name"><code>complex-designs-es.Rmd</code></div>
     </div>
 
@@ -345,13 +346,17 @@ manipulación rápida de los datos:</p>
 <span><span class="co">#&gt; [1] "data.table" "tidyverse"  "dplyr"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="procesamiento-diferido-lazy">Procesamiento diferido (lazy)<a class="anchor" aria-label="anchor" href="#procesamiento-diferido-lazy"></a>
+<h3 id="ejecución-de-steps-y-procesamiento-diferido">Ejecución de steps y procesamiento diferido<a class="anchor" aria-label="anchor" href="#ejecuci%C3%B3n-de-steps-y-procesamiento-diferido"></a>
 </h3>
-<p>Por defecto, los steps se registran pero no se ejecutan hasta que se
-invoca <code><a href="../reference/bake_steps.html">bake_steps()</a></code>. Esto permite realizar validaciones
-antes de la ejecución:</p>
+<p><code><a href="../reference/step_compute.html">step_compute()</a></code>, <code><a href="../reference/step_recode.html">step_recode()</a></code> y
+<code><a href="../reference/step_join.html">step_join()</a></code> se ejecutan de forma eager al crearse;
+<code><a href="../reference/step_filter.html">step_filter()</a></code> y <code><a href="../reference/step_validate.html">step_validate()</a></code> quedan siempre
+diferidos hasta <code><a href="../reference/bake_steps.html">bake_steps()</a></code>, porque el filtrado afecta el
+diseño muestral. La configuración de procesamiento diferido solo
+controla <code><a href="../reference/step_rename.html">step_rename()</a></code> y <code><a href="../reference/step_remove.html">step_remove()</a></code>
+(diferidos por defecto):</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Check current setting</span></span>
+<code class="sourceCode R"><span><span class="co"># Check current setting (applies to rename/remove only)</span></span>
 <span><span class="fu"><a href="../reference/lazy_default.html">lazy_default</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span></span>
@@ -432,12 +437,12 @@ in-place o trabajan sobre copias:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ratio_result</span></span>
-<span><span class="co">#&gt;                             stat    variable    value         se          cv</span></span>
-<span><span class="co">#&gt;                           &lt;char&gt;      &lt;char&gt;    &lt;num&gt;      &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: survey::svyratio: api00/api99 api00/api99 1.052261 0.00379243 0.003604079</span></span>
-<span><span class="co">#&gt;    confint_lower confint_upper  evaluate</span></span>
-<span><span class="co">#&gt;            &lt;num&gt;         &lt;num&gt;    &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:      1.044828      1.059694 Excellent</span></span></code></pre></div>
+<span><span class="co">#&gt;                             stat variable denominator    value         se</span></span>
+<span><span class="co">#&gt;                           &lt;char&gt;   &lt;char&gt;      &lt;char&gt;    &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: survey::svyratio: api00/api99    api00       api99 1.052261 0.00379243</span></span>
+<span><span class="co">#&gt;             cv confint_lower confint_upper  evaluate</span></span>
+<span><span class="co">#&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: 0.003604079      1.044828      1.059694 Excellent</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -455,10 +460,10 @@ forma independiente:</p>
 <span>  comment <span class="op">=</span> <span class="st">"API score difference"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Check that the step was recorded</span></span>
+<span><span class="co"># The compute already executed; the step is recorded in the pipeline</span></span>
 <span><span class="va">steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_steps.html">get_steps</a></span><span class="op">(</span><span class="va">svy_v</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Pending steps:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">steps</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Pending steps: 1</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Recorded steps:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">steps</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Recorded steps: 1</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="validación-cruzada-con-el-paquete-survey">Validación cruzada con el paquete survey<a class="anchor" aria-label="anchor" href="#validaci%C3%B3n-cruzada-con-el-paquete-survey"></a>

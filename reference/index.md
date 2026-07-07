@@ -45,7 +45,7 @@ Create and manipulate Survey objects
 
 ## Steps
 
-Lazy transformations on surveys
+Reproducible transformations on surveys
 
 - [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md)
   : Create computation steps for survey variables
@@ -59,6 +59,12 @@ Lazy transformations on surveys
   : Remove variables from survey data (step)
 - [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md)
   : Join external data into survey (step)
+- [`step_weight()`](https://metasurveyr.github.io/metasurvey/reference/step_weight.md)
+  : Apply survey weights from a weightflow specification
+- [`step_quantile()`](https://metasurveyr.github.io/metasurvey/reference/step_quantile.md)
+  : Weighted quantile groups (step)
+- [`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md)
+  : Collapse survey data to one row per group (step)
 - [`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md)
   : Validate data during the step pipeline
 - [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)

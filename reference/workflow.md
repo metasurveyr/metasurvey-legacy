@@ -15,9 +15,9 @@ workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 
 - svy:
 
-  A **list** of Survey objects, or a PoolSurvey. Even for a single
-  survey, wrap it in [`list()`](https://rdrr.io/r/base/list.html):
-  `workflow(svy = list(my_survey), ...)`. Must contain properly
+  A Survey object, a **list** of Survey objects, a PoolSurvey, or a
+  RotativePanelSurvey. A single Survey is automatically wrapped in
+  [`list()`](https://rdrr.io/r/base/list.html). Must contain properly
   configured sample design.
 
 - ...:
@@ -29,7 +29,9 @@ workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 
   Type of estimation (default `"monthly"`) that determines which weight
   to use. Options: `"monthly"`, `"quarterly"`, `"annual"`, or vector
-  with multiple types
+  with multiple types. For PoolSurvey and RotativePanelSurvey objects,
+  compound types such as `"annual:monthly"` or `"annual:mean_of_months"`
+  aggregate monthly estimates into an annual one (see Details)
 
 - level:
 
@@ -79,6 +81,24 @@ Supported estimation types:
 
 - "annual": Annual estimations
 
+Each estimation call accepts an optional `domain` argument to restrict
+the estimation to a subpopulation (domain) while respecting the sampling
+design. The expression is captured unevaluated and applied with
+[`subset.survey.design`](https://rdrr.io/pkg/survey/man/subset.survey.design.html)
+on the design — never by filtering the data — so standard errors and
+degrees of freedom are the correct ones for domain estimation:
+
+    workflow(
+      list(svy),
+      survey::svymean(~pea, domain = e27 >= 14),
+      estimation_type = "annual"
+    )
+
+`domain` works with any estimation function, including `svyby` (domain +
+groups). When a domain is used, the `stat` column includes the domain
+expression to disambiguate estimations of the same variable over
+different domains.
+
 For PoolSurvey objects, it uses a specialized methodology that handles
 pooling of multiple surveys. When a compound `estimation_type` is used
 (e.g. `"annual:monthly"`), point estimates are averaged across the `k`
@@ -87,6 +107,18 @@ pooled surveys and the standard error is computed as
 `0`, passed as a named argument through `...`) is the correlation
 between waves of a rotating panel. The former `R` argument is deprecated
 and ignored.
+
+For RotativePanelSurvey objects with monthly follow-up surveys (e.g. ECH
+2021+), `estimation_type = "annual:mean_of_months"` computes the annual
+estimate as the simple average of the monthly estimates: each follow-up
+is estimated with its monthly weight (replicate weights are used when
+the monthly design has them), the point estimates are averaged within
+each year, and the standard errors are combined assuming independence
+between months (`se = sqrt(mean(variance) / k)` for `k` months, or with
+the `rho` correction described above when `rho` is supplied). One row
+per year and statistic is returned, with the year in the `type` column.
+The alias `"annual:mean_of_months"` is also accepted for PoolSurvey
+objects, where it is equivalent to `"annual:monthly"`.
 
 ## See also
 
@@ -134,6 +166,13 @@ result <- workflow(
 result_by <- workflow(
   svy = list(svy),
   survey::svyby(~x, ~g, survey::svymean, na.rm = TRUE),
+  estimation_type = "annual"
+)
+
+# Domain (subpopulation) estimation: subset applied on the design
+result_domain <- workflow(
+  svy = list(svy),
+  survey::svymean(~x, na.rm = TRUE, domain = g == "a"),
   estimation_type = "annual"
 )
 

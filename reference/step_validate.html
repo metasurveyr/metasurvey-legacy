@@ -19,7 +19,7 @@ the pipeline stops (or warns)."><meta property="og:image" content="https://metas
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ the pipeline stops (or warns)."><meta property="og:image" content="https://metas
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -101,7 +102,7 @@ the pipeline stops (or warns)."><meta property="og:image" content="https://metas
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Validate data during the step pipeline</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
       <div class="d-none name"><code>step_validate.Rd</code></div>
     </div>
 
@@ -180,12 +181,15 @@ or warning if any check fails.</p>
     <div class="dont-index"><p>Other steps:
 <code><a href="bake_steps.html">bake_steps()</a></code>,
 <code><a href="get_steps.html">get_steps()</a></code>,
+<code><a href="step_collapse.html">step_collapse()</a></code>,
 <code><a href="step_compute.html">step_compute()</a></code>,
 <code><a href="step_filter.html">step_filter()</a></code>,
 <code><a href="step_join.html">step_join()</a></code>,
+<code><a href="step_quantile.html">step_quantile()</a></code>,
 <code><a href="step_recode.html">step_recode()</a></code>,
 <code><a href="step_remove.html">step_remove()</a></code>,
 <code><a href="step_rename.html">step_rename()</a></code>,
+<code><a href="step_weight.html">step_weight()</a></code>,
 <code><a href="view_graph.html">view_graph()</a></code></p></div>
     </div>
 

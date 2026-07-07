@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -133,7 +134,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Getting Started with metasurvey</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
@@ -258,13 +259,19 @@ the same recipe work across different survey editions.</p>
 <div class="section level2">
 <h2 id="working-with-steps">Working with Steps<a class="anchor" aria-label="anchor" href="#working-with-steps"></a>
 </h2>
-<p>Steps are <strong>lazy by default</strong>: they are recorded but not
-executed until <code><a href="../reference/bake_steps.html">bake_steps()</a></code> is called. This allows you
-to:</p>
+<p>Data-transforming steps (<code><a href="../reference/step_compute.html">step_compute()</a></code>,
+<code><a href="../reference/step_recode.html">step_recode()</a></code>, <code><a href="../reference/step_join.html">step_join()</a></code>) <strong>execute
+immediately</strong> when created: <code><a href="../reference/get_data.html">get_data()</a></code> right after
+the call already shows the new columns. Steps that affect the sampling
+design (<code><a href="../reference/step_filter.html">step_filter()</a></code>, <code><a href="../reference/step_validate.html">step_validate()</a></code>) are
+<strong>deferred</strong> and only materialize when
+<code><a href="../reference/bake_steps.html">bake_steps()</a></code> is called. In every case the step is recorded
+in the survey’s pipeline, which allows you to:</p>
 <ol style="list-style-type: decimal">
-<li>Build a complete transformation pipeline</li>
-<li>Inspect and validate the steps before execution</li>
-<li>Reuse step sequences as recipes</li>
+<li>Keep a complete, documented record of the transformation
+pipeline</li>
+<li>Inspect and validate the steps at any point</li>
+<li>Reuse step sequences as recipes on new data</li>
 <li>Ensure all dependencies exist before processing</li>
 </ol>
 <div class="section level3">
@@ -338,8 +345,10 @@ the first match applies.</p>
 <h3 id="filtering-rows">Filtering rows<a class="anchor" aria-label="anchor" href="#filtering-rows"></a>
 </h3>
 <p>Use <code><a href="../reference/step_filter.html">step_filter()</a></code> to subset rows based on logical
-conditions. Multiple conditions are combined with AND. Like other steps,
-filters are lazy by default.</p>
+conditions. Multiple conditions are combined with AND. Unlike
+compute/recode/join, filters are <strong>always deferred</strong>:
+because dropping rows changes the sampling design, they only apply when
+<code><a href="../reference/bake_steps.html">bake_steps()</a></code> is called.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Keep only working-age individuals (14+)</span></span>
 <span><span class="va">svy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/step_filter.html">step_filter</a></span><span class="op">(</span><span class="va">svy</span>,</span>
@@ -360,6 +369,10 @@ filters are lazy by default.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Remove intermediate calculations</span></span>
 <span><span class="va">svy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/step_remove.html">step_remove</a></span><span class="op">(</span><span class="va">svy</span>, <span class="va">working_age</span>, <span class="va">mean_income_dept</span><span class="op">)</span></span></code></pre></div>
+<p>Both <code><a href="../reference/step_rename.html">step_rename()</a></code> and <code><a href="../reference/step_remove.html">step_remove()</a></code> follow
+the lazy-processing setting (<code><a href="../reference/lazy_default.html">lazy_default()</a></code>,
+<code>TRUE</code> by default), so they are deferred until
+<code><a href="../reference/bake_steps.html">bake_steps()</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="joining-external-data">Joining external data<a class="anchor" aria-label="anchor" href="#joining-external-data"></a>
@@ -396,16 +409,19 @@ lookup as an example:</p>
 <div class="section level3">
 <h3 id="applying-steps-bake">Applying steps (bake)<a class="anchor" aria-label="anchor" href="#applying-steps-bake"></a>
 </h3>
-<p>Call <code><a href="../reference/bake_steps.html">bake_steps()</a></code> to execute all pending
-transformations:</p>
+<p>Call <code><a href="../reference/bake_steps.html">bake_steps()</a></code> to materialize the deferred steps
+(filters, renames, removals) and update the sampling design. Steps that
+already executed eagerly are skipped, so there is never double execution
+— calling <code><a href="../reference/bake_steps.html">bake_steps()</a></code> is safe and idempotent, and it
+remains part of the recommended flow:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">svy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bake_steps.html">bake_steps</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">svy</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    region  dpto    ID  nper  anio   mes   nom_dpto sex_code   age   e30 e51_2</span></span>
+<span><span class="co">#&gt;    region    ID  nper  anio   mes  dpto   nom_dpto sex_code   age   e30 e51_2</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;char&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1:      1     1 34561     1  2023     1 Montevideo        2    26     1     6</span></span>
-<span><span class="co">#&gt; 2:      1     1 34561     2  2023     1 Montevideo        2    45     7     6</span></span>
-<span><span class="co">#&gt; 3:      1     1 34678     1  2023     1 Montevideo        1    48     1     6</span></span>
+<span><span class="co">#&gt; 1:      1 34561     1  2023     1     1 Montevideo        2    26     1     6</span></span>
+<span><span class="co">#&gt; 2:      1 34561     2  2023     1     1 Montevideo        2    45     7     6</span></span>
+<span><span class="co">#&gt; 3:      1 34678     1  2023     1     1 Montevideo        1    48     1     6</span></span>
 <span><span class="co">#&gt;    POBPCOAC SUBEMPLEO     HT11 pobre06 W_ANO ht11_thousands employed</span></span>
 <span><span class="co">#&gt;       &lt;int&gt;     &lt;int&gt;    &lt;num&gt;   &lt;int&gt; &lt;int&gt;          &lt;num&gt;    &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:        2         0  55429.6       0    57        55.4296        1</span></span>
@@ -719,7 +735,9 @@ their data:</p>
 workflow:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check current lazy-processing setting</span></span>
-<span><span class="fu"><a href="../reference/lazy_default.html">lazy_default</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># TRUE = steps recorded but not executed immediately</span></span>
+<span><span class="co"># (only affects step_rename/step_remove; compute/recode/join are always</span></span>
+<span><span class="co"># eager, and filter/validate are always deferred)</span></span>
+<span><span class="fu"><a href="../reference/lazy_default.html">lazy_default</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># TRUE = rename/remove deferred until bake_steps()</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span></span>
 <span><span class="co"># Check data-copy behavior</span></span>
@@ -731,7 +749,7 @@ workflow:</p>
 <span><span class="co">#&gt; [1] "data.table" "tidyverse"  "dplyr"</span></span></code></pre></div>
 <p>You can modify settings for the current session:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Disable lazy evaluation (execute steps immediately)</span></span>
+<code class="sourceCode R"><span><span class="co"># Apply rename/remove steps immediately instead of deferring them</span></span>
 <span><span class="fu"><a href="../reference/set_lazy_processing.html">set_lazy_processing</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Modify inplace (faster, but modifies original data)</span></span>

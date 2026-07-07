@@ -49,8 +49,8 @@ step_compute(
 - .level:
 
   For RotativePanelSurvey objects (default `"auto"`), specifies the
-  level where computations are applied: `"implantation"`, `"follow_up"`,
-  `"quarter"`, `"month"`, or `"auto"`
+  level where computations are applied: `"auto"` (both),
+  `"implantation"`, or `"follow_up"`
 
 - use_copy:
 
@@ -71,12 +71,18 @@ afterwards is safe: executed steps are skipped, so expressions are never
 applied twice.
 
 **Expression processing:** Expressions are evaluated using data.table's
-`:=` operator. Variable dependencies are detected automatically via
-[`all.vars()`](https://rdrr.io/r/base/allnames.html). Missing variables
-are caught before execution.
+`:=` operator. Within a single call, expressions are evaluated
+sequentially, so a later expression can reference variables created by
+earlier ones (mutate semantics):
+`step_compute(svy, horamen = f85 * 4.3, yhora = pt4 / horamen)`.
+Variable dependencies are detected automatically via
+[`all.vars()`](https://rdrr.io/r/base/allnames.html); names created by
+earlier expressions of the same call are not reported as dependencies.
+Missing variables are caught before execution.
 
 **Grouped computations:** Use `.by` to compute aggregated values (e.g.,
-group means) that are automatically joined back to the data.
+group means) broadcast to all rows of each group. Row order is
+preserved.
 
 For RotativePanelSurvey objects, `.level` controls where computations
 are applied:
@@ -97,12 +103,15 @@ to execute all pending steps
 Other steps:
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md),
 [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md),
+[`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md),
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),
 [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md),
+[`step_quantile()`](https://metasurveyr.github.io/metasurvey/reference/step_quantile.md),
 [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md),
 [`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md),
 [`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md),
 [`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md),
+[`step_weight()`](https://metasurveyr.github.io/metasurvey/reference/step_weight.md),
 [`view_graph()`](https://metasurveyr.github.io/metasurvey/reference/view_graph.md)
 
 ## Examples

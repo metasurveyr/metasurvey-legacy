@@ -29,6 +29,7 @@
 <url><loc>https://metasurveyr.github.io/metasurvey/articles/shiny-explorer.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/articles/stata-transpiler-es.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/articles/stata-transpiler.html</loc></url>
+<url><loc>https://metasurveyr.github.io/metasurvey/articles/weightflow-integration.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/articles/workflows-and-estimation-es.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/articles/workflows-and-estimation.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/authors.html</loc></url>
@@ -180,13 +181,16 @@
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/set_version.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/set_workflow_backend.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/show_engines.html</loc></url>
+<url><loc>https://metasurveyr.github.io/metasurvey/reference/step_collapse.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_compute.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_filter.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_join.html</loc></url>
+<url><loc>https://metasurveyr.github.io/metasurvey/reference/step_quantile.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_recode.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_remove.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_rename.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/step_validate.html</loc></url>
+<url><loc>https://metasurveyr.github.io/metasurvey/reference/step_weight.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/steps_to_recipe.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/strip_stata_comments.html</loc></url>
 <url><loc>https://metasurveyr.github.io/metasurvey/reference/survey_empty.html</loc></url>

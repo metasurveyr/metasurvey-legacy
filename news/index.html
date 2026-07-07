@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -95,9 +96,50 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="metasurvey-020">metasurvey 0.2.0<a class="anchor" aria-label="anchor" href="#metasurvey-020"></a></h2>
+<div class="section level3">
+<h3 id="migration-notes-fromx-0-2-0">Migration notes (from 0.0.x)<a class="anchor" aria-label="anchor" href="#migration-notes-fromx-0-2-0"></a></h3>
+<p>Together with 0.1.0 (below), this release changes two behaviors you may rely on:</p>
+<ol style="list-style-type: decimal"><li>
+<strong>Steps execute exactly once.</strong> <code><a href="../reference/step_compute.html">step_compute()</a></code>/<code><a href="../reference/step_recode.html">step_recode()</a></code>/ <code><a href="../reference/step_join.html">step_join()</a></code> run eagerly on creation and <code><a href="../reference/bake_steps.html">bake_steps()</a></code> no longer re-executes them. If your code depended on the double execution (non-idempotent expressions like <code>age = age * 2</code> yielding <code>age * 4</code>), results change — the new values are the correct ones. <code><a href="../reference/bake_steps.html">bake_steps()</a></code> is still part of the flow: it materializes deferred steps (<code>step_filter</code>, <code>step_validate</code>, lazy <code>step_remove</code>/<code>step_rename</code>) and refreshes the design.</li>
+<li>
+<strong><code><a href="../reference/step_recode.html">step_recode()</a></code> is first-match-wins</strong> (<code>case_when()</code> semantics). If you ordered overlapping conditions for the old last-match behavior, reverse them.</li>
+</ol></div>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/step_compute.html">step_compute()</a></code> chains expressions within a single call (<code>mutate()</code> semantics): later expressions see columns created by earlier ones, with all-or-nothing evaluation and internal names excluded from <code>depends_on</code> (<a href="https://github.com/metasurveyr/metasurvey/issues/215" class="external-link">#215</a>).</li>
+<li>
+<code><a href="../reference/workflow.html">workflow()</a></code> supports per-call <code>domain =</code> for subpopulation estimation via <code><a href="https://rdrr.io/pkg/survey/man/subset.survey.design.html" class="external-link">survey::subset.survey.design()</a></code> — e.g. <code>svymean(~pea, domain = e27 &gt;= 14)</code> — combinable with <code>level =</code> and <code>svyby</code> grouping (<a href="https://github.com/metasurveyr/metasurvey/issues/219" class="external-link">#219</a>).</li>
+<li>
+<code><a href="../reference/workflow.html">workflow()</a></code> accepts a <code>RotativePanelSurvey</code> with <code>estimation_type = "annual:mean_of_months"</code>: the UMAD annual estimator (mean of monthly estimates with combined SEs), delegating to <code>workflow_pool()</code> (<a href="https://github.com/metasurveyr/metasurvey/issues/223" class="external-link">#223</a>).</li>
+<li>New <code><a href="../reference/step_quantile.html">step_quantile()</a></code> (weighted quantiles, optional <code>.by</code>) and <code><a href="../reference/step_collapse.html">step_collapse()</a></code> (one row per household within the pipeline) (<a href="https://github.com/metasurveyr/metasurvey/issues/222" class="external-link">#222</a>).</li>
+<li>
+<code>svyratio</code> results in <code><a href="../reference/workflow.html">workflow()</a></code> now expose clean <code>variable</code>/<code>denominator</code> columns instead of packed strings (<a href="https://github.com/metasurveyr/metasurvey/issues/224" class="external-link">#224</a>).</li>
+<li>New input-validation layer on exported functions with actionable error messages; <code><a href="../reference/workflow.html">workflow()</a></code> auto-wraps a single Survey in <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> (<a href="https://github.com/metasurveyr/metasurvey/issues/218" class="external-link">#218</a>).</li>
+<li>Design RFC for the <code>metatable</code> lazy plan/optimizer engine in <code>design/metatable-rfc.md</code> (<a href="https://github.com/metasurveyr/metasurvey/issues/214" class="external-link">#214</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
+<ul><li>
+<code>step_compute(.by =)</code> no longer reorders rows, leaves a residual key, or moves grouping columns to the front (<a href="https://github.com/metasurveyr/metasurvey/issues/221" class="external-link">#221</a>).</li>
+<li>
+<code><a href="../reference/step_remove.html">step_remove()</a></code> resolves bare symbols as columns before the calling environment: a local variable named like a column can no longer silently remove the wrong column (<a href="https://github.com/metasurveyr/metasurvey/issues/216" class="external-link">#216</a>).</li>
+<li>
+<code>.level = "quarter"/"month"</code> now fail clearly via <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code> instead of silently registering zero steps (<a href="https://github.com/metasurveyr/metasurvey/issues/217" class="external-link">#217</a>).</li>
+<li>
+<code><a href="../reference/load_survey.html">load_survey()</a></code> cache messages respect <code>options(metasurvey.verbose)</code> (<a href="https://github.com/metasurveyr/metasurvey/issues/224" class="external-link">#224</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-0-2-0">Internal<a class="anchor" aria-label="anchor" href="#internal-0-2-0"></a></h3>
+<ul><li>15 regression tests derived from mutation testing (recipe round-trips with step content, <code>.by</code> recompute, replicate validation, CI fallback) raise the suite to 3,340 passing tests (<a href="https://github.com/metasurveyr/metasurvey/issues/220" class="external-link">#220</a>).</li>
+<li>Pre-existing indentation lints cleaned in <code>R/utils.R</code> and <code>inst/shiny/R/ui_components.R</code> (<a href="https://github.com/metasurveyr/metasurvey/issues/225" class="external-link">#225</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="metasurvey-010">metasurvey 0.1.0<a class="anchor" aria-label="anchor" href="#metasurvey-010"></a></h2>
 <div class="section level3">
@@ -109,6 +151,9 @@
 <div class="section level3">
 <h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
 <ul><li>
+<code><a href="../reference/step_weight.html">step_weight()</a></code>: integrates the <code>weightflow</code> package into the step pipeline. Accepts a <code>weighting_spec</code> object for nonresponse adjustment, calibration (raking, post-stratification, GREG), and weight trimming — all as a lazy, reproducible step.</li>
+<li>New vignette: “Survey Weighting with weightflow” documents the integration.</li>
+<li>
 <code><a href="../reference/step_recode.html">step_recode()</a></code> accepts non-character RHS values (numeric, integer, logical); previously anything but character failed with an internal <code>vapply</code> error.</li>
 </ul></div>
 <div class="section level3">
@@ -134,6 +179,10 @@
 <code>step_compute(.by=)</code>: grouped computations now survive <code><a href="../reference/bake_steps.html">bake_steps()</a></code>. Previously the <code>.by</code> parameter was not stored in the <code>Step</code> object, so re-baking would re-execute without grouping, producing wrong results.</li>
 <li>
 <code>compute()</code> with <code>.by</code>: fixed <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> creating <code>.x</code>/<code>.y</code> suffix columns when the target column already existed in the data (e.g., during re-baking).</li>
+<li>
+<code><a href="../reference/bake_recipes.html">bake_recipes()</a></code>: fixed global state leak where <code>lazy_processing</code> option was not restored when baking multiple recipes, causing subsequent <code>step_rename</code>/<code>step_remove</code> calls to fail.</li>
+<li>
+<code><a href="../reference/filter_recipes.html">filter_recipes()</a></code>: added missing <code>topic</code> parameter, fixing <code><a href="../reference/harmonize.html">harmonize()</a></code> example failures.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -580,7 +629,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="internal-0-0-6">Internal<a class="anchor" aria-label="anchor" href="#internal-0-0-6"></a></h3>
-<ul><li>Added <code>.claude/</code> directory with development agents and commands for code review, testing, documentation auditing, and rOpenSci preparation.</li>
+<ul><li>Added development agents and commands for code review, testing, documentation auditing, and rOpenSci preparation.</li>
 </ul></div>
 </div>
     <div class="section level2">

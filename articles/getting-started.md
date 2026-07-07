@@ -111,13 +111,24 @@ head(get_data(svy), 3)
 
 ## Working with Steps
 
-Steps are **lazy by default**: they are recorded but not executed until
+Data-transforming steps
+([`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
+[`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md),
+[`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md))
+**execute immediately** when created:
+[`get_data()`](https://metasurveyr.github.io/metasurvey/reference/get_data.md)
+right after the call already shows the new columns. Steps that affect
+the sampling design
+([`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),
+[`step_validate()`](https://metasurveyr.github.io/metasurvey/reference/step_validate.md))
+are **deferred** and only materialize when
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-is called. This allows you to:
+is called. In every case the step is recorded in the survey’s pipeline,
+which allows you to:
 
-1.  Build a complete transformation pipeline
-2.  Inspect and validate the steps before execution
-3.  Reuse step sequences as recipes
+1.  Keep a complete, documented record of the transformation pipeline
+2.  Inspect and validate the steps at any point
+3.  Reuse step sequences as recipes on new data
 4.  Ensure all dependencies exist before processing
 
 ### Computing new variables
@@ -201,7 +212,11 @@ svy <- step_recode(svy, gender,
 Use
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md)
 to subset rows based on logical conditions. Multiple conditions are
-combined with AND. Like other steps, filters are lazy by default.
+combined with AND. Unlike compute/recode/join, filters are **always
+deferred**: because dropping rows changes the sampling design, they only
+apply when
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+is called.
 
 ``` r
 
@@ -231,6 +246,15 @@ Remove variables that are no longer needed:
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
+
+Both
+[`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md)
+and
+[`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md)
+follow the lazy-processing setting
+([`lazy_default()`](https://metasurveyr.github.io/metasurvey/reference/lazy_default.md),
+`TRUE` by default), so they are deferred until
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
 
 ### Joining external data
 
@@ -268,17 +292,21 @@ svy <- step_join(svy,
 
 Call
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-to execute all pending transformations:
+to materialize the deferred steps (filters, renames, removals) and
+update the sampling design. Steps that already executed eagerly are
+skipped, so there is never double execution — calling
+[`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+is safe and idempotent, and it remains part of the recommended flow:
 
 ``` r
 
 svy <- bake_steps(svy)
 head(get_data(svy), 3)
-#>    region  dpto    ID  nper  anio   mes   nom_dpto sex_code   age   e30 e51_2
+#>    region    ID  nper  anio   mes  dpto   nom_dpto sex_code   age   e30 e51_2
 #>     <int> <int> <int> <int> <int> <int>     <char>    <int> <int> <int> <int>
-#> 1:      1     1 34561     1  2023     1 Montevideo        2    26     1     6
-#> 2:      1     1 34561     2  2023     1 Montevideo        2    45     7     6
-#> 3:      1     1 34678     1  2023     1 Montevideo        1    48     1     6
+#> 1:      1 34561     1  2023     1     1 Montevideo        2    26     1     6
+#> 2:      1 34561     2  2023     1     1 Montevideo        2    45     7     6
+#> 3:      1 34678     1  2023     1     1 Montevideo        1    48     1     6
 #>    POBPCOAC SUBEMPLEO     HT11 pobre06 W_ANO ht11_thousands employed
 #>       <int>     <int>    <num>   <int> <int>          <num>    <num>
 #> 1:        2         0  55429.6       0    57        55.4296        1
@@ -576,7 +604,9 @@ workflow:
 ``` r
 
 # Check current lazy-processing setting
-lazy_default() # TRUE = steps recorded but not executed immediately
+# (only affects step_rename/step_remove; compute/recode/join are always
+# eager, and filter/validate are always deferred)
+lazy_default() # TRUE = rename/remove deferred until bake_steps()
 #> [1] TRUE
 
 # Check data-copy behavior
@@ -592,7 +622,7 @@ You can modify settings for the current session:
 
 ``` r
 
-# Disable lazy evaluation (execute steps immediately)
+# Apply rename/remove steps immediately instead of deferring them
 set_lazy_processing(FALSE)
 
 # Modify inplace (faster, but modifies original data)

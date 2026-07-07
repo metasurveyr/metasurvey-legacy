@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@
     <li><a class="dropdown-item" href="../articles/self-hosting.html">Self-Hosting</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Interoperability</h6></li>
+    <li><a class="dropdown-item" href="../articles/weightflow-integration.html">Weighting with weightflow</a></li>
     <li><a class="dropdown-item" href="../articles/stata-transpiler.html">STATA Transpiler</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
@@ -235,7 +236,7 @@
       </dl></div><div class="section level2">
       <h2 id="steps">Steps<a class="anchor" aria-label="anchor" href="#steps"></a></h2>
 
-      <div class="section-desc"><p>Lazy transformations on surveys</p></div>
+      <div class="section-desc"><p>Reproducible transformations on surveys</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -283,6 +284,27 @@
 
         </dt>
         <dd>Join external data into survey (step)</dd>
+
+        <dt>
+
+          <code><a href="step_weight.html">step_weight()</a></code>
+
+        </dt>
+        <dd>Apply survey weights from a weightflow specification</dd>
+
+        <dt>
+
+          <code><a href="step_quantile.html">step_quantile()</a></code>
+
+        </dt>
+        <dd>Weighted quantile groups (step)</dd>
+
+        <dt>
+
+          <code><a href="step_collapse.html">step_collapse()</a></code>
+
+        </dt>
+        <dd>Collapse survey data to one row per group (step)</dd>
 
         <dt>
 

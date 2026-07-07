@@ -55,6 +55,8 @@ Real-world examples with ECH data
   Compatibility](https://metasurveyr.github.io/metasurvey/articles/international-surveys.md):
 - [Poverty and Inequality with
   convey](https://metasurveyr.github.io/metasurvey/articles/convey-inequality.md):
+- [Survey Weighting with
+  weightflow](https://metasurveyr.github.io/metasurvey/articles/weightflow-integration.md):
 
 ### Español
 

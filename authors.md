@@ -16,10 +16,10 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/metasurveyr/metasurvey/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/metasurveyr/metasurvey/blob/fix/ci-weightflow-cran-api/inst/CITATION)
 
 Loprete M, da Silva N, Machado F (2026). *metasurvey: Reproducible
-Survey Data Processing with Step Pipelines*. R package version 0.1.0,
+Survey Data Processing with Step Pipelines*. R package version 0.2.0,
 <https://github.com/metasurveyr/metasurvey>.
 
     @Manual{,
@@ -27,5 +27,5 @@ Survey Data Processing with Step Pipelines*. R package version 0.1.0,
       author = {Mauro Loprete and Natalia {da Silva} and Fabricio Machado},
       year = {2026},
       url = {https://github.com/metasurveyr/metasurvey},
-      note = {R package version 0.1.0},
+      note = {R package version 0.2.0},
     }
