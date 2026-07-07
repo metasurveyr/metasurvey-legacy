@@ -1,22 +1,28 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-The NOTE is "New submission" plus a URL timeout for the INE Uruguay
-government website (see below).
+0 errors | 0 warnings | 0 notes
 
 ## Resubmission
 
-This is a resubmission. Changes since the previous version (0.0.22):
+This is a resubmission. Changes since the previous CRAN version (0.0.21):
 
-* `workflow()` now supports `conf.level` inside individual estimation calls
-  (e.g., `svymean(~x, na.rm = TRUE, conf.level = 0.80)`), overriding the
-  `workflow()` default for that estimation.
-* New `harmonize()` function for automatic recipe-based survey harmonization.
-* New `convey-inequality` vignette for poverty and inequality estimation.
-* Replaced `\dontrun{}` with `\donttest{}` in `load_survey_example()` and
-  `harmonize()` examples.
-* Fixed global state leaks in test-harmonize.R (backend restored via `on.exit()`).
+### 0.0.24
+* **Breaking**: `workflow()` parameter `conf.level` renamed to `level` to
+  match `stats::confint()` and `survey` package conventions.
+* Fixed `step_compute(.by=)` not surviving `bake_steps()` (grouped
+  computations lost the `.by` parameter).
+* Fixed `bake_recipes()` leaking `lazy_processing = FALSE` when baking
+  multiple recipes.
+* Added missing `topic` parameter to `filter_recipes()`.
+
+### 0.0.23
+* `workflow()` now supports per-call confidence level overrides
+  (e.g., `svymean(~x, conf.level = 0.80)`).
+
+### 0.0.22
+* `workflow()` gains a `conf.level` parameter (default `0.95`).
+* `workflow()` output now includes `variable` and `evaluate` columns
+  across all estimation types, with cleaner `svyby` group handling.
 
 ## Test environments
 
@@ -26,12 +32,7 @@ This is a resubmission. Changes since the previous version (0.0.22):
 
 ## Notes
 
-* This is a new submission (first CRAN release).
-* Package contains 3,024 tests with 0 failures.
+* Package contains 3,013 tests with 0 failures.
 * The `eph`, `PNADcIBGE`, and `ipumsr` packages in Suggests are used
   conditionally in the international-surveys vignette; sections are
   skipped when these packages are not installed.
-* URL `https://www.gub.uy/instituto-nacional-estadistica/` may
-  trigger a timeout NOTE. This is the official website of Uruguay's
-  National Statistics Institute (INE) -- a valid government URL that
-  is occasionally slow to respond from outside Latin America.
