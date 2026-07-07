@@ -1,6 +1,19 @@
 # Helper functions for tests
 # Creates a minimal Survey object for testing purposes
 
+# Dual-engine oracle (design/metatable-rfc.md, section 5): the CI job
+# with MS_TEST_ENGINE=metatable runs the whole suite with the metatable
+# engine. Unset (or empty, as in a skipped matrix entry) falls back to
+# the package default. Tests that set the engine themselves keep their
+# own save/restore on top of this baseline.
+local({
+  ms_test_engine <- Sys.getenv("MS_TEST_ENGINE", "data.table")
+  if (!nzchar(ms_test_engine)) {
+    ms_test_engine <- "data.table"
+  }
+  options(metasurvey.engine = ms_test_engine)
+})
+
 make_test_survey <- function(n = 10) {
   set.seed(42)
   df <- data.table::data.table(
