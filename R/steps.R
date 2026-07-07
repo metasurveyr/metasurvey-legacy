@@ -95,6 +95,7 @@ recode <- function(svy, new_var, ...,
                    .copy = use_copy_default(),
                    .to_factor = FALSE,
                    lazy = lazy_default()) {
+  .penv <- parent.frame()
   if (!lazy) {
     if (!.copy) {
       .data <- svy$get_data()
@@ -104,24 +105,23 @@ recode <- function(svy, new_var, ...,
     }
 
     .exprs <- substitute(list(...))
-    .exprs <- eval(.exprs, .data, parent.frame())
+    .exprs <- eval(.exprs, .data, .penv)
 
     if (!is(.exprs[[1]], "formula")) {
       .exprs <- .exprs[[1]]
     }
 
-    .labels <- c(
-      .default,
-      unique(
-        vapply(
-          X = seq_along(.exprs),
-          FUN = function(x) {
-            .exprs[[x]][[3]]
-          },
-          FUN.VALUE = character(1)
-        )
-      )
+    # RHS values keep their native type (character, numeric, integer,
+    # logical); coercion to character happens only for factor levels
+    .values <- lapply(
+      seq_along(.exprs),
+      function(x) eval(.exprs[[x]][[3]], .data, .penv)
     )
+
+    .labels <- unique(c(
+      as.character(.default),
+      unlist(lapply(.values, as.character))
+    ))
 
 
 
@@ -143,23 +143,24 @@ recode <- function(svy, new_var, ...,
       ]
     }
 
-    lapply(
-      FUN = function(.expr) {
-        .filter <- .exprs[[.expr]][[2]]
-        .label <- .exprs[[.expr]][[3]]
-
-        .data[
-          eval(
-            .filter,
-            .data,
-            parent.frame()
-          ),
-          (new_var) := .label
-        ]
-        invisible(NULL)
-      },
-      X = seq_along(.exprs)
-    )
+    # First matching condition wins (case_when semantics): rows already
+    # assigned by an earlier condition are not overwritten
+    .assigned <- rep(FALSE, nrow(.data))
+    for (.expr in seq_along(.exprs)) {
+      .filter <- eval(.exprs[[.expr]][[2]], .data, .penv)
+      .rows <- which(.filter & !.assigned)
+      if (length(.rows) > 0) {
+        .value <- .values[[.expr]]
+        if (length(.value) == nrow(.data)) {
+          .value <- .value[.rows]
+        }
+        if (.to_factor) {
+          .value <- as.character(.value)
+        }
+        .data[.rows, (new_var) := .value]
+        .assigned[.rows] <- TRUE
+      }
+    }
 
     if (!.copy) {
       return(set_data(svy, .data))
@@ -253,10 +254,10 @@ filter_rows <- function(svy, ..., .by = NULL,
 #'   with new computed variables and the step added to the history
 #'
 #' @details
-#' **Lazy evaluation (default):** By default, steps are recorded but
-#' **not executed** until [bake_steps()] is called. This allows building
-#' a full pipeline before materializing any changes. Set
-#' `options(metasurvey.lazy_processing = FALSE)` to apply steps immediately.
+#' **Execution model:** The computation is applied immediately when the
+#' step is created and the step is recorded as already executed
+#' (`bake = TRUE`). Calling [bake_steps()] afterwards is safe: executed
+#' steps are skipped, so expressions are never applied twice.
 #'
 #' **Expression processing:**
 #' Expressions are evaluated using data.table's `:=` operator.
@@ -357,7 +358,8 @@ step_compute <- function(
         default_engine = get_engine(),
         depends_on = depends_on,
         comment = comment,
-        by_vars = .by
+        by_vars = .by,
+        bake = TRUE
       )
 
       if (validate_step(svy, step)) {
@@ -395,7 +397,8 @@ step_compute <- function(
       default_engine = get_engine(),
       comment = comment,
       depends_on = depends_on,
-      by_vars = .by
+      by_vars = .by,
+      bake = TRUE
     )
 
     svy$add_step(step)
@@ -523,13 +526,15 @@ step_compute_rotative <- function(
 #'   with the new recoded variable and the step added to the history
 #'
 #' @details
-#' **Lazy evaluation (default):** By default, steps are recorded but
-#' **not executed** until [bake_steps()] is called. This allows building
-#' a full pipeline before materializing any changes.
+#' **Execution model:** The recoding is applied immediately when the
+#' step is created and the step is recorded as already executed
+#' (`bake = TRUE`). Calling [bake_steps()] afterwards is safe: executed
+#' steps are skipped, so rules are never applied twice.
 #'
 #' **Condition evaluation:** Conditions are two-sided formulas evaluated
 #' in order. The first matching condition determines the assigned value.
-#' If no condition matches, `.default` is used.
+#' If no condition matches, `.default` is used. Replacement values keep
+#' their native type (character, numeric, integer or logical).
 #'
 #' Condition examples:
 #' - Simple: `variable == 1 ~ "Yes"`
@@ -695,7 +700,8 @@ step_recode_survey <- function(
       svy_before = NULL,
       default_engine = get_engine(),
       depends_on = depends_on,
-      comment = comment
+      comment = comment,
+      bake = TRUE
     )
     .svy_after$add_step(step)
     return(.svy_after)
@@ -718,7 +724,8 @@ step_recode_survey <- function(
       svy_before = NULL,
       default_engine = get_engine(),
       depends_on = depends_on,
-      comment = comment
+      comment = comment,
+      bake = TRUE
     )
     svy$add_step(step)
     invisible(svy)
@@ -861,8 +868,11 @@ get_comments <- function(steps) {
 #' Survey or RotativePanelSurvey.
 #'
 #' @details
-#' **Lazy evaluation (default):** By default, steps are recorded but
-#' **not executed** until [bake_steps()] is called.
+#' **Execution model:** The join is applied immediately when the step is
+#' created and the step is recorded as already executed (`bake = TRUE`).
+#' Calling [bake_steps()] afterwards is safe: executed steps are skipped,
+#' so the join is never applied twice (which would duplicate overlapping
+#' columns with the `.y` suffix).
 #'
 #' Supports left, inner, right, and full joins. Allows named `by`
 #' mapping (e.g., `c("id" = "code")`) or a simple character vector.
@@ -883,7 +893,8 @@ get_comments <- function(steps) {
 #' @param .copy Whether to operate on a copy (default: use_copy_default())
 #' @param use_copy `r lifecycle::badge("deprecated")` Use `.copy` instead.
 #' @param comment Optional description for the step (default `"Join step"`).
-#' @param lazy Internal. Whether to delay execution (default `lazy_default()`).
+#' @param lazy Internal. Currently ignored: the join always executes
+#'   immediately and the step is recorded as executed.
 #' @param record Internal. Whether to record the step (default `TRUE`).
 #'
 #' @return Modified survey object with the join
@@ -1081,7 +1092,9 @@ step_join <- function(
       default_engine = get_engine(),
       depends_on = depends_on,
       comment = comment,
-      bake = FALSE
+      # the merge already ran above: marking the step as baked prevents
+      # bake_steps() from re-joining and duplicating columns with ".y"
+      bake = TRUE
     )
     out$add_step(step)
   }
@@ -1236,7 +1249,7 @@ step_remove <- function(
       default_engine = get_engine(),
       depends_on = NULL,
       comment = comment,
-      bake = FALSE
+      bake = !lazy
     )
     out$add_step(step)
   }
@@ -1391,7 +1404,7 @@ step_rename <- function(
       default_engine = get_engine(),
       depends_on = NULL,
       comment = comment,
-      bake = FALSE
+      bake = !lazy
     )
     out$add_step(step)
   }
@@ -1617,7 +1630,8 @@ step_filter <- function(
     default_engine = get_engine(),
     depends_on = dependencies,
     comment = comment,
-    bake = FALSE
+    bake = FALSE,
+    by_vars = .by
   )
 
   out$add_step(step)

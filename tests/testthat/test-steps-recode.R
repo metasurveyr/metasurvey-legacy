@@ -111,3 +111,78 @@ test_that("bake_steps preserves .default and .to_factor on recode steps", {
   expect_true(is.factor(baked3$data$region_f))
   expect_false(anyNA(baked3$data$region_f))
 })
+
+test_that("step_recode accepts numeric RHS (README pea/pet pattern)", {
+  df <- data.table::data.table(POBPCOAC = 1:6, w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_recode(s, pea, POBPCOAC %in% 2:5 ~ 1, .default = 0)
+  expect_identical(s2$data$pea, c(0, 1, 1, 1, 1, 0))
+
+  # baking must not change the result
+  baked <- bake_steps(s2)
+  expect_identical(baked$data$pea, c(0, 1, 1, 1, 1, 0))
+})
+
+test_that("step_recode accepts integer and logical RHS preserving type", {
+  df <- data.table::data.table(labor_status = c(1L, 2L, 1L, 3L), w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_recode(s, employed, labor_status == 1 ~ 1L, .default = 0L)
+  expect_identical(s2$data$employed, c(1L, 0L, 1L, 0L))
+
+  s3 <- step_recode(s, is_emp, labor_status == 1 ~ TRUE, .default = FALSE)
+  expect_identical(s3$data$is_emp, c(TRUE, FALSE, TRUE, FALSE))
+})
+
+test_that("step_recode with numeric RHS and .default = NA_real_", {
+  df <- data.table::data.table(x = 1:6, w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_recode(s, grp, x <= 3 ~ 1, x > 3 ~ 2, .default = NA_real_)
+  expect_identical(s2$data$grp, c(1, 1, 1, 2, 2, 2))
+})
+
+test_that("step_recode with numeric RHS and .to_factor = TRUE", {
+  df <- data.table::data.table(x = 1:4, w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_recode(s, f, x <= 2 ~ 1, x > 2 ~ 2, .default = 0, .to_factor = TRUE)
+  expect_true(is.factor(s2$data$f))
+  expect_identical(as.character(s2$data$f), c("1", "1", "2", "2"))
+})
+
+test_that("step_recode uses first-match-wins semantics with overlapping conditions", {
+  df <- data.table::data.table(x = c(5, 15, 25), w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  # both conditions match x = 5 and x = 15: the FIRST one must win
+  s2 <- step_recode(s, cat,
+    x < 20 ~ "bajo",
+    x < 30 ~ "alto",
+    .default = "otro"
+  )
+  expect_identical(s2$data$cat, c("bajo", "bajo", "alto"))
+})
+
+test_that("step_recode does not double-apply rules on bake_steps", {
+  s <- make_test_survey()
+  s2 <- step_recode(s, age_bin,
+    age < 40 ~ "under40",
+    .default = "over40"
+  )
+  before <- data.table::copy(s2$data$age_bin)
+  baked <- bake_steps(s2)
+  expect_identical(baked$data$age_bin, before)
+  expect_true(all(vapply(s2$steps, function(st) isTRUE(st$bake), logical(1))))
+})

@@ -53,10 +53,10 @@ prevention. All computations are validated before
 execution.
 }
 \details{
-\strong{Lazy evaluation (default):} By default, steps are recorded but
-\strong{not executed} until \code{\link[=bake_steps]{bake_steps()}} is called. This allows building
-a full pipeline before materializing any changes. Set
-\code{options(metasurvey.lazy_processing = FALSE)} to apply steps immediately.
+\strong{Execution model:} The computation is applied immediately when the
+step is created and the step is recorded as already executed
+(\code{bake = TRUE}). Calling \code{\link[=bake_steps]{bake_steps()}} afterwards is safe: executed
+steps are skipped, so expressions are never applied twice.
 
 \strong{Expression processing:}
 Expressions are evaluated using data.table's \verb{:=} operator.

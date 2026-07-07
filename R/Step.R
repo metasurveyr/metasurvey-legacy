@@ -218,6 +218,9 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
     } else if (is.list(step$exprs)) {
       filter_args <- c(filter_args, step$exprs)
     }
+    if (!is.null(step$by_vars)) {
+      filter_args$.by <- step$by_vars
+    }
     updated_svy <- do.call(filter_rows, filter_args)
     return(updated_svy)
   }
