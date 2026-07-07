@@ -58,8 +58,7 @@ Defaults to FALSE}
 
 \item{.level}{For RotativePanelSurvey objects (default \code{"auto"}),
 specifies the level where recoding is applied:
-\code{"implantation"}, \code{"follow_up"}, \code{"quarter"},
-\code{"month"}, or \code{"auto"}}
+\code{"auto"} (both), \code{"implantation"}, or \code{"follow_up"}}
 
 \item{use_copy}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{.copy} instead.}
 }
@@ -74,13 +73,15 @@ expressions are validated and optimized for
 efficient execution.
 }
 \details{
-\strong{Lazy evaluation (default):} By default, steps are recorded but
-\strong{not executed} until \code{\link[=bake_steps]{bake_steps()}} is called. This allows building
-a full pipeline before materializing any changes.
+\strong{Execution model:} The recoding is applied immediately when the
+step is created and the step is recorded as already executed
+(\code{bake = TRUE}). Calling \code{\link[=bake_steps]{bake_steps()}} afterwards is safe: executed
+steps are skipped, so rules are never applied twice.
 
 \strong{Condition evaluation:} Conditions are two-sided formulas evaluated
 in order. The first matching condition determines the assigned value.
-If no condition matches, \code{.default} is used.
+If no condition matches, \code{.default} is used. Replacement values keep
+their native type (character, numeric, integer or logical).
 
 Condition examples:
 \itemize{
@@ -129,12 +130,15 @@ get_data(svy)
 Other steps: 
 \code{\link{bake_steps}()},
 \code{\link{get_steps}()},
+\code{\link{step_collapse}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},
 \code{\link{step_join}()},
+\code{\link{step_quantile}()},
 \code{\link{step_remove}()},
 \code{\link{step_rename}()},
 \code{\link{step_validate}()},
+\code{\link{step_weight}()},
 \code{\link{view_graph}()}
 }
 \concept{steps}

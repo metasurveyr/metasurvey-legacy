@@ -40,7 +40,8 @@ from \code{svy} and \code{x} respectively. Defaults to c("", ".y")}
 
 \item{use_copy}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{.copy} instead.}
 
-\item{lazy}{Internal. Whether to delay execution (default \code{lazy_default()}).}
+\item{lazy}{Internal. Currently ignored: the join always executes
+immediately and the step is recorded as executed.}
 
 \item{record}{Internal. Whether to record the step (default \code{TRUE}).}
 }
@@ -55,8 +56,11 @@ Creates a step that joins additional data into a
 Survey or RotativePanelSurvey.
 }
 \details{
-\strong{Lazy evaluation (default):} By default, steps are recorded but
-\strong{not executed} until \code{\link[=bake_steps]{bake_steps()}} is called.
+\strong{Execution model:} The join is applied immediately when the step is
+created and the step is recorded as already executed (\code{bake = TRUE}).
+Calling \code{\link[=bake_steps]{bake_steps()}} afterwards is safe: executed steps are skipped,
+so the join is never applied twice (which would duplicate overlapping
+columns with the \code{.y} suffix).
 
 Supports left, inner, right, and full joins. Allows named \code{by}
 mapping (e.g., \code{c("id" = "code")}) or a simple character vector.
@@ -88,12 +92,15 @@ s3 <- bake_steps(s3)
 Other steps: 
 \code{\link{bake_steps}()},
 \code{\link{get_steps}()},
+\code{\link{step_collapse}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},
+\code{\link{step_quantile}()},
 \code{\link{step_recode}()},
 \code{\link{step_remove}()},
 \code{\link{step_rename}()},
 \code{\link{step_validate}()},
+\code{\link{step_weight}()},
 \code{\link{view_graph}()}
 }
 \concept{steps}

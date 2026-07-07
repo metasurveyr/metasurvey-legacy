@@ -98,5 +98,8 @@ do_files_iecon/
 example-data/
 metaSurvey.Rproj
 
+
+slides/*
+
 # testthat artifacts
 testthat-problems.rds

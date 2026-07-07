@@ -91,3 +91,31 @@ test_that(".capture_workflow handles svyby calls", {
   expect_equal(wf$call_metadata[[1]]$type, "svyby")
   expect_equal(wf$call_metadata[[1]]$by, "~group")
 })
+
+test_that(".capture_workflow handles multiple surveys with Date editions", {
+  make_month <- function(month) {
+    dt <- data.table::data.table(x = 1:5, w = rep(1, 5))
+    Survey$new(
+      data = dt, edition = sprintf("2023-%02d", month), type = "ech",
+      psu = NULL, engine = "data.table",
+      weight = add_weight(monthly = "w")
+    )
+  }
+  s1 <- make_month(1)
+  s2 <- make_month(2)
+  expect_s3_class(s1$edition, "Date")
+
+  rec <- Recipe$new(
+    id = "r1", name = "R1", user = "A", edition = "2023",
+    survey_type = "ech", default_engine = "data.table",
+    depends_on = list(), description = "R1", steps = list()
+  )
+  s1$add_recipe(rec)
+  s2$add_recipe(rec)
+
+  .calls <- quote(list(svymean(~x, na.rm = TRUE)))
+  wf <- metasurvey:::.capture_workflow(list(s1, s2), .calls, "monthly")
+
+  expect_s3_class(wf, "RecipeWorkflow")
+  expect_identical(as.character(wf$edition), as.character(s1$edition))
+})

@@ -140,7 +140,8 @@ NULL
 utils::globalVariables(c(
   "j", "se", "stat", "period", "type", "evaluate",
   # Added to silence R CMD check NOTES from NSE/data.table usage
-  "variance", "value", "new_category"
+  "variance", "value", "new_category", ".pool_k",
+  "confint_lower", "confint_upper"
 ))
 
 #' @importFrom stats as.formula confint

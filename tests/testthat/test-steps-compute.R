@@ -51,3 +51,206 @@ test_that("multiple step_compute calls chain correctly", {
   s3 <- bake_steps(s3)
   expect_true("triple" %in% names(s3$data))
 })
+
+test_that("step_compute accepts a braced multi-statement expression", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, age_c = {
+    tmp <- age - 40
+    tmp / 10
+  })
+  expect_true("age_c" %in% names(s2$data))
+  expect_equal(s2$data$age_c, (s2$data$age - 40) / 10)
+  expect_false("tmp" %in% names(s2$data))
+})
+
+test_that("step_compute does not double-execute on bake_steps (non-idempotent expr)", {
+  s <- make_test_survey()
+  original_age <- data.table::copy(get_data(s)$age)
+
+  s2 <- step_compute(s, age = age + 1)
+  expect_equal(get_data(s2)$age, original_age + 1)
+
+  s2 <- bake_steps(s2)
+  # +1, never +2: bake_steps must skip the already-executed step
+  expect_equal(get_data(s2)$age, original_age + 1)
+})
+
+test_that("step_compute records the step as already baked", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, x2 = x * 2)
+  expect_true(all(vapply(s2$steps, function(st) isTRUE(st$bake), logical(1))))
+})
+
+test_that("step_compute overwriting a column applies exactly once (deflation pattern)", {
+  df <- data.table::data.table(id = 1:4, income = c(100, 200, 300, 400), ipc = 2, w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "test",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- bake_steps(step_compute(s, income = income / ipc))
+  expect_equal(get_data(s2)$income, c(50, 100, 150, 200))
+})
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("step_compute depends_on excludes temporaries assigned in { } blocks", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    z = {
+      tmp <- x + 1
+      tmp * 2
+    },
+    .copy = TRUE
+  )
+  step <- s2$steps[[length(s2$steps)]]
+  expect_setequal(step$depends_on, "x")
+  expect_false("tmp" %in% step$depends_on)
+  expect_equal(get_data(s2)$z, (get_data(s)$x + 1) * 2)
+})
+
+test_that("collect_assigned_vars finds all assignment forms in a { } block", {
+  e <- quote({
+    a <- x + 1
+    b <- a * 2
+    d <<- b + zz
+    b
+  })
+  expect_setequal(metasurvey:::collect_assigned_vars(e), c("a", "b", "d"))
+  expect_setequal(
+    setdiff(all.vars(e), metasurvey:::collect_assigned_vars(e)),
+    c("x", "zz")
+  )
+})
+
+test_that("step_compute with .by recomputes an existing column without .x/.y suffixes", {
+  s <- make_test_survey()
+  dat_before <- data.table::copy(get_data(s))
+  # "y" already exists: without the pre-merge column drop, merge()
+  # would produce y.x/y.y suffixes instead of overwriting
+  s2 <- step_compute(s, y = max(income), .by = "region", .copy = TRUE)
+  dat <- get_data(s2)
+  expect_true("y" %in% names(dat))
+  expect_false(any(grepl("^y\\.(x|y)$", names(dat))))
+  expected <- dat_before[, list(exp_y = max(income)), by = "region"]
+  merged <- merge(dat_before[, list(id, region)], expected, by = "region")
+  expect_equal(dat[order(id)]$y, merged[order(id)]$exp_y)
+})
+
+# --- Chained expressions in a single call (#215) ---
+
+test_that("step_compute chains expressions within a single call", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    horamen = age * 4.3,
+    yhora = income / horamen
+  )
+  d <- get_data(s2)
+  expect_equal(d$horamen, d$age * 4.3)
+  expect_equal(d$yhora, d$income / (d$age * 4.3))
+})
+
+test_that("step_compute chained expressions shadow existing columns", {
+  s <- make_test_survey()
+  original_age <- data.table::copy(get_data(s)$age)
+  s2 <- step_compute(
+    s,
+    age = age * 2,
+    age_next = age + 1
+  )
+  d <- get_data(s2)
+  expect_equal(d$age, original_age * 2)
+  # age_next must see the *updated* age, not the original column
+  expect_equal(d$age_next, original_age * 2 + 1)
+})
+
+test_that("step_compute chain fails all-or-nothing (no partial state)", {
+  s <- make_test_survey()
+  cols_before <- names(get_data(s))
+  expect_error(
+    step_compute(s, a = age * 2, b = nonexistent_column + a),
+    "not in the survey|not found"
+  )
+  expect_identical(names(get_data(s)), cols_before)
+})
+
+test_that("step_compute chains expressions with .by", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    mean_income = mean(income),
+    income_dev = income - mean_income,
+    .by = "region"
+  )
+  d <- get_data(s2)
+  expected_mean <- stats::ave(d$income, d$region)
+  expect_equal(d$mean_income, expected_mean)
+  expect_equal(d$income_dev, d$income - expected_mean)
+})
+
+test_that("depends_on excludes names created earlier in the same call", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    horamen = age * 4.3,
+    yhora = income / horamen
+  )
+  step <- s2$steps[[length(s2$steps)]]
+  expect_true(all(c("age", "income") %in% step$depends_on))
+  expect_false("horamen" %in% step$depends_on)
+})
+
+test_that("depends_on keeps the real dependency when overwriting a column", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, age = age * 2)
+  step <- s2$steps[[length(s2$steps)]]
+  expect_true("age" %in% step$depends_on)
+})
+
+test_that("chained step_compute does not re-execute on bake_steps", {
+  s <- make_test_survey()
+  original_age <- data.table::copy(get_data(s)$age)
+  s2 <- step_compute(s, age = age + 1, age_lead = age + 1)
+  s2 <- bake_steps(s2)
+  d <- get_data(s2)
+  expect_equal(d$age, original_age + 1)
+  expect_equal(d$age_lead, original_age + 2)
+})
+
+# --- Row order and key preservation with .by (#221) ---
+
+test_that("step_compute with .by preserves row order and leaves no key", {
+  df <- data.table::data.table(
+    id = c(5L, 3L, 1L, 4L, 2L),
+    grp = c(2L, 1L, 2L, 1L, 2L),
+    x = c(10, 20, 30, 40, 50),
+    w = 1
+  )
+  s <- Survey$new(
+    data = df, edition = "2023", type = "test",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_compute(s, mean_x = mean(x), .by = "grp")
+  d <- get_data(s2)
+  expect_identical(d$id, c(5L, 3L, 1L, 4L, 2L))
+  expect_null(data.table::key(d))
+  expect_equal(d$mean_x, c(30, 30, 30, 30, 30))
+})
+
+test_that("step_compute with .by overwrites an existing column in place", {
+  df <- data.table::data.table(
+    id = 1:4, grp = c(1L, 2L, 1L, 2L),
+    mean_x = 0, x = c(1, 2, 3, 4), w = 1
+  )
+  s <- Survey$new(
+    data = df, edition = "2023", type = "test",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- step_compute(s, mean_x = mean(x), .by = "grp")
+  d <- get_data(s2)
+  expect_identical(d$id, 1:4)
+  expect_equal(d$mean_x, c(2, 3, 2, 3))
+  # column order untouched (no merge shuffling by-columns to the front)
+  expect_identical(names(d), c("id", "grp", "mean_x", "x", "w"))
+})

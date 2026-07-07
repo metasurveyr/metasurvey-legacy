@@ -2,7 +2,7 @@
 # Build: docker build -t metasurvey-shiny .
 # Run:   docker run -p 3838:3838 -e METASURVEY_API_URL="https://metasurvey-api-production.up.railway.app" metasurvey-shiny
 
-FROM rocker/r-ver:4.4.0
+FROM rocker/shiny:4.4.3
 
 # System dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -17,17 +17,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     make \
     git \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
-# Install R packages
-RUN R -e "install.packages(c('shiny', 'bslib', 'bsicons', 'htmltools', 'httr2', 'jsonlite', 'digest', 'remotes', 'data.table', 'cli', 'survey', 'glue', 'lifecycle', 'R6'), repos='https://cloud.r-project.org')"
+# Install R packages using PPM binaries (much faster, avoids compilation)
+RUN R -e "options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')); install.packages(c('bslib', 'bsicons', 'htmltools', 'httr2', 'jsonlite', 'digest', 'remotes', 'data.table', 'cli', 'survey', 'glue', 'lifecycle', 'R6'))" \
+    && R -e "library(shiny); cat('shiny OK\n')"
 
 # Optional: visNetwork for pipeline graphs
-RUN R -e "install.packages('visNetwork', repos='https://cloud.r-project.org')"
+RUN R -e "options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')); install.packages('visNetwork')"
 
 # Install metasurvey from GitHub (main branch)
 ARG METASURVEY_REF=main
-RUN R -e "remotes::install_github('metaSurveyR/metasurvey@${METASURVEY_REF}', dependencies = FALSE)"
+RUN R -e "options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')); remotes::install_github('metaSurveyR/metasurvey@${METASURVEY_REF}', dependencies = FALSE)"
 
 # Copy Shiny app
 COPY app.R /app/app.R

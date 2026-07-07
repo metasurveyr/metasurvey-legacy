@@ -457,10 +457,13 @@ translate_gen_block <- function(commands, start_idx) {
       sprintf("    %s ~ %s", cond, val)
     }, character(1))
 
+    # STATA replace chains are sequential overwrites (last write wins);
+    # step_recode is first-match-wins, so emit the conditions reversed
+    # to preserve STATA semantics
     step <- sprintf(
       "step_recode(svy, %s,\n%s,\n    .default = %s)",
       var_name,
-      paste(conditions, collapse = ",\n"),
+      paste(rev(conditions), collapse = ",\n"),
       quote_recode_val(init_expr)
     )
     return(list(steps = step, advance = advance))

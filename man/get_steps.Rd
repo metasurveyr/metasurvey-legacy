@@ -30,13 +30,16 @@ get_steps(svy) # list of Step objects
 \seealso{
 Other steps: 
 \code{\link{bake_steps}()},
+\code{\link{step_collapse}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},
 \code{\link{step_join}()},
+\code{\link{step_quantile}()},
 \code{\link{step_recode}()},
 \code{\link{step_remove}()},
 \code{\link{step_rename}()},
 \code{\link{step_validate}()},
+\code{\link{step_weight}()},
 \code{\link{view_graph}()}
 }
 \concept{steps}

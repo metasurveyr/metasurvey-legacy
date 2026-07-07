@@ -37,8 +37,7 @@ Markdown syntax. Defaults to "Compute step"}
 
 \item{.level}{For RotativePanelSurvey objects (default \code{"auto"}),
 specifies the level where computations are
-applied: \code{"implantation"}, \code{"follow_up"}, \code{"quarter"},
-\code{"month"}, or \code{"auto"}}
+applied: \code{"auto"} (both), \code{"implantation"}, or \code{"follow_up"}}
 
 \item{use_copy}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{.copy} instead.}
 }
@@ -53,18 +52,23 @@ prevention. All computations are validated before
 execution.
 }
 \details{
-\strong{Lazy evaluation (default):} By default, steps are recorded but
-\strong{not executed} until \code{\link[=bake_steps]{bake_steps()}} is called. This allows building
-a full pipeline before materializing any changes. Set
-\code{options(metasurvey.lazy_processing = FALSE)} to apply steps immediately.
+\strong{Execution model:} The computation is applied immediately when the
+step is created and the step is recorded as already executed
+(\code{bake = TRUE}). Calling \code{\link[=bake_steps]{bake_steps()}} afterwards is safe: executed
+steps are skipped, so expressions are never applied twice.
 
 \strong{Expression processing:}
 Expressions are evaluated using data.table's \verb{:=} operator.
-Variable dependencies are detected automatically via \code{all.vars()}.
+Within a single call, expressions are evaluated sequentially, so a
+later expression can reference variables created by earlier ones
+(mutate semantics): \code{step_compute(svy, horamen = f85 * 4.3, yhora = pt4 / horamen)}. Variable dependencies are detected
+automatically via \code{all.vars()}; names created by earlier expressions
+of the same call are not reported as dependencies.
 Missing variables are caught before execution.
 
 \strong{Grouped computations:} Use \code{.by} to compute aggregated values
-(e.g., group means) that are automatically joined back to the data.
+(e.g., group means) broadcast to all rows of each group. Row order
+is preserved.
 
 For RotativePanelSurvey objects, \code{.level} controls where computations
 are applied:
@@ -102,12 +106,15 @@ get_data(svy)
 Other steps: 
 \code{\link{bake_steps}()},
 \code{\link{get_steps}()},
+\code{\link{step_collapse}()},
 \code{\link{step_filter}()},
 \code{\link{step_join}()},
+\code{\link{step_quantile}()},
 \code{\link{step_recode}()},
 \code{\link{step_remove}()},
 \code{\link{step_rename}()},
 \code{\link{step_validate}()},
+\code{\link{step_weight}()},
 \code{\link{view_graph}()}
 }
 \concept{steps}

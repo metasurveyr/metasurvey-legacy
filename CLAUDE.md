@@ -76,8 +76,8 @@ Controlled via `options()`, set on package load in `R/meta.R`:
 
 ## Known Gotchas
 
-- **recode + bake_steps**: `bake_step()` passes `record=FALSE` to internal `recode()` which doesn't accept it. Avoid calling `bake_steps()` after `step_recode()` in new tests — test column creation directly with `use_copy=TRUE`.
-- **lazy_processing=FALSE interaction**: Steps apply immediately but Step objects are created with `bake=FALSE`, leading to double-execution on `bake_steps()`. Prefer `lazy_processing=TRUE` (the default).
+- **Step execution model (mixed)**: `step_compute`/`step_recode`/`step_join` execute **eagerly** on creation and record their Step with `bake=TRUE`, so `bake_steps()` never re-executes them (no double application). `step_filter`/`step_validate` are always lazy (recorded with `bake=FALSE`, executed on `bake_steps()`). `step_remove`/`step_rename` honor `lazy` and record `bake = !lazy`.
+- **step_recode semantics**: first matching condition wins (case_when-style) and RHS values keep their native type (numeric/integer/logical/character all valid).
 - **PoolSurvey construction**: Use nested list structure: `PoolSurvey$new(list(annual = list("group1" = list(s1, s2))))`.
 
 ## Git Workflow

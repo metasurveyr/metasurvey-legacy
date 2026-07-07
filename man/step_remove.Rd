@@ -52,6 +52,14 @@ Variables can be specified in two ways:
 \item \strong{Character vector:} \code{step_remove(svy, vars = c("age", "income"))}
 }
 
+\strong{Name resolution:} bare symbols passed via \code{...} that match a
+column name always refer to that column, even if a variable with
+the same name exists in the calling environment (column takes
+precedence). Symbols that do not match any column are looked up in
+the calling environment and, if they hold a character vector, its
+values are used as column names. For fully programmatic use prefer
+\code{vars = c("age", "income")}, which skips symbol resolution entirely.
+
 Variables that don't exist in the data produce a warning
 (not an error), allowing pipelines to be robust to missing columns.
 }
@@ -72,12 +80,15 @@ svy2 <- bake_steps(svy2)
 Other steps: 
 \code{\link{bake_steps}()},
 \code{\link{get_steps}()},
+\code{\link{step_collapse}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},
 \code{\link{step_join}()},
+\code{\link{step_quantile}()},
 \code{\link{step_recode}()},
 \code{\link{step_rename}()},
 \code{\link{step_validate}()},
+\code{\link{step_weight}()},
 \code{\link{view_graph}()}
 }
 \concept{steps}

@@ -7,9 +7,9 @@
 workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 }
 \arguments{
-\item{svy}{A \strong{list} of Survey objects, or a PoolSurvey.
-Even for a single survey, wrap it in \code{list()}:
-\code{workflow(svy = list(my_survey), ...)}.
+\item{svy}{A Survey object, a \strong{list} of Survey objects, a PoolSurvey,
+or a RotativePanelSurvey. A single Survey is automatically wrapped
+in \code{list()}.
 Must contain properly configured sample design.}
 
 \item{...}{Calls to survey package functions (such as \code{svymean},
@@ -18,7 +18,10 @@ Must contain properly configured sample design.}
 \item{estimation_type}{Type of estimation (default \code{"monthly"}) that
 determines which weight to use. Options:
 \code{"monthly"}, \code{"quarterly"}, \code{"annual"}, or vector
-with multiple types}
+with multiple types. For PoolSurvey and RotativePanelSurvey
+objects, compound types such as \code{"annual:monthly"} or
+\code{"annual:mean_of_months"} aggregate monthly estimates into an
+annual one (see Details)}
 
 \item{level}{Confidence level for the interval (default \code{0.95}).
 Passed to \code{\link[stats]{confint}}.
@@ -61,8 +64,43 @@ Supported estimation types:
 \item "annual": Annual estimations
 }
 
+Each estimation call accepts an optional \code{domain} argument to
+restrict the estimation to a subpopulation (domain) while respecting
+the sampling design. The expression is captured unevaluated and applied
+with \code{\link[survey]{subset.survey.design}} on the design — never by
+filtering the data — so standard errors and degrees of freedom are the
+correct ones for domain estimation:
+\preformatted{workflow(
+  list(svy),
+  survey::svymean(~pea, domain = e27 >= 14),
+  estimation_type = "annual"
+)}
+\code{domain} works with any estimation function, including
+\code{svyby} (domain + groups). When a domain is used, the \code{stat}
+column includes the domain expression to disambiguate estimations of
+the same variable over different domains.
+
 For PoolSurvey objects, it uses a specialized methodology that handles
-pooling of multiple surveys.
+pooling of multiple surveys. When a compound \code{estimation_type} is used
+(e.g. \code{"annual:monthly"}), point estimates are averaged across the \code{k}
+pooled surveys and the standard error is computed as
+\code{sqrt(mean(variance) * (1 + rho * (k - 1)) / k)}, where \code{rho}
+(default \code{0}, passed as a named argument through \code{...}) is the
+correlation between waves of a rotating panel. The former \code{R} argument
+is deprecated and ignored.
+
+For RotativePanelSurvey objects with monthly follow-up surveys (e.g.
+ECH 2021+), \code{estimation_type = "annual:mean_of_months"} computes the
+annual estimate as the simple average of the monthly estimates: each
+follow-up is estimated with its monthly weight (replicate weights are
+used when the monthly design has them), the point estimates are
+averaged within each year, and the standard errors are combined
+assuming independence between months
+(\code{se = sqrt(mean(variance) / k)} for \code{k} months, or with the \code{rho}
+correction described above when \code{rho} is supplied). One row per year
+and statistic is returned, with the year in the \code{type} column. The
+alias \code{"annual:mean_of_months"} is also accepted for PoolSurvey
+objects, where it is equivalent to \code{"annual:monthly"}.
 }
 \examples{
 # Simple estimation
@@ -85,6 +123,13 @@ result <- workflow(
 result_by <- workflow(
   svy = list(svy),
   survey::svyby(~x, ~g, survey::svymean, na.rm = TRUE),
+  estimation_type = "annual"
+)
+
+# Domain (subpopulation) estimation: subset applied on the design
+result_domain <- workflow(
+  svy = list(svy),
+  survey::svymean(~x, na.rm = TRUE, domain = g == "a"),
   estimation_type = "annual"
 )
 

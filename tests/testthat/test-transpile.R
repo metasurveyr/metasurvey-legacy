@@ -672,7 +672,8 @@ test_that("transpile single do-file produces valid steps for bake", {
   expect_true("bc_pe2" %in% names(baked$data))
   expect_true("bc_pe3" %in% names(baked$data))
   # Check recode values (step_recode produces character/factor)
-  # e30=c(1,2,3,7): last matching condition wins (sequential overwrite)
+  # e30=c(1,2,3,7): STATA sequential-overwrite semantics preserved by
+  # emitting reversed conditions into first-match-wins step_recode
   expect_equal(as.character(baked$data$bc_pe4), c("1", "2", "3", "5"))
   expect_equal(baked$data$bc_pe2, c(1, 2, 1, 2))
 })

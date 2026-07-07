@@ -445,8 +445,10 @@ extract_time_pattern <- function(svy_edition) {
   }
 
   # YYYYMM (e.g., "202312")
-  if (grepl("^(\\d{4})(\\d{2})$", svy_edition) &&
-    as.numeric(sub("^\\d{4}(\\d{2})$", "\\1", svy_edition)) <= 12) {
+  if (
+    grepl("^(\\d{4})(\\d{2})$", svy_edition) &&
+      as.numeric(sub("^\\d{4}(\\d{2})$", "\\1", svy_edition)) <= 12
+  ) {
     yr <- as.numeric(sub("^(\\d{4})\\d{2}$", "\\1", svy_edition))
     mo <- as.numeric(sub("^\\d{4}(\\d{2})$", "\\1", svy_edition))
     res <- validate_monthly(yr, mo)
@@ -455,8 +457,10 @@ extract_time_pattern <- function(svy_edition) {
     periodicity <- res$periodicity
 
     # MMYYYY (e.g., "122023")
-  } else if (grepl("^(\\d{2})(\\d{4})$", svy_edition) &&
-    as.numeric(sub("^(\\d{2})\\d{4}$", "\\1", svy_edition)) <= 12) {
+  } else if (
+    grepl("^(\\d{2})(\\d{4})$", svy_edition) &&
+      as.numeric(sub("^(\\d{2})\\d{4}$", "\\1", svy_edition)) <= 12
+  ) {
     mo <- as.numeric(sub("^(\\d{2})\\d{4}$", "\\1", svy_edition))
     yr <- as.numeric(sub("^\\d{2}(\\d{4})$", "\\1", svy_edition))
     res <- validate_monthly(yr, mo)
@@ -469,7 +473,8 @@ extract_time_pattern <- function(svy_edition) {
     grepl("^(\\d{2})[_-](\\d{4})$", svy_edition) &&
       as.numeric(
         sub("^(\\d{2})[_-]\\d{4}$", "\\1", svy_edition)
-      ) <= 12) {
+      ) <= 12
+  ) {
     mo <- as.numeric(sub("^(\\d{2})[_-]\\d{4}$", "\\1", svy_edition))
     yr <- as.numeric(sub("^\\d{2}[_-](\\d{4})$", "\\1", svy_edition))
     res <- validate_monthly(yr, mo)
@@ -482,7 +487,8 @@ extract_time_pattern <- function(svy_edition) {
     grepl("^(\\d{4})[_-](\\d{2})$", svy_edition) &&
       as.numeric(
         sub("^\\d{4}[_-](\\d{2})$", "\\1", svy_edition)
-      ) <= 12) {
+      ) <= 12
+  ) {
     yr <- as.numeric(sub("^(\\d{4})[_-]\\d{2}$", "\\1", svy_edition))
     mo <- as.numeric(sub("^\\d{4}[_-](\\d{2})$", "\\1", svy_edition))
     res <- validate_monthly(yr, mo)
@@ -501,8 +507,10 @@ extract_time_pattern <- function(svy_edition) {
     periodicity <- if (span == 3) "Triennial" else "Multi-year"
 
     # Annual (e.g., "2023")
-  } else if (grepl("^\\d{4}$", svy_edition) &&
-    as.numeric(svy_edition) >= 1900) {
+  } else if (
+    grepl("^\\d{4}$", svy_edition) &&
+      as.numeric(svy_edition) >= 1900
+  ) {
     year <- as.numeric(svy_edition)
     periodicity <- "Annual"
 
@@ -552,10 +560,12 @@ extract_time_pattern <- function(svy_edition) {
 
 validate_time_pattern <- function(svy_type = NULL, svy_edition = NULL) {
   # Validate that svy_edition is not NULL or empty
-  if (is.null(svy_edition) ||
-    length(svy_edition) == 0 ||
-    isTRUE(is.na(svy_edition)) ||
-    identical(svy_edition, "")) {
+  if (
+    is.null(svy_edition) ||
+      length(svy_edition) == 0 ||
+      isTRUE(is.na(svy_edition)) ||
+      identical(svy_edition, "")
+  ) {
     if (is.null(svy_type)) {
       stop(
         "Both svy_edition and svy_type are NULL. ",
@@ -583,8 +593,10 @@ validate_time_pattern <- function(svy_type = NULL, svy_edition = NULL) {
 
   time_pattern$type <- time_pattern$type %@% svy_type
 
-  if (!is.null(time_pattern$type) &&
-    toupper(time_pattern$type) != toupper(svy_type)) {
+  if (
+    !is.null(time_pattern$type) &&
+      toupper(time_pattern$type) != toupper(svy_type)
+  ) {
     metasurvey_msg(
       "Type does not match. Please provide a valid ",
       "type in the survey edition or as an argument"
@@ -599,10 +611,12 @@ validate_time_pattern <- function(svy_type = NULL, svy_edition = NULL) {
 
   svy_editions <- ""
 
-  if (!is.null(time_pattern$month) &&
-    !is.na(time_pattern$month) &&
-    !is.null(time_pattern$year) &&
-    !is.na(time_pattern$year)) {
+  if (
+    !is.null(time_pattern$month) &&
+      !is.na(time_pattern$month) &&
+      !is.null(time_pattern$year) &&
+      !is.na(time_pattern$year)
+  ) {
     date_string <- sprintf(
       "%04d-%02d-01",
       time_pattern$year, time_pattern$month
@@ -741,6 +755,21 @@ add_weight <- function(
   )
 
   weight_list_clean <- weight_list[!vapply(weight_list, is.null, logical(1))]
+
+  for (nm in names(weight_list_clean)) {
+    w <- weight_list_clean[[nm]]
+    valid <- (is.character(w) && length(w) == 1L && nzchar(w)) || is.list(w)
+    if (!valid) {
+      stop_input(
+        "add_weight", nm,
+        paste0(
+          "must be a weight variable name (single string) ",
+          "or an add_replicate() specification"
+        ),
+        got = describe_class(w)
+      )
+    }
+  }
 
   return(weight_list_clean)
 }
@@ -1064,16 +1093,21 @@ reproduce_workflow <- function(wf, data_path = NULL, dest_dir = tempdir()) {
 #' Evaluate estimation with Coefficient of Variation
 #' @param cv Numeric coefficient of variation value.
 #' @return Character string with the quality category
-#'   (e.g. "Excellent", "Good").
+#'   (e.g. "Excellent", "Good"), or \code{NA} when the CV is not
+#'   defined (e.g. a zero estimate, where CV = 0/0).
 #' @keywords utils
 #' @examples
 #' evaluate_cv(3) # "Excellent"
 #' evaluate_cv(12) # "Good"
 #' evaluate_cv(30) # "Use with caution"
+#' evaluate_cv(NaN) # NA
 #' @family workflows
 #' @export
 
 evaluate_cv <- function(cv) {
+  if (!is.finite(cv)) {
+    return(NA_character_)
+  }
   if (cv < 5) {
     return("Excellent")
   } else if (cv >= 5 && cv < 10) {

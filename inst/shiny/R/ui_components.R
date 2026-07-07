@@ -1579,8 +1579,9 @@ recipe_code_snippet <- function(recipe) {
   lines <- c(lines, "")
 
   # Build weight code — recipes don't have weight_spec, use heuristic
+  edition_num <- suppressWarnings(as.integer(edition_str))
   if (tolower(stype) == "ech") {
-    weight_name <- if (as.integer(edition_str) >= 2022) "W_ANO" else "pesoano"
+    weight_name <- if (!is.na(edition_num) && edition_num >= 2022) "W_ANO" else "pesoano"
     weight_code <- paste0(
       '<span class="code-func">',
       "add_weight</span>(annual = ",
@@ -2010,7 +2011,8 @@ recipe_detail_ui <- function(
   # Description
   desc_section <- if (
     !is.null(recipe$description) &&
-      nzchar(recipe$description)) {
+      nzchar(recipe$description)
+  ) {
     htmltools::tags$div(
       style = "padding: 1.25rem 0;",
       htmltools::tags$p(
@@ -2172,7 +2174,8 @@ recipe_detail_ui <- function(
   graph_section <- if (
     n_steps > 0 &&
       has_visnetwork &&
-      !is.null(ns)) {
+      !is.null(ns)
+  ) {
     disclaimer <- if (n_steps > 20) {
       htmltools::tags$div(
         class = "graph-disclaimer",
@@ -2261,7 +2264,8 @@ recipe_detail_ui <- function(
       comment_html <- if (
         !is.null(comment_txt) &&
           length(comment_txt) == 1 &&
-          nzchar(comment_txt)) {
+          nzchar(comment_txt)
+      ) {
         htmltools::tags$div(
           style = paste0(
             "font-size:.75rem;",
@@ -2283,7 +2287,8 @@ recipe_detail_ui <- function(
       expr_html <- if (
         !is.null(expr_txt) &&
           length(expr_txt) == 1 &&
-          nzchar(expr_txt)) {
+          nzchar(expr_txt)
+      ) {
         htmltools::tags$div(
           style = paste0(
             "font-family:'JetBrains Mono',",

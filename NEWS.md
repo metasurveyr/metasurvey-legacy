@@ -1,3 +1,42 @@
+# metasurvey 0.1.0
+
+## Breaking changes
+* Step execution model: `step_compute()`, `step_recode()` and `step_join()`
+  now record their `Step` as already executed (`bake = TRUE`). They still run
+  eagerly on creation, but `bake_steps()` no longer re-executes them.
+  Previously every eager step ran twice (once on creation, once on bake),
+  silently corrupting non-idempotent expressions (e.g. `age = age * 2` ended
+  up as `age * 4`). `step_remove()`/`step_rename()` now record
+  `bake = !lazy`, closing the double-execution gotcha with
+  `lazy_processing = FALSE`.
+* `step_recode()`: conditions are now evaluated first-match-wins
+  (`dplyr::case_when()` semantics), as documented. Previously the last
+  matching condition won. The STATA transpiler now emits `gen` + `replace`
+  chains with reversed conditions to preserve their original
+  last-write-wins semantics.
+
+## New features
+* `step_weight()`: integrates the `weightflow` package into the step pipeline.
+  Accepts a `weighting_spec` object for nonresponse adjustment, calibration
+  (raking, post-stratification, GREG), and weight trimming --- all as a lazy,
+  reproducible step.
+* New vignette: "Survey Weighting with weightflow" documents the integration.
+* `step_recode()` accepts non-character RHS values (numeric, integer,
+  logical); previously anything but character failed with an internal
+  `vapply` error.
+
+## Bug fixes
+* `workflow()`: survey editions stored as `Date` are handled in the workflow
+  capture, and pooled estimations (`workflow_pool`) use the correct grouped
+  standard error.
+* `add_replicate()`: `svrepdesign` is built with the full replicate-weight
+  set; step calls captured in recipes are portable across sessions.
+* Recipes: `depends_on` lists only external inputs (columns not created by
+  the recipe's own steps).
+* Recode steps preserve their evaluated `.default`, `ordered` and
+  `.to_factor` options, so `bake_recipes()` reproduces them exactly on new
+  data.
+
 # metasurvey 0.0.24
 
 ## Breaking changes
@@ -11,6 +50,11 @@
   re-baking would re-execute without grouping, producing wrong results.
 * `compute()` with `.by`: fixed `merge()` creating `.x`/`.y` suffix columns
   when the target column already existed in the data (e.g., during re-baking).
+* `bake_recipes()`: fixed global state leak where `lazy_processing` option
+  was not restored when baking multiple recipes, causing subsequent
+  `step_rename`/`step_remove` calls to fail.
+* `filter_recipes()`: added missing `topic` parameter, fixing `harmonize()`
+  example failures.
 
 # metasurvey 0.0.23
 
@@ -527,8 +571,8 @@
 
 ## Internal
 
-* Added `.claude/` directory with development agents and commands for
-  code review, testing, documentation auditing, and rOpenSci preparation.
+* Added development agents and commands for code review, testing,
+  documentation auditing, and rOpenSci preparation.
 
 # metasurvey 0.0.5
 

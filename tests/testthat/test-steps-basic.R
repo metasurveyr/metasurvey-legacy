@@ -714,6 +714,38 @@ test_that("step_remove evaluates character vector in dots", {
   expect_false("y" %in% names(get_data(result)))
 })
 
+test_that("step_remove bare symbol matching a column ignores homonymous local variable", {
+  s <- make_test_survey()
+  x <- "income" # local variable named like column "x", pointing elsewhere
+  result <- bake_steps(step_remove(s, x))
+  expect_false("x" %in% names(get_data(result)))
+  expect_true("income" %in% names(get_data(result)))
+})
+
+test_that("step_remove column precedence applies with multiple bare symbols", {
+  s <- make_test_survey()
+  x <- "age"
+  y <- "region"
+  result <- bake_steps(step_remove(s, x, y))
+  expect_false("x" %in% names(get_data(result)))
+  expect_false("y" %in% names(get_data(result)))
+  expect_true(all(c("age", "region") %in% names(get_data(result))))
+})
+
+test_that("step_remove evaluates non-symbol expressions in the calling env", {
+  s <- make_test_survey()
+  result <- bake_steps(step_remove(s, c("x", "y"), paste0("reg", "ion")))
+  expect_false(any(c("x", "y", "region") %in% names(get_data(result))))
+  expect_true("age" %in% names(get_data(result)))
+})
+
+test_that("step_remove symbol not matching a column still resolves from calling env", {
+  s <- make_test_survey()
+  to_drop <- c("age", "income")
+  result <- bake_steps(step_remove(s, to_drop))
+  expect_false(any(c("age", "income") %in% names(get_data(result))))
+})
+
 # --- view_graph package requirement checks ---
 
 test_that("view_graph errors when visNetwork not available", {
@@ -1021,4 +1053,79 @@ test_that("step_filter then step_compute on filtered data", {
   d <- get_data(s)
   expect_true(all(d$age >= 50))
   expect_equal(d$double_age, d$age * 2)
+})
+
+test_that("step_filter with .by preserves grouping through bake_steps", {
+  dt <- data.table::data.table(
+    ID = c(1, 1, 2, 2, 3, 3),
+    y = c(10, 20, 5, 30, 30, 7),
+    w = 1
+  )
+  s <- Survey$new(
+    data = dt, edition = "2023", type = "test",
+    psu = NULL, engine = "data.table",
+    weight = add_weight(annual = "w")
+  )
+  # per-group max: one row per ID must survive (y = 20, 30, 30),
+  # not just the global max
+  s2 <- bake_steps(step_filter(s, y == max(y), .by = "ID"))
+  filtered <- get_data(s2)
+  expect_equal(nrow(filtered), 3)
+  expect_setequal(filtered$ID, c(1, 2, 3))
+  expect_setequal(filtered$y, c(20, 30, 30))
+
+  # must match a direct (non-lazy) filter_rows with .by
+  direct <- metasurvey:::filter_rows(
+    s,
+    y == max(y),
+    .by = "ID", lazy = FALSE, .copy = TRUE
+  )
+  expect_equal(
+    data.table::setorder(data.table::copy(filtered), ID),
+    data.table::setorder(data.table::copy(get_data(direct)), ID)
+  )
+})
+
+test_that("step_filter records .by in the step for later baking", {
+  s <- make_test_survey()
+  s2 <- step_filter(s, age == max(age), .by = "region")
+  expect_identical(get_steps(s2)[[1]]$by_vars, "region")
+})
+
+test_that("step_join does not duplicate columns with .y after bake_steps", {
+  s <- Survey$new(
+    data = data.table::data.table(id = 1:3, age = c(1, 2, 3), w = 1),
+    edition = "2023", type = "test", psu = NULL,
+    engine = "data.table", weight = add_weight(annual = "w")
+  )
+  lk <- data.frame(id = 1:3, extra = c(10, 20, 30))
+  s2 <- step_join(s, lk, by = "id")
+  expect_setequal(names(get_data(s2)), c("id", "age", "w", "extra"))
+
+  s2 <- bake_steps(s2)
+  expect_setequal(names(get_data(s2)), c("id", "age", "w", "extra"))
+  expect_false(any(grepl("\\.y$", names(get_data(s2)))))
+})
+
+test_that("step_join step is recorded as executed (bake = TRUE)", {
+  s <- make_test_survey()
+  extra <- data.table::data.table(id = 1:10, extra_val = 100:109)
+  s2 <- step_join(s, extra, by = "id", type = "left")
+  join_steps <- Filter(function(st) st$type == "step_join", get_steps(s2))
+  expect_true(all(vapply(join_steps, function(st) isTRUE(st$bake), logical(1))))
+})
+
+test_that("step_remove/step_rename with lazy=FALSE do not double-execute on bake", {
+  s <- make_test_survey()
+  s2 <- step_remove(s, x, lazy = FALSE)
+  expect_false("x" %in% names(get_data(s2)))
+  # bake must skip the already-executed remove (no warning about missing x)
+  expect_no_warning(s2 <- bake_steps(s2))
+  expect_false("x" %in% names(get_data(s2)))
+
+  s3 <- step_rename(s, edad = age, lazy = FALSE)
+  expect_true("edad" %in% names(get_data(s3)))
+  # previously re-baking errored with "Variables to rename not found: age"
+  expect_no_error(s3 <- bake_steps(s3))
+  expect_true("edad" %in% names(get_data(s3)))
 })

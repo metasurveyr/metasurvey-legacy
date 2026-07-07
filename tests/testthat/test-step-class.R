@@ -335,3 +335,35 @@ test_that("bake_step rejects invalid step type", {
     "Invalid step type"
   )
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("bake_steps with use_copy=TRUE returns a copy and leaves original un-baked", {
+  old <- set_use_copy(TRUE)
+  on.exit(set_use_copy(old), add = TRUE)
+  s <- make_test_survey()
+  s2 <- step_remove(s, status)
+  expect_false(s2$steps[[1]]$bake)
+
+  baked <- bake_steps(s2)
+  expect_false(identical(baked, s2))
+  # Original untouched: still has the column, step still pending
+  expect_true("status" %in% names(get_data(s2)))
+  expect_false(s2$steps[[1]]$bake)
+  # Copy materialized: column removed, step marked as baked
+  expect_false("status" %in% names(get_data(baked)))
+  expect_true(baked$steps[[1]]$bake)
+})
+
+test_that("bake_steps with use_copy=FALSE mutates the survey in place", {
+  old <- set_use_copy(FALSE)
+  on.exit(set_use_copy(old), add = TRUE)
+  s <- make_test_survey()
+  s2 <- step_remove(s, status)
+  expect_true(identical(s2, s))
+
+  baked <- bake_steps(s2)
+  expect_true(identical(baked, s2))
+  expect_false("status" %in% names(get_data(s2)))
+  expect_true(s2$steps[[1]]$bake)
+})

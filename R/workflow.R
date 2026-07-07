@@ -4,16 +4,19 @@
 #' objects, applying functions from the R survey package with appropriate
 #' metadata. Automatically handles different survey types and periodicities.
 #'
-#' @param svy A **list** of Survey objects, or a PoolSurvey.
-#'   Even for a single survey, wrap it in `list()`:
-#'   `workflow(svy = list(my_survey), ...)`.
+#' @param svy A Survey object, a **list** of Survey objects, a PoolSurvey,
+#'   or a RotativePanelSurvey. A single Survey is automatically wrapped
+#'   in `list()`.
 #'   Must contain properly configured sample design.
 #' @param ... Calls to survey package functions (such as \code{svymean},
 #'   \code{svytotal}, \code{svyratio}, etc.) that will be executed sequentially
 #' @param estimation_type Type of estimation (default `"monthly"`) that
 #'   determines which weight to use. Options:
 #'   `"monthly"`, `"quarterly"`, `"annual"`, or vector
-#'   with multiple types
+#'   with multiple types. For PoolSurvey and RotativePanelSurvey
+#'   objects, compound types such as `"annual:monthly"` or
+#'   `"annual:mean_of_months"` aggregate monthly estimates into an
+#'   annual one (see Details)
 #' @param level Confidence level for the interval (default `0.95`).
 #'   Passed to \code{\link[stats]{confint}}.
 #'   Can also be set per-call inside the estimation function
@@ -49,8 +52,43 @@
 #'   \item "annual": Annual estimations
 #' }
 #'
+#' Each estimation call accepts an optional \code{domain} argument to
+#' restrict the estimation to a subpopulation (domain) while respecting
+#' the sampling design. The expression is captured unevaluated and applied
+#' with \code{\link[survey]{subset.survey.design}} on the design — never by
+#' filtering the data — so standard errors and degrees of freedom are the
+#' correct ones for domain estimation:
+#' \preformatted{workflow(
+#'   list(svy),
+#'   survey::svymean(~pea, domain = e27 >= 14),
+#'   estimation_type = "annual"
+#' )}
+#' \code{domain} works with any estimation function, including
+#' \code{svyby} (domain + groups). When a domain is used, the \code{stat}
+#' column includes the domain expression to disambiguate estimations of
+#' the same variable over different domains.
+#'
 #' For PoolSurvey objects, it uses a specialized methodology that handles
-#' pooling of multiple surveys.
+#' pooling of multiple surveys. When a compound `estimation_type` is used
+#' (e.g. `"annual:monthly"`), point estimates are averaged across the `k`
+#' pooled surveys and the standard error is computed as
+#' `sqrt(mean(variance) * (1 + rho * (k - 1)) / k)`, where `rho`
+#' (default `0`, passed as a named argument through `...`) is the
+#' correlation between waves of a rotating panel. The former `R` argument
+#' is deprecated and ignored.
+#'
+#' For RotativePanelSurvey objects with monthly follow-up surveys (e.g.
+#' ECH 2021+), `estimation_type = "annual:mean_of_months"` computes the
+#' annual estimate as the simple average of the monthly estimates: each
+#' follow-up is estimated with its monthly weight (replicate weights are
+#' used when the monthly design has them), the point estimates are
+#' averaged within each year, and the standard errors are combined
+#' assuming independence between months
+#' (`se = sqrt(mean(variance) / k)` for `k` months, or with the `rho`
+#' correction described above when `rho` is supplied). One row per year
+#' and statistic is returned, with the year in the `type` column. The
+#' alias `"annual:mean_of_months"` is also accepted for PoolSurvey
+#' objects, where it is equivalent to `"annual:monthly"`.
 #'
 #' @examples
 #' # Simple estimation
@@ -73,6 +111,13 @@
 #' result_by <- workflow(
 #'   svy = list(svy),
 #'   survey::svyby(~x, ~g, survey::svymean, na.rm = TRUE),
+#'   estimation_type = "annual"
+#' )
+#'
+#' # Domain (subpopulation) estimation: subset applied on the design
+#' result_domain <- workflow(
+#'   svy = list(svy),
+#'   survey::svymean(~x, na.rm = TRUE, domain = g == "a"),
 #'   estimation_type = "annual"
 #' )
 #'
@@ -104,19 +149,54 @@
 
 workflow <- function(svy, ..., estimation_type = "monthly",
                      level = 0.95) {
-  if (is(svy, "PoolSurvey")) {
+  if (is(svy, "RotativePanelSurvey")) {
+    return(workflow_panel(
+      svy, ...,
+      estimation_type = estimation_type,
+      level = level
+    ))
+  } else if (is(svy, "PoolSurvey")) {
     return(workflow_pool(
       svy, ...,
       estimation_type = estimation_type,
       level = level
     ))
-  } else {
-    return(workflow_default(
-      svy, ...,
-      estimation_type = estimation_type,
-      level = level
-    ))
   }
+
+  if (is(svy, "Survey")) {
+    svy <- list(svy)
+  }
+  if (!is.list(svy) || length(svy) == 0 ||
+    !all(vapply(svy, function(x) is(x, "Survey"), logical(1)))) {
+    stop_input(
+      "workflow", "svy",
+      "must be a Survey, a list of Survey objects, or a PoolSurvey",
+      got = describe_class(svy)
+    )
+  }
+
+  .calls <- substitute(list(...))
+  estimation_exprs <- as.list(.calls)[-1]
+  if (length(estimation_exprs) == 0) {
+    stop_input(
+      "workflow", "...",
+      "must contain at least one estimation call, e.g. survey::svymean(~var)"
+    )
+  }
+  is_call <- vapply(estimation_exprs, is.call, logical(1))
+  if (!all(is_call)) {
+    stop_input(
+      "workflow", "...",
+      "must contain estimation calls such as survey::svymean(~var)",
+      got = sprintf("`%s`", deparse1(estimation_exprs[[which(!is_call)[1]]]))
+    )
+  }
+
+  workflow_default(
+    svy, ...,
+    estimation_type = estimation_type,
+    level = level
+  )
 }
 
 
@@ -153,16 +233,22 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
                     call <- as.list(.calls[[i]])
                     name_function <- deparse(call[[1]])
                     extracted <- .extract_level(call, level)
-                    call <- as.list(extracted$call)
+                    domain <- .extract_domain(as.list(extracted$call))
+                    call <- as.list(domain$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
                     estimation <- eval(
                       call,
-                      envir = list(design = survey$design[[x]])
+                      envir = list(
+                        design = .apply_domain(
+                          survey$design[[x]], domain$domain
+                        )
+                      )
                     )
 
                     return(cat_estimation(
-                      estimation, name_function,
+                      estimation,
+                      .domain_label(name_function, domain$domain),
                       level = extracted$level
                     ))
                   }
@@ -200,6 +286,82 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
   return(result)
 }
 
+#' @title Workflow panel
+#' @description Annual aggregator for rotating panels: estimates each
+#'   monthly follow-up with its monthly weight, averages the point
+#'   estimates within each year and combines the standard errors
+#'   assuming independence between months (UMAD annual estimator for
+#'   ECH 2021+). Delegates the aggregation to `workflow_pool()` so the
+#'   pooled-SE combiner lives in a single place.
+#' @param survey RotativePanelSurvey object
+#' @param ... Calls
+#' @param estimation_type Estimation type (only compound annual types,
+#'   e.g. `"annual:mean_of_months"`)
+#' @keywords internal
+#' @noRd
+
+workflow_panel <- function(survey, ...,
+                           estimation_type = "annual:mean_of_months",
+                           level = 0.95) {
+  parts <- strsplit(estimation_type, ":", fixed = TRUE)[[1]]
+  supported <- length(parts) == 2L &&
+    parts[1] == "annual" &&
+    parts[2] %in% c("mean_of_months", "monthly")
+  if (!supported) {
+    stop(
+      "For RotativePanelSurvey objects, workflow() only supports ",
+      "estimation_type = \"annual:mean_of_months\" (annual estimate ",
+      "as the mean of the monthly estimates). For other estimations ",
+      "use extract_surveys() and pass the resulting surveys instead.",
+      call. = FALSE
+    )
+  }
+
+  follow_up <- unname(survey$follow_up)
+  if (length(follow_up) == 0) {
+    stop(
+      "The RotativePanelSurvey has no follow-up surveys: the annual ",
+      "mean-of-months estimator needs monthly follow-ups.",
+      call. = FALSE
+    )
+  }
+
+  years <- vapply(
+    follow_up,
+    function(s) .edition_year(s$edition),
+    character(1)
+  )
+
+  pool <- PoolSurvey$new(list(annual = split(follow_up, years)))
+
+  workflow_pool(
+    pool, ...,
+    estimation_type = "annual:monthly",
+    level = level
+  )
+}
+
+#' Extract the year from a survey edition
+#' @param edition Edition value (Date, "YYYY-MM-DD", "YYYY-MM", "YYYY")
+#' @return Character year, or the edition itself if no year is found
+#' @keywords internal
+#' @noRd
+.edition_year <- function(edition) {
+  edition <- as.character(edition)
+  date <- tryCatch(
+    as.Date(edition),
+    error = function(e) as.Date(NA)
+  )
+  if (!is.na(date)) {
+    return(format(date, "%Y"))
+  }
+  year <- regmatches(edition, regexpr("\\d{4}", edition))
+  if (length(year) == 1L) {
+    return(year)
+  }
+  edition
+}
+
 #' @title Workflow pool
 #' @description Workflow pool
 #' @keywords survey
@@ -220,16 +382,24 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
     estimation_type <- estimation_type
     estimation_type_first <- estimation_type
   }
+  if (estimation_type == "mean_of_months") {
+    estimation_type <- "monthly"
+  }
 
   .calls <- substitute(list(...))
 
-  if (all(c("rho", "R") %in% names(.calls))) {
+  rho <- 0
+  if ("rho" %in% names(.calls)) {
     rho <- eval(.calls[["rho"]])
-    R <- eval(.calls[["R"]])
-    .calls <- .calls[-which(names(.calls) %in% c("rho", "R"))]
-  } else {
-    rho <- 1
-    R <- 1
+    .calls <- .calls[-which(names(.calls) == "rho")]
+  }
+  if ("R" %in% names(.calls)) {
+    warning(
+      "Argument 'R' is deprecated and ignored: the pooled standard ",
+      "error now uses 'rho' and the number of pooled surveys.",
+      call. = FALSE
+    )
+    .calls <- .calls[-which(names(.calls) == "R")]
   }
 
   survey <- survey$surveys[[estimation_type_first]]
@@ -254,17 +424,22 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
                     call <- as.list(.calls[[j]])
                     name_function <- deparse(call[[1]])
                     extracted <- .extract_level(call, level)
-                    call <- as.list(extracted$call)
+                    domain <- .extract_domain(as.list(extracted$call))
+                    call <- as.list(domain$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
                     estimation <- eval(
                       call,
                       envir = list(
-                        design = survey_item$design[[estimation_type]]
+                        design = .apply_domain(
+                          survey_item$design[[estimation_type]],
+                          domain$domain
+                        )
                       )
                     )
                     return(cat_estimation(
-                      estimation, name_function,
+                      estimation,
+                      .domain_label(name_function, domain$domain),
                       level = extracted$level
                     ))
                   }
@@ -281,10 +456,6 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
     )
   )
 
-  adj_se <- function(variance, rho, R) {
-    sqrt(1 + rho * R) * sqrt(variance)
-  }
-
   result <- result[
     ,
     variance := se**2
@@ -297,15 +468,16 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
       vapply(result, is.numeric, logical(1))
     ]
     agg <- result[
-      , lapply(.SD, mean),
+      , c(lapply(.SD, mean), list(.pool_k = .N)),
       by = list(stat, type), .SDcols = numeric_vars
     ]
-    agg[, se := vapply(
-      variance, adj_se, numeric(1),
-      rho = rho, R = R
-    )]
+    agg[, se := sqrt(variance * (1 + rho * (.pool_k - 1)) / .pool_k)]
+    agg[, .pool_k := NULL]
     agg[, cv := se / value]
-    agg[, evaluate := vapply(cv, evaluate_cv, character(1))]
+    z <- stats::qnorm((1 + level) / 2)
+    agg[, confint_lower := value - z * se]
+    agg[, confint_upper := value + z * se]
+    agg[, evaluate := vapply(cv * 100, evaluate_cv, character(1))]
     out <- data.table(agg[order(stat), ])
   }
 
@@ -329,6 +501,34 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
   } else {
     list(level = default, call = as.call(call_args))
   }
+}
+
+.extract_domain <- function(call_args) {
+  if ("domain" %in% names(call_args)) {
+    d <- call_args[["domain"]]
+    call_args[["domain"]] <- NULL
+    list(domain = d, call = as.call(call_args))
+  } else {
+    list(domain = NULL, call = as.call(call_args))
+  }
+}
+
+.apply_domain <- function(design, domain_expr) {
+  if (is.null(domain_expr)) {
+    return(design)
+  }
+  subset_call <- as.call(list(quote(subset), quote(design), domain_expr))
+  eval(subset_call, envir = list(design = design))
+}
+
+.domain_label <- function(name_function, domain_expr) {
+  if (is.null(domain_expr)) {
+    return(name_function)
+  }
+  paste0(
+    name_function,
+    " [", paste(deparse(domain_expr), collapse = " "), "]"
+  )
 }
 
 cat_estimation <- function(estimation, call, level = 0.95) {
@@ -516,13 +716,25 @@ cat_estimation.cvystat <- function(estimation, call, level = 0.95) {
 cat_estimation.svyratio <- function(estimation, call, level = 0.95) {
   confint_estimation <- stats::confint(estimation, level = level)
 
+  ratio_names <- names(SE(estimation))
+  numerators <- rownames(estimation$ratio)
+  denominators <- colnames(estimation$ratio)
 
+  if (!is.null(numerators) && !is.null(denominators)) {
+    # coef()/SE()/cv() flatten the ratio matrix column-major:
+    # numerators vary fastest within each denominator
+    var_names <- rep(numerators, times = length(denominators))
+    den_names <- rep(denominators, each = length(numerators))
+  } else {
+    var_names <- ratio_names
+    den_names <- rep(NA_character_, length(ratio_names))
+  }
 
-  var_names <- names(SE(estimation))
   cv_vals <- as.numeric(cv(estimation))
   dt <- data.table(
-    stat = paste0(call, ": ", var_names),
+    stat = paste0(call, ": ", ratio_names),
     variable = var_names,
+    denominator = den_names,
     value = as.numeric(coef(estimation)),
     se = as.numeric(SE(estimation)),
     cv = cv_vals,
@@ -549,8 +761,12 @@ cat_estimation.svyratio <- function(estimation, call, level = 0.95) {
 
   for (s in survey_list) {
     if (!inherits(s, "Survey")) next
-    if (svy_type == "Unknown") svy_type <- s$type %||% "Unknown"
-    if (svy_edition == "Unknown") svy_edition <- s$edition %||% "Unknown"
+    if (identical(svy_type, "Unknown")) {
+      svy_type <- as.character(s$type %||% "Unknown")
+    }
+    if (identical(svy_edition, "Unknown")) {
+      svy_edition <- as.character(s$edition %||% "Unknown")
+    }
 
     # Extract recipe IDs from the survey's recipes
     if (length(s$recipes) > 0) {
