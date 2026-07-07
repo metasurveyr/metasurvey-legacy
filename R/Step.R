@@ -220,7 +220,7 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
   valid_types <- c(
     "compute", "recode", "step_join",
     "step_remove", "step_rename", "validate", "filter",
-    "step_weight"
+    "step_weight", "step_quantile", "step_collapse"
   )
   if (!step$type %in% valid_types) {
     stop("Invalid step type: '", step$type, "'. Must be one of: ",
@@ -252,7 +252,7 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
 
   if (step$type %in% c(
     "step_join", "step_remove", "step_rename",
-    "step_weight"
+    "step_weight", "step_quantile", "step_collapse"
   )) {
     args$record <- FALSE
   }
