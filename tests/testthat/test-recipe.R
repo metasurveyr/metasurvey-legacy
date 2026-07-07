@@ -1258,3 +1258,55 @@ test_that("read_recipe handles minimal JSON", {
   result <- read_recipe(tmp)
   expect_true(inherits(result, "Recipe") || is.list(result))
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("read_recipe round-trip preserves step call content and bakes", {
+  svy <- make_test_survey()
+  r <- Recipe$new(
+    name = "roundtrip steps", edition = "2023", survey_type = "ech",
+    default_engine = "data.table", depends_on = list(),
+    user = "tester", description = "Round-trip step content",
+    steps = list(quote(step_compute(., z = x + y))),
+    id = "roundtrip_steps_001", doi = NULL, topic = NULL
+  )
+  f <- tempfile(fileext = ".json")
+  on.exit(unlink(f), add = TRUE)
+  save_recipe(r, f)
+  expect_no_warning(r2 <- read_recipe(f))
+
+  # decode_step must reconstruct the exact step call, not an empty one
+  decoded <- as.list(r2$steps)
+  expect_length(decoded, 1)
+  expect_identical(deparse1(decoded[[1]]), "step_compute(., z = x + y)")
+
+  # The read-back recipe must be bakeable and produce the same column
+  svy2 <- add_recipe(svy, r2)
+  baked <- bake_recipes(svy2)
+  expect_true("z" %in% names(get_data(baked)))
+  expect_equal(get_data(baked)$z, get_data(svy)$x + get_data(svy)$y)
+})
+
+test_that("bake_recipes forces lazy off for every recipe in the loop and restores it", {
+  make_remove_recipe <- function(nm, col) {
+    Recipe$new(
+      name = nm, edition = "2023", survey_type = "ech",
+      default_engine = "data.table", depends_on = list(),
+      user = "tester", description = "Remove inside recipe",
+      steps = list(as.call(list(quote(step_remove), quote(.), vars = col))),
+      id = nm, doi = NULL, topic = NULL
+    )
+  }
+
+  svy <- make_test_survey()
+  svy <- add_recipe(svy, make_remove_recipe("rm_status", "status"))
+  svy <- add_recipe(svy, make_remove_recipe("rm_group", "group"))
+
+  old_lazy <- getOption("metasurvey.lazy_processing")
+  baked <- bake_recipes(svy)
+  # step_remove consults lazy_default(): if lazy leaked back to TRUE
+  # after the first recipe, the second column would survive
+  expect_false("status" %in% names(get_data(baked)))
+  expect_false("group" %in% names(get_data(baked)))
+  expect_identical(getOption("metasurvey.lazy_processing"), old_lazy)
+})
