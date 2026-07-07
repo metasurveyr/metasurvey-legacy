@@ -85,6 +85,7 @@ income quintiles after collapsing).
 
 Other steps: 
 \code{\link{bake_steps}()},
+\code{\link{explain}()},
 \code{\link{get_steps}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},

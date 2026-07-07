@@ -152,6 +152,7 @@ reference:
   - step_collapse
   - step_validate
   - bake_steps
+  - explain
 - title: Recipes
   desc: Reproducible and portable pipelines
   contents:

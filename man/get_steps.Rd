@@ -30,6 +30,7 @@ get_steps(svy) # list of Step objects
 \seealso{
 Other steps: 
 \code{\link{bake_steps}()},
+\code{\link{explain}()},
 \code{\link{step_collapse}()},
 \code{\link{step_compute}()},
 \code{\link{step_filter}()},

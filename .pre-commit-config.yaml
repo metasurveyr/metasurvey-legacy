@@ -70,11 +70,14 @@ repos:
     -   id: file-contents-sorter
         files: '^\.Rbuildignore$'
     -   id: end-of-file-fixer
+        # _snaps: testthat snapshot .md files end with a blank line
+        # that is part of the snapshot format
         exclude: >
           (?x)^(
           .*\.Rd|
           .*\.rds|
           .*\.Rds|
+          tests/testthat/_snaps/.*|
           )$
     -   id: trailing-whitespace
         exclude: >

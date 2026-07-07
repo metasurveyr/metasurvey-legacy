@@ -91,6 +91,7 @@ s3 <- bake_steps(s3)
 \seealso{
 Other steps: 
 \code{\link{bake_steps}()},
+\code{\link{explain}()},
 \code{\link{get_steps}()},
 \code{\link{step_collapse}()},
 \code{\link{step_compute}()},
