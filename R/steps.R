@@ -611,6 +611,12 @@ step_recode <- function(
   .level <- match.arg(.level, c("auto", "implantation", "follow_up"))
 
   conditions <- list(...)
+  # A single pre-built list of formulas is a supported input path
+  # (recode() unwraps it downstream): validate its elements instead
+  if (length(conditions) == 1L && is.list(conditions[[1]]) &&
+    !inherits(conditions[[1]], "formula")) {
+    conditions <- conditions[[1]]
+  }
   if (length(conditions) == 0) {
     stop_input(
       "step_recode", "...",
