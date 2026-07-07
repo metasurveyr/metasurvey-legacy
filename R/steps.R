@@ -23,6 +23,19 @@ collect_assigned_vars <- function(e) {
   ))
 }
 
+# Reemplaza el argumento `svy` del call grabado por el placeholder `.`
+# para que el step sea portable: `svy |> step_*()`, `svy <- step_*(svy, ...)`
+# y `svy %>% step_*()` quedan todos como `step_*(svy = ., ...)`, la forma
+# que bake_recipes() sustituye por el survey receptor. Sin esto, el deparse
+# arrastra la expresion del autor (p. ej. `ech0` o el pipeline entero con
+# |>) y al hornear la receta en otra sesion falla o re-evalua data ajena.
+canonicalize_step_call <- function(.call) {
+  if (is.call(.call) && "svy" %in% names(.call)) {
+    .call[["svy"]] <- quote(.)
+  }
+  .call
+}
+
 compute <- function(svy, ..., .by = NULL,
                     .copy = use_copy_default(),
                     lazy = lazy_default()) {
@@ -311,7 +324,7 @@ step_compute <- function(
     lifecycle::deprecate_warn("0.0.12", "step_compute(use_copy)", "step_compute(.copy)")
     .copy <- use_copy
   }
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
 
   # Capture and prepare expressions
   exprs <- as.list(substitute(list(...))[-1])
@@ -596,7 +609,7 @@ step_recode <- function(
     lifecycle::deprecate_warn("0.0.12", "step_recode(use_copy)", "step_recode(.copy)")
     .copy <- use_copy
   }
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
 
   if (is(svy, "RotativePanelSurvey")) {
     return(step_recode_rotative(svy, as.character(substitute(new_var)), ...,
@@ -940,7 +953,7 @@ step_join <- function(
     lifecycle::deprecate_warn("0.0.12", "step_join(use_copy)", "step_join(.copy)")
     .copy <- use_copy
   }
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
   type <- match.arg(type)
 
   # Normalize RHS data source
@@ -1155,7 +1168,7 @@ step_remove <- function(
     lifecycle::deprecate_warn("0.0.12", "step_remove(use_copy)", "step_remove(.copy)")
     .copy <- use_copy
   }
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
   var_names <- NULL
   # Prefer explicit vars argument when provided
   if (!is.null(vars)) {
@@ -1310,7 +1323,7 @@ step_rename <- function(
     lifecycle::deprecate_warn("0.0.12", "step_rename(use_copy)", "step_rename(.copy)")
     .copy <- use_copy
   }
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
   # Build mapping new -> old
   if (!is.null(mapping)) {
     if (is.null(names(mapping)) || !is.character(mapping)) {
@@ -1489,7 +1502,7 @@ step_validate <- function(
     .copy = use_copy_default(),
     comment = "Validate step") {
   .action <- match.arg(.action)
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
 
   # Capture check expressions
   checks <- as.list(substitute(list(...))[-1])
@@ -1595,7 +1608,7 @@ step_filter <- function(
     .copy = use_copy_default(),
     comment = "Filter step",
     .level = "auto") {
-  .call <- match.call()
+  .call <- canonicalize_step_call(match.call())
 
   # Capture filter expressions
   exprs <- as.list(substitute(list(...))[-1])

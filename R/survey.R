@@ -319,33 +319,20 @@ Survey <- R6Class(
                 calibrate.formula = ~1
               )
             } else {
-              aux_vars <- c(x$weight, x$replicate_id)
-              data_aux <- data[, aux_vars, with = FALSE]
-              data_aux <- merge(
-                data_aux,
-                x$replicate_file[, 1:11],
+              data_merged <- merge(
+                data,
+                x$replicate_file,
                 by.x = names(x$replicate_id),
-                by.y = x$replicate_id
+                by.y = unname(x$replicate_id)
               )
 
-              design <- survey::svrepdesign(
+              survey::svrepdesign(
                 id = psu,
                 weights = as.formula(paste("~", x$weight)),
-                data = data_aux,
+                data = data_merged,
                 repweights = x$replicate_pattern,
                 type = x$replicate_type
               )
-
-              data <- merge(
-                data, x$replicate_file,
-                by.x = names(x$replicate_id),
-                by.y = x$replicate_id
-              )
-              design$variables <- data
-              vars <- grepl(x$replicate_pattern, names(data))
-              rep_weights <- data[, vars, with = FALSE]
-              design$repweights <- data.table(rep_weights)
-              return(design)
             }
           }
         )
