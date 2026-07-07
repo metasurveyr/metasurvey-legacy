@@ -48,6 +48,22 @@
 #'   \item "annual": Annual estimations
 #' }
 #'
+#' Each estimation call accepts an optional \code{domain} argument to
+#' restrict the estimation to a subpopulation (domain) while respecting
+#' the sampling design. The expression is captured unevaluated and applied
+#' with \code{\link[survey]{subset.survey.design}} on the design — never by
+#' filtering the data — so standard errors and degrees of freedom are the
+#' correct ones for domain estimation:
+#' \preformatted{workflow(
+#'   list(svy),
+#'   survey::svymean(~pea, domain = e27 >= 14),
+#'   estimation_type = "annual"
+#' )}
+#' \code{domain} works with any estimation function, including
+#' \code{svyby} (domain + groups). When a domain is used, the \code{stat}
+#' column includes the domain expression to disambiguate estimations of
+#' the same variable over different domains.
+#'
 #' For PoolSurvey objects, it uses a specialized methodology that handles
 #' pooling of multiple surveys. When a compound `estimation_type` is used
 #' (e.g. `"annual:monthly"`), point estimates are averaged across the `k`
@@ -78,6 +94,13 @@
 #' result_by <- workflow(
 #'   svy = list(svy),
 #'   survey::svyby(~x, ~g, survey::svymean, na.rm = TRUE),
+#'   estimation_type = "annual"
+#' )
+#'
+#' # Domain (subpopulation) estimation: subset applied on the design
+#' result_domain <- workflow(
+#'   svy = list(svy),
+#'   survey::svymean(~x, na.rm = TRUE, domain = g == "a"),
 #'   estimation_type = "annual"
 #' )
 #'
@@ -187,16 +210,22 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
                     call <- as.list(.calls[[i]])
                     name_function <- deparse(call[[1]])
                     extracted <- .extract_level(call, level)
-                    call <- as.list(extracted$call)
+                    domain <- .extract_domain(as.list(extracted$call))
+                    call <- as.list(domain$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
                     estimation <- eval(
                       call,
-                      envir = list(design = survey$design[[x]])
+                      envir = list(
+                        design = .apply_domain(
+                          survey$design[[x]], domain$domain
+                        )
+                      )
                     )
 
                     return(cat_estimation(
-                      estimation, name_function,
+                      estimation,
+                      .domain_label(name_function, domain$domain),
                       level = extracted$level
                     ))
                   }
@@ -293,17 +322,22 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
                     call <- as.list(.calls[[j]])
                     name_function <- deparse(call[[1]])
                     extracted <- .extract_level(call, level)
-                    call <- as.list(extracted$call)
+                    domain <- .extract_domain(as.list(extracted$call))
+                    call <- as.list(domain$call)
                     call[["design"]] <- substitute(design)
                     call <- as.call(call)
                     estimation <- eval(
                       call,
                       envir = list(
-                        design = survey_item$design[[estimation_type]]
+                        design = .apply_domain(
+                          survey_item$design[[estimation_type]],
+                          domain$domain
+                        )
                       )
                     )
                     return(cat_estimation(
-                      estimation, name_function,
+                      estimation,
+                      .domain_label(name_function, domain$domain),
                       level = extracted$level
                     ))
                   }
@@ -365,6 +399,34 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
   } else {
     list(level = default, call = as.call(call_args))
   }
+}
+
+.extract_domain <- function(call_args) {
+  if ("domain" %in% names(call_args)) {
+    d <- call_args[["domain"]]
+    call_args[["domain"]] <- NULL
+    list(domain = d, call = as.call(call_args))
+  } else {
+    list(domain = NULL, call = as.call(call_args))
+  }
+}
+
+.apply_domain <- function(design, domain_expr) {
+  if (is.null(domain_expr)) {
+    return(design)
+  }
+  subset_call <- as.call(list(quote(subset), quote(design), domain_expr))
+  eval(subset_call, envir = list(design = design))
+}
+
+.domain_label <- function(name_function, domain_expr) {
+  if (is.null(domain_expr)) {
+    return(name_function)
+  }
+  paste0(
+    name_function,
+    " [", paste(deparse(domain_expr), collapse = " "), "]"
+  )
 }
 
 cat_estimation <- function(estimation, call, level = 0.95) {

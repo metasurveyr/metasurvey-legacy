@@ -60,6 +60,22 @@ Supported estimation types:
 \item "annual": Annual estimations
 }
 
+Each estimation call accepts an optional \code{domain} argument to
+restrict the estimation to a subpopulation (domain) while respecting
+the sampling design. The expression is captured unevaluated and applied
+with \code{\link[survey]{subset.survey.design}} on the design — never by
+filtering the data — so standard errors and degrees of freedom are the
+correct ones for domain estimation:
+\preformatted{workflow(
+  list(svy),
+  survey::svymean(~pea, domain = e27 >= 14),
+  estimation_type = "annual"
+)}
+\code{domain} works with any estimation function, including
+\code{svyby} (domain + groups). When a domain is used, the \code{stat}
+column includes the domain expression to disambiguate estimations of
+the same variable over different domains.
+
 For PoolSurvey objects, it uses a specialized methodology that handles
 pooling of multiple surveys. When a compound \code{estimation_type} is used
 (e.g. \code{"annual:monthly"}), point estimates are averaged across the \code{k}
@@ -90,6 +106,13 @@ result <- workflow(
 result_by <- workflow(
   svy = list(svy),
   survey::svyby(~x, ~g, survey::svymean, na.rm = TRUE),
+  estimation_type = "annual"
+)
+
+# Domain (subpopulation) estimation: subset applied on the design
+result_domain <- workflow(
+  svy = list(svy),
+  survey::svymean(~x, na.rm = TRUE, domain = g == "a"),
   estimation_type = "annual"
 )
 

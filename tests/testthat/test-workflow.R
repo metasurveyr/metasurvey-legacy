@@ -743,3 +743,173 @@ test_that("cat_estimation.svyby manual CI fallback produces ordered bounds", {
   expect_equal(res$confint_lower, res$value - z * res$se)
   expect_equal(res$confint_upper, res$value + z * res$se)
 })
+
+# ── domain tests ─────────────────────────────────────────────────────────────
+
+test_that("domain restricts estimation via subset on the design", {
+  svy <- make_test_survey(100)
+  svy$ensure_design()
+  des <- svy$design[["annual"]]
+  direct <- survey::svymean(~income, subset(des, age >= 40), na.rm = TRUE)
+
+  result <- workflow(
+    list(svy),
+    survey::svymean(~income, na.rm = TRUE, domain = age >= 40),
+    estimation_type = "annual"
+  )
+
+  expect_equal(result$value[1], unname(coef(direct)), tolerance = 1e-10)
+  expect_equal(
+    as.numeric(result$se[1]),
+    as.numeric(survey::SE(direct)),
+    tolerance = 1e-10
+  )
+})
+
+test_that("domain works with svytotal and %in% expressions", {
+  svy <- make_test_survey(100)
+  svy$ensure_design()
+  des <- svy$design[["annual"]]
+  direct <- survey::svytotal(
+    ~income, subset(des, region %in% c(1, 2)),
+    na.rm = TRUE
+  )
+
+  result <- workflow(
+    list(svy),
+    survey::svytotal(~income, na.rm = TRUE, domain = region %in% c(1, 2)),
+    estimation_type = "annual"
+  )
+
+  expect_equal(result$value[1], unname(coef(direct)), tolerance = 1e-10)
+  expect_equal(
+    as.numeric(result$se[1]),
+    as.numeric(survey::SE(direct)),
+    tolerance = 1e-10
+  )
+})
+
+test_that("domain works with svyby (domain + groups)", {
+  svy <- make_test_survey(100)
+  svy$ensure_design()
+  des <- svy$design[["annual"]]
+  direct <- survey::svyby(
+    ~income, ~region, subset(des, age >= 40),
+    survey::svymean,
+    na.rm = TRUE
+  )
+
+  result <- workflow(
+    list(svy),
+    survey::svyby(
+      ~income, ~region, survey::svymean,
+      na.rm = TRUE, domain = age >= 40
+    ),
+    estimation_type = "annual"
+  )
+
+  expect_true("region" %in% names(result))
+  expect_equal(result$value, unname(coef(direct)), tolerance = 1e-10)
+})
+
+test_that("domain expression appears in stat and disambiguates calls", {
+  svy <- make_test_survey(100)
+
+  result <- workflow(
+    list(svy),
+    survey::svymean(~income, na.rm = TRUE, domain = age >= 40),
+    survey::svymean(~income, na.rm = TRUE, domain = age < 40),
+    estimation_type = "annual"
+  )
+
+  expect_equal(nrow(result), 2L)
+  expect_true(any(grepl("age >= 40", result$stat, fixed = TRUE)))
+  expect_true(any(grepl("age < 40", result$stat, fixed = TRUE)))
+  expect_false(isTRUE(all.equal(result$value[1], result$value[2])))
+})
+
+test_that("stat is unchanged when no domain is used", {
+  svy <- make_test_survey(100)
+
+  result <- workflow(
+    list(svy),
+    survey::svymean(~income, na.rm = TRUE),
+    estimation_type = "annual"
+  )
+
+  expect_equal(result$stat[1], "survey::svymean: income")
+})
+
+test_that("domain combines with per-call level", {
+  svy <- make_test_survey(100)
+
+  r95 <- workflow(
+    list(svy),
+    survey::svymean(~income, na.rm = TRUE, domain = age >= 40),
+    estimation_type = "annual"
+  )
+  r80 <- workflow(
+    list(svy),
+    survey::svymean(~income, na.rm = TRUE, domain = age >= 40, level = 0.80),
+    estimation_type = "annual"
+  )
+
+  expect_equal(r95$value, r80$value)
+  expect_true(r80$confint_lower > r95$confint_lower)
+  expect_true(r80$confint_upper < r95$confint_upper)
+})
+
+test_that("workflow_pool supports domain", {
+  s1 <- make_test_survey(50)
+  s1$edition <- "2023-01-01"
+  s2 <- make_test_survey(50)
+  s2$edition <- "2023-02-01"
+  pool <- PoolSurvey$new(list(annual = list("group1" = list(s1, s2))))
+
+  result <- workflow(
+    pool,
+    survey::svymean(~age, na.rm = TRUE, domain = region %in% c(1, 2)),
+    estimation_type = "annual"
+  )
+
+  expect_s3_class(result, "data.table")
+  expect_true(nrow(result) > 0)
+  expect_true(all(grepl("region %in%", result$stat, fixed = TRUE)))
+})
+
+test_that("domain replicates UMAD activity rate on real ECH 2023 data", {
+  skip_on_cran()
+  pkg_root <- normalizePath(test_path("..", ".."), mustWork = FALSE)
+  ech_path <- file.path(
+    pkg_root, "example-data", "ech", "ech_2023",
+    "ECH_implantacion_2023.rds"
+  )
+  skip_if_not(file.exists(ech_path), "ECH 2023 implantation not available")
+
+  old_engine <- getOption("metasurvey.engine")
+  on.exit(options(metasurvey.engine = old_engine))
+  options(metasurvey.engine = "data.table")
+
+  ech_2023 <- load_survey(
+    path = ech_path,
+    svy_type = "ECH",
+    svy_edition = 2023,
+    svy_weight = add_weight(annual = "W_ANO")
+  )
+
+  ech_2023 <- bake_steps(
+    step_compute(
+      ech_2023,
+      pea = as.numeric(POBPCOAC %in% c(2, 3, 4, 5))
+    )
+  )
+
+  result <- workflow(
+    list(ech_2023),
+    survey::svymean(~pea, na.rm = TRUE, domain = e27 >= 14),
+    estimation_type = "annual"
+  )
+
+  # Published UMAD value for the 2023 activity rate (indicator 311)
+  expect_equal(result$value[1], 0.62459392, tolerance = 1e-8)
+})
