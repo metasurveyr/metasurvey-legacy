@@ -2,6 +2,27 @@
 #' @importFrom methods is
 NULL
 
+# Nombres asignados dentro de una expresion (targets de `<-`, `=` o
+# `<<-`), p. ej. temporales de un bloque `{ }`: no son columnas.
+collect_assigned_vars <- function(e) {
+  if (!is.call(e)) {
+    return(character())
+  }
+  fn <- e[[1]]
+  is_assign <- identical(fn, quote(`<-`)) ||
+    identical(fn, quote(`=`)) ||
+    identical(fn, quote(`<<-`))
+  own <- if (is_assign && is.name(e[[2]])) {
+    as.character(e[[2]])
+  } else {
+    character()
+  }
+  unique(c(
+    own,
+    unlist(lapply(as.list(e)[-1], collect_assigned_vars))
+  ))
+}
+
 compute <- function(svy, ..., .by = NULL,
                     .copy = use_copy_default(),
                     lazy = lazy_default()) {
@@ -16,8 +37,11 @@ compute <- function(svy, ..., .by = NULL,
       .data <- get_data(.clone)
     }
 
-    is_simple_type <- !is(.dots, "call") && !is(.dots, "name") &&
-      !is(.dots, "numeric") && !is(.dots, "logical")
+    # is.call()/is.name() (no methods::is): un bloque `{ }` o un `if`
+    # tienen clase "{" / "if", que is(x, "call") no reconoce, y caerian
+    # en la rama de tipos simples perdiendo los nombres de las exprs
+    is_simple_type <- !is.call(.dots) && !is.name(.dots) &&
+      !is.numeric(.dots) && !is.logical(.dots)
     if (is_simple_type) {
       .exprs <- list()
       for (i in seq.int(2L, length(.dots))) {
@@ -292,9 +316,11 @@ step_compute <- function(
   exprs <- as.list(substitute(list(...))[-1])
   expr_names <- names(exprs)
 
-  # Collect dependencies using simple variable detection
+  # Collect dependencies using simple variable detection; variables
+  # assigned inside the expression (e.g. temporaries in a `{ }` block)
+  # are locals, not survey columns
   dependencies <- unique(unlist(lapply(exprs, function(expr) {
-    all.vars(expr)
+    setdiff(all.vars(expr), collect_assigned_vars(expr))
   })))
 
   if (is(svy, "RotativePanelSurvey")) {

@@ -51,3 +51,14 @@ test_that("multiple step_compute calls chain correctly", {
   s3 <- bake_steps(s3)
   expect_true("triple" %in% names(s3$data))
 })
+
+test_that("step_compute accepts a braced multi-statement expression", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, age_c = {
+    tmp <- age - 40
+    tmp / 10
+  })
+  expect_true("age_c" %in% names(s2$data))
+  expect_equal(s2$data$age_c, (s2$data$age - 40) / 10)
+  expect_false("tmp" %in% names(s2$data))
+})
