@@ -11,7 +11,8 @@ evaluate_cv(cv)
 }
 \value{
 Character string with the quality category
-(e.g. "Excellent", "Good").
+(e.g. "Excellent", "Good"), or \code{NA} when the CV is not
+defined (e.g. a zero estimate, where CV = 0/0).
 }
 \description{
 Evaluate estimation with Coefficient of Variation
@@ -20,6 +21,7 @@ Evaluate estimation with Coefficient of Variation
 evaluate_cv(3) # "Excellent"
 evaluate_cv(12) # "Good"
 evaluate_cv(30) # "Use with caution"
+evaluate_cv(NaN) # NA
 }
 \seealso{
 Other workflows: 

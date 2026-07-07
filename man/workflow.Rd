@@ -62,7 +62,13 @@ Supported estimation types:
 }
 
 For PoolSurvey objects, it uses a specialized methodology that handles
-pooling of multiple surveys.
+pooling of multiple surveys. When a compound \code{estimation_type} is used
+(e.g. \code{"annual:monthly"}), point estimates are averaged across the \code{k}
+pooled surveys and the standard error is computed as
+\code{sqrt(mean(variance) * (1 + rho * (k - 1)) / k)}, where \code{rho}
+(default \code{0}, passed as a named argument through \code{...}) is the
+correlation between waves of a rotating panel. The former \code{R} argument
+is deprecated and ignored.
 }
 \examples{
 # Simple estimation

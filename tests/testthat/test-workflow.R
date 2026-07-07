@@ -303,7 +303,7 @@ test_that("cat_estimation dispatches correctly for different types", {
   expect_s3_class(result_by, "data.table")
 })
 
-test_that("workflow_pool with rho and R parameters", {
+test_that("workflow_pool accepts rho and warns on deprecated R", {
   s1 <- make_test_survey(50)
   s1$edition <- "2023-01-01"
   s2 <- make_test_survey(50)
@@ -316,15 +316,119 @@ test_that("workflow_pool with rho and R parameters", {
   )
   pool <- PoolSurvey$new(surveys_struct)
 
-  result <- workflow(
-    pool,
-    survey::svymean(~age, na.rm = TRUE),
-    rho = 0.5,
-    R = 2,
-    estimation_type = "annual"
+  expect_warning(
+    result <- workflow(
+      pool,
+      survey::svymean(~age, na.rm = TRUE),
+      rho = 0.5,
+      R = 2,
+      estimation_type = "annual"
+    ),
+    "deprecated"
   )
   expect_s3_class(result, "data.table")
   expect_true(nrow(result) > 0)
+})
+
+make_monthly_survey <- function(month, n = 200) {
+  dt <- data.table::data.table(
+    x = stats::rnorm(n, mean = 50),
+    w = rep(1, n)
+  )
+  Survey$new(
+    data = dt,
+    edition = sprintf("2023-%02d", month),
+    type = "ech",
+    psu = NULL,
+    engine = "data.table",
+    weight = add_weight(monthly = "w")
+  )
+}
+
+test_that("workflow handles a list of 2+ surveys with Date editions", {
+  set.seed(1)
+  s1 <- make_monthly_survey(1)
+  s2 <- make_monthly_survey(2)
+  expect_s3_class(s1$edition, "Date")
+
+  result <- workflow(
+    list(s1, s2),
+    survey::svymean(~x, na.rm = TRUE),
+    estimation_type = "monthly"
+  )
+  expect_s3_class(result, "data.table")
+  expect_equal(nrow(result), 2L)
+})
+
+test_that("workflow_pool handles Date editions when pooling", {
+  set.seed(2)
+  surveys <- lapply(1:3, make_monthly_survey)
+  pool <- PoolSurvey$new(list(annual = list("group1" = surveys)))
+
+  result <- workflow(
+    pool,
+    survey::svymean(~x, na.rm = TRUE),
+    estimation_type = "annual:monthly"
+  )
+  expect_s3_class(result, "data.table")
+  expect_equal(nrow(result), 1L)
+})
+
+test_that("workflow_pool pooled SE divides by number of pooled surveys", {
+  set.seed(3)
+  k <- 4L
+  surveys <- lapply(seq_len(k), make_monthly_survey, n = 500)
+  pool <- PoolSurvey$new(list(annual = list("group1" = surveys)))
+
+  pooled <- workflow(
+    pool,
+    survey::svymean(~x, na.rm = TRUE),
+    estimation_type = "annual:monthly"
+  )
+
+  per_survey <- data.table::rbindlist(
+    lapply(surveys, function(s) {
+      workflow(
+        list(s),
+        survey::svymean(~x, na.rm = TRUE),
+        estimation_type = "monthly"
+      )
+    })
+  )
+
+  expect_equal(pooled$value, mean(per_survey$value))
+  # iid case (default rho = 0): se = sqrt(mean(var) / k)
+  expect_equal(pooled$se, sqrt(mean(per_survey$se^2) / k))
+  expect_equal(pooled$cv, pooled$se / pooled$value)
+
+  z <- stats::qnorm(0.975)
+  expect_equal(pooled$confint_lower, pooled$value - z * pooled$se)
+  expect_equal(pooled$confint_upper, pooled$value + z * pooled$se)
+})
+
+test_that("workflow_pool pooled SE inflates with rho", {
+  set.seed(4)
+  k <- 3L
+  surveys <- lapply(seq_len(k), make_monthly_survey)
+  pool <- PoolSurvey$new(list(annual = list("group1" = surveys)))
+
+  pooled_rho <- workflow(
+    pool,
+    survey::svymean(~x, na.rm = TRUE),
+    rho = 0.5,
+    estimation_type = "annual:monthly"
+  )
+  pooled_iid <- workflow(
+    pool,
+    survey::svymean(~x, na.rm = TRUE),
+    estimation_type = "annual:monthly"
+  )
+
+  # se_rho = se_iid * sqrt(1 + rho * (k - 1))
+  expect_equal(
+    pooled_rho$se,
+    pooled_iid$se * sqrt(1 + 0.5 * (k - 1))
+  )
 })
 
 test_that("workflow handles empty survey list", {

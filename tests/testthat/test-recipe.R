@@ -407,6 +407,39 @@ test_that("steps_to_recipe creates recipe from step objects", {
   expect_equal(r$name, "auto recipe")
 })
 
+test_that("recipe depends_on excludes variables created by earlier steps", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, pea = as.integer(status %in% c(1, 2)))
+  s2 <- step_compute(s2, h_pea = max(pea), .by = "id")
+
+  r <- steps_to_recipe(
+    name = "multi-step deps",
+    user = "tester",
+    svy = s,
+    description = "Recipe with internal dependency",
+    steps = s2$steps
+  )
+
+  deps <- unlist(r$depends_on)
+  expect_false("pea" %in% deps)
+  expect_true("status" %in% deps)
+
+  # A fresh survey lacks the intermediate variable 'pea':
+  # add_recipe must not warn and bake_recipes must not abort
+  fresh <- make_test_survey()
+  expect_no_warning(fresh <- add_recipe(fresh, r))
+  baked <- bake_recipes(fresh)
+
+  dt <- get_data(baked)
+  expect_true(all(c("pea", "h_pea") %in% names(dt)))
+
+  direct <- get_data(bake_steps(s2))
+  expect_equal(
+    dt[order(id)]$h_pea,
+    direct[order(id)]$h_pea
+  )
+})
+
 # --- save_recipe + read_recipe roundtrip with steps ---
 
 # Test removido: step_remove genera código con <- que no se puede parsear al hacer roundtrip

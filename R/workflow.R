@@ -50,7 +50,13 @@
 #' }
 #'
 #' For PoolSurvey objects, it uses a specialized methodology that handles
-#' pooling of multiple surveys.
+#' pooling of multiple surveys. When a compound `estimation_type` is used
+#' (e.g. `"annual:monthly"`), point estimates are averaged across the `k`
+#' pooled surveys and the standard error is computed as
+#' `sqrt(mean(variance) * (1 + rho * (k - 1)) / k)`, where `rho`
+#' (default `0`, passed as a named argument through `...`) is the
+#' correlation between waves of a rotating panel. The former `R` argument
+#' is deprecated and ignored.
 #'
 #' @examples
 #' # Simple estimation
@@ -223,13 +229,18 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
 
   .calls <- substitute(list(...))
 
-  if (all(c("rho", "R") %in% names(.calls))) {
+  rho <- 0
+  if ("rho" %in% names(.calls)) {
     rho <- eval(.calls[["rho"]])
-    R <- eval(.calls[["R"]])
-    .calls <- .calls[-which(names(.calls) %in% c("rho", "R"))]
-  } else {
-    rho <- 1
-    R <- 1
+    .calls <- .calls[-which(names(.calls) == "rho")]
+  }
+  if ("R" %in% names(.calls)) {
+    warning(
+      "Argument 'R' is deprecated and ignored: the pooled standard ",
+      "error now uses 'rho' and the number of pooled surveys.",
+      call. = FALSE
+    )
+    .calls <- .calls[-which(names(.calls) == "R")]
   }
 
   survey <- survey$surveys[[estimation_type_first]]
@@ -281,10 +292,6 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
     )
   )
 
-  adj_se <- function(variance, rho, R) {
-    sqrt(1 + rho * R) * sqrt(variance)
-  }
-
   result <- result[
     ,
     variance := se**2
@@ -297,15 +304,16 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
       vapply(result, is.numeric, logical(1))
     ]
     agg <- result[
-      , lapply(.SD, mean),
+      , c(lapply(.SD, mean), list(.pool_k = .N)),
       by = list(stat, type), .SDcols = numeric_vars
     ]
-    agg[, se := vapply(
-      variance, adj_se, numeric(1),
-      rho = rho, R = R
-    )]
+    agg[, se := sqrt(variance * (1 + rho * (.pool_k - 1)) / .pool_k)]
+    agg[, .pool_k := NULL]
     agg[, cv := se / value]
-    agg[, evaluate := vapply(cv, evaluate_cv, character(1))]
+    z <- stats::qnorm((1 + level) / 2)
+    agg[, confint_lower := value - z * se]
+    agg[, confint_upper := value + z * se]
+    agg[, evaluate := vapply(cv * 100, evaluate_cv, character(1))]
     out <- data.table(agg[order(stat), ])
   }
 
@@ -549,8 +557,12 @@ cat_estimation.svyratio <- function(estimation, call, level = 0.95) {
 
   for (s in survey_list) {
     if (!inherits(s, "Survey")) next
-    if (svy_type == "Unknown") svy_type <- s$type %||% "Unknown"
-    if (svy_edition == "Unknown") svy_edition <- s$edition %||% "Unknown"
+    if (identical(svy_type, "Unknown")) {
+      svy_type <- as.character(s$type %||% "Unknown")
+    }
+    if (identical(svy_edition, "Unknown")) {
+      svy_edition <- as.character(s$edition %||% "Unknown")
+    }
 
     # Extract recipe IDs from the survey's recipes
     if (length(s$recipes) > 0) {

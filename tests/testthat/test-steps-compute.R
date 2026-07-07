@@ -62,3 +62,31 @@ test_that("step_compute accepts a braced multi-statement expression", {
   expect_equal(s2$data$age_c, (s2$data$age - 40) / 10)
   expect_false("tmp" %in% names(s2$data))
 })
+
+test_that("step_compute does not double-execute on bake_steps (non-idempotent expr)", {
+  s <- make_test_survey()
+  original_age <- data.table::copy(get_data(s)$age)
+
+  s2 <- step_compute(s, age = age + 1)
+  expect_equal(get_data(s2)$age, original_age + 1)
+
+  s2 <- bake_steps(s2)
+  # +1, never +2: bake_steps must skip the already-executed step
+  expect_equal(get_data(s2)$age, original_age + 1)
+})
+
+test_that("step_compute records the step as already baked", {
+  s <- make_test_survey()
+  s2 <- step_compute(s, x2 = x * 2)
+  expect_true(all(vapply(s2$steps, function(st) isTRUE(st$bake), logical(1))))
+})
+
+test_that("step_compute overwriting a column applies exactly once (deflation pattern)", {
+  df <- data.table::data.table(id = 1:4, income = c(100, 200, 300, 400), ipc = 2, w = 1)
+  s <- Survey$new(
+    data = df, edition = "2023", type = "test",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s2 <- bake_steps(step_compute(s, income = income / ipc))
+  expect_equal(get_data(s2)$income, c(50, 100, 150, 200))
+})

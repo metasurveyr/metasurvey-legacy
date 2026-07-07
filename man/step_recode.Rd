@@ -74,13 +74,15 @@ expressions are validated and optimized for
 efficient execution.
 }
 \details{
-\strong{Lazy evaluation (default):} By default, steps are recorded but
-\strong{not executed} until \code{\link[=bake_steps]{bake_steps()}} is called. This allows building
-a full pipeline before materializing any changes.
+\strong{Execution model:} The recoding is applied immediately when the
+step is created and the step is recorded as already executed
+(\code{bake = TRUE}). Calling \code{\link[=bake_steps]{bake_steps()}} afterwards is safe: executed
+steps are skipped, so rules are never applied twice.
 
 \strong{Condition evaluation:} Conditions are two-sided formulas evaluated
 in order. The first matching condition determines the assigned value.
-If no condition matches, \code{.default} is used.
+If no condition matches, \code{.default} is used. Replacement values keep
+their native type (character, numeric, integer or logical).
 
 Condition examples:
 \itemize{

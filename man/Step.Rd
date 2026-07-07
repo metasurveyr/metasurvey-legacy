@@ -53,6 +53,9 @@ depends on.}
 has been executed.}
 
 \item{\code{by_vars}}{Character vector of grouping variables or NULL.}
+
+\item{\code{recode_opts}}{Named list of evaluated recode options
+(\code{.default}, \code{ordered}, \code{.to_factor}) or NULL.}
 }
 \if{html}{\out{</div>}}
 }
@@ -83,7 +86,8 @@ Create a new Step object
   comment = NULL,
   bake = !lazy_default(),
   comments = NULL,
-  by_vars = NULL
+  by_vars = NULL,
+  recode_opts = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -126,6 +130,10 @@ step has been executed.}
 
 \item{\code{by_vars}}{Character vector of grouping variables for
 grouped computations, or NULL.}
+
+\item{\code{recode_opts}}{Named list of evaluated recode options
+(\code{.default}, \code{ordered}, \code{.to_factor}), or NULL for
+non-recode steps.}
 }
 \if{html}{\out{</div>}}
 }
