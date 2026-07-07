@@ -137,6 +137,33 @@ test_that("cat_estimation.svyratio formats ratio result", {
   expect_true(all(c("stat", "value", "se", "cv", "confint_lower", "confint_upper") %in% names(result)))
 })
 
+test_that("cat_estimation.svyratio returns parseable variable/denominator columns", {
+  survey <- make_test_survey(100)
+  des <- survey::svydesign(ids = ~1, data = get_data(survey), weights = ~w)
+  estimation <- survey::svyratio(~income, ~age, des, na.rm = TRUE)
+
+  result <- metasurvey:::cat_estimation.svyratio(estimation, "survey::svyratio")
+  expect_true(all(c("variable", "denominator") %in% names(result)))
+  expect_equal(result$variable, "income")
+  expect_equal(result$denominator, "age")
+  expect_equal(result$value, as.numeric(coef(estimation)))
+  expect_equal(result$se, as.numeric(survey::SE(estimation)))
+})
+
+test_that("cat_estimation.svyratio aligns variable/denominator with coef order", {
+  survey <- make_test_survey(100)
+  des <- survey::svydesign(ids = ~1, data = get_data(survey), weights = ~w)
+  estimation <- survey::svyratio(~ income + y, ~ age + x, des, na.rm = TRUE)
+
+  result <- metasurvey:::cat_estimation.svyratio(estimation, "survey::svyratio")
+  expect_equal(nrow(result), 4L)
+  expect_equal(
+    paste0(result$variable, "/", result$denominator),
+    names(survey::SE(estimation))
+  )
+  expect_equal(result$value, as.numeric(coef(estimation)))
+})
+
 # --- cat_estimation.svyby tests ---
 
 test_that("cat_estimation.svyby formats by-group result", {

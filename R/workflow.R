@@ -524,13 +524,25 @@ cat_estimation.cvystat <- function(estimation, call, level = 0.95) {
 cat_estimation.svyratio <- function(estimation, call, level = 0.95) {
   confint_estimation <- stats::confint(estimation, level = level)
 
+  ratio_names <- names(SE(estimation))
+  numerators <- rownames(estimation$ratio)
+  denominators <- colnames(estimation$ratio)
 
+  if (!is.null(numerators) && !is.null(denominators)) {
+    # coef()/SE()/cv() flatten the ratio matrix column-major:
+    # numerators vary fastest within each denominator
+    var_names <- rep(numerators, times = length(denominators))
+    den_names <- rep(denominators, each = length(numerators))
+  } else {
+    var_names <- ratio_names
+    den_names <- rep(NA_character_, length(ratio_names))
+  }
 
-  var_names <- names(SE(estimation))
   cv_vals <- as.numeric(cv(estimation))
   dt <- data.table(
-    stat = paste0(call, ": ", var_names),
+    stat = paste0(call, ": ", ratio_names),
     variable = var_names,
+    denominator = den_names,
     value = as.numeric(coef(estimation)),
     se = as.numeric(SE(estimation)),
     cv = cv_vals,
