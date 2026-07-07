@@ -64,24 +64,33 @@ compute <- function(svy, ..., .by = NULL,
       .exprs <- substitute(list(...))
     }
 
+    .expr_list <- if (is.call(.exprs)) as.list(.exprs)[-1] else .exprs
+    .nms <- names(.expr_list)
+
     if (!is.null(.by)) {
-      .agg <- .data[, j, by = .by, env = list(j = .exprs)]
-
-      # Remove existing target columns before merge to avoid .x/.y suffixes
-      agg_cols <- setdiff(names(.agg), .by)
-      existing <- intersect(agg_cols, names(.data))
-      if (length(existing) > 0) {
-        .data[, (existing) := NULL]
-      }
-
-      .data <- merge(.data, .agg, by = .by, all.x = TRUE)
+      # Bloque `{ a <- e1; b <- e2; list(a, b) }` como j: data.table lo
+      # evalua secuencialmente por grupo, asi cada expresion ve las
+      # anteriores de la misma llamada (#215). `:=` con by= reemplaza al
+      # merge() que reordenaba filas y dejaba key residual (#221).
+      .assigns <- lapply(seq_along(.expr_list), function(i) {
+        call("<-", as.name(.nms[[i]]), .expr_list[[i]])
+      })
+      .ret <- as.call(c(quote(list), lapply(.nms, as.name)))
+      .block <- as.call(c(list(quote(`{`)), .assigns, list(.ret)))
+      .j <- as.call(list(quote(`:=`), .nms, .block))
+      .data[, j, by = .by, env = list(j = .j)]
     } else {
-      .exprs <- eval(.exprs, .data)
-      .data[
-        ,
-        (names(.exprs)) := .exprs,
-        by = .by
-      ]
+      # Evaluacion secuencial con un contexto que shadowea columnas:
+      # cada expresion ve los valores ya computados en la misma llamada
+      # (semantica mutate, #215) y un unico `:=` al final asegura
+      # all-or-nothing (sin estado parcial si una expresion falla)
+      .ctx <- as.list(.data)
+      .vals <- list()
+      for (i in seq_along(.expr_list)) {
+        .vals[.nms[[i]]] <- list(eval(.expr_list[[i]], .ctx))
+        .ctx[.nms[[i]]] <- .vals[.nms[[i]]]
+      }
+      .data[, (.nms) := .vals]
     }
 
 
@@ -273,11 +282,17 @@ filter_rows <- function(svy, ..., .by = NULL,
 #'
 #' **Expression processing:**
 #' Expressions are evaluated using data.table's `:=` operator.
-#' Variable dependencies are detected automatically via `all.vars()`.
+#' Within a single call, expressions are evaluated sequentially, so a
+#' later expression can reference variables created by earlier ones
+#' (mutate semantics): `step_compute(svy, horamen = f85 * 4.3,
+#' yhora = pt4 / horamen)`. Variable dependencies are detected
+#' automatically via `all.vars()`; names created by earlier expressions
+#' of the same call are not reported as dependencies.
 #' Missing variables are caught before execution.
 #'
 #' **Grouped computations:** Use `.by` to compute aggregated values
-#' (e.g., group means) that are automatically joined back to the data.
+#' (e.g., group means) broadcast to all rows of each group. Row order
+#' is preserved.
 #'
 #' For RotativePanelSurvey objects, `.level` controls where computations
 #' are applied:
@@ -332,9 +347,14 @@ step_compute <- function(
 
   # Collect dependencies using simple variable detection; variables
   # assigned inside the expression (e.g. temporaries in a `{ }` block)
-  # are locals, not survey columns
-  dependencies <- unique(unlist(lapply(exprs, function(expr) {
-    setdiff(all.vars(expr), collect_assigned_vars(expr))
+  # are locals, not survey columns. Names created by *earlier*
+  # expressions of the same call are internal (mutate semantics), so
+  # the exclusion is positional: `age = age * 2` keeps its real
+  # dependency, but `yhora = pt4 / horamen` after `horamen = ...`
+  # does not depend on a pre-existing `horamen` column
+  dependencies <- unique(unlist(lapply(seq_along(exprs), function(i) {
+    vars <- setdiff(all.vars(exprs[[i]]), collect_assigned_vars(exprs[[i]]))
+    setdiff(vars, expr_names[seq_len(i - 1L)])
   })))
 
   if (is(svy, "RotativePanelSurvey")) {
