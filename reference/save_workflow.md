@@ -45,5 +45,5 @@ wf <- RecipeWorkflow$new(
 )
 f <- tempfile(fileext = ".json")
 save_workflow(wf, f)
-#> Workflow saved to /tmp/Rtmp1xJful/file1e9b4d7c3dae.json
+#> Workflow saved to /tmp/RtmpKqWPOY/file1e9831508c8a.json
 ```
