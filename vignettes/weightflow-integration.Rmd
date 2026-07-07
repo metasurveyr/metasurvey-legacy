@@ -14,7 +14,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-can_run <- requireNamespace("weightflow", quietly = TRUE)
+# Chunks need the weightflow >= 0.1.0 API (e.g. step_trim_weights(method=));
+# binary mirrors can lag CRAN, so guard on the version, not just presence
+can_run <- requireNamespace("weightflow", quietly = TRUE) &&
+  utils::packageVersion("weightflow") >= "0.1.0"
 ```
 
 ## Introduction
