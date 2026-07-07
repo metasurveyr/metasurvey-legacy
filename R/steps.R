@@ -1150,6 +1150,14 @@ step_join <- function(
 #' - **Unquoted names:** `step_remove(svy, age, income)`
 #' - **Character vector:** `step_remove(svy, vars = c("age", "income"))`
 #'
+#' **Name resolution:** bare symbols passed via `...` that match a
+#' column name always refer to that column, even if a variable with
+#' the same name exists in the calling environment (column takes
+#' precedence). Symbols that do not match any column are looked up in
+#' the calling environment and, if they hold a character vector, its
+#' values are used as column names. For fully programmatic use prefer
+#' `vars = c("age", "income")`, which skips symbol resolution entirely.
+#'
 #' Variables that don't exist in the data produce a warning
 #' (not an error), allowing pipelines to be robust to missing columns.
 #' @examples
@@ -1189,19 +1197,42 @@ step_remove <- function(
     }
   } else {
     dots_list <- as.list(substitute(list(...)))[-1]
-    # Allow character vector passed via ...
-    if (length(dots_list) == 1) {
-      evald <- try(
-        eval(dots_list[[1]], parent.frame()),
-        silent = TRUE
-      )
-      if (!inherits(evald, "try-error") && is.character(evald)) {
-        var_names <- as.character(evald)
-      }
+    data_cols <- if (is(svy, "RotativePanelSurvey")) {
+      unique(unlist(lapply(
+        c(list(svy$implantation), svy$follow_up),
+        function(s) names(get_data(s))
+      )))
+    } else {
+      names(get_data(svy))
     }
-    if (is.null(var_names)) {
-      var_names <- vapply(dots_list, deparse1, character(1))
-    }
+    caller <- parent.frame()
+    var_names <- unlist(
+      lapply(dots_list, function(expr) {
+        if (is.character(expr)) {
+          return(expr)
+        }
+        if (is.symbol(expr)) {
+          nm <- as.character(expr)
+          # Column names take precedence over homonymous caller variables:
+          # step_remove(svy, x) must remove column "x" even if a local
+          # variable `x` exists in the calling environment
+          if (nm %in% data_cols) {
+            return(nm)
+          }
+          evald <- try(eval(expr, caller), silent = TRUE)
+          if (!inherits(evald, "try-error") && is.character(evald)) {
+            return(evald)
+          }
+          return(nm)
+        }
+        evald <- try(eval(expr, caller), silent = TRUE)
+        if (!inherits(evald, "try-error") && is.character(evald)) {
+          return(evald)
+        }
+        deparse1(expr)
+      }),
+      use.names = FALSE
+    )
   }
 
   if (is(svy, "RotativePanelSurvey")) {
