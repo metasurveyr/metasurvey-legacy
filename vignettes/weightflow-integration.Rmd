@@ -1,0 +1,170 @@
+---
+title: "Survey Weighting with weightflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Survey Weighting with weightflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+can_run <- requireNamespace("weightflow", quietly = TRUE)
+```
+
+## Introduction
+
+The [weightflow](https://jpferreira33.github.io/weightflow/) package by
+Juan Pablo Ferreira provides a declarative, pipeable API for survey weight
+construction: nonresponse adjustment, calibration (raking, post-stratification,
+GREG), trimming, and bootstrap replicate weights.
+
+metasurvey's `step_weight()` integrates weightflow into the step pipeline so
+that weight construction becomes a lazy, reproducible step --- just like
+`step_compute()` or `step_recode()`. Weights are computed when `bake_steps()`
+is called.
+
+## Setup
+
+We simulate a household survey with design weights, demographic variables,
+and known population margins.
+
+```{r setup, eval = can_run}
+library(metasurvey)
+library(weightflow)
+library(data.table)
+
+set.seed(2026)
+n <- 500
+
+microdata <- data.table(
+  id = seq_len(n),
+  sex = sample(c("M", "F"), n, replace = TRUE),
+  age_grp = sample(c("18-34", "35-54", "55+"), n,
+    replace = TRUE,
+    prob = c(0.35, 0.40, 0.25)
+  ),
+  region = sample(c("North", "South", "Central"), n, replace = TRUE),
+  income = round(rlnorm(n, log(30000), 0.6)),
+  employed = sample(0:1, n, replace = TRUE, prob = c(0.3, 0.7)),
+  dw = runif(n, 0.8, 1.5)
+)
+```
+
+We also define population totals for calibration:
+
+```{r margins, eval = can_run}
+pop_sex <- c(M = 120000, F = 125000)
+pop_age <- c("18-34" = 80000, "35-54" = 100000, "55+" = 65000)
+```
+
+## weightflow standalone
+
+Before integrating with metasurvey, here is the pure weightflow pipeline:
+
+```{r standalone, eval = can_run}
+spec <- weighting_spec(microdata, base_weights = dw) |>
+  step_calibrate(method = "raking", margins = list(
+    sex     = pop_sex,
+    age_grp = pop_age
+  )) |>
+  step_trim_weights(method = "tukey")
+
+prepped <- prep(spec)
+summary(prepped)
+```
+
+`collect_weights()` returns the data with a `.weight` column:
+
+```{r collect, eval = can_run}
+weighted_data <- collect_weights(prepped)
+head(weighted_data[, .(id, sex, age_grp, dw, .weight)])
+```
+
+## Integration with metasurvey
+
+`step_weight()` wraps the entire weightflow pipeline into a single lazy step.
+The weighting specification is stored and executed at `bake_steps()` time.
+
+```{r integration, eval = can_run}
+svy <- Survey$new(
+  data    = microdata,
+  edition = "2023",
+  type    = "household",
+  psu     = NULL,
+  engine  = "data.table",
+  weight  = add_weight(annual = "dw")
+)
+
+spec <- weighting_spec(microdata, base_weights = dw) |>
+  step_calibrate(method = "raking", margins = list(
+    sex     = pop_sex,
+    age_grp = pop_age
+  )) |>
+  step_trim_weights(method = "tukey")
+
+svy <- svy |>
+  step_weight(spec) |>
+  step_compute(high_income = as.integer(income > 50000)) |>
+  bake_steps()
+```
+
+After baking, the `.weight` column exists and the survey design uses
+the calibrated weights:
+
+```{r check-weight, eval = can_run}
+head(get_data(svy)[, .(id, dw, .weight, high_income)])
+svy$weight
+```
+
+## Running estimations
+
+With calibrated weights in place, `workflow()` produces design-consistent
+estimates:
+
+```{r workflow, eval = can_run}
+results <- workflow(
+  list(svy),
+  survey::svymean(~income, na.rm = TRUE),
+  survey::svymean(~employed, na.rm = TRUE),
+  survey::svytotal(~high_income, na.rm = TRUE),
+  estimation_type = "annual"
+)
+print(results)
+```
+
+## Custom weight column name
+
+Use `weight_var` to control the output column name:
+
+```{r custom-name, eval = can_run}
+svy2 <- Survey$new(
+  data    = microdata,
+  edition = "2023",
+  type    = "household",
+  psu     = NULL,
+  engine  = "data.table",
+  weight  = add_weight(annual = "dw")
+)
+
+svy2 <- svy2 |>
+  step_weight(spec, weight_var = "calibrated_w") |>
+  bake_steps()
+
+"calibrated_w" %in% names(get_data(svy2))
+svy2$weight
+```
+
+## When to use step_weight
+
+| Scenario | Approach |
+|----------|----------|
+| Weights already in the microdata | Use `add_weight()` directly |
+| Need calibration / nonresponse adjustment | Use `step_weight()` with a weightflow spec |
+| Multiple weighting strategies to compare | Create separate specs and surveys |
+| Bootstrap replicate weights | Use `weightflow::bootstrap_weights()` then `add_weight()` with replicate spec |

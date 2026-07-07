@@ -39,6 +39,8 @@ navbar:
           href: articles/self-hosting.html
         - text: -------
         - text: Interoperability
+        - text: Weighting with weightflow
+          href: articles/weightflow-integration.html
         - text: STATA Transpiler
           href: articles/stata-transpiler.html
         - text: -------
@@ -145,6 +147,7 @@ reference:
   - step_rename
   - step_remove
   - step_join
+  - step_weight
   - step_validate
   - bake_steps
 - title: Recipes
@@ -316,6 +319,7 @@ articles:
   - ech-case-study
   - international-surveys
   - convey-inequality
+  - weightflow-integration
 - title: "Espa\u00F1ol"
   desc: "Documentaci\u00F3n en espa\u00F1ol"
   contents:

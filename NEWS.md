@@ -16,6 +16,11 @@
   last-write-wins semantics.
 
 ## New features
+* `step_weight()`: integrates the `weightflow` package into the step pipeline.
+  Accepts a `weighting_spec` object for nonresponse adjustment, calibration
+  (raking, post-stratification, GREG), and weight trimming --- all as a lazy,
+  reproducible step.
+* New vignette: "Survey Weighting with weightflow" documents the integration.
 * `step_recode()` accepts non-character RHS values (numeric, integer,
   logical); previously anything but character failed with an internal
   `vapply` error.
@@ -45,6 +50,11 @@
   re-baking would re-execute without grouping, producing wrong results.
 * `compute()` with `.by`: fixed `merge()` creating `.x`/`.y` suffix columns
   when the target column already existed in the data (e.g., during re-baking).
+* `bake_recipes()`: fixed global state leak where `lazy_processing` option
+  was not restored when baking multiple recipes, causing subsequent
+  `step_rename`/`step_remove` calls to fail.
+* `filter_recipes()`: added missing `topic` parameter, fixing `harmonize()`
+  example failures.
 
 # metasurvey 0.0.23
 
@@ -561,8 +571,8 @@
 
 ## Internal
 
-* Added `.claude/` directory with development agents and commands for
-  code review, testing, documentation auditing, and rOpenSci preparation.
+* Added development agents and commands for code review, testing,
+  documentation auditing, and rOpenSci preparation.
 
 # metasurvey 0.0.5
 
