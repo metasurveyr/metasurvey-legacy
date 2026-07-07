@@ -79,9 +79,11 @@ svy <- svy |> set_data(dt)
 
 ## Building the pipeline
 
-Every transformation is a **step**. By default, steps are **lazy**: they
-record what to do without executing it. This lets you inspect and modify the
-pipeline before materializing the results.
+Every transformation is a **step**. Data steps (`step_compute`,
+`step_recode`, `step_join`) execute when created and are recorded in the
+pipeline; `step_rename` and `step_remove` are deferred by default until
+`bake_steps()`. The recorded pipeline is what lets you inspect, document,
+and reuse every transformation.
 
 Compare this with the transpiler approach: `transpile_stata()` would produce
 one step per STATA command, faithfully preserving every `gen` and `replace`.
@@ -98,14 +100,16 @@ svy <- svy |>
   )
 ```
 
-Nothing happened to the data yet:
+Nothing happened to the data yet: `step_rename` is deferred by default
+(`lazy_default()` is `TRUE`) until `bake_steps()`:
 
 ```{r}
 names(get_data(svy))[1:4]
 ```
 
 The original column names are still there because the step is pending.
-Let's keep adding steps.
+The recodes that follow, by contrast, execute when created. Let's keep
+adding steps.
 
 ### Recode sex
 
@@ -198,9 +202,11 @@ svy <- svy |>
   )
 ```
 
-## Inspecting the pipeline before execution
+## Inspecting the pipeline
 
-At this point we have seven pending steps. Let's see what was recorded:
+At this point we have seven recorded steps: the five recodes already
+executed, while the rename and the remove are still pending. Let's see
+what was recorded:
 
 ```{r}
 length(get_steps(svy))
@@ -233,11 +239,12 @@ for (s in get_steps(svy)) {
 }
 ```
 
-## Packaging as a recipe (before baking)
+## Packaging as a recipe
 
 A recipe bundles the steps with metadata so anyone can reproduce the same
-pipeline on different data. We create the recipe **before** baking -- the
-lazy steps are the pipeline:
+pipeline on different data. The recorded steps are the pipeline: whether
+they already executed or not does not matter -- the recipe re-runs every
+step when baked on new data, and that is where reproducibility lives:
 
 ```{r}
 rec <- steps_to_recipe(
@@ -264,10 +271,11 @@ cat("Output variables:", paste(doc$output_variables, collapse = ", "), "\n")
 cat("Pipeline steps:  ", length(doc$pipeline), "\n")
 ```
 
-## Baking: materializing the pipeline
+## Baking: materializing the pending steps
 
-Now let's execute the steps. `bake_steps()` runs all pending steps in order
-and returns the transformed survey:
+`bake_steps()` runs the deferred steps (here, the rename and the remove)
+and skips the ones that already executed, so there is never double
+execution. Calling it is safe and idempotent:
 
 ```{r}
 svy <- bake_steps(svy)
@@ -364,7 +372,7 @@ you want to end up.
 | No dependency tracking | DAG visualization with `view_graph()` |
 | Flat scripts, no validation | `validate()` checks required variables |
 | Email `.do` files to colleagues | `publish_recipe()` to shared registry |
-| Re-run entire script to test | Lazy steps: inspect before baking |
+| Re-run entire script to test | Recorded pipeline: inspect with `get_steps()` |
 
 ## Next steps
 
