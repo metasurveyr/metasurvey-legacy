@@ -100,7 +100,7 @@ institutional_member, and institution."><meta property="og:image" content="https
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>RecipeUser</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/RecipeUser.R" class="external-link"><code>R/RecipeUser.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/RecipeUser.R" class="external-link"><code>R/RecipeUser.R</code></a></small>
       <div class="d-none name"><code>RecipeUser.Rd</code></div>
     </div>
 
@@ -118,7 +118,7 @@ institutional_member, and institution.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other tidy-api:
-<code><a href="RecipeCategory.html">RecipeCategory</a></code>,
+<code><a href="RecipeCategory-from_list.html">RecipeCategory-from_list</a></code>,
 <code><a href="RecipeCertification.html">RecipeCertification</a></code>,
 <code><a href="add_category.html">add_category()</a></code>,
 <code><a href="certify_recipe.html">certify_recipe()</a></code>,
@@ -145,33 +145,33 @@ institutional_member, and institution.</p>
 <dd><p>Character. User or institution name.</p></dd>
 
 
-<dt><code>email</code></dt>
+    <dt><code>email</code></dt>
 <dd><p>Character or NULL. Email address.</p></dd>
 
 
-<dt><code>user_type</code></dt>
+    <dt><code>user_type</code></dt>
 <dd><p>Character. One of "individual",
 "institutional_member", "institution".</p></dd>
 
 
-<dt><code>affiliation</code></dt>
+    <dt><code>affiliation</code></dt>
 <dd><p>Character or NULL. Organizational affiliation.</p></dd>
 
 
-<dt><code>institution</code></dt>
+    <dt><code>institution</code></dt>
 <dd><p>RecipeUser or NULL. Parent institution
 (for institutional_member).</p></dd>
 
 
-<dt><code>url</code></dt>
+    <dt><code>url</code></dt>
 <dd><p>Character or NULL. Institution URL.</p></dd>
 
 
-<dt><code>verified</code></dt>
+    <dt><code>verified</code></dt>
 <dd><p>Logical. Whether the account is verified.</p></dd>
 
 
-<dt><code>review_status</code></dt>
+    <dt><code>review_status</code></dt>
 <dd><p>Character. One of "approved",
 "pending", "rejected".</p></dd>
 
@@ -183,15 +183,14 @@ institutional_member, and institution.</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-RecipeUser-new"><code>RecipeUser$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-RecipeUser-initialize"><code>RecipeUser$new()</code></a></p></li>
 <li><p><a href="#method-RecipeUser-trust_level"><code>RecipeUser$trust_level()</code></a></p></li>
 <li><p><a href="#method-RecipeUser-can_certify"><code>RecipeUser$can_certify()</code></a></p></li>
 <li><p><a href="#method-RecipeUser-to_list"><code>RecipeUser$to_list()</code></a></p></li>
 <li><p><a href="#method-RecipeUser-print"><code>RecipeUser$print()</code></a></p></li>
 <li><p><a href="#method-RecipeUser-clone"><code>RecipeUser$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-RecipeUser-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-RecipeUser-initialize"></a><div class="section">
+<h3 id="recipeuser-new-"><code>RecipeUser$new()</code><a class="anchor" aria-label="anchor" href="#recipeuser-new-"></a></h3>
 <p>Create a new RecipeUser</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/RecipeUser.html">RecipeUser</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -204,41 +203,32 @@ institutional_member, and institution.</p>
 <span>  verified <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  review_status <span class="op">=</span> <span class="st">"approved"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>Character. User or institution name.</p></dd>
 
-
-<dt><code>user_type</code></dt>
+      <dt><code>user_type</code></dt>
 <dd><p>Character. One of "individual",
 "institutional_member", "institution".</p></dd>
 
-
-<dt><code>email</code></dt>
+      <dt><code>email</code></dt>
 <dd><p>Character or NULL. Email address.</p></dd>
 
-
-<dt><code>affiliation</code></dt>
+      <dt><code>affiliation</code></dt>
 <dd><p>Character or NULL. Organizational affiliation.</p></dd>
 
-
-<dt><code>institution</code></dt>
+      <dt><code>institution</code></dt>
 <dd><p>RecipeUser or NULL. Parent
 institution for institutional_member.</p></dd>
 
-
-<dt><code>url</code></dt>
+      <dt><code>url</code></dt>
 <dd><p>Character or NULL. Institution URL.</p></dd>
 
-
-<dt><code>verified</code></dt>
+      <dt><code>verified</code></dt>
 <dd><p>Logical. Whether account is verified.</p></dd>
 
-
-<dt><code>review_status</code></dt>
+      <dt><code>review_status</code></dt>
 <dd><p>Character. "approved", "pending",
 or "rejected".</p></dd>
 
@@ -246,26 +236,26 @@ or "rejected".</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeUser-trust_level"></a><div class="section">
-<h3 id="method-trust-level-">Method <code>trust_level()</code><a class="anchor" aria-label="anchor" href="#method-trust-level-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeUser-trust_level"></a><div class="section">
+<h3 id="recipeuser-trust-level-"><code>RecipeUser$trust_level()</code><a class="anchor" aria-label="anchor" href="#recipeuser-trust-level-"></a></h3>
 <p>Get trust level (1=individual, 2=member, 3=institution)</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeUser</span><span class="op">$</span><span class="fu">trust_level</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>Integer trust level</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeUser-can_certify"></a><div class="section">
-<h3 id="method-can-certify-">Method <code>can_certify()</code><a class="anchor" aria-label="anchor" href="#method-can-certify-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeUser-can_certify"></a><div class="section">
+<h3 id="recipeuser-can-certify-"><code>RecipeUser$can_certify()</code><a class="anchor" aria-label="anchor" href="#recipeuser-can-certify-"></a></h3>
 <p>Check if user can certify at a given level</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeUser</span><span class="op">$</span><span class="fu">can_certify</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>level</code></dt>
 <dd><p>Character. Certification level
@@ -273,32 +263,31 @@ or "rejected".</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Logical</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeUser-to_list"></a><div class="section">
-<h3 id="method-to-list-">Method <code>to_list()</code><a class="anchor" aria-label="anchor" href="#method-to-list-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeUser-to_list"></a><div class="section">
+<h3 id="recipeuser-to-list-"><code>RecipeUser$to_list()</code><a class="anchor" aria-label="anchor" href="#recipeuser-to-list-"></a></h3>
 <p>Serialize to list for JSON</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeUser</span><span class="op">$</span><span class="fu">to_list</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>List representation</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeUser-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeUser-print"></a><div class="section">
+<h3 id="recipeuser-print-"><code>RecipeUser$print()</code><a class="anchor" aria-label="anchor" href="#recipeuser-print-"></a></h3>
 <p>Print user card</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeUser</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments (not used)</p></dd>
@@ -307,14 +296,14 @@ or "rejected".</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeUser-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeUser-clone"></a><div class="section">
+<h3 id="recipeuser-clone-"><code>RecipeUser$clone()</code><a class="anchor" aria-label="anchor" href="#recipeuser-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeUser</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -324,6 +313,7 @@ or "rejected".</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

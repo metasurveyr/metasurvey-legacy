@@ -1,8 +1,8 @@
 # Recipe R6 class
 
-Recipe R6 class
-
-Recipe R6 class
+R6 class representing a reproducible data transformation recipe for
+surveys. It encapsulates metadata, declared dependencies, and a list of
+transformation steps to be applied to a Survey object.
 
 ## Format
 
@@ -11,12 +11,6 @@ An R6 class generator (R6ClassGenerator)
 ## Value
 
 An object of class `Recipe`.
-
-## Details
-
-R6 class representing a reproducible data transformation recipe for
-surveys. It encapsulates metadata, declared dependencies, and a list of
-transformation steps to be applied to a Survey object.
 
 ## Methods
 
@@ -146,7 +140,7 @@ Other recipes:
 
 ### Public methods
 
-- [`Recipe$new()`](#method-Recipe-new)
+- [`Recipe$new()`](#method-Recipe-initialize)
 
 - [`Recipe$increment_downloads()`](#method-Recipe-increment_downloads)
 
@@ -166,7 +160,7 @@ Other recipes:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Recipe$new()`
 
 Create a Recipe object
 
@@ -284,7 +278,7 @@ Create a Recipe object
 
 ------------------------------------------------------------------------
 
-### Method `increment_downloads()`
+### `Recipe$increment_downloads()`
 
 Increment the download counter
 
@@ -294,7 +288,7 @@ Increment the download counter
 
 ------------------------------------------------------------------------
 
-### Method `certify()`
+### `Recipe$certify()`
 
 Certify the recipe at a given level
 
@@ -314,7 +308,7 @@ Certify the recipe at a given level
 
 ------------------------------------------------------------------------
 
-### Method [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md)
+### `Recipe$add_category()`
 
 Add a category to the recipe
 
@@ -330,7 +324,7 @@ Add a category to the recipe
 
 ------------------------------------------------------------------------
 
-### Method [`remove_category()`](https://metasurveyr.github.io/metasurvey/reference/remove_category.md)
+### `Recipe$remove_category()`
 
 Remove a category by name
 
@@ -346,7 +340,7 @@ Remove a category by name
 
 ------------------------------------------------------------------------
 
-### Method `to_list()`
+### `Recipe$to_list()`
 
 Serialize Recipe to a plain list suitable for JSON/API publishing. Steps
 are encoded as character strings via deparse().
@@ -361,7 +355,7 @@ A named list with all recipe fields.
 
 ------------------------------------------------------------------------
 
-### Method `doc()`
+### `Recipe$doc()`
 
 Auto-generate documentation from recipe steps
 
@@ -376,7 +370,7 @@ information
 
 ------------------------------------------------------------------------
 
-### Method `validate()`
+### `Recipe$validate()`
 
 Validate that a survey has all required input variables
 
@@ -396,7 +390,7 @@ TRUE if valid, otherwise stops with error listing missing variables
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Recipe$clone()`
 
 The objects of this class are cloneable with this method.
 

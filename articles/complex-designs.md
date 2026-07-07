@@ -214,7 +214,7 @@ get_engine()
 
 # Available engines
 show_engines()
-#> [1] "data.table" "tidyverse"  "dplyr"      "metatable"
+#> [1] "data.table" "tidyverse"  "dplyr"
 ```
 
 ### Step Execution and Lazy Processing

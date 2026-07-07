@@ -102,7 +102,7 @@ new variables, or validating dependencies."><meta property="og:image" content="h
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Step Class Represents a step in a survey workflow.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/Step.R" class="external-link"><code>R/Step.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/Step.R" class="external-link"><code>R/Step.R</code></a></small>
       <div class="d-none name"><code>Step.Rd</code></div>
     </div>
 
@@ -128,62 +128,62 @@ complete workflow.</p>
 <dd><p>The name of the step.</p></dd>
 
 
-<dt><code>edition</code></dt>
+    <dt><code>edition</code></dt>
 <dd><p>The edition of the survey associated with the step.</p></dd>
 
 
-<dt><code>survey_type</code></dt>
+    <dt><code>survey_type</code></dt>
 <dd><p>The type of survey associated with the step.</p></dd>
 
 
-<dt><code>type</code></dt>
+    <dt><code>type</code></dt>
 <dd><p>The type of operation performed by the step
 (e.g., "compute", "recode").</p></dd>
 
 
-<dt><code>new_var</code></dt>
+    <dt><code>new_var</code></dt>
 <dd><p>The name of the new variable created by
 the step, if applicable.</p></dd>
 
 
-<dt><code>exprs</code></dt>
+    <dt><code>exprs</code></dt>
 <dd><p>A list of expressions defining the step's
 operations.</p></dd>
 
 
-<dt><code>call</code></dt>
+    <dt><code>call</code></dt>
 <dd><p>The function call associated with the step.</p></dd>
 
 
-<dt><code>svy_before</code></dt>
+    <dt><code>svy_before</code></dt>
 <dd><p>Deprecated. Always NULL to prevent memory
 retention chains. Kept for backwards compatibility.</p></dd>
 
 
-<dt><code>default_engine</code></dt>
+    <dt><code>default_engine</code></dt>
 <dd><p>The default engine used for
 processing the step.</p></dd>
 
 
-<dt><code>depends_on</code></dt>
+    <dt><code>depends_on</code></dt>
 <dd><p>A list of variables that the step
 depends on.</p></dd>
 
 
-<dt><code>comment</code></dt>
+    <dt><code>comment</code></dt>
 <dd><p>Comments or notes about the step.</p></dd>
 
 
-<dt><code>bake</code></dt>
+    <dt><code>bake</code></dt>
 <dd><p>A logical value indicating whether the step
 has been executed.</p></dd>
 
 
-<dt><code>by_vars</code></dt>
+    <dt><code>by_vars</code></dt>
 <dd><p>Character vector of grouping variables or NULL.</p></dd>
 
 
-<dt><code>recode_opts</code></dt>
+    <dt><code>recode_opts</code></dt>
 <dd><p>Named list of evaluated recode options
 (<code>.default</code>, <code>ordered</code>, <code>.to_factor</code>) or NULL.</p></dd>
 
@@ -195,11 +195,10 @@ has been executed.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-Step-new"><code>Step$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-Step-initialize"><code>Step$new()</code></a></p></li>
 <li><p><a href="#method-Step-clone"><code>Step$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-Step-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-Step-initialize"></a><div class="section">
+<h3 id="step-new-"><code>Step$new()</code><a class="anchor" aria-label="anchor" href="#step-new-"></a></h3>
 <p>Create a new Step object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Step.html">Step</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -219,76 +218,60 @@ has been executed.</p></dd>
 <span>  by_vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  recode_opts <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the step.</p></dd>
 
-
-<dt><code>edition</code></dt>
+      <dt><code>edition</code></dt>
 <dd><p>The edition of the survey associated with the step.</p></dd>
 
-
-<dt><code>survey_type</code></dt>
+      <dt><code>survey_type</code></dt>
 <dd><p>The type of survey associated with the step.</p></dd>
 
-
-<dt><code>type</code></dt>
+      <dt><code>type</code></dt>
 <dd><p>The type of operation performed by the
 step (e.g., "compute" or "recode").</p></dd>
 
-
-<dt><code>new_var</code></dt>
+      <dt><code>new_var</code></dt>
 <dd><p>The name of the new variable created
 by the step, if applicable.</p></dd>
 
-
-<dt><code>exprs</code></dt>
+      <dt><code>exprs</code></dt>
 <dd><p>A list of expressions defining the
 step's operations.</p></dd>
 
-
-<dt><code>call</code></dt>
+      <dt><code>call</code></dt>
 <dd><p>The function call associated with the
 step.</p></dd>
 
-
-<dt><code>svy_before</code></dt>
+      <dt><code>svy_before</code></dt>
 <dd><p>Deprecated. Ignored (always set to
 NULL) to prevent memory retention chains.</p></dd>
 
-
-<dt><code>default_engine</code></dt>
+      <dt><code>default_engine</code></dt>
 <dd><p>The default engine used for
 processing the step.</p></dd>
 
-
-<dt><code>depends_on</code></dt>
+      <dt><code>depends_on</code></dt>
 <dd><p>A list of variables that the step
 depends on.</p></dd>
 
-
-<dt><code>comment</code></dt>
+      <dt><code>comment</code></dt>
 <dd><p>Comments or notes about the step.</p></dd>
 
-
-<dt><code>bake</code></dt>
+      <dt><code>bake</code></dt>
 <dd><p>A logical value indicating whether the
 step has been executed.</p></dd>
 
-
-<dt><code>comments</code></dt>
+      <dt><code>comments</code></dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Use <code>comment</code> instead.</p></dd>
 
-
-<dt><code>by_vars</code></dt>
+      <dt><code>by_vars</code></dt>
 <dd><p>Character vector of grouping variables for
 grouped computations, or NULL.</p></dd>
 
-
-<dt><code>recode_opts</code></dt>
+      <dt><code>recode_opts</code></dt>
 <dd><p>Named list of evaluated recode options
 (<code>.default</code>, <code>ordered</code>, <code>.to_factor</code>), or NULL for
 non-recode steps.</p></dd>
@@ -297,14 +280,14 @@ non-recode steps.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-Step-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Step-clone"></a><div class="section">
+<h3 id="step-clone-"><code>Step$clone()</code><a class="anchor" aria-label="anchor" href="#step-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Step</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -314,6 +297,7 @@ non-recode steps.</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

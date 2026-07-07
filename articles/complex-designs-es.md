@@ -216,7 +216,7 @@ get_engine()
 
 # Available engines
 show_engines()
-#> [1] "data.table" "tidyverse"  "dplyr"      "metatable"
+#> [1] "data.table" "tidyverse"  "dplyr"
 ```
 
 ### Ejecución de steps y procesamiento diferido

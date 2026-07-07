@@ -7,7 +7,7 @@ filtering.
 
 ### Public methods
 
-- [`WorkflowRegistry$new()`](#method-WorkflowRegistry-new)
+- [`WorkflowRegistry$new()`](#method-WorkflowRegistry-initialize)
 
 - [`WorkflowRegistry$register()`](#method-WorkflowRegistry-register)
 
@@ -37,7 +37,7 @@ filtering.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `WorkflowRegistry$new()`
 
 Create a new empty WorkflowRegistry
 
@@ -47,7 +47,7 @@ Create a new empty WorkflowRegistry
 
 ------------------------------------------------------------------------
 
-### Method `register()`
+### `WorkflowRegistry$register()`
 
 Register a workflow in the catalog
 
@@ -63,7 +63,7 @@ Register a workflow in the catalog
 
 ------------------------------------------------------------------------
 
-### Method `unregister()`
+### `WorkflowRegistry$unregister()`
 
 Remove a workflow from the catalog by id
 
@@ -79,7 +79,7 @@ Remove a workflow from the catalog by id
 
 ------------------------------------------------------------------------
 
-### Method [`search()`](https://rdrr.io/r/base/search.html)
+### `WorkflowRegistry$search()`
 
 Search workflows by name or description (case-insensitive)
 
@@ -99,7 +99,7 @@ List of matching RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`filter()`](https://rdrr.io/r/stats/filter.html)
+### `WorkflowRegistry$filter()`
 
 Filter workflows by criteria
 
@@ -136,7 +136,7 @@ List of matching RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method `find_by_recipe()`
+### `WorkflowRegistry$find_by_recipe()`
 
 Find workflows that reference a specific recipe
 
@@ -156,7 +156,7 @@ List of RecipeWorkflow objects referencing this recipe
 
 ------------------------------------------------------------------------
 
-### Method `rank_by_downloads()`
+### `WorkflowRegistry$rank_by_downloads()`
 
 Rank workflows by download count (descending)
 
@@ -176,7 +176,7 @@ List of RecipeWorkflow objects sorted by downloads
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `WorkflowRegistry$get()`
 
 Get a single workflow by id
 
@@ -196,7 +196,7 @@ RecipeWorkflow object or NULL
 
 ------------------------------------------------------------------------
 
-### Method `list_all()`
+### `WorkflowRegistry$list_all()`
 
 List all registered workflows
 
@@ -210,7 +210,7 @@ List of all RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`save()`](https://rdrr.io/r/base/save.html)
+### `WorkflowRegistry$save()`
 
 Save the registry catalog to a JSON file
 
@@ -226,7 +226,7 @@ Save the registry catalog to a JSON file
 
 ------------------------------------------------------------------------
 
-### Method [`load()`](https://rdrr.io/r/base/load.html)
+### `WorkflowRegistry$load()`
 
 Load a registry catalog from a JSON file
 
@@ -242,7 +242,7 @@ Load a registry catalog from a JSON file
 
 ------------------------------------------------------------------------
 
-### Method `stats()`
+### `WorkflowRegistry$stats()`
 
 Get registry statistics
 
@@ -256,7 +256,7 @@ List with total, by_survey_type, by_certification counts
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `WorkflowRegistry$print()`
 
 Print registry summary
 
@@ -272,7 +272,7 @@ Print registry summary
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `WorkflowRegistry$clone()`
 
 The objects of this class are cloneable with this method.
 

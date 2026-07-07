@@ -445,9 +445,6 @@ Reproducible transformations on surveys
   : Validate data during the step pipeline
 - [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
   : Execute all pending steps
-- [`explain()`](https://metasurveyr.github.io/metasurvey/reference/explain.md)
-  [`print(`*`<meta_plan>`*`)`](https://metasurveyr.github.io/metasurvey/reference/explain.md)
-  : Explain the execution plan of the pending steps
 
 ## Recipes
 
@@ -706,7 +703,8 @@ Convert STATA do-files to metasurvey recipes
 
 R6 classes for the recipe ecosystem
 
-- [`RecipeCategory`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory.md)
+- [`RecipeCategory-from_list`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory-from_list.md)
+  [`RecipeCategory`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory-from_list.md)
   : RecipeCategory
 - [`RecipeCertification`](https://metasurveyr.github.io/metasurvey/reference/RecipeCertification.md)
   : RecipeCertification

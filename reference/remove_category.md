@@ -27,7 +27,7 @@ The modified Recipe object.
 [`add_category`](https://metasurveyr.github.io/metasurvey/reference/add_category.md)
 
 Other tidy-api:
-[`RecipeCategory`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory.md),
+[`RecipeCategory-from_list`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory-from_list.md),
 [`RecipeCertification`](https://metasurveyr.github.io/metasurvey/reference/RecipeCertification.md),
 [`RecipeUser`](https://metasurveyr.github.io/metasurvey/reference/RecipeUser.md),
 [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md),

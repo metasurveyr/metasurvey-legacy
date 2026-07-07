@@ -98,7 +98,7 @@ discovery, ranking, and filtering."><meta property="og:image" content="https://m
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>RecipeRegistry</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/RecipeRegistry.R" class="external-link"><code>R/RecipeRegistry.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/RecipeRegistry.R" class="external-link"><code>R/RecipeRegistry.R</code></a></small>
       <div class="d-none name"><code>RecipeRegistry.Rd</code></div>
     </div>
 
@@ -113,8 +113,7 @@ discovery, ranking, and filtering.</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-RecipeRegistry-new"><code>RecipeRegistry$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-RecipeRegistry-initialize"><code>RecipeRegistry$new()</code></a></p></li>
 <li><p><a href="#method-RecipeRegistry-register"><code>RecipeRegistry$register()</code></a></p></li>
 <li><p><a href="#method-RecipeRegistry-unregister"><code>RecipeRegistry$unregister()</code></a></p></li>
 <li><p><a href="#method-RecipeRegistry-search"><code>RecipeRegistry$search()</code></a></p></li>
@@ -130,22 +129,21 @@ discovery, ranking, and filtering.</p>
 <li><p><a href="#method-RecipeRegistry-stats"><code>RecipeRegistry$stats()</code></a></p></li>
 <li><p><a href="#method-RecipeRegistry-print"><code>RecipeRegistry$print()</code></a></p></li>
 <li><p><a href="#method-RecipeRegistry-clone"><code>RecipeRegistry$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-RecipeRegistry-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-RecipeRegistry-initialize"></a><div class="section">
+<h3 id="reciperegistry-new-"><code>RecipeRegistry$new()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-new-"></a></h3>
 <p>Create a new empty RecipeRegistry</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/RecipeRegistry.html">RecipeRegistry</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-register"></a><div class="section">
-<h3 id="method-register-">Method <code>register()</code><a class="anchor" aria-label="anchor" href="#method-register-"></a></h3>
+<p></p><hr><a id="method-RecipeRegistry-register"></a><div class="section">
+<h3 id="reciperegistry-register-"><code>RecipeRegistry$register()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-register-"></a></h3>
 <p>Register a recipe in the catalog</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">register</span><span class="op">(</span><span class="va">recipe</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recipe</code></dt>
 <dd><p>Recipe object to register</p></dd>
@@ -154,14 +152,14 @@ discovery, ranking, and filtering.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-unregister"></a><div class="section">
-<h3 id="method-unregister-">Method <code>unregister()</code><a class="anchor" aria-label="anchor" href="#method-unregister-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-unregister"></a><div class="section">
+<h3 id="reciperegistry-unregister-"><code>RecipeRegistry$unregister()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-unregister-"></a></h3>
 <p>Remove a recipe from the catalog by id</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">unregister</span><span class="op">(</span><span class="va">recipe_id</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recipe_id</code></dt>
 <dd><p>Recipe id to remove</p></dd>
@@ -170,28 +168,29 @@ discovery, ranking, and filtering.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-search"></a><div class="section">
-<h3 id="method-search-">Method <code><a href="https://rdrr.io/r/base/search.html" class="external-link">search()</a></code><a class="anchor" aria-label="anchor" href="#method-search-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-search"></a><div class="section">
+<h3 id="reciperegistry-search-"><code>RecipeRegistry$search()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-search-"></a></h3>
 <p>Search recipes by name or description (case-insensitive)</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">search</span><span class="op">(</span><span class="va">query</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>query</code></dt>
 <dd><p>Character search query</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-filter"></a><div class="section">
-<h3 id="method-filter-">Method <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-filter"></a><div class="section">
+<h3 id="reciperegistry-filter-"><code>RecipeRegistry$filter()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-filter-"></a></h3>
 <p>Filter recipes by criteria</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span></span>
@@ -201,117 +200,107 @@ discovery, ranking, and filtering.</p>
 <span>  certification_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  topic <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>survey_type</code></dt>
 <dd><p>Character survey type or NULL</p></dd>
 
-
-<dt><code>edition</code></dt>
+      <dt><code>edition</code></dt>
 <dd><p>Character edition or NULL</p></dd>
 
-
-<dt><code>category</code></dt>
+      <dt><code>category</code></dt>
 <dd><p>Character category name or NULL</p></dd>
 
-
-<dt><code>certification_level</code></dt>
+      <dt><code>certification_level</code></dt>
 <dd><p>Character certification level or NULL</p></dd>
 
-
-<dt><code>topic</code></dt>
+      <dt><code>topic</code></dt>
 <dd><p>Character topic name or NULL</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-rank_by_downloads"></a><div class="section">
-<h3 id="method-rank-by-downloads-">Method <code>rank_by_downloads()</code><a class="anchor" aria-label="anchor" href="#method-rank-by-downloads-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-rank_by_downloads"></a><div class="section">
+<h3 id="reciperegistry-rank-by-downloads-"><code>RecipeRegistry$rank_by_downloads()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-rank-by-downloads-"></a></h3>
 <p>Rank recipes by download count (descending)</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">rank_by_downloads</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>Integer max number to return, or NULL for all</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>List of Recipe objects sorted by downloads</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-rank_by_certification"></a><div class="section">
-<h3 id="method-rank-by-certification-">Method <code>rank_by_certification()</code><a class="anchor" aria-label="anchor" href="#method-rank-by-certification-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-rank_by_certification"></a><div class="section">
+<h3 id="reciperegistry-rank-by-certification-"><code>RecipeRegistry$rank_by_certification()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-rank-by-certification-"></a></h3>
 <p>Rank recipes by certification level then downloads</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">rank_by_certification</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>Integer max number to return, or NULL for all</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>List of Recipe objects sorted by cert level then downloads</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-get"></a><div class="section">
-<h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-get"></a><div class="section">
+<h3 id="reciperegistry-get-"><code>RecipeRegistry$get()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-get-"></a></h3>
 <p>Get a single recipe by id</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">recipe_id</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recipe_id</code></dt>
 <dd><p>Recipe id</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>Recipe object or NULL</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-list_all"></a><div class="section">
-<h3 id="method-list-all-">Method <code>list_all()</code><a class="anchor" aria-label="anchor" href="#method-list-all-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-list_all"></a><div class="section">
+<h3 id="reciperegistry-list-all-"><code>RecipeRegistry$list_all()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-list-all-"></a></h3>
 <p>List all registered recipes</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">list_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>List of all Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-save"></a><div class="section">
-<h3 id="method-save-">Method <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code><a class="anchor" aria-label="anchor" href="#method-save-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-save"></a><div class="section">
+<h3 id="reciperegistry-save-"><code>RecipeRegistry$save()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-save-"></a></h3>
 <p>Save the registry catalog to a JSON file</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>Character file path</p></dd>
@@ -320,14 +309,14 @@ discovery, ranking, and filtering.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-load"></a><div class="section">
-<h3 id="method-load-">Method <code><a href="https://rdrr.io/r/base/load.html" class="external-link">load()</a></code><a class="anchor" aria-label="anchor" href="#method-load-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-load"></a><div class="section">
+<h3 id="reciperegistry-load-"><code>RecipeRegistry$load()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-load-"></a></h3>
 <p>Load a registry catalog from a JSON file</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>Character file path</p></dd>
@@ -336,66 +325,64 @@ discovery, ranking, and filtering.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-list_by_user"></a><div class="section">
-<h3 id="method-list-by-user-">Method <code>list_by_user()</code><a class="anchor" aria-label="anchor" href="#method-list-by-user-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-list_by_user"></a><div class="section">
+<h3 id="reciperegistry-list-by-user-"><code>RecipeRegistry$list_by_user()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-list-by-user-"></a></h3>
 <p>List recipes by author user name</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">list_by_user</span><span class="op">(</span><span class="va">user_name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>user_name</code></dt>
 <dd><p>Character user name</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-list_by_institution"></a><div class="section">
-<h3 id="method-list-by-institution-">Method <code>list_by_institution()</code><a class="anchor" aria-label="anchor" href="#method-list-by-institution-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-list_by_institution"></a><div class="section">
+<h3 id="reciperegistry-list-by-institution-"><code>RecipeRegistry$list_by_institution()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-list-by-institution-"></a></h3>
 <p>List recipes by institution (including members)</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">list_by_institution</span><span class="op">(</span><span class="va">institution_name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>institution_name</code></dt>
 <dd><p>Character institution name</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-stats"></a><div class="section">
-<h3 id="method-stats-">Method <code>stats()</code><a class="anchor" aria-label="anchor" href="#method-stats-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-stats"></a><div class="section">
+<h3 id="reciperegistry-stats-"><code>RecipeRegistry$stats()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-stats-"></a></h3>
 <p>Get registry statistics</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>List with total, by_category, by_certification counts</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-print"></a><div class="section">
+<h3 id="reciperegistry-print-"><code>RecipeRegistry$print()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-print-"></a></h3>
 <p>Print registry summary</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments (not used)</p></dd>
@@ -404,14 +391,14 @@ discovery, ranking, and filtering.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeRegistry-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeRegistry-clone"></a><div class="section">
+<h3 id="reciperegistry-clone-"><code>RecipeRegistry$clone()</code><a class="anchor" aria-label="anchor" href="#reciperegistry-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeRegistry</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -421,6 +408,7 @@ discovery, ranking, and filtering.</p>
 </div>
 
 </div>
+
 
     </div>
 

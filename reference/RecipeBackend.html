@@ -100,7 +100,7 @@ RecipeRegistry) and "api" (remote plumber API) backends.'><meta property="og:ima
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>RecipeBackend</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/RecipeAPI.R" class="external-link"><code>R/RecipeAPI.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/RecipeAPI.R" class="external-link"><code>R/RecipeAPI.R</code></a></small>
       <div class="d-none name"><code>RecipeBackend.Rd</code></div>
     </div>
 
@@ -124,8 +124,7 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-RecipeBackend-new"><code>RecipeBackend$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-RecipeBackend-initialize"><code>RecipeBackend$new()</code></a></p></li>
 <li><p><a href="#method-RecipeBackend-publish"><code>RecipeBackend$publish()</code></a></p></li>
 <li><p><a href="#method-RecipeBackend-search"><code>RecipeBackend$search()</code></a></p></li>
 <li><p><a href="#method-RecipeBackend-get"><code>RecipeBackend$get()</code></a></p></li>
@@ -136,34 +135,31 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 <li><p><a href="#method-RecipeBackend-save"><code>RecipeBackend$save()</code></a></p></li>
 <li><p><a href="#method-RecipeBackend-load"><code>RecipeBackend$load()</code></a></p></li>
 <li><p><a href="#method-RecipeBackend-clone"><code>RecipeBackend$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-RecipeBackend-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-RecipeBackend-initialize"></a><div class="section">
+<h3 id="recipebackend-new-"><code>RecipeBackend$new()</code><a class="anchor" aria-label="anchor" href="#recipebackend-new-"></a></h3>
 <p>Create a new RecipeBackend</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/RecipeBackend.html">RecipeBackend</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">type</span>, path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>Character. "local" or "api".</p></dd>
 
-
-<dt><code>path</code></dt>
+      <dt><code>path</code></dt>
 <dd><p>Character. File path for local backend (optional).</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-publish"></a><div class="section">
-<h3 id="method-publish-">Method <code>publish()</code><a class="anchor" aria-label="anchor" href="#method-publish-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-publish"></a><div class="section">
+<h3 id="recipebackend-publish-"><code>RecipeBackend$publish()</code><a class="anchor" aria-label="anchor" href="#recipebackend-publish-"></a></h3>
 <p>Publish a recipe to the backend</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">publish</span><span class="op">(</span><span class="va">recipe</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recipe</code></dt>
 <dd><p>Recipe object</p></dd>
@@ -172,54 +168,52 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-search"></a><div class="section">
-<h3 id="method-search-">Method <code><a href="https://rdrr.io/r/base/search.html" class="external-link">search()</a></code><a class="anchor" aria-label="anchor" href="#method-search-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-search"></a><div class="section">
+<h3 id="recipebackend-search-"><code>RecipeBackend$search()</code><a class="anchor" aria-label="anchor" href="#recipebackend-search-"></a></h3>
 <p>Search recipes</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">search</span><span class="op">(</span><span class="va">query</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>query</code></dt>
 <dd><p>Character search string</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-get"></a><div class="section">
-<h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-get"></a><div class="section">
+<h3 id="recipebackend-get-"><code>RecipeBackend$get()</code><a class="anchor" aria-label="anchor" href="#recipebackend-get-"></a></h3>
 <p>Get a recipe by id</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>id</code></dt>
 <dd><p>Recipe id</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Recipe object or NULL</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-increment_downloads"></a><div class="section">
-<h3 id="method-increment-downloads-">Method <code>increment_downloads()</code><a class="anchor" aria-label="anchor" href="#method-increment-downloads-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-increment_downloads"></a><div class="section">
+<h3 id="recipebackend-increment-downloads-"><code>RecipeBackend$increment_downloads()</code><a class="anchor" aria-label="anchor" href="#recipebackend-increment-downloads-"></a></h3>
 <p>Increment download count for a recipe</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">increment_downloads</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>id</code></dt>
 <dd><p>Recipe id</p></dd>
@@ -228,28 +222,29 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-rank"></a><div class="section">
-<h3 id="method-rank-">Method <code><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank()</a></code><a class="anchor" aria-label="anchor" href="#method-rank-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-rank"></a><div class="section">
+<h3 id="recipebackend-rank-"><code>RecipeBackend$rank()</code><a class="anchor" aria-label="anchor" href="#recipebackend-rank-"></a></h3>
 <p>Rank recipes by downloads</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">rank</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>Integer max to return</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>List of Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-filter"></a><div class="section">
-<h3 id="method-filter-">Method <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-filter"></a><div class="section">
+<h3 id="recipebackend-filter-"><code>RecipeBackend$filter()</code><a class="anchor" aria-label="anchor" href="#recipebackend-filter-"></a></h3>
 <p>Filter recipes by criteria</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span></span>
@@ -259,73 +254,68 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 <span>  certification_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  topic <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>survey_type</code></dt>
 <dd><p>Character or NULL</p></dd>
 
-
-<dt><code>edition</code></dt>
+      <dt><code>edition</code></dt>
 <dd><p>Character or NULL</p></dd>
 
-
-<dt><code>category</code></dt>
+      <dt><code>category</code></dt>
 <dd><p>Character or NULL</p></dd>
 
-
-<dt><code>certification_level</code></dt>
+      <dt><code>certification_level</code></dt>
 <dd><p>Character or NULL</p></dd>
 
-
-<dt><code>topic</code></dt>
+      <dt><code>topic</code></dt>
 <dd><p>Character or NULL</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>List of matching Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-list_all"></a><div class="section">
-<h3 id="method-list-all-">Method <code>list_all()</code><a class="anchor" aria-label="anchor" href="#method-list-all-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-list_all"></a><div class="section">
+<h3 id="recipebackend-list-all-"><code>RecipeBackend$list_all()</code><a class="anchor" aria-label="anchor" href="#recipebackend-list-all-"></a></h3>
 <p>List all recipes</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">list_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>List of Recipe objects</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeBackend-save"></a><div class="section">
-<h3 id="method-save-">Method <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code><a class="anchor" aria-label="anchor" href="#method-save-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeBackend-save"></a><div class="section">
+<h3 id="recipebackend-save-"><code>RecipeBackend$save()</code><a class="anchor" aria-label="anchor" href="#recipebackend-save-"></a></h3>
 <p>Save local backend to disk</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-RecipeBackend-load"></a><div class="section">
-<h3 id="method-load-">Method <code><a href="https://rdrr.io/r/base/load.html" class="external-link">load()</a></code><a class="anchor" aria-label="anchor" href="#method-load-"></a></h3>
+<p></p><hr><a id="method-RecipeBackend-load"></a><div class="section">
+<h3 id="recipebackend-load-"><code>RecipeBackend$load()</code><a class="anchor" aria-label="anchor" href="#recipebackend-load-"></a></h3>
 <p>Load local backend from disk</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-RecipeBackend-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-RecipeBackend-clone"></a><div class="section">
+<h3 id="recipebackend-clone-"><code>RecipeBackend$clone()</code><a class="anchor" aria-label="anchor" href="#recipebackend-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeBackend</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -335,6 +325,7 @@ RecipeRegistry) and "api" (remote plumber API) backends.</p>
 </div>
 
 </div>
+
 
     </div>
 

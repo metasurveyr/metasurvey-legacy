@@ -410,7 +410,7 @@ permite rastrear cualquier estimacion hasta los datos originales.
 prov <- provenance(svy_full)
 prov
 #> ── Data Provenance ─────────────────────────────────────────────────────────────
-#> Loaded: 2026-07-07T21:01:59 
+#> Loaded: 2026-07-07T21:19:59 
 #> Initial rows: 200 
 #> 
 #> Environment:

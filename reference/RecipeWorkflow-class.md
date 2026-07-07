@@ -1,8 +1,8 @@
 # RecipeWorkflow R6 class
 
-RecipeWorkflow R6 class
-
-RecipeWorkflow R6 class
+R6 class representing a publishable workflow that captures statistical
+estimations applied to survey data. Workflows reference the recipes they
+use and document the estimation calls made.
 
 ## Format
 
@@ -11,12 +11,6 @@ An R6 class generator (R6ClassGenerator)
 ## Value
 
 An object of class `RecipeWorkflow`.
-
-## Details
-
-R6 class representing a publishable workflow that captures statistical
-estimations applied to survey data. Workflows reference the recipes they
-use and document the estimation calls made.
 
 ## Methods
 
@@ -139,7 +133,7 @@ Other workflows:
 
 ### Public methods
 
-- [`RecipeWorkflow$new()`](#method-RecipeWorkflow-new)
+- [`RecipeWorkflow$new()`](#method-RecipeWorkflow-initialize)
 
 - [`RecipeWorkflow$doc()`](#method-RecipeWorkflow-doc)
 
@@ -157,7 +151,7 @@ Other workflows:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RecipeWorkflow$new()`
 
 Create a RecipeWorkflow object
 
@@ -260,7 +254,7 @@ Create a RecipeWorkflow object
 
 ------------------------------------------------------------------------
 
-### Method `doc()`
+### `RecipeWorkflow$doc()`
 
 Generate documentation for this workflow
 
@@ -274,7 +268,7 @@ List with meta, recipe_ids, estimations, and estimation_types
 
 ------------------------------------------------------------------------
 
-### Method `to_list()`
+### `RecipeWorkflow$to_list()`
 
 Serialize to a plain list for JSON export
 
@@ -288,7 +282,7 @@ A list suitable for jsonlite::write_json
 
 ------------------------------------------------------------------------
 
-### Method `increment_downloads()`
+### `RecipeWorkflow$increment_downloads()`
 
 Increment the download counter
 
@@ -298,7 +292,7 @@ Increment the download counter
 
 ------------------------------------------------------------------------
 
-### Method `certify()`
+### `RecipeWorkflow$certify()`
 
 Certify the workflow at a given level
 
@@ -318,7 +312,7 @@ Certify the workflow at a given level
 
 ------------------------------------------------------------------------
 
-### Method [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md)
+### `RecipeWorkflow$add_category()`
 
 Add a category to the workflow
 
@@ -334,7 +328,7 @@ Add a category to the workflow
 
 ------------------------------------------------------------------------
 
-### Method [`remove_category()`](https://metasurveyr.github.io/metasurvey/reference/remove_category.md)
+### `RecipeWorkflow$remove_category()`
 
 Remove a category by name
 
@@ -350,7 +344,7 @@ Remove a category by name
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RecipeWorkflow$clone()`
 
 The objects of this class are cloneable with this method.
 

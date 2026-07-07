@@ -26,7 +26,7 @@ Other panel-surveys:
 
 ### Public methods
 
-- [`PoolSurvey$new()`](#method-PoolSurvey-new)
+- [`PoolSurvey$new()`](#method-PoolSurvey-initialize)
 
 - [`PoolSurvey$get_surveys()`](#method-PoolSurvey-get_surveys)
 
@@ -36,7 +36,7 @@ Other panel-surveys:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `PoolSurvey$new()`
 
 Initializes a new instance of the PoolSurvey class.
 
@@ -52,7 +52,7 @@ Initializes a new instance of the PoolSurvey class.
 
 ------------------------------------------------------------------------
 
-### Method `get_surveys()`
+### `PoolSurvey$get_surveys()`
 
 Retrieves surveys for a specific period.
 
@@ -73,7 +73,7 @@ A list of surveys for the specified period.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `PoolSurvey$print()`
 
 Prints metadata about the PoolSurvey object.
 
@@ -83,7 +83,7 @@ Prints metadata about the PoolSurvey object.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `PoolSurvey$clone()`
 
 The objects of this class are cloneable with this method.
 

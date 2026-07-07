@@ -6,7 +6,7 @@ Local JSON-backed catalog for recipe discovery, ranking, and filtering.
 
 ### Public methods
 
-- [`RecipeRegistry$new()`](#method-RecipeRegistry-new)
+- [`RecipeRegistry$new()`](#method-RecipeRegistry-initialize)
 
 - [`RecipeRegistry$register()`](#method-RecipeRegistry-register)
 
@@ -40,7 +40,7 @@ Local JSON-backed catalog for recipe discovery, ranking, and filtering.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RecipeRegistry$new()`
 
 Create a new empty RecipeRegistry
 
@@ -50,7 +50,7 @@ Create a new empty RecipeRegistry
 
 ------------------------------------------------------------------------
 
-### Method `register()`
+### `RecipeRegistry$register()`
 
 Register a recipe in the catalog
 
@@ -66,7 +66,7 @@ Register a recipe in the catalog
 
 ------------------------------------------------------------------------
 
-### Method `unregister()`
+### `RecipeRegistry$unregister()`
 
 Remove a recipe from the catalog by id
 
@@ -82,7 +82,7 @@ Remove a recipe from the catalog by id
 
 ------------------------------------------------------------------------
 
-### Method [`search()`](https://rdrr.io/r/base/search.html)
+### `RecipeRegistry$search()`
 
 Search recipes by name or description (case-insensitive)
 
@@ -102,7 +102,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method [`filter()`](https://rdrr.io/r/stats/filter.html)
+### `RecipeRegistry$filter()`
 
 Filter recipes by criteria
 
@@ -144,7 +144,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method `rank_by_downloads()`
+### `RecipeRegistry$rank_by_downloads()`
 
 Rank recipes by download count (descending)
 
@@ -164,7 +164,7 @@ List of Recipe objects sorted by downloads
 
 ------------------------------------------------------------------------
 
-### Method `rank_by_certification()`
+### `RecipeRegistry$rank_by_certification()`
 
 Rank recipes by certification level then downloads
 
@@ -184,7 +184,7 @@ List of Recipe objects sorted by cert level then downloads
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `RecipeRegistry$get()`
 
 Get a single recipe by id
 
@@ -204,7 +204,7 @@ Recipe object or NULL
 
 ------------------------------------------------------------------------
 
-### Method `list_all()`
+### `RecipeRegistry$list_all()`
 
 List all registered recipes
 
@@ -218,7 +218,7 @@ List of all Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method [`save()`](https://rdrr.io/r/base/save.html)
+### `RecipeRegistry$save()`
 
 Save the registry catalog to a JSON file
 
@@ -234,7 +234,7 @@ Save the registry catalog to a JSON file
 
 ------------------------------------------------------------------------
 
-### Method [`load()`](https://rdrr.io/r/base/load.html)
+### `RecipeRegistry$load()`
 
 Load a registry catalog from a JSON file
 
@@ -250,7 +250,7 @@ Load a registry catalog from a JSON file
 
 ------------------------------------------------------------------------
 
-### Method `list_by_user()`
+### `RecipeRegistry$list_by_user()`
 
 List recipes by author user name
 
@@ -270,7 +270,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method `list_by_institution()`
+### `RecipeRegistry$list_by_institution()`
 
 List recipes by institution (including members)
 
@@ -290,7 +290,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method `stats()`
+### `RecipeRegistry$stats()`
 
 Get registry statistics
 
@@ -304,7 +304,7 @@ List with total, by_category, by_certification counts
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `RecipeRegistry$print()`
 
 Print registry summary
 
@@ -320,7 +320,7 @@ Print registry summary
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RecipeRegistry$clone()`
 
 The objects of this class are cloneable with this method.
 

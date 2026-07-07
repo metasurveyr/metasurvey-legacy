@@ -11,7 +11,7 @@ An object of class `RecipeCertification`.
 ## See also
 
 Other tidy-api:
-[`RecipeCategory`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory.md),
+[`RecipeCategory-from_list`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory-from_list.md),
 [`RecipeUser`](https://metasurveyr.github.io/metasurvey/reference/RecipeUser.md),
 [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md),
 [`certify_recipe()`](https://metasurveyr.github.io/metasurvey/reference/certify_recipe.md),
@@ -54,7 +54,7 @@ Other tidy-api:
 
 ### Public methods
 
-- [`RecipeCertification$new()`](#method-RecipeCertification-new)
+- [`RecipeCertification$new()`](#method-RecipeCertification-initialize)
 
 - [`RecipeCertification$numeric_level()`](#method-RecipeCertification-numeric_level)
 
@@ -68,7 +68,7 @@ Other tidy-api:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RecipeCertification$new()`
 
 Create a new RecipeCertification
 
@@ -101,7 +101,7 @@ Create a new RecipeCertification
 
 ------------------------------------------------------------------------
 
-### Method `numeric_level()`
+### `RecipeCertification$numeric_level()`
 
 Get numeric level for ordering (1=community, 2=reviewed, 3=official)
 
@@ -115,7 +115,7 @@ Integer
 
 ------------------------------------------------------------------------
 
-### Method `is_at_least()`
+### `RecipeCertification$is_at_least()`
 
 Check if certification is at least a given level
 
@@ -135,7 +135,7 @@ Logical
 
 ------------------------------------------------------------------------
 
-### Method `to_list()`
+### `RecipeCertification$to_list()`
 
 Serialize to list for JSON
 
@@ -149,7 +149,7 @@ List representation
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `RecipeCertification$print()`
 
 Print certification badge
 
@@ -165,7 +165,7 @@ Print certification badge
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RecipeCertification$clone()`
 
 The objects of this class are cloneable with this method.
 

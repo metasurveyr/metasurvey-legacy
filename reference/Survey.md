@@ -1,8 +1,11 @@
 # Survey R6 class
 
-Survey R6 class
+R6 class that encapsulates survey data, metadata (type, edition,
+periodicity), sampling design (simple/replicate),
+steps/recipes/workflows, and utilities to manage them.
 
-Survey R6 class
+Only copies the data; reuses design objects and other metadata. Much
+faster than clone(deep=TRUE) but design objects are shared.
 
 ## Format
 
@@ -11,15 +14,6 @@ An R6 class generator (R6ClassGenerator)
 ## Value
 
 R6 class generator for Survey.
-
-## Details
-
-R6 class that encapsulates survey data, metadata (type, edition,
-periodicity), sampling design (simple/replicate),
-steps/recipes/workflows, and utilities to manage them.
-
-Only copies the data; reuses design objects and other metadata. Much
-faster than clone(deep=TRUE) but design objects are shared.
 
 ## Main methods
 
@@ -169,7 +163,7 @@ Other survey-objects:
 
 ### Public methods
 
-- [`Survey$new()`](#method-Survey-new)
+- [`Survey$new()`](#method-Survey-initialize)
 
 - [`Survey$get_data()`](#method-Survey-get_data)
 
@@ -211,7 +205,7 @@ Other survey-objects:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Survey$new()`
 
 Create a Survey object
 
@@ -274,7 +268,7 @@ Create a Survey object
 
 ------------------------------------------------------------------------
 
-### Method [`get_data()`](https://metasurveyr.github.io/metasurvey/reference/get_data.md)
+### `Survey$get_data()`
 
 Return the underlying data
 
@@ -284,7 +278,7 @@ Return the underlying data
 
 ------------------------------------------------------------------------
 
-### Method `get_edition()`
+### `Survey$get_edition()`
 
 Return the survey edition/period
 
@@ -294,7 +288,7 @@ Return the survey edition/period
 
 ------------------------------------------------------------------------
 
-### Method `get_type()`
+### `Survey$get_type()`
 
 Return the survey type identifier
 
@@ -304,7 +298,7 @@ Return the survey type identifier
 
 ------------------------------------------------------------------------
 
-### Method [`set_data()`](https://metasurveyr.github.io/metasurvey/reference/set_data.md)
+### `Survey$set_data()`
 
 Set the underlying data
 
@@ -320,7 +314,7 @@ Set the underlying data
 
 ------------------------------------------------------------------------
 
-### Method `set_edition()`
+### `Survey$set_edition()`
 
 Set the survey edition/period
 
@@ -336,7 +330,7 @@ Set the survey edition/period
 
 ------------------------------------------------------------------------
 
-### Method `set_type()`
+### `Survey$set_type()`
 
 Set the survey type
 
@@ -352,7 +346,7 @@ Set the survey type
 
 ------------------------------------------------------------------------
 
-### Method `set_weight()`
+### `Survey$set_weight()`
 
 Set weight specification(s) per estimation type
 
@@ -368,7 +362,7 @@ Set weight specification(s) per estimation type
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `Survey$print()`
 
 Print summarized metadata to console
 
@@ -378,7 +372,7 @@ Print summarized metadata to console
 
 ------------------------------------------------------------------------
 
-### Method `add_step()`
+### `Survey$add_step()`
 
 Add a step and invalidate design
 
@@ -394,7 +388,7 @@ Add a step and invalidate design
 
 ------------------------------------------------------------------------
 
-### Method [`add_recipe()`](https://metasurveyr.github.io/metasurvey/reference/add_recipe.md)
+### `Survey$add_recipe()`
 
 Add a recipe
 
@@ -414,7 +408,7 @@ Add a recipe
 
 ------------------------------------------------------------------------
 
-### Method `add_workflow()`
+### `Survey$add_workflow()`
 
 Add a workflow to the survey
 
@@ -430,7 +424,7 @@ Add a workflow to the survey
 
 ------------------------------------------------------------------------
 
-### Method `bake()`
+### `Survey$bake()`
 
 Apply recipes and return updated Survey
 
@@ -440,7 +434,7 @@ Apply recipes and return updated Survey
 
 ------------------------------------------------------------------------
 
-### Method [`head()`](https://rdrr.io/r/utils/head.html)
+### `Survey$head()`
 
 Return the head of the underlying data
 
@@ -450,7 +444,7 @@ Return the head of the underlying data
 
 ------------------------------------------------------------------------
 
-### Method [`str()`](https://rdrr.io/r/utils/str.html)
+### `Survey$str()`
 
 Display the structure of the underlying data
 
@@ -460,7 +454,7 @@ Display the structure of the underlying data
 
 ------------------------------------------------------------------------
 
-### Method `set_design()`
+### `Survey$set_design()`
 
 Set the survey design object
 
@@ -476,7 +470,7 @@ Set the survey design object
 
 ------------------------------------------------------------------------
 
-### Method `ensure_design()`
+### `Survey$ensure_design()`
 
 Ensure survey design is initialized (lazy initialization)
 
@@ -490,7 +484,7 @@ Invisibly returns self
 
 ------------------------------------------------------------------------
 
-### Method `update_design()`
+### `Survey$update_design()`
 
 Update design variables using current data and weight
 
@@ -500,7 +494,7 @@ Update design variables using current data and weight
 
 ------------------------------------------------------------------------
 
-### Method `shallow_clone()`
+### `Survey$shallow_clone()`
 
 Create a shallow copy of the Survey (optimized for performance)
 
@@ -514,7 +508,7 @@ New Survey object with copied data but shared design
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Survey$clone()`
 
 The objects of this class are cloneable with this method.
 

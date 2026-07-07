@@ -102,7 +102,7 @@ steps, recipes, workflows, and designs."><meta property="og:image" content="http
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>RotativePanelSurvey Class</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/PanelSurvey.R" class="external-link"><code>R/PanelSurvey.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/PanelSurvey.R" class="external-link"><code>R/PanelSurvey.R</code></a></small>
       <div class="d-none name"><code>RotativePanelSurvey.Rd</code></div>
     </div>
 
@@ -132,36 +132,36 @@ steps, recipes, workflows, and designs.</p>
 <dd><p>A survey object representing the implantation survey.</p></dd>
 
 
-<dt><code>follow_up</code></dt>
+    <dt><code>follow_up</code></dt>
 <dd><p>A list of survey objects representing the follow-up surveys.</p></dd>
 
 
-<dt><code>type</code></dt>
+    <dt><code>type</code></dt>
 <dd><p>A string indicating the type of the survey.</p></dd>
 
 
-<dt><code>default_engine</code></dt>
+    <dt><code>default_engine</code></dt>
 <dd><p>A string specifying the default
 engine used for processing.</p></dd>
 
 
-<dt><code>steps</code></dt>
+    <dt><code>steps</code></dt>
 <dd><p>A list of steps applied to the survey.</p></dd>
 
 
-<dt><code>recipes</code></dt>
+    <dt><code>recipes</code></dt>
 <dd><p>A list of recipes associated with the survey.</p></dd>
 
 
-<dt><code>workflows</code></dt>
+    <dt><code>workflows</code></dt>
 <dd><p>A list of workflows associated with the survey.</p></dd>
 
 
-<dt><code>design</code></dt>
+    <dt><code>design</code></dt>
 <dd><p>A design object for the survey.</p></dd>
 
 
-<dt><code>periodicity</code></dt>
+    <dt><code>periodicity</code></dt>
 <dd><p>A list containing the periodicity of
 the implantation and follow-up surveys.</p></dd>
 
@@ -173,8 +173,7 @@ the implantation and follow-up surveys.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-RotativePanelSurvey-new"><code>RotativePanelSurvey$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-RotativePanelSurvey-initialize"><code>RotativePanelSurvey$new()</code></a></p></li>
 <li><p><a href="#method-RotativePanelSurvey-get_implantation"><code>RotativePanelSurvey$get_implantation()</code></a></p></li>
 <li><p><a href="#method-RotativePanelSurvey-get_follow_up"><code>RotativePanelSurvey$get_follow_up()</code></a></p></li>
 <li><p><a href="#method-RotativePanelSurvey-get_type"><code>RotativePanelSurvey$get_type()</code></a></p></li>
@@ -185,8 +184,8 @@ the implantation and follow-up surveys.</p></dd>
 <li><p><a href="#method-RotativePanelSurvey-get_design"><code>RotativePanelSurvey$get_design()</code></a></p></li>
 <li><p><a href="#method-RotativePanelSurvey-print"><code>RotativePanelSurvey$print()</code></a></p></li>
 <li><p><a href="#method-RotativePanelSurvey-clone"><code>RotativePanelSurvey$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-RotativePanelSurvey-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-RotativePanelSurvey-initialize"></a><div class="section">
+<h3 id="rotativepanelsurvey-new-"><code>RotativePanelSurvey$new()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-new-"></a></h3>
 <p>Initializes a new instance of the
 RotativePanelSurvey class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -200,61 +199,54 @@ RotativePanelSurvey class.</p><div class="section">
 <span>  <span class="va">workflows</span>,</span>
 <span>  <span class="va">design</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>implantation</code></dt>
 <dd><p>A survey object representing the implantation survey.</p></dd>
 
-
-<dt><code>follow_up</code></dt>
+      <dt><code>follow_up</code></dt>
 <dd><p>A list of survey objects representing
 the follow-up surveys.</p></dd>
 
-
-<dt><code>type</code></dt>
+      <dt><code>type</code></dt>
 <dd><p>A string indicating the type of the survey.</p></dd>
 
-
-<dt><code>default_engine</code></dt>
+      <dt><code>default_engine</code></dt>
 <dd><p>A string specifying the default
 engine used for processing.</p></dd>
 
-
-<dt><code>steps</code></dt>
+      <dt><code>steps</code></dt>
 <dd><p>A list of steps applied to the survey.</p></dd>
 
-
-<dt><code>recipes</code></dt>
+      <dt><code>recipes</code></dt>
 <dd><p>A list of recipes associated with the survey.</p></dd>
 
-
-<dt><code>workflows</code></dt>
+      <dt><code>workflows</code></dt>
 <dd><p>A list of workflows associated with the survey.</p></dd>
 
-
-<dt><code>design</code></dt>
+      <dt><code>design</code></dt>
 <dd><p>A design object for the survey.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_implantation"></a><div class="section">
-<h3 id="method-get-implantation-">Method <code><a href="get_implantation.html">get_implantation()</a></code><a class="anchor" aria-label="anchor" href="#method-get-implantation-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_implantation"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-implantation-"><code>RotativePanelSurvey$get_implantation()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-implantation-"></a></h3>
 <p>Retrieves the implantation survey.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_implantation</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>A survey object representing the implantation survey.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_follow_up"></a><div class="section">
-<h3 id="method-get-follow-up-">Method <code><a href="get_follow_up.html">get_follow_up()</a></code><a class="anchor" aria-label="anchor" href="#method-get-follow-up-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_follow_up"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-follow-up-"><code>RotativePanelSurvey$get_follow_up()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-follow-up-"></a></h3>
 <p>Retrieves the follow-up surveys.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_follow_up</span><span class="op">(</span></span>
@@ -264,127 +256,121 @@ engine used for processing.</p></dd>
 <span>  semiannual <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  annual <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>index</code></dt>
 <dd><p>An integer specifying the index of the
 follow-up survey to retrieve.</p></dd>
 
-
-<dt><code>monthly</code></dt>
+      <dt><code>monthly</code></dt>
 <dd><p>A vector of integers specifying monthly intervals.</p></dd>
 
-
-<dt><code>quarterly</code></dt>
+      <dt><code>quarterly</code></dt>
 <dd><p>A vector of integers specifying quarterly intervals.</p></dd>
 
-
-<dt><code>semiannual</code></dt>
+      <dt><code>semiannual</code></dt>
 <dd><p>A vector of integers specifying semiannual intervals.</p></dd>
 
-
-<dt><code>annual</code></dt>
+      <dt><code>annual</code></dt>
 <dd><p>A vector of integers specifying annual intervals.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>A list of follow-up surveys matching the specified criteria.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_type"></a><div class="section">
-<h3 id="method-get-type-">Method <code>get_type()</code><a class="anchor" aria-label="anchor" href="#method-get-type-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_type"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-type-"><code>RotativePanelSurvey$get_type()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-type-"></a></h3>
 <p>Retrieves the type of the survey.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_type</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A string indicating the type of the survey.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_default_engine"></a><div class="section">
-<h3 id="method-get-default-engine-">Method <code>get_default_engine()</code><a class="anchor" aria-label="anchor" href="#method-get-default-engine-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_default_engine"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-default-engine-"><code>RotativePanelSurvey$get_default_engine()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-default-engine-"></a></h3>
 <p>Retrieves the default engine used for processing.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_default_engine</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>A string specifying the default engine.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_steps"></a><div class="section">
-<h3 id="method-get-steps-">Method <code><a href="get_steps.html">get_steps()</a></code><a class="anchor" aria-label="anchor" href="#method-get-steps-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_steps"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-steps-"><code>RotativePanelSurvey$get_steps()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-steps-"></a></h3>
 <p>Retrieves the steps applied to the survey.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_steps</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>A list containing the steps for the
 implantation and follow-up surveys.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_recipes"></a><div class="section">
-<h3 id="method-get-recipes-">Method <code>get_recipes()</code><a class="anchor" aria-label="anchor" href="#method-get-recipes-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_recipes"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-recipes-"><code>RotativePanelSurvey$get_recipes()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-recipes-"></a></h3>
 <p>Retrieves the recipes associated with the survey.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_recipes</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A list of recipes.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_workflows"></a><div class="section">
-<h3 id="method-get-workflows-">Method <code>get_workflows()</code><a class="anchor" aria-label="anchor" href="#method-get-workflows-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_workflows"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-workflows-"><code>RotativePanelSurvey$get_workflows()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-workflows-"></a></h3>
 <p>Retrieves the workflows associated with the survey.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_workflows</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>A list of workflows.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-get_design"></a><div class="section">
-<h3 id="method-get-design-">Method <code>get_design()</code><a class="anchor" aria-label="anchor" href="#method-get-design-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-get_design"></a><div class="section">
+<h3 id="rotativepanelsurvey-get-design-"><code>RotativePanelSurvey$get_design()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-get-design-"></a></h3>
 <p>Retrieves the design object for the survey.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">get_design</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>A design object.</p>
 </div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RotativePanelSurvey-print"></a><div class="section">
+<h3 id="rotativepanelsurvey-print-"><code>RotativePanelSurvey$print()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-print-"></a></h3>
 <p>Prints metadata about the RotativePanelSurvey object.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-RotativePanelSurvey-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-RotativePanelSurvey-clone"></a><div class="section">
+<h3 id="rotativepanelsurvey-clone-"><code>RotativePanelSurvey$clone()</code><a class="anchor" aria-label="anchor" href="#rotativepanelsurvey-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RotativePanelSurvey</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -394,6 +380,7 @@ implantation and follow-up surveys.</p>
 </div>
 
 </div>
+
 
     </div>
 

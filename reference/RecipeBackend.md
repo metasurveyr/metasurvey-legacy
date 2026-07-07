@@ -14,7 +14,7 @@ backends.
 
 ### Public methods
 
-- [`RecipeBackend$new()`](#method-RecipeBackend-new)
+- [`RecipeBackend$new()`](#method-RecipeBackend-initialize)
 
 - [`RecipeBackend$publish()`](#method-RecipeBackend-publish)
 
@@ -38,7 +38,7 @@ backends.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RecipeBackend$new()`
 
 Create a new RecipeBackend
 
@@ -58,7 +58,7 @@ Create a new RecipeBackend
 
 ------------------------------------------------------------------------
 
-### Method `publish()`
+### `RecipeBackend$publish()`
 
 Publish a recipe to the backend
 
@@ -74,7 +74,7 @@ Publish a recipe to the backend
 
 ------------------------------------------------------------------------
 
-### Method [`search()`](https://rdrr.io/r/base/search.html)
+### `RecipeBackend$search()`
 
 Search recipes
 
@@ -94,7 +94,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `RecipeBackend$get()`
 
 Get a recipe by id
 
@@ -114,7 +114,7 @@ Recipe object or NULL
 
 ------------------------------------------------------------------------
 
-### Method `increment_downloads()`
+### `RecipeBackend$increment_downloads()`
 
 Increment download count for a recipe
 
@@ -130,7 +130,7 @@ Increment download count for a recipe
 
 ------------------------------------------------------------------------
 
-### Method [`rank()`](https://rdrr.io/r/base/rank.html)
+### `RecipeBackend$rank()`
 
 Rank recipes by downloads
 
@@ -150,7 +150,7 @@ List of Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method [`filter()`](https://rdrr.io/r/stats/filter.html)
+### `RecipeBackend$filter()`
 
 Filter recipes by criteria
 
@@ -192,7 +192,7 @@ List of matching Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method `list_all()`
+### `RecipeBackend$list_all()`
 
 List all recipes
 
@@ -206,7 +206,7 @@ List of Recipe objects
 
 ------------------------------------------------------------------------
 
-### Method [`save()`](https://rdrr.io/r/base/save.html)
+### `RecipeBackend$save()`
 
 Save local backend to disk
 
@@ -216,7 +216,7 @@ Save local backend to disk
 
 ------------------------------------------------------------------------
 
-### Method [`load()`](https://rdrr.io/r/base/load.html)
+### `RecipeBackend$load()`
 
 Load local backend from disk
 
@@ -226,7 +226,7 @@ Load local backend from disk
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RecipeBackend$clone()`
 
 The objects of this class are cloneable with this method.
 

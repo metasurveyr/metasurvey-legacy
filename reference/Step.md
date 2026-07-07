@@ -76,13 +76,13 @@ workflow.
 
 ### Public methods
 
-- [`Step$new()`](#method-Step-new)
+- [`Step$new()`](#method-Step-initialize)
 
 - [`Step$clone()`](#method-Step-clone)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Step$new()`
 
 Create a new Step object
 
@@ -174,7 +174,7 @@ Create a new Step object
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Step$clone()`
 
 The objects of this class are cloneable with this method.
 

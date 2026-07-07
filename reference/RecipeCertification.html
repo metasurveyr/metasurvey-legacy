@@ -100,7 +100,7 @@ and official (certified by institution)."><meta property="og:image" content="htt
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>RecipeCertification</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/feat/214-metatable-engine/R/RecipeCertification.R" class="external-link"><code>R/RecipeCertification.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/pre-commit-ci-update-config/R/RecipeCertification.R" class="external-link"><code>R/RecipeCertification.R</code></a></small>
       <div class="d-none name"><code>RecipeCertification.Rd</code></div>
     </div>
 
@@ -118,7 +118,7 @@ and official (certified by institution).</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other tidy-api:
-<code><a href="RecipeCategory.html">RecipeCategory</a></code>,
+<code><a href="RecipeCategory-from_list.html">RecipeCategory-from_list</a></code>,
 <code><a href="RecipeUser.html">RecipeUser</a></code>,
 <code><a href="add_category.html">add_category()</a></code>,
 <code><a href="certify_recipe.html">certify_recipe()</a></code>,
@@ -145,15 +145,15 @@ and official (certified by institution).</p>
 <dd><p>Character. Certification level.</p></dd>
 
 
-<dt><code>certified_by</code></dt>
+    <dt><code>certified_by</code></dt>
 <dd><p>RecipeUser or NULL. The certifying user.</p></dd>
 
 
-<dt><code>certified_at</code></dt>
+    <dt><code>certified_at</code></dt>
 <dd><p>POSIXct. Timestamp of certification.</p></dd>
 
 
-<dt><code>notes</code></dt>
+    <dt><code>notes</code></dt>
 <dd><p>Character or NULL. Additional notes.</p></dd>
 
 
@@ -164,15 +164,14 @@ and official (certified by institution).</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-RecipeCertification-new"><code>RecipeCertification$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-RecipeCertification-initialize"><code>RecipeCertification$new()</code></a></p></li>
 <li><p><a href="#method-RecipeCertification-numeric_level"><code>RecipeCertification$numeric_level()</code></a></p></li>
 <li><p><a href="#method-RecipeCertification-is_at_least"><code>RecipeCertification$is_at_least()</code></a></p></li>
 <li><p><a href="#method-RecipeCertification-to_list"><code>RecipeCertification$to_list()</code></a></p></li>
 <li><p><a href="#method-RecipeCertification-print"><code>RecipeCertification$print()</code></a></p></li>
 <li><p><a href="#method-RecipeCertification-clone"><code>RecipeCertification$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-RecipeCertification-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-RecipeCertification-initialize"></a><div class="section">
+<h3 id="recipecertification-new-"><code>RecipeCertification$new()</code><a class="anchor" aria-label="anchor" href="#recipecertification-new-"></a></h3>
 <p>Create a new RecipeCertification</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/RecipeCertification.html">RecipeCertification</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -181,82 +180,76 @@ and official (certified by institution).</p>
 <span>  notes <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  certified_at <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>level</code></dt>
 <dd><p>Character. One of "community", "reviewed", "official".</p></dd>
 
-
-<dt><code>certified_by</code></dt>
+      <dt><code>certified_by</code></dt>
 <dd><p>RecipeUser or NULL. Required for reviewed/official.</p></dd>
 
-
-<dt><code>notes</code></dt>
+      <dt><code>notes</code></dt>
 <dd><p>Character or NULL. Additional notes.</p></dd>
 
-
-<dt><code>certified_at</code></dt>
+      <dt><code>certified_at</code></dt>
 <dd><p>POSIXct or NULL. Auto-set if NULL.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeCertification-numeric_level"></a><div class="section">
-<h3 id="method-numeric-level-">Method <code>numeric_level()</code><a class="anchor" aria-label="anchor" href="#method-numeric-level-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeCertification-numeric_level"></a><div class="section">
+<h3 id="recipecertification-numeric-level-"><code>RecipeCertification$numeric_level()</code><a class="anchor" aria-label="anchor" href="#recipecertification-numeric-level-"></a></h3>
 <p>Get numeric level for ordering
 (1=community, 2=reviewed, 3=official)</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeCertification</span><span class="op">$</span><span class="fu">numeric_level</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>Integer</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeCertification-is_at_least"></a><div class="section">
-<h3 id="method-is-at-least-">Method <code>is_at_least()</code><a class="anchor" aria-label="anchor" href="#method-is-at-least-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeCertification-is_at_least"></a><div class="section">
+<h3 id="recipecertification-is-at-least-"><code>RecipeCertification$is_at_least()</code><a class="anchor" aria-label="anchor" href="#recipecertification-is-at-least-"></a></h3>
 <p>Check if certification is at least a given level</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeCertification</span><span class="op">$</span><span class="fu">is_at_least</span><span class="op">(</span><span class="va">level</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>level</code></dt>
 <dd><p>Character. Level to compare against.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Logical</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeCertification-to_list"></a><div class="section">
-<h3 id="method-to-list-">Method <code>to_list()</code><a class="anchor" aria-label="anchor" href="#method-to-list-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeCertification-to_list"></a><div class="section">
+<h3 id="recipecertification-to-list-"><code>RecipeCertification$to_list()</code><a class="anchor" aria-label="anchor" href="#recipecertification-to-list-"></a></h3>
 <p>Serialize to list for JSON</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeCertification</span><span class="op">$</span><span class="fu">to_list</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>List representation</p>
 </div>
 
-</div><p></p><hr><a id="method-RecipeCertification-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeCertification-print"></a><div class="section">
+<h3 id="recipecertification-print-"><code>RecipeCertification$print()</code><a class="anchor" aria-label="anchor" href="#recipecertification-print-"></a></h3>
 <p>Print certification badge</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeCertification</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments (not used)</p></dd>
@@ -265,14 +258,14 @@ and official (certified by institution).</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-RecipeCertification-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-RecipeCertification-clone"></a><div class="section">
+<h3 id="recipecertification-clone-"><code>RecipeCertification$clone()</code><a class="anchor" aria-label="anchor" href="#recipecertification-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">RecipeCertification</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -282,6 +275,7 @@ and official (certified by institution).</p>
 </div>
 
 </div>
+
 
     </div>
 

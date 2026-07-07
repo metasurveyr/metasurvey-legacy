@@ -14,7 +14,7 @@ backends.
 
 ### Public methods
 
-- [`WorkflowBackend$new()`](#method-WorkflowBackend-new)
+- [`WorkflowBackend$new()`](#method-WorkflowBackend-initialize)
 
 - [`WorkflowBackend$publish()`](#method-WorkflowBackend-publish)
 
@@ -40,7 +40,7 @@ backends.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `WorkflowBackend$new()`
 
 Create a new WorkflowBackend
 
@@ -60,7 +60,7 @@ Create a new WorkflowBackend
 
 ------------------------------------------------------------------------
 
-### Method `publish()`
+### `WorkflowBackend$publish()`
 
 Publish a workflow to the backend
 
@@ -76,7 +76,7 @@ Publish a workflow to the backend
 
 ------------------------------------------------------------------------
 
-### Method [`search()`](https://rdrr.io/r/base/search.html)
+### `WorkflowBackend$search()`
 
 Search workflows
 
@@ -96,7 +96,7 @@ List of matching RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `WorkflowBackend$get()`
 
 Get a workflow by id
 
@@ -116,7 +116,7 @@ RecipeWorkflow object or NULL
 
 ------------------------------------------------------------------------
 
-### Method `increment_downloads()`
+### `WorkflowBackend$increment_downloads()`
 
 Increment download count for a workflow
 
@@ -132,7 +132,7 @@ Increment download count for a workflow
 
 ------------------------------------------------------------------------
 
-### Method `find_by_recipe()`
+### `WorkflowBackend$find_by_recipe()`
 
 Find workflows that reference a specific recipe
 
@@ -152,7 +152,7 @@ List of RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`rank()`](https://rdrr.io/r/base/rank.html)
+### `WorkflowBackend$rank()`
 
 Rank workflows by downloads
 
@@ -172,7 +172,7 @@ List of RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`filter()`](https://rdrr.io/r/stats/filter.html)
+### `WorkflowBackend$filter()`
 
 Filter workflows by criteria
 
@@ -209,7 +209,7 @@ List of matching RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method `list_all()`
+### `WorkflowBackend$list_all()`
 
 List all workflows
 
@@ -223,7 +223,7 @@ List of RecipeWorkflow objects
 
 ------------------------------------------------------------------------
 
-### Method [`save()`](https://rdrr.io/r/base/save.html)
+### `WorkflowBackend$save()`
 
 Save local backend to disk
 
@@ -233,7 +233,7 @@ Save local backend to disk
 
 ------------------------------------------------------------------------
 
-### Method [`load()`](https://rdrr.io/r/base/load.html)
+### `WorkflowBackend$load()`
 
 Load local backend from disk
 
@@ -243,7 +243,7 @@ Load local backend from disk
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `WorkflowBackend$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -59,7 +59,7 @@ Other panel-surveys:
 
 ### Public methods
 
-- [`RotativePanelSurvey$new()`](#method-RotativePanelSurvey-new)
+- [`RotativePanelSurvey$new()`](#method-RotativePanelSurvey-initialize)
 
 - [`RotativePanelSurvey$get_implantation()`](#method-RotativePanelSurvey-get_implantation)
 
@@ -83,7 +83,7 @@ Other panel-surveys:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RotativePanelSurvey$new()`
 
 Initializes a new instance of the RotativePanelSurvey class.
 
@@ -136,7 +136,7 @@ Initializes a new instance of the RotativePanelSurvey class.
 
 ------------------------------------------------------------------------
 
-### Method [`get_implantation()`](https://metasurveyr.github.io/metasurvey/reference/get_implantation.md)
+### `RotativePanelSurvey$get_implantation()`
 
 Retrieves the implantation survey.
 
@@ -150,7 +150,7 @@ A survey object representing the implantation survey.
 
 ------------------------------------------------------------------------
 
-### Method [`get_follow_up()`](https://metasurveyr.github.io/metasurvey/reference/get_follow_up.md)
+### `RotativePanelSurvey$get_follow_up()`
 
 Retrieves the follow-up surveys.
 
@@ -192,7 +192,7 @@ A list of follow-up surveys matching the specified criteria.
 
 ------------------------------------------------------------------------
 
-### Method `get_type()`
+### `RotativePanelSurvey$get_type()`
 
 Retrieves the type of the survey.
 
@@ -206,7 +206,7 @@ A string indicating the type of the survey.
 
 ------------------------------------------------------------------------
 
-### Method `get_default_engine()`
+### `RotativePanelSurvey$get_default_engine()`
 
 Retrieves the default engine used for processing.
 
@@ -220,7 +220,7 @@ A string specifying the default engine.
 
 ------------------------------------------------------------------------
 
-### Method [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md)
+### `RotativePanelSurvey$get_steps()`
 
 Retrieves the steps applied to the survey.
 
@@ -234,7 +234,7 @@ A list containing the steps for the implantation and follow-up surveys.
 
 ------------------------------------------------------------------------
 
-### Method `get_recipes()`
+### `RotativePanelSurvey$get_recipes()`
 
 Retrieves the recipes associated with the survey.
 
@@ -248,7 +248,7 @@ A list of recipes.
 
 ------------------------------------------------------------------------
 
-### Method `get_workflows()`
+### `RotativePanelSurvey$get_workflows()`
 
 Retrieves the workflows associated with the survey.
 
@@ -262,7 +262,7 @@ A list of workflows.
 
 ------------------------------------------------------------------------
 
-### Method `get_design()`
+### `RotativePanelSurvey$get_design()`
 
 Retrieves the design object for the survey.
 
@@ -276,7 +276,7 @@ A design object.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `RotativePanelSurvey$print()`
 
 Prints metadata about the RotativePanelSurvey object.
 
@@ -286,7 +286,7 @@ Prints metadata about the RotativePanelSurvey object.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RotativePanelSurvey$clone()`
 
 The objects of this class are cloneable with this method.
 

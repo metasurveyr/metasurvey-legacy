@@ -102,7 +102,6 @@ to execute all pending steps
 
 Other steps:
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md),
-[`explain()`](https://metasurveyr.github.io/metasurvey/reference/explain.md),
 [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md),
 [`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md),
 [`step_filter()`](https://metasurveyr.github.io/metasurvey/reference/step_filter.md),

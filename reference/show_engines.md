@@ -27,5 +27,5 @@ Other options:
 
 ``` r
 show_engines()
-#> [1] "data.table" "tidyverse"  "dplyr"      "metatable" 
+#> [1] "data.table" "tidyverse"  "dplyr"     
 ```

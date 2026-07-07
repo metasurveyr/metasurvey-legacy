@@ -10,7 +10,7 @@ An object of class `RecipeUser`.
 ## See also
 
 Other tidy-api:
-[`RecipeCategory`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory.md),
+[`RecipeCategory-from_list`](https://metasurveyr.github.io/metasurvey/reference/RecipeCategory-from_list.md),
 [`RecipeCertification`](https://metasurveyr.github.io/metasurvey/reference/RecipeCertification.md),
 [`add_category()`](https://metasurveyr.github.io/metasurvey/reference/add_category.md),
 [`certify_recipe()`](https://metasurveyr.github.io/metasurvey/reference/certify_recipe.md),
@@ -69,7 +69,7 @@ Other tidy-api:
 
 ### Public methods
 
-- [`RecipeUser$new()`](#method-RecipeUser-new)
+- [`RecipeUser$new()`](#method-RecipeUser-initialize)
 
 - [`RecipeUser$trust_level()`](#method-RecipeUser-trust_level)
 
@@ -83,7 +83,7 @@ Other tidy-api:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `RecipeUser$new()`
 
 Create a new RecipeUser
 
@@ -136,7 +136,7 @@ Create a new RecipeUser
 
 ------------------------------------------------------------------------
 
-### Method `trust_level()`
+### `RecipeUser$trust_level()`
 
 Get trust level (1=individual, 2=member, 3=institution)
 
@@ -150,7 +150,7 @@ Integer trust level
 
 ------------------------------------------------------------------------
 
-### Method `can_certify()`
+### `RecipeUser$can_certify()`
 
 Check if user can certify at a given level
 
@@ -170,7 +170,7 @@ Logical
 
 ------------------------------------------------------------------------
 
-### Method `to_list()`
+### `RecipeUser$to_list()`
 
 Serialize to list for JSON
 
@@ -184,7 +184,7 @@ List representation
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `RecipeUser$print()`
 
 Print user card
 
@@ -200,7 +200,7 @@ Print user card
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `RecipeUser$clone()`
 
 The objects of this class are cloneable with this method.
 

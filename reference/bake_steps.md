@@ -33,7 +33,6 @@ implantation and all follow-up surveys.
 ## See also
 
 Other steps:
-[`explain()`](https://metasurveyr.github.io/metasurvey/reference/explain.md),
 [`get_steps()`](https://metasurveyr.github.io/metasurvey/reference/get_steps.md),
 [`step_collapse()`](https://metasurveyr.github.io/metasurvey/reference/step_collapse.md),
 [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
