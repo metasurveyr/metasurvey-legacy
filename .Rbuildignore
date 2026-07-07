@@ -9,6 +9,7 @@
 ^Meta$
 ^R/README\.md$
 ^README\.Rmd$
+^REPORTE-REVISION-INTENSIVA\.md$
 ^Rplots\.pdf$
 ^\.RData$
 ^\.Rcheck$
@@ -24,6 +25,7 @@
 ^\.pre-commit-config\.yaml$
 ^\.vscode$
 ^_pkgdown\.yml$
+^afamp\.R$
 ^benchmark_.*$
 ^codemeta\.json$
 ^compatibilizada$
@@ -65,10 +67,14 @@
 ^renv\.lock$
 ^revdep$
 ^slides$
+^spike_blockr\.R$
 ^summary_iecon\.md$
+^tabla_paper\.png$
 ^temp$
 ^test\.json$
 ^test_.*\.R$
+^texput\.log$
+^umad_pilots$
 ^vignettes/.*\.html$
 ^vignettes/api-database-es\.Rmd$
 ^vignettes/complex-designs-es\.Rmd$
