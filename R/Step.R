@@ -51,6 +51,9 @@
 #'   has been executed.
 #' @param by_vars Character vector of grouping variables for
 #'   grouped computations, or NULL.
+#' @param recode_opts Named list of evaluated recode options
+#'   (`.default`, `ordered`, `.to_factor`), or NULL for
+#'   non-recode steps.
 Step <- R6Class("Step",
   public = list(
     name = NULL,
@@ -67,6 +70,9 @@ Step <- R6Class("Step",
     bake = NULL,
     #' @field by_vars Character vector of grouping variables or NULL.
     by_vars = NULL,
+    #' @field recode_opts Named list of evaluated recode options
+    #'   (`.default`, `ordered`, `.to_factor`) or NULL.
+    recode_opts = NULL,
     #' @description Create a new Step object
     #' @param name The name of the step.
     #' @param edition The edition of the survey associated with the step.
@@ -96,7 +102,8 @@ Step <- R6Class("Step",
                           depends_on, comment = NULL,
                           bake = !lazy_default(),
                           comments = NULL,
-                          by_vars = NULL) {
+                          by_vars = NULL,
+                          recode_opts = NULL) {
       self$name <- name
       self$edition <- edition
       self$survey_type <- survey_type
@@ -110,6 +117,7 @@ Step <- R6Class("Step",
       self$comment <- comment %||% comments
       self$bake <- bake
       self$by_vars <- by_vars
+      self$recode_opts <- recode_opts
     }
   )
 )
@@ -177,17 +185,33 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
 
   if (step$type == "recode") {
     args$new_var <- step$new_var
-    # step$exprs only records the rules: recover .default / ordered /
-    # .to_factor from the original call so re-baking does not silently
-    # fall back to their defaults (e.g. .default = NA_character_)
-    if (is.call(step$call)) {
+    if (!is.null(step$recode_opts)) {
+      # step$exprs only records the rules: .default / ordered /
+      # .to_factor were evaluated at step creation and stored in
+      # recode_opts, so re-baking preserves non-literal values
+      # (e.g. .default passed via a caller variable)
+      for (arg in names(step$recode_opts)) {
+        args[[arg]] <- step$recode_opts[[arg]]
+      }
+    } else if (is.call(step$call)) {
+      # Legacy fallback for steps created before recode_opts existed
+      # (e.g. deserialized): recover the options from the original
+      # call. Non-literal values cannot be resolved here — fail
+      # loudly instead of silently recoding with the defaults.
       for (arg in c(".default", "ordered", ".to_factor")) {
         val <- step$call[[arg]]
         if (!is.null(val)) {
-          val <- tryCatch(eval(val, baseenv()), error = function(e) NULL)
-          if (!is.null(val)) {
-            args[[arg]] <- val
-          }
+          args[[arg]] <- tryCatch(
+            eval(val, baseenv()),
+            error = function(e) {
+              stop(
+                "Cannot re-bake recode step '", step$name, "': argument `",
+                arg, "` (", deparse1(val), ") is not a literal and its ",
+                "value was not stored with the step.",
+                call. = FALSE
+              )
+            }
+          )
         }
       }
     }

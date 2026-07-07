@@ -186,3 +186,68 @@ test_that("step_recode does not double-apply rules on bake_steps", {
   expect_identical(baked$data$age_bin, before)
   expect_true(all(vapply(s2$steps, function(st) isTRUE(st$bake), logical(1))))
 })
+
+test_that("bake_steps preserves non-literal .default on recode steps", {
+  s <- make_test_survey()
+  my_default <- "OTHER"
+  s2 <- step_recode(s, grp,
+    x > 3 ~ "high",
+    .default = my_default,
+    .copy = TRUE
+  )
+  baked <- bake_steps(s2)
+  expect_false(anyNA(baked$data$grp))
+  expect_equal(
+    baked$data$grp,
+    ifelse(baked$data$x > 3, "high", "OTHER")
+  )
+})
+
+test_that("bake_steps preserves non-literal ordered and .to_factor", {
+  s <- make_test_survey()
+  my_default <- "low"
+  make_factor <- TRUE
+  make_ordered <- TRUE
+  s2 <- step_recode(s, lvl,
+    x > 3 ~ "high",
+    .default = my_default,
+    ordered = make_ordered,
+    .to_factor = make_factor,
+    .copy = TRUE
+  )
+  baked <- bake_steps(s2)
+  expect_true(is.factor(baked$data$lvl))
+  expect_true(is.ordered(baked$data$lvl))
+  expect_false(anyNA(baked$data$lvl))
+  expect_setequal(as.character(unique(baked$data$lvl)), c("low", "high"))
+})
+
+test_that("recode step stores evaluated options in recode_opts", {
+  s <- make_test_survey()
+  my_default <- "OTHER"
+  s2 <- step_recode(s, grp,
+    x > 3 ~ "high",
+    .default = my_default,
+    .copy = TRUE
+  )
+  step <- s2$steps[[length(s2$steps)]]
+  expect_equal(
+    step$recode_opts,
+    list(.default = "OTHER", ordered = FALSE, .to_factor = FALSE)
+  )
+})
+
+test_that("re-baking legacy recode step with non-literal option fails loudly", {
+  s <- make_test_survey()
+  my_default <- "OTHER"
+  s2 <- step_recode(s, grp,
+    x > 3 ~ "high",
+    .default = my_default,
+    .copy = TRUE
+  )
+  # Simulate a step created before recode_opts existed (e.g. deserialized):
+  # no stored options and still pending execution
+  s2$steps[[length(s2$steps)]]$recode_opts <- NULL
+  s2$steps[[length(s2$steps)]]$bake <- FALSE
+  expect_error(bake_steps(s2), "not a literal")
+})

@@ -692,11 +692,18 @@ step_recode_survey <- function(
 
   depends_on <- if (length(dependencies) > 0) dependencies else NULL
 
+  recode_opts <- list(
+    .default = .default,
+    ordered = ordered,
+    .to_factor = .to_factor
+  )
+
   if (.copy) {
     # Direct recode evaluation (force lazy=FALSE to execute immediately)
     .svy_after <- recode(
       svy = svy, new_var = new_var, ...,
       .default = .default,
+      ordered = ordered,
       .copy = .copy,
       .to_factor = .to_factor,
       lazy = FALSE
@@ -714,7 +721,8 @@ step_recode_survey <- function(
       default_engine = get_engine(),
       depends_on = depends_on,
       comment = comment,
-      bake = TRUE
+      bake = TRUE,
+      recode_opts = recode_opts
     )
     .svy_after$add_step(step)
     return(.svy_after)
@@ -722,6 +730,7 @@ step_recode_survey <- function(
     recode(
       svy = svy, new_var = new_var, ...,
       .default = .default,
+      ordered = ordered,
       .copy = .copy,
       .to_factor = .to_factor,
       lazy = FALSE
@@ -738,7 +747,8 @@ step_recode_survey <- function(
       default_engine = get_engine(),
       depends_on = depends_on,
       comment = comment,
-      bake = TRUE
+      bake = TRUE,
+      recode_opts = recode_opts
     )
     svy$add_step(step)
     invisible(svy)
