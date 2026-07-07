@@ -60,6 +60,14 @@ repos:
           )$
     -   id: no-debug-statement
     -   id: deps-in-desc
+        # Standalone services/scripts under inst/ have their own runtime
+        # deps (plumber, redux, mongolite, ...) that are not package deps.
+        exclude: >
+          (?x)^(
+          inst/api/.*|
+          inst/scripts/.*|
+          inst/worker/.*|
+          )$
 
 # ── General file quality hooks ───────────────────────────────
 -   repo: https://github.com/pre-commit/pre-commit-hooks

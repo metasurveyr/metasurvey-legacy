@@ -3,10 +3,12 @@ linters: linters_with_defaults(
     commented_code_linter = NULL,
     object_name_linter = NULL,
     object_usage_linter = NULL,
-    cyclocomp_linter = NULL
+    return_linter = NULL,
+    pipe_consistency_linter = NULL
   )
 exclusions: list(
     "inst/doc/creating_linters.R" = 1,
     "inst/example/bad.R",
-    "tests/testthat/exclusions-test"
+    "tests/testthat/exclusions-test",
+    "vignettes/api-database-es.Rmd"
   )
