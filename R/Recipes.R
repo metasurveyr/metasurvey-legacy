@@ -481,27 +481,26 @@ recipe <- function(...) {
   index_steps <- which(names(dots) %in% metadata_recipe())
 
   if ("steps" %in% names(dots)) {
-    return(
-      Recipe$new(
-        id = dots$id %||% generate_id("r"),
-        name = dots$name,
-        user = dots$user,
-        edition = dots$svy$edition,
-        survey_type = dots$svy$type,
-        default_engine = default_engine(),
-        depends_on = unique(unlist(lapply(
-          X = dots$steps,
-          FUN = function(step) {
-            step$depends_on
-          }
-        ))),
-        description = dots$description,
-        steps = dots$steps_call,
-        doi = dots$doi %||% NULL,
-        topic = dots$topic,
-        step_objects = dots$steps
-      )
+    new_recipe <- Recipe$new(
+      id = dots$id %||% generate_id("r"),
+      name = dots$name,
+      user = dots$user,
+      edition = dots$svy$edition,
+      survey_type = dots$svy$type,
+      default_engine = default_engine(),
+      depends_on = list(),
+      description = dots$description,
+      steps = dots$steps_call,
+      doi = dots$doi %||% NULL,
+      topic = dots$topic,
+      step_objects = dots$steps
     )
+
+    # Only external inputs: doc() walks steps in order and excludes
+    # variables produced by previous steps in the same recipe
+    new_recipe$depends_on <- new_recipe$doc()$input_variables
+
+    return(new_recipe)
   } else {
     return(
       Recipe$new(
