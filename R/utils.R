@@ -1064,16 +1064,21 @@ reproduce_workflow <- function(wf, data_path = NULL, dest_dir = tempdir()) {
 #' Evaluate estimation with Coefficient of Variation
 #' @param cv Numeric coefficient of variation value.
 #' @return Character string with the quality category
-#'   (e.g. "Excellent", "Good").
+#'   (e.g. "Excellent", "Good"), or \code{NA} when the CV is not
+#'   defined (e.g. a zero estimate, where CV = 0/0).
 #' @keywords utils
 #' @examples
 #' evaluate_cv(3) # "Excellent"
 #' evaluate_cv(12) # "Good"
 #' evaluate_cv(30) # "Use with caution"
+#' evaluate_cv(NaN) # NA
 #' @family workflows
 #' @export
 
 evaluate_cv <- function(cv) {
+  if (!is.finite(cv)) {
+    return(NA_character_)
+  }
   if (cv < 5) {
     return("Excellent")
   } else if (cv >= 5 && cv < 10) {
