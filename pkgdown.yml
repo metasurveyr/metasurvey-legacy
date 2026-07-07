@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   api-database-es: api-database-es.html
@@ -28,7 +28,7 @@ articles:
   weightflow-integration: weightflow-integration.html
   workflows-and-estimation-es: workflows-and-estimation-es.html
   workflows-and-estimation: workflows-and-estimation.html
-last_built: 2026-07-07T20:22Z
+last_built: 2026-07-07T20:51Z
 urls:
   reference: https://metasurveyr.github.io/metasurvey/reference
   article: https://metasurveyr.github.io/metasurvey/articles
