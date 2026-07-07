@@ -1940,6 +1940,418 @@ step_weight <- function(
 }
 
 
+#' Resolve the default weight column of a survey
+#'
+#' Returns the first weight attached to the survey: the column name for
+#' simple designs, or the `$weight` entry for replicate designs.
+#' @param svy A Survey object
+#' @return Character scalar or NULL if the survey has no weights.
+#' @noRd
+#' @keywords internal
+default_weight_var <- function(svy) {
+  w <- svy$weight
+  if (is.null(w) || length(w) == 0) {
+    return(NULL)
+  }
+  first <- w[[1L]]
+  if (is.character(first)) first else first$weight
+}
+
+#' Direct weighted quantile
+#'
+#' Right-continuous inverse of the weighted ECDF:
+#' `inf{x : F_w(x) >= p}`. Matches `survey::svyquantile()` with
+#' `qrule = "math"` and, for integer weights, `quantile(rep(x, w), type = 1)`,
+#' without expanding the weights (O(n log n) instead of O(sum(w))).
+#' @param x Numeric vector.
+#' @param w Numeric vector of weights (same length as `x`).
+#' @param probs Numeric vector of probabilities in (0, 1).
+#' @return Numeric vector of quantiles, one per element of `probs`.
+#' @noRd
+#' @keywords internal
+weighted_quantile <- function(x, w, probs) {
+  keep <- !is.na(x) & !is.na(w) & w > 0
+  x <- x[keep]
+  w <- w[keep]
+  if (length(x) == 0) {
+    return(rep(NA_real_, length(probs)))
+  }
+  ord <- order(x)
+  x <- x[ord]
+  cw <- cumsum(w[ord]) / sum(w)
+  # cumsum accumulates floating point error, so p can land just above
+  # the exact ECDF jump: compare with a small tolerance
+  eps <- sqrt(.Machine$double.eps)
+  vapply(
+    probs,
+    function(p) x[which(cw >= p - eps)[1L]],
+    numeric(1)
+  )
+}
+
+#' Weighted quantile groups (step)
+#'
+#' Creates a step that assigns each row to a weighted quantile group
+#' (quintiles, deciles, ...) of a numeric variable, e.g. income quintiles
+#' at the household level. Quantiles are computed directly on the weighted
+#' ECDF, without expanding the data by the weights.
+#'
+#' @param svy A [Survey] or [RotativePanelSurvey] object.
+#' @param new_var Name of the new group variable (unquoted or character).
+#' @param x Name of the numeric variable to split into quantile groups
+#'   (unquoted or character). Must be an existing column.
+#' @param n Number of groups (default `5`, i.e. quintiles). Use `10` for
+#'   deciles, `4` for quartiles, etc.
+#' @param weight Name of the weight column (unquoted or character).
+#'   Defaults to the survey's own weight.
+#' @param .by Optional character vector of grouping variables: quantile
+#'   breaks are computed independently within each group.
+#' @param .copy Whether to operate on a copy (default: [use_copy_default()]).
+#' @param comment Descriptive text for the step (default `"Quantile step"`).
+#' @param lazy Internal. Currently ignored: the groups are always computed
+#'   immediately and the step is recorded as executed.
+#' @param record Internal. Whether to record the step (default `TRUE`).
+#'
+#' @return The survey object with `new_var` added (integer codes `1..n`)
+#'   and the step recorded.
+#'
+#' @details
+#' **Execution model:** The quantile groups are computed immediately when
+#' the step is created and the step is recorded as already executed
+#' (`bake = TRUE`). Calling [bake_steps()] afterwards is safe: executed
+#' steps are skipped.
+#'
+#' **Algorithm:** The break for probability `p` is the right-continuous
+#' inverse of the weighted ECDF, `inf{x : F_w(x) >= p}`. This matches
+#' `survey::svyquantile(qrule = "math")` and, for integer weights,
+#' `quantile(rep(x, w), type = 1)`, but runs in `O(n log n)` instead of
+#' `O(sum(w))` memory. Rows are then assigned with intervals
+#' `(q[k-1], q[k]]`; rows with `NA` in `x` get `NA`. If breaks are tied
+#' (heavily discrete `x`), fewer than `n` groups can result.
+#'
+#' For household-level quantiles (one observation per household), collapse
+#' first with [step_collapse()] or compute on a household-level survey.
+#'
+#' @examples
+#' dt <- data.table::data.table(
+#'   id = 1:10, income = c(1:10) * 100, w = rep(1, 10)
+#' )
+#' svy <- Survey$new(
+#'   data = dt, edition = "2023", type = "test",
+#'   psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+#' )
+#' svy <- step_quantile(svy, income_q, income, n = 5)
+#' get_data(svy)$income_q
+#'
+#' @seealso [step_collapse()] to collapse to household level before
+#'   computing household quantiles.
+#' @keywords step
+#' @family steps
+#' @export
+step_quantile <- function(
+    svy,
+    new_var,
+    x,
+    n = 5,
+    weight = NULL,
+    .by = NULL,
+    .copy = use_copy_default(),
+    comment = "Quantile step",
+    lazy = lazy_default(),
+    record = TRUE) {
+  .call <- canonicalize_step_call(match.call())
+
+  # Accept unquoted names or character strings (character is what
+  # bake_step() passes when re-baking a deserialized step)
+  new_var <- substitute(new_var)
+  if (!is.character(new_var)) {
+    new_var <- deparse1(new_var)
+  }
+  x <- substitute(x)
+  if (!is.character(x)) {
+    x <- deparse1(x)
+  }
+  weight <- substitute(weight)
+  if (!is.null(weight) && !is.character(weight)) {
+    weight <- deparse1(weight)
+  }
+
+  n_invalid <- !is.numeric(n) || length(n) != 1 || is.na(n) ||
+    n < 2 || n != as.integer(n)
+  if (n_invalid) {
+    stop("n must be a single integer >= 2", call. = FALSE)
+  }
+  n <- as.integer(n)
+
+  # RotativePanelSurvey: apply to implantation and each follow_up
+  if (methods::is(svy, "RotativePanelSurvey")) {
+    quantile_args <- list(
+      new_var = new_var, x = x, n = n, weight = weight,
+      .by = .by, .copy = .copy, comment = comment
+    )
+    svy$implantation <- do.call(
+      step_quantile, c(list(svy = svy$implantation), quantile_args)
+    )
+    svy$follow_up <- lapply(
+      svy$follow_up,
+      function(fu) do.call(step_quantile, c(list(svy = fu), quantile_args))
+    )
+    return(svy)
+  }
+
+  # If no data yet, return the call (pipeline build)
+  if (is.null(get_data(svy))) {
+    return(.call)
+  }
+
+  if (is.null(weight)) {
+    weight <- default_weight_var(svy)
+    if (is.null(weight)) {
+      stop(
+        "step_quantile: survey has no weight attached; ",
+        "pass `weight` explicitly",
+        call. = FALSE
+      )
+    }
+  }
+
+  out <- if (.copy) svy$shallow_clone() else svy
+  .data <- get_data(out)
+
+  needed <- unique(c(x, weight, .by))
+  missing_vars <- setdiff(needed, names(.data))
+  if (length(missing_vars) > 0) {
+    stop(
+      "step_quantile: variables not found in survey: ",
+      paste(missing_vars, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  if (!is.numeric(.data[[x]])) {
+    stop("step_quantile: `", x, "` must be numeric", call. = FALSE)
+  }
+
+  probs <- seq_len(n - 1L) / n
+  quantile_group <- function(xv, wv) {
+    breaks <- unique(weighted_quantile(xv, wv, probs))
+    breaks <- breaks[!is.na(breaks)]
+    if (length(breaks) == 0) {
+      return(rep(NA_integer_, length(xv)))
+    }
+    as.integer(cut(xv, breaks = c(-Inf, breaks, Inf), labels = FALSE))
+  }
+
+  if (is.null(.by)) {
+    data.table::set(
+      .data,
+      j = new_var,
+      value = quantile_group(.data[[x]], .data[[weight]])
+    )
+  } else {
+    .data[
+      ,
+      (new_var) := quantile_group(.SD[[1L]], .SD[[2L]]),
+      by = .by,
+      .SDcols = c(x, weight)
+    ]
+  }
+  out$set_data(.data)
+
+  if (isTRUE(record)) {
+    step <- Step$new(
+      name = paste0("Quantile (n=", n, "): ", new_var),
+      edition = get_edition(out),
+      survey_type = get_type(out),
+      type = "step_quantile",
+      new_var = new_var,
+      exprs = list(
+        new_var = new_var, x = x, n = n, weight = weight, .by = .by
+      ),
+      call = .call,
+      svy_before = NULL,
+      default_engine = get_engine(),
+      depends_on = needed,
+      comment = comment,
+      # the groups were already computed above: marking the step as baked
+      # prevents bake_steps() from recomputing them
+      bake = TRUE
+    )
+    out$add_step(step)
+  }
+  invisible(out)
+}
+
+
+#' Collapse survey data to one row per group (step)
+#'
+#' Creates a step that collapses the survey data to a single row per
+#' group, typically one row per household, so that estimations can be run
+#' at the group level with the group's weight (e.g. share of households
+#' receiving a transfer).
+#'
+#' @param svy A [Survey] or [RotativePanelSurvey] object.
+#' @param by Character vector of grouping variables that identify the
+#'   group (e.g. the household id).
+#' @param rule How to build the collapsed row (default `"first"`):
+#'   * `"first"`: keep the first row of each group as-is.
+#'   * `"max"` / `"min"`: aggregate every numeric/logical column with
+#'     `max()`/`min()` (`na.rm = TRUE`); non-numeric columns keep the
+#'     first value of the group.
+#' @param .copy Whether to operate on a copy (default: [use_copy_default()]).
+#' @param comment Descriptive text for the step (default `"Collapse step"`).
+#' @param lazy Internal. Currently ignored: the collapse is always applied
+#'   immediately and the step is recorded as executed.
+#' @param record Internal. Whether to record the step (default `TRUE`).
+#'
+#' @return The survey object with one row per `by` group and the step
+#'   recorded.
+#'
+#' @details
+#' **Execution model:** The collapse is applied immediately when the step
+#' is created and the step is recorded as already executed (`bake = TRUE`).
+#' Calling [bake_steps()] afterwards is safe: executed steps are skipped,
+#' so the data is never collapsed twice.
+#'
+#' **Interaction with the sampling design:** After collapsing, each row
+#' represents one group (household), so the weight column now acts as the
+#' *group* weight and subsequent estimations are at the group level. The
+#' design is invalidated and rebuilt from the collapsed data on the next
+#' estimation. In household surveys the person weight is constant within
+#' the household, so the collapsed weight is the household weight; if the
+#' weight varies within a group, a warning is issued because the collapsed
+#' weight is ambiguous (it is taken with `rule` like any other column).
+#'
+#' `rule = "max"` reproduces the person-to-household propagation pattern
+#' ("order decreasing + distinct by household id"): a dummy that is 1 for
+#' any household member becomes 1 in the collapsed household row.
+#'
+#' @examples
+#' dt <- data.table::data.table(
+#'   hh = c(1, 1, 2, 2, 3), person = 1:5,
+#'   receives = c(0, 1, 0, 0, 1), w = c(2, 2, 3, 3, 1)
+#' )
+#' svy <- Survey$new(
+#'   data = dt, edition = "2023", type = "test",
+#'   psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+#' )
+#' hh_svy <- step_collapse(svy, by = "hh", rule = "max")
+#' get_data(hh_svy) # one row per household, receives = max over members
+#'
+#' @seealso [step_quantile()] for weighted quantile groups (e.g. household
+#'   income quintiles after collapsing).
+#' @keywords step
+#' @family steps
+#' @export
+step_collapse <- function(
+    svy,
+    by,
+    rule = c("first", "max", "min"),
+    .copy = use_copy_default(),
+    comment = "Collapse step",
+    lazy = lazy_default(),
+    record = TRUE) {
+  .call <- canonicalize_step_call(match.call())
+  rule <- match.arg(rule)
+
+  if (!is.character(by) || length(by) == 0) {
+    stop("by must be a non-empty character vector", call. = FALSE)
+  }
+
+  # RotativePanelSurvey: apply to implantation and each follow_up
+  if (methods::is(svy, "RotativePanelSurvey")) {
+    svy$implantation <- step_collapse(
+      svy = svy$implantation, by = by, rule = rule,
+      .copy = .copy, comment = comment
+    )
+    svy$follow_up <- lapply(
+      svy$follow_up,
+      function(fu) {
+        step_collapse(fu, by = by, rule = rule, .copy = .copy, comment = comment)
+      }
+    )
+    return(svy)
+  }
+
+  # If no data yet, return the call (pipeline build)
+  if (is.null(get_data(svy))) {
+    return(.call)
+  }
+
+  out <- if (.copy) svy$shallow_clone() else svy
+  .data <- get_data(out)
+
+  missing_vars <- setdiff(by, names(.data))
+  if (length(missing_vars) > 0) {
+    stop(
+      "step_collapse: grouping variables not found in survey: ",
+      paste(missing_vars, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  # The collapsed weight is only well-defined if the weight is constant
+  # within each group (the usual case for household weights)
+  weight_col <- default_weight_var(out)
+  if (!is.null(weight_col) && weight_col %in% names(.data)) {
+    varies <- .data[
+      ,
+      list(.varies = data.table::uniqueN(.SD[[1L]]) > 1L),
+      by = by,
+      .SDcols = weight_col
+    ][[".varies"]]
+    if (any(varies)) {
+      warning(
+        "step_collapse: weight '", weight_col, "' varies within some ",
+        "groups; the collapsed weight is taken with rule = '", rule,
+        "' and may not be a valid group weight",
+        call. = FALSE
+      )
+    }
+  }
+
+  if (rule == "first") {
+    collapsed <- unique(.data, by = by)
+  } else {
+    agg_fun <- match.fun(rule)
+    agg_one <- function(v) {
+      if (is.numeric(v) || is.logical(v)) {
+        if (all(is.na(v))) v[1L] else agg_fun(v, na.rm = TRUE)
+      } else {
+        v[1L]
+      }
+    }
+    collapsed <- .data[, lapply(.SD, agg_one), by = by]
+  }
+
+  out$set_data(collapsed)
+  # Rows changed: the design must be rebuilt from the collapsed data
+  out$design_initialized <- FALSE
+
+  if (isTRUE(record)) {
+    step <- Step$new(
+      name = paste0(
+        "Collapse (", rule, "): ", paste(by, collapse = ", ")
+      ),
+      edition = get_edition(out),
+      survey_type = get_type(out),
+      type = "step_collapse",
+      new_var = NULL,
+      exprs = list(by = by, rule = rule),
+      call = .call,
+      svy_before = NULL,
+      default_engine = get_engine(),
+      depends_on = by,
+      comment = comment,
+      # the collapse already ran above: marking the step as baked
+      # prevents bake_steps() from collapsing twice
+      bake = TRUE
+    )
+    out$add_step(step)
+  }
+  invisible(out)
+}
+
+
 #' View graph
 #' @param svy Survey object
 #' @param init_step Initial step label (default: "Load survey")
@@ -1993,6 +2405,8 @@ view_graph <- function(svy, init_step = "Load survey") {
     rename     = "#e67e22",
     validate   = "#27ae60",
     filter     = "#f39c12",
+    quantile   = "#16a085",
+    collapse   = "#34495e",
     dataframe  = "#95a5a6",
     background = "#f8f9fa",
     edge       = "#bdc3c7",
@@ -2072,14 +2486,16 @@ view_graph <- function(svy, init_step = "Load survey") {
   # ── Group color helper ──
   step_color <- function(type) {
     switch(type,
-      "compute"     = palette$compute,
-      "recode"      = palette$recode,
-      "step_join"   = palette$join,
+      "compute" = palette$compute,
+      "recode" = palette$recode,
+      "step_join" = palette$join,
       "step_remove" = palette$remove,
       "step_rename" = palette$rename,
-      "validate"    = palette$validate,
-      "filter"      = palette$filter,
-      "dataframe"   = palette$dataframe,
+      "validate" = palette$validate,
+      "filter" = palette$filter,
+      "step_quantile" = palette$quantile,
+      "step_collapse" = palette$collapse,
+      "dataframe" = palette$dataframe,
       "Load survey" = palette$primary,
       palette$primary
     )
