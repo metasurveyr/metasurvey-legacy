@@ -177,6 +177,20 @@ bake_step <- function(svy, step, .copy = use_copy_default()) {
 
   if (step$type == "recode") {
     args$new_var <- step$new_var
+    # step$exprs only records the rules: recover .default / ordered /
+    # .to_factor from the original call so re-baking does not silently
+    # fall back to their defaults (e.g. .default = NA_character_)
+    if (is.call(step$call)) {
+      for (arg in c(".default", "ordered", ".to_factor")) {
+        val <- step$call[[arg]]
+        if (!is.null(val)) {
+          val <- tryCatch(eval(val, baseenv()), error = function(e) NULL)
+          if (!is.null(val)) {
+            args[[arg]] <- val
+          }
+        }
+      }
+    }
   }
 
   valid_types <- c(
