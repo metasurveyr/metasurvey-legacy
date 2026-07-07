@@ -2011,7 +2011,8 @@ recipe_detail_ui <- function(
   # Description
   desc_section <- if (
     !is.null(recipe$description) &&
-      nzchar(recipe$description)) {
+      nzchar(recipe$description)
+  ) {
     htmltools::tags$div(
       style = "padding: 1.25rem 0;",
       htmltools::tags$p(
@@ -2173,7 +2174,8 @@ recipe_detail_ui <- function(
   graph_section <- if (
     n_steps > 0 &&
       has_visnetwork &&
-      !is.null(ns)) {
+      !is.null(ns)
+  ) {
     disclaimer <- if (n_steps > 20) {
       htmltools::tags$div(
         class = "graph-disclaimer",
@@ -2262,7 +2264,8 @@ recipe_detail_ui <- function(
       comment_html <- if (
         !is.null(comment_txt) &&
           length(comment_txt) == 1 &&
-          nzchar(comment_txt)) {
+          nzchar(comment_txt)
+      ) {
         htmltools::tags$div(
           style = paste0(
             "font-size:.75rem;",
@@ -2284,7 +2287,8 @@ recipe_detail_ui <- function(
       expr_html <- if (
         !is.null(expr_txt) &&
           length(expr_txt) == 1 &&
-          nzchar(expr_txt)) {
+          nzchar(expr_txt)
+      ) {
         htmltools::tags$div(
           style = paste0(
             "font-family:'JetBrains Mono',",
