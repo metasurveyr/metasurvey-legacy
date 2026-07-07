@@ -554,6 +554,11 @@ test_that("validate_replicate errors when replicate_id not in survey", {
 test_that(
   "Engine por defecto",
   {
+    # exercise the true default path: no engine configured (the suite
+    # baseline may be another engine, e.g. MS_TEST_ENGINE=metatable)
+    old <- getOption("metasurvey.engine")
+    on.exit(options(metasurvey.engine = old), add = TRUE)
+    options(metasurvey.engine = NULL)
     testthat::expect_message(
       set_engine(),
       "Engine: data.table"
@@ -575,6 +580,8 @@ test_that(
 test_that(
   "Custom engine",
   {
+    old <- getOption("metasurvey.engine")
+    on.exit(options(metasurvey.engine = old), add = TRUE)
     testthat::expect_message(
       set_engine("tidyverse"),
       "Engine: tidyverse"

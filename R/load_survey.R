@@ -588,6 +588,17 @@ load_survey.data.table <- function(...) {
 }
 
 
+#' Load survey with the metatable engine
+#'
+#' The metatable engine is a logical plan layer over data.table
+#' (design/metatable-rfc.md): loading a survey is identical to the
+#' data.table engine, only the bake executor changes.
+#' @inheritDotParams load_survey
+#' @noRd
+#' @keywords internal
+
+load_survey.metatable <- load_survey.data.table
+
 
 #' Config survey
 #' @inheritDotParams load_survey

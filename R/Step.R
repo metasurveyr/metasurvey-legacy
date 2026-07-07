@@ -407,9 +407,21 @@ bake_steps_rotative <- function(svy) {
 #' @keywords internal
 
 bake_steps_survey <- function(svy) {
+  # metatable engine (design/metatable-rfc.md, PR 2): build the logical
+  # plan for the pending steps and execute it node by node, delegating
+  # each node to bake_step(). Passthrough executor: same effects, same
+  # provenance, same update_design(), steps marked bake = TRUE as
+  # today. With any other engine plan_nodes stays NULL and the current
+  # path runs untouched (zero overhead).
+  use_metatable <- identical(get_engine(), "metatable")
   if (use_copy_default()) {
     svy_copy <- svy$shallow_clone()
     svy_copy$steps <- lapply(svy$steps, function(s) s$clone())
+    plan_nodes <- if (use_metatable) {
+      metatable_plan_nodes(svy_copy$steps)
+    } else {
+      NULL
+    }
     # Ensure provenance exists (backward compat)
     if (is.null(svy_copy$provenance)) {
       svy_copy$provenance <- structure(
@@ -420,7 +432,12 @@ bake_steps_survey <- function(svy) {
     for (i in seq_along(svy_copy$steps)) {
       n_before <- nrow(get_data(svy_copy))
       t_start <- proc.time()[["elapsed"]]
-      svy_copy <- bake_step(svy_copy, svy_copy$steps[[i]],
+      step_i <- if (is.null(plan_nodes) || is.null(plan_nodes[[i]])) {
+        svy_copy$steps[[i]]
+      } else {
+        plan_nodes[[i]]$step
+      }
+      svy_copy <- bake_step(svy_copy, step_i,
         .copy = FALSE
       )
       svy_copy$steps[[i]]$bake <- TRUE
@@ -439,6 +456,11 @@ bake_steps_survey <- function(svy) {
     svy_copy$update_design()
     return(svy_copy)
   } else {
+    plan_nodes <- if (use_metatable) {
+      metatable_plan_nodes(svy$steps)
+    } else {
+      NULL
+    }
     # Ensure provenance exists (backward compat)
     if (is.null(svy$provenance)) {
       svy$provenance <- structure(
@@ -449,7 +471,12 @@ bake_steps_survey <- function(svy) {
     for (i in seq_along(svy$steps)) {
       n_before <- nrow(get_data(svy))
       t_start <- proc.time()[["elapsed"]]
-      bake_step(svy, svy$steps[[i]], .copy = FALSE)
+      step_i <- if (is.null(plan_nodes) || is.null(plan_nodes[[i]])) {
+        svy$steps[[i]]
+      } else {
+        plan_nodes[[i]]$step
+      }
+      bake_step(svy, step_i, .copy = FALSE)
       svy$steps[[i]]$bake <- TRUE
       t_end <- proc.time()[["elapsed"]]
       svy$provenance$steps[[length(svy$provenance$steps) + 1]] <-

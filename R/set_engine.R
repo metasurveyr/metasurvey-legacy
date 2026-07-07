@@ -43,7 +43,10 @@ set_engine <- function(.engine = show_engines()) {
   )
 
   engine_name <- get_engine()
-  if (!requireNamespace(engine_name, quietly = TRUE)) {
+  # "metatable" is an internal engine (plan layer over data.table,
+  # see design/metatable-rfc.md), not an installable package
+  needs_pkg <- engine_name != "metatable"
+  if (needs_pkg && !requireNamespace(engine_name, quietly = TRUE)) {
     warning(
       "Package '", engine_name, "' is required. ",
       "Install it with: install.packages('", engine_name, "')",
@@ -67,7 +70,8 @@ show_engines <- function() {
   c(
     "data.table",
     "tidyverse",
-    "dplyr"
+    "dplyr",
+    "metatable"
   )
 }
 
