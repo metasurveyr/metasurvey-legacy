@@ -99,7 +99,7 @@ of files) can be automatically transpiled vs require manual review."><meta prope
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Analyze transpilation coverage for STATA do-files</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/main/R/transpile.R" class="external-link"><code>R/transpile.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/R/transpile.R" class="external-link"><code>R/transpile.R</code></a></small>
       <div class="d-none name"><code>transpile_coverage.Rd</code></div>
     </div>
 
@@ -147,8 +147,8 @@ skipped, manual_review, coverage_pct</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gen x = 1"</span>, <span class="st">"replace x = 2 if y == 3"</span>, <span class="st">"drop z"</span><span class="op">)</span>, <span class="va">tf</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">transpile_coverage</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  file                                path total_commands</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 file1dd51c9b96e2.do /tmp/Rtmp2csiyN/file1dd51c9b96e2.do              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               TOTAL /tmp/Rtmp2csiyN/file1dd51c9b96e2.do              2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 file1e3e5c349e8a.do /tmp/Rtmp07uPBV/file1e3e5c349e8a.do              2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               TOTAL /tmp/Rtmp07uPBV/file1e3e5c349e8a.do              2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   translated skipped manual_review coverage_pct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          2       0             0          100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          2       0             0          100</span>
