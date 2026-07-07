@@ -38,8 +38,8 @@ api_list_workflows(survey_type = "ech")
 }
 }
 \seealso{
-Other api-workflows: 
-\code{\link{api_get_workflow}()},
-\code{\link{api_publish_workflow}()}
+Other api-workflows:
+\code{\link[=api_get_workflow]{api_get_workflow()}},
+\code{\link[=api_publish_workflow]{api_publish_workflow()}}
 }
 \concept{api-workflows}

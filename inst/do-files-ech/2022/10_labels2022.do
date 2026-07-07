@@ -171,8 +171,8 @@ lab var ht13 "Valor locativo"
 lab var ht19 "Cantidad de personas sin servicio doméstico"
 lab var yhog "Ingresos del hogar no imputables a personas"
 lab var ine_ysvl "Ingreso total del hogar sin valor locativo sin servicio doméstico" // tiene ine_ adelante
-lab var ysvl "Ingreso total del hogar sin valor locativo sin servicio doméstico" 
-lab var ysvl "Ingreso total del hogar sin valor locativo sin servicio doméstico" 
+lab var ysvl "Ingreso total del hogar sin valor locativo sin servicio doméstico"
+lab var ysvl "Ingreso total del hogar sin valor locativo sin servicio doméstico"
 lab var ine_ysvl_sag "Ingreso total del hogar sin valor locativo, sin aguinaldo, sin servicio doméstico" // tiene ine_ adelante
 lab var lp "Línea de pobreza"
 lab var li "Línea de indigencia"
@@ -188,29 +188,29 @@ lab def estred13 1 "Montevideo - Nivel económico bajo" 2 "Montevideo - Nivel ec
 lab def si_no 1 "Si" 2 "No"
 lab def h2_cv 1 "Si" 2 "No"
 lab def c1 1 "Casa" 2 "Apartamento o casa en complejo habitacional" 3 "Apartamento en edificio de altura" 4 "Apartamento en edificio de una planta" 5 "Local no construido para vivienda"
-lab def c2 1 "Ladrillos, ticholos o bloques con terminaciones" 2 "Ladrillos, ticholos o bloques sin terminaciones" 3 "Materiales livianos con revestimiento" 4 "Materiales livianos sin revestimiento" 5 "Adobe" 6 "Materiales de desecho"  
-lab def c3 1 "Planchada de hormigón con protección (tejas u otros)" 2 "Planchada de hormigón sin protección" 3 "Liviano con cielo raso" 4 "Liviano sin cielo raso" 5 "Quincha" 6 "Materiales de desecho"  
-lab def c4 1 "Cerámica, parqué, baldosas, moqueta, linóleo" 3 "Alisado de hormigón" 4 "Solo contrapiso sin piso" 5 "Tierra sin piso ni contrapiso"   
-lab def c6 1 "Sí"     
+lab def c2 1 "Ladrillos, ticholos o bloques con terminaciones" 2 "Ladrillos, ticholos o bloques sin terminaciones" 3 "Materiales livianos con revestimiento" 4 "Materiales livianos sin revestimiento" 5 "Adobe" 6 "Materiales de desecho"
+lab def c3 1 "Planchada de hormigón con protección (tejas u otros)" 2 "Planchada de hormigón sin protección" 3 "Liviano con cielo raso" 4 "Liviano sin cielo raso" 5 "Quincha" 6 "Materiales de desecho"
+lab def c4 1 "Cerámica, parqué, baldosas, moqueta, linóleo" 3 "Alisado de hormigón" 4 "Solo contrapiso sin piso" 5 "Tierra sin piso ni contrapiso"
+lab def c6 1 "Sí"
 lab def d8_1 1 "Propietario/a de la vivienda y el terreno y los está pagando" 2 "Propietario/a de la vivienda y el terreno y ya los pagó" 3 "Propietario/a solamente de la vivienda y la está pagando" 4 "Propietario/a solamente de la vivienda y ya la pagó" 5 "Inquilino/a o arrendatario/a de la vivienda" 6 "Ocupante con relación de dependencia" 7 "Ocupante gratuito. Se lo permite el B.P.S." 8 "Ocupante gratuito. Se lo permite un particular" 9 "Ocupante sin permiso del propietario/a" 10 "Miembro de cooperativa de vivienda"
 lab def d8_4 1 "Si" 2 "No"
-lab def d11 1 "Red general" 2 "Pozo surgente no protegido" 3 "Pozo surgente protegido" 4 "Aljibe" 5 "Arroyo, río" 6 "Otro"  
-lab def d12 1 "Por cañería dentro de la vivienda" 2 "Por cañería fuera de la vivienda a menos de 100 m de distancia" 3 "Por cañería fuera de la vivienda a más de 100 m de distancia" 4 "Por otros medios"   
-lab def d13 1 "Sí, con cisterna" 2 "Sí, sin cisterna" 3 "No"    
-lab def d15 1 "De uso exclusivo del hogar" 2 "Compartido con otro hogar"    
-lab def d16 1 "Red general" 2 "Fosa séptica, pozo negro" 3 "Entubado hacia el arroyo" 4 "Otro (superficie, etc.)"   
-lab def d18 1 "Energía eléctrica" 2 "Cargador de batería" 3 "Supergás o queroseno" 4 "Velas"   
-lab def d260 1 "Energía eléctrica" 2 "Gas por cañería" 3 "Supergás" 4 "Queroseno" 5 "Leña" 6 "Ninguna" 7 "Otra" 
-lab def d19 1 "Sí, privado de este hogar" 2 "Sí, compartido con otros hogares" 3 "No hay"    
+lab def d11 1 "Red general" 2 "Pozo surgente no protegido" 3 "Pozo surgente protegido" 4 "Aljibe" 5 "Arroyo, río" 6 "Otro"
+lab def d12 1 "Por cañería dentro de la vivienda" 2 "Por cañería fuera de la vivienda a menos de 100 m de distancia" 3 "Por cañería fuera de la vivienda a más de 100 m de distancia" 4 "Por otros medios"
+lab def d13 1 "Sí, con cisterna" 2 "Sí, sin cisterna" 3 "No"
+lab def d15 1 "De uso exclusivo del hogar" 2 "Compartido con otro hogar"
+lab def d16 1 "Red general" 2 "Fosa séptica, pozo negro" 3 "Entubado hacia el arroyo" 4 "Otro (superficie, etc.)"
+lab def d18 1 "Energía eléctrica" 2 "Cargador de batería" 3 "Supergás o queroseno" 4 "Velas"
+lab def d260 1 "Energía eléctrica" 2 "Gas por cañería" 3 "Supergás" 4 "Queroseno" 5 "Leña" 6 "Ninguna" 7 "Otra"
+lab def d19 1 "Sí, privado de este hogar" 2 "Sí, compartido con otros hogares" 3 "No hay"
 lab def d20 1 "Energía eléctrica" 2 "Gas por cañería" 3 "Supergás" 4 "Queroseno" 5 "Leña" 6 "Ninguna"
- 
-lab def h167_1 1 "Sí y genera intereses" 3 "Sí y no genera intereses" 2 "No"    
+
+lab def h167_1 1 "Sí y genera intereses" 3 "Sí y no genera intereses" 2 "No"
 lab def eg_ahorro 1 "alcanzaron para cubrir los gastos y pudo ahorrar" 2 "alcanzaron para cubrir los gastos, pero no ahorró" 3 "no cubrieron los gasto y utilizó ahororos o ingresos anteriores" 4 "no cubrieron los gastos y le prestaron dinero (instituciones o particulares)" 5 "no cubrieron los gasto y recibió apoyo de otros hogares o instituciones (monetario o no)" 6 "no cubrieron sus gastos y quedaron cuentas impagas"
-lab def eg_ps3 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 
-lab def eg_ps4 2 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 
-lab def eg_ps5 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 
-lab def eg_ps6 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 
-lab def eg_ps7 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 
+lab def eg_ps3 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar"
+lab def eg_ps4 2 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar"
+lab def eg_ps5 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar"
+lab def eg_ps6 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar"
+lab def eg_ps7 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar"
 lab def eg_ps8 1 "Insuficiente para las necesidades de su hogar" 2 "Suficiente para las necesidades de su hogar" 3 "Más que suficiente para las necesidades de su hogar" 4 "No corresponde"
 
 
@@ -225,7 +225,7 @@ lab def indig 0 "No indigente" 1 "Indigente"
 lab values region region_3
 lab values region_4 region_4
 lab values estred13 estred13
-lab values d8_4 d21_1 d21_2 d21_3 d21_4 d21_5 d21_6 d21_20 d21_7 d21_10 d21_11 d21_12 d21_13 d21_14 d21_15 d21_15_1 d21_15_3 d21_15_5 d21_16 d21_16_1 d21_16_2 d21_21 d21_17 d21_18 d21_19 d181 d231 d184 h155 h156 h252 h159 h160 h161 h162 h227 h269 h167_2 h167_3 h167_4 h169 h271 h171 h172 h173 i228 i259 eg_ps1 /*h2_cv*/ si_no 
+lab values d8_4 d21_1 d21_2 d21_3 d21_4 d21_5 d21_6 d21_20 d21_7 d21_10 d21_11 d21_12 d21_13 d21_14 d21_15 d21_15_1 d21_15_3 d21_15_5 d21_16 d21_16_1 d21_16_2 d21_21 d21_17 d21_18 d21_19 d181 d231 d184 h155 h156 h252 h159 h160 h161 h162 h227 h269 h167_2 h167_3 h167_4 h169 h271 h171 h172 h173 i228 i259 eg_ps1 /*h2_cv*/ si_no
 lab values c2 c2
 lab values c3 c3
 lab values c4 c4
@@ -441,7 +441,7 @@ lab var f289 "Frecuencia de trabajo en el hogar en las últimas 4 semanas"
 lab var f290 "Uso de pc, teléfono inteligente o tableta para trabajar"
 lab var f291_a "Trabajo en un lugar diferente al hogar, local propio u oficina o instalación del cliente"
 lab var f291_b "Trabajo en un lugar difrente al hogar o al lugar habitual de trabajo"
-lab var f292 "Trabajo realizado fuera de sus propias instalaciones" 
+lab var f292 "Trabajo realizado fuera de sus propias instalaciones"
 lab var f293 "Uso de pc, teléfono inteligente o tableta para trabajar en estos diferentes lugares"
 lab var f294 "Frecuencia de trabajo en un lugar distinto al hogar, instalaciones propias o las del empleador"
 lab var f295 "Trabajo la menos 2 veces a la semana en 2 lugares difrentes a las instalaciones del empleador o propio local"
@@ -716,22 +716,22 @@ lab def e242 1 "Por vacaciones"	2 "Porque faltó el/la maestro/a"	3 "Por mal tie
 
 lab def f273 1 "Sí" 2 "No" 3 "No sabe"
 lab def f69 	1 "Por licencia (vacaciones, enfermedad, estudio, cuidados, etc.)" 11 "Por estar en cuarentena por COVID-19" 5 "Por atender a hijos/as enfermos/as o cuidarlos/as"	6 "Por atender a otras personas dependientes del hogar" 2 "Por poco trabajo o mal tiempo"	3 "Por estar en seguro de paro o desempleo"	7 "Por huelga o conflicto laboral"	8 "Por estar suspendido/a"	9 "Porque me despidieron"	10 "Suspendido por COVID-19"
-lab def f69_1 	1 "Si"	2 "No"	3 "No sabe"								
+lab def f69_1 	1 "Si"	2 "No"	3 "No sabe"
 lab def f275 	1 "Dentro de 4 semanas o menos"	2 "Entre 5 y 12 semanas"	3 "En más de 12 semanas"	4 "No sabe cuándo volverá a trabajar"
-lab def f275_1 	1 "Si"	2 "No"	3 "No sabe"	
+lab def f275_1 	1 "Si"	2 "No"	3 "No sabe"
 lab def f277 	1 "Sí, más de la mitad de lo que produce"	2 "Sí, menos de la mitad de lo que produce"	3 "No, nada"
 
 lab def f73 1 "Asalariado/a privado/a" 2 "Asalariado/a público/a" 2 "Socio-Miembro de cooperativa de producción o trabajo" 4 "Patrón/a" 9 "Cuenta propia" 7 "Miembro del hogar no remunerado" 8 "Trabajador de un programa social de empleo"
-lab def f83 	1 "BPS"	2 "BPS y AFAP"	3 "Policial"	4 "Militar"	5 "Profesional"	6 "Notarial"	7 "Bancaria"	8 "En el exterior"			
- 
+lab def f83 	1 "BPS"	2 "BPS y AFAP"	3 "Policial"	4 "Militar"	5 "Profesional"	6 "Notarial"	7 "Bancaria"	8 "En el exterior"
+
 lab def f278 	1 "El empleador o patrón "	2 "Ustede mismo"
 lab def f279 1 "Sueldo, salario o jornal" 2 "Pago por pieza o unidad vendida" 3 "Por servicios prestados" 4 "Ganancias o utilidades de su actividad"
- 
-lab def f280_1 	1 "Usted"	2 "Otro"									
-lab def f280_2 	1 "Usted"	2 "Otro"									
-lab def f280_3 	1 "Usted"	2 "Otro"	
 
-lab def f283 	1 "Eventual o de muy corto plazo (menos de 1 mes)"	2 "De plazo fijo (de 1 a 3 meses)"	3 "De plazo fijo (de 3 a 6 meses)"	4 "De plazo fijo (de 6 a 12 meses)"	5 "De plazo fijo (1 año o más)"	6 "Indefinido o sin plazo de finalización"									
+lab def f280_1 	1 "Usted"	2 "Otro"
+lab def f280_2 	1 "Usted"	2 "Otro"
+lab def f280_3 	1 "Usted"	2 "Otro"
+
+lab def f283 	1 "Eventual o de muy corto plazo (menos de 1 mes)"	2 "De plazo fijo (de 1 a 3 meses)"	3 "De plazo fijo (de 3 a 6 meses)"	4 "De plazo fijo (de 6 a 12 meses)"	5 "De plazo fijo (1 año o más)"	6 "Indefinido o sin plazo de finalización"
 lab def f266 1 "Si" 2 "No" 3 "La empresa/institución no permite realizar horas extras"
 lab def f266_1 	1 "Mediante pago"	2 "Mediante derecho a compensarlas"	3 "Mediante días adicionales de vacaciones"
 lab def f266_2 1 "Cuenta con horario flexible" 2 "No se las reconocen"
@@ -739,12 +739,12 @@ lab def f77 1 "Una persona" 2 "2 a 4 personas" 3 "5 a 9 personas" 4 "10 a 19 per
 lab def f305 1 "Empresa unipersonal" 2 "Sociedad de hecho /Sociedad civil" 3 "Sociedad anónima (S.A.)" 4 "Sociedad de responsabilidad limitada (S.R.L.) u otras sociedades personales con contrato" 5 "Cooperativa" 6 "Otra" 7 "No tributa" 8 "No sabe"
 lab def f78 9 "En su propio hogar" 10 "Hogar del empleador, patrón o cliente" 11 "Predio agropecuario" 12 "Predio marítimo" 13 "Lugar de trabajo o sitio del empleador o patrón" 14 "Lugar de trabajo o sitio del cliente" 15 "Propio local comercial" 16 "Vehículo terrestre" 17 "Vehículo acuático o aéreo" 18 "Puerta a puerta" 19 "Calle u otro espacio público" 20 "Mercado o feria" 21 "No tiene un solo tipo de locación" 22 "Otro tipo"
 lab def f80 	1 "Sí"	2 "No"	3 "En otro país"
-lab def f285 	1 "Más"	2 "Igual"	3 "Menos"							
-lab def f286 	1 "Por vacaciones, días festivos"	2 "Motivos de salud, personales o familiares"	3 "Por estudio"	4 "Por conflicto laboral"	5 "Menor demanda, baja temporada"	6 "Por la coyuntura de la pandemia"	7 "Otro motivo"				
+lab def f285 	1 "Más"	2 "Igual"	3 "Menos"
+lab def f286 	1 "Por vacaciones, días festivos"	2 "Motivos de salud, personales o familiares"	3 "Por estudio"	4 "Por conflicto laboral"	5 "Menor demanda, baja temporada"	6 "Por la coyuntura de la pandemia"	7 "Otro motivo"
 lab def f287 	1 "Para generar más ingresos"	2 "Mayor demanda, temporara alta"	3 "Tuvo que hacer horas extras"	4 "Por la coyuntura de la pandemia"	5 "Otro motivo"
 
-lab def f288 	1 "En su propio hogar"	2 "En el mismo predio o edificio de su hogar, pero en un espacio separado"	3 "No ha trabajado en su hogar en las últimas 4 semanas"								
-lab def f289 	1 "1 vez a la semana o más"	2 "Menos de 1 vez a la semana"	
+lab def f288 	1 "En su propio hogar"	2 "En el mismo predio o edificio de su hogar, pero en un espacio separado"	3 "No ha trabajado en su hogar en las últimas 4 semanas"
+lab def f289 	1 "1 vez a la semana o más"	2 "Menos de 1 vez a la semana"
 lab def f294 	1 "1 vez a la semana o más"	2 "Menos de 1 vez a la semana"
 
 lab def f92 1 "Asalariado/a privado/a" 2 "Asalariado/a público/a" 3 "Miembro de cooperativa de producción o trabajo" 4 "Patrón/a" 9 "Cuenta propia" 7 "Miembro del hogar no remunerado" 8 "Trabajador/a de un programa social de empleo"
@@ -755,7 +755,7 @@ lab def f94 	1 "Sí"	2 "No"	3 "En otro país"	99 "Sin dato"
 lab def f100 	1 "Sustituir"	2 "Complementar"
 lab def f101 1 "Trabajar más horas" 2 "Trabajar menos horas" 3 "Trabajar menos horas para cuidar a sus hijos/as" 5 "Un empleo más adecuado a su formación" 6 "El trabajo actual no es estable" 7 "Para mejorar las condiciones del trabajo actual (cercanía, clima laboral, etc." 8 "Mayor ingreso" 10 "Trabaja en horario nocturno o en turnos rotativos" 9 "Otras razones"
 lab def f103 1 "De inmediato" 3 "En las próximas dos semanas" 4 "En los próximos meses" 5 "No tiene disponibilidad"
-lab def f104 	1 "Por razones de estudio"	2 "Por razones de salud"	3 "Por tener que cuidar niños/as"	4 "Por tener que cuidar personas dependientes del hogar"	5 "Porque no consigue más trabajo"	6 "Por razones personales"					
+lab def f104 	1 "Por razones de estudio"	2 "Por razones de salud"	3 "Por tener que cuidar niños/as"	4 "Por tener que cuidar personas dependientes del hogar"	5 "Porque no consigue más trabajo"	6 "Por razones personales"
 
 lab def f110 	1 "Puso o contestó avisos en diarios, etc."	2 "Consultó con agencias de empleo"	3 "Consultó con el empleador"	4 "Consultó con amigos o parientes"	5 "Hizo trámites, gestionó préstamos, buscó local o campo para establecerse"	6 "Consultó por Internet"	7 "Nada"
 lab def f111 1 "Si, de jornada de baja carga horaria" 2 "Si, con horario especial" 3 "Si, acorde a su conocimiento o experiencia" 4 "Si, con condiciones salariales" 5 "Si, con condición del lugar de trabajo o personales" 6 "Si, con horario flexible para atender las necesidades familiares" 7 "No, ninguna condición especia"
@@ -763,10 +763,10 @@ lab def f108 1	"Está incapacitado físicamente" 3	"Está esperando el resultado
 lab def f301 	1 "En menos de 1 mes"	2 "Entre 1 y 3 meses"	3 "En más de 3 meses"	4 "No sabe"
 lab def f106 	1 "De inmediato" 3 "No tenía disponibilidad" 4 "En las siguientes 2 semanas" 5 "En las siguientes 4 semanas" 6 "En los siguientes meses"
 
-lab def f122 	1 "Despido"	2 "Cierre de establecimiento"	3 "Finalización del contrato"	4 "Acabó la zafra"	5 "Mal pago"	6 "Razones de estudio"	7 "Razones familiares"	8 "Se jubiló"	9 "Renuncia por otras razones"	99 "Sin dato"	
+lab def f122 	1 "Despido"	2 "Cierre de establecimiento"	3 "Finalización del contrato"	4 "Acabó la zafra"	5 "Mal pago"	6 "Razones de estudio"	7 "Razones familiares"	8 "Se jubiló"	9 "Renuncia por otras razones"	99 "Sin dato"
 lab def f121 1	"Asalariado/a privado/a" 2	"Asalariado/a público/a" 3	"Miembro de cooperativa de producción o trabajo" 4	"Patrón/a" 9	"Cuenta propia" 7	"Miembro del hogar no remunerado" 8	"Trabajador/a de un programa social de empleo"
 
-lab def f125 	1 "Pensión por vejez"	2 "Pensión por fallecimiento (de sobrevivencia)"	3 "Pensión por invalidez"	4 "Pensión del extranjero"	5 "Pensión para víctimas de delitos violentos"	6 "Pensión para hijos de fallecidos por violencia doméstica"	7 "Pensión especial reparatoria (Ley N° 18033)"	8 "Pensión reparatoria Ley integral para personas trans (Ley N° 19684)"			
+lab def f125 	1 "Pensión por vejez"	2 "Pensión por fallecimiento (de sobrevivencia)"	3 "Pensión por invalidez"	4 "Pensión del extranjero"	5 "Pensión para víctimas de delitos violentos"	6 "Pensión para hijos de fallecidos por violencia doméstica"	7 "Pensión especial reparatoria (Ley N° 18033)"	8 "Pensión reparatoria Ley integral para personas trans (Ley N° 19684)"
 
 
 lab def g132 	1 "Sí"	2 "No"	3 "No corresponde"
@@ -776,16 +776,16 @@ lab def g256 	1 "Incluidas en el sueldo"	2 "Por separado del sueldo en un local 
 lab def g152 	1 "Todos los meses"	2 "Cada dos meses"
 
 lab def pobpcoac 	1 "Menores de 14 años"	2 "Ocupados"	3 "Desocupados buscan trabajo por primera vez"	4 "Desocupados propiamente dichos"	5 "Desocupados en seguro de paro"	6 "Inactivo, realiza quehaceres del hogar"	7 "Inactivo, estudiante"	8 "Inactivo, rentista"	9 "Inactivo, pensionista"	10 "Inactivo, jubilado"	11 "Inactivo, otro"
-								
 
-								
-								
-								
-								
-								
-								
-								
-								
+
+
+
+
+
+
+
+
+
 * Asigno valores persona
 *------------------------------------------------
 destring g260, replace force
@@ -793,7 +793,7 @@ destring g260, replace force
 lab values  e31 e32 e33 e185 e38 e45_cvb e46_cv e582 e582_4 e197_1 e201_1a e201_1b e201_1c e201_1d e51_6b e215_1 e218_1 e221_1 e224_1 e559 e560 e560_1 e560_2 e561 e59 e29_1 e29_2 e29_3 e29_4 e29_5 e48 f269 f270 f271 f272 f274 f276 f281_1 f281_2 f281_3 f281_4 f75 f267 f268 f306 f81 f82 f84 f267 f290 f291_a f291_b f292 f293 f295 f96 f99 f102 f298 f114 f115 f300 f116 f117 f123 f124_1 f124_2 f124_3 f124_5 g250_1 g250_2 g250_3 g250_4 g250_5 g127 g128 g129 g129_1 g130 g131 g133 g_st_1 g251_1 g251_2 g251_3 g251_4 g251_5 g135 g136 g137 g137_1 g138 g139 g141 g_itnd_1 g_itnd_2 g144 g_it_1 g_it_2 g149 g149_1 g150 g255 g260 g261 g153 g258 g154 f299 si_no_99
 
 foreach x in e26 e29_6 e30 e35 e36 e37 e39 e236 e45_cv e45_1_1_cv e45_2_1_cv e45_3_1_cv e45_4_1_cv e45_cva e47_cv e190 e579 e579a e202 bc_e51_7_1 e246  f69 f69_1 f275 f275_1 f277 f278 f280_1 f280_2 f280_3 f283 f80 f83 f266_1 f268 f285 f286 f287 f288 f289 f294 f94 f97 f100 f104 f106 f110 f301 f122 f125 g132 g140 g_itnd_3 g256 g152 pobpcoac            {
-	
+
 lab values `x' `x'
-	
+
 }

@@ -14,7 +14,7 @@ replace bc_area=2 if region_4==2 // Interior mayores de 5000
 replace bc_area=3 if region_4==3 // Interior menores de 5000
 replace bc_area=4 if region_4==4 // rurales - rural dispersa
 
-g bc_filtloc=(region_4<3) // localidades de más de 5000 
+g bc_filtloc=(region_4<3) // localidades de más de 5000
 recode bc_filtloc (0=2)
 
 *-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ g bc_pe4=-9
 	replace bc_pe4=6 if e30==13 // no pariente
 	replace bc_pe4=7 if e30==14 // Serv domestico o famiilar del mismo
 
-* estado civil.  
+* estado civil.
 g bc_pe5=-13
 	replace bc_pe5=1 if e35==2 | e35==3
 	replace bc_pe5=2 if inrange(e35,4,7)
@@ -54,7 +54,7 @@ g bc_pe6a=-15
 	replace bc_pe6a=3 if (e45_cv==1 & (e45_1_1_cv==1 | e45_1_1_cv==4)) | (e45_cv==2 & (e45_2_1_cv==1 |e45_2_1_cv==6)) | (e45_cv==3 & (e45_3_1_cv==1 | e45_3_1_cv ==6))
 	replace bc_pe6a=5 if ((e45_cv==3 & (e45_3_1_cv!=1 | e45_3_1_cv!=6)) | e46_cv==1) & bc_pe6a!=3
 	replace bc_pe6a=1 if e45_cv==7
-	
+
 g bc_pe6a1=-15
 	replace bc_pe6a1=1 if bc_pe6a==3 & ((pobpcoac==2 & (f82==1|f96==1)) | pobpcoac==5)
 	replace bc_pe6a1=2 if bc_pe6a==3 & bc_pe6a1!=1
@@ -67,7 +67,7 @@ recode bc_pe6a (2=2) (3=-9) (4=3) (5=4), gen(bc_pe6b)
 * 3- Educación
 
 *asiste
-g bc_pe11=2 
+g bc_pe11=2
 	replace bc_pe11=1 if e49==3
 	replace bc_pe11=-9 if bc_pe3<3 & bc_pe3!=.
 
@@ -84,12 +84,12 @@ g bc_pe13=-13
 g bc_pe13=.
 	replace bc_pe13=1 if bc_pe11==1 & (e581==1|e581==3) & inrange(bc_mes,1,7)		// e581==3 va en público???
 	replace bc_pe13=2 if bc_pe11==1 & (e581==2) & inrange(bc_mes,1,7)
-	replace bc_pe13=1 if bc_pe11==1 & ( (e239==1|e239==3) | (e194==1|e194==3) | (e198==1|e198==3) ) & inrange(bc_mes,1,6)		
-		
+	replace bc_pe13=1 if bc_pe11==1 & ( (e239==1|e239==3) | (e194==1|e194==3) | (e198==1|e198==3) ) & inrange(bc_mes,1,6)
+
 	( (e193==1 & (e194==1|e194==3)) | (e197==1 & e198==1) | e201==1
-	
+
 	|e212==1|e215==1|e218==1|e221==1|e224==1) & inrange(bc_mes,1,6)
-	
+
 	replace bc_pe13=2 if bc_pe11==2 & ( e239==2 | e194==2 | e198==2 ) & inrange(bc_mes,1,6)
 	replace bc_pe13=-15 if bc_pe11==1 & ( e239==99 | e194==99 | e198==99 ) & inrange(bc_mes,1,6)
 */
@@ -268,8 +268,8 @@ g bc_pf082=-9
 	replace bc_pf082=2 if f77==2
 	replace bc_pf082=3 if f77==3
 
-* Rama del establecimiento 
-g bc_pf40=f72_2  
+* Rama del establecimiento
+g bc_pf40=f72_2
 
 g bc_rama=-9
 	replace bc_rama=1 if f72_2>0000 & f72_2<1000 & bc_pobp==2
@@ -281,12 +281,12 @@ g bc_rama=-9
 	replace bc_rama=7 if f72_2>=6400&f72_2<8300
 	replace bc_rama=8 if f72_2>=8300&f72_2<9910 | (f72_2>= 3700 & f72_2<=3900)
 
-* Tipo de ocupación 
+* Tipo de ocupación
 g bc_pf39=f71_2
 	replace bc_pf39=-9  if bc_pf39==. & bc_pobp!=2
 	replace bc_pf39=-9  if bc_pf39==0 & bc_pobp!=2
 	replace bc_pf39=-15 if bc_pf39==. & bc_pobp==2
-	
+
 g bc_tipo_ocup=trunc(bc_pf39/1000)
 	replace bc_tipo_ocup=-9 if bc_tipo_ocup==0&bc_pobp!=2
 
@@ -314,13 +314,13 @@ recode bc_pf04 (3=4) (7/8=3) (5/6=4) (9/14=4) (0=-9)
 
 * Busqueda de trabajo
 g bc_pf21= -13 // buscó trabajo la semana pasada -- no se pregunta, lo que si se pregunta en ambos es si buscó en las últimas 4 semanas
- 
+
 g bc_pf22= -13 // causa por la que no buscó trabajo // Chequear que hacer con nuevas cat en 2020-2021 // En segundo semestre de 2021 no existe el f108=2
 
 * Duración desempleo (semanas)
 g bc_pf26=f113
 replace bc_pf26=-9 if bc_pobp<3|bc_pobp>5
- 
+
 * Causas por las que dejó último trabajo
 g bc_pf34=f122
 recode bc_pf34 (1=2) (2=1) (4/9=3) (0=-9) (99=-15)
@@ -329,7 +329,7 @@ recode bc_pf34 (1=2) (2=1) (4/9=3) (0=-9) (99=-15)
  g bc_reg_disse=-9
 	replace bc_reg_disse=2 if bc_pobp==2
 	replace bc_reg_disse=1 if (e45_1_1_cv==1 | e45_2_1_cv==1 | e45_3_1_cv==1 | bc_cat2==2) & bc_pobp==2
- 
+
 g bc_register=-9
 	replace bc_register=2 if bc_pobp==2
 	replace bc_register=1 if bc_pobp==2 & f82==1

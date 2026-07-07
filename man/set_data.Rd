@@ -31,19 +31,19 @@ new_dt <- data.table::data.table(id = 1:3, x = rnorm(3), w = rep(1, 3))
 svy <- set_data(svy, new_dt)
 }
 \seealso{
-Other survey-objects: 
+Other survey-objects:
 \code{\link{Survey}},
-\code{\link{cat_design}()},
-\code{\link{cat_design_type}()},
-\code{\link{get_data}()},
-\code{\link{get_metadata}()},
-\code{\link{has_design}()},
-\code{\link{has_recipes}()},
-\code{\link{has_steps}()},
-\code{\link{is_baked}()},
-\code{\link{survey_empty}()},
-\code{\link{survey_to_data_frame}()},
-\code{\link{survey_to_datatable}()},
-\code{\link{survey_to_tibble}()}
+\code{\link[=cat_design]{cat_design()}},
+\code{\link[=cat_design_type]{cat_design_type()}},
+\code{\link[=get_data]{get_data()}},
+\code{\link[=get_metadata]{get_metadata()}},
+\code{\link[=has_design]{has_design()}},
+\code{\link[=has_recipes]{has_recipes()}},
+\code{\link[=has_steps]{has_steps()}},
+\code{\link[=is_baked]{is_baked()}},
+\code{\link[=survey_empty]{survey_empty()}},
+\code{\link[=survey_to_data_frame]{survey_to_data_frame()}},
+\code{\link[=survey_to_datatable]{survey_to_datatable()}},
+\code{\link[=survey_to_tibble]{survey_to_tibble()}}
 }
 \concept{survey-objects}

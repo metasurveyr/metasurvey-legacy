@@ -60,9 +60,7 @@ RecipeUser <- R6::R6Class(
         stop("User name must be a non-empty character string", call. = FALSE)
       }
       valid_types <- c("individual", "institutional_member", "institution")
-      if (is.null(user_type) ||
-        !is.character(user_type) ||
-        !(user_type %in% valid_types)) {
+      if (is.null(user_type) || !is.character(user_type) || !(user_type %in% valid_types)) {
         stop(
           "user_type must be one of: ",
           paste(valid_types, collapse = ", "),

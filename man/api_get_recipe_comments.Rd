@@ -21,10 +21,10 @@ api_get_recipe_comments("r_1739654400_742")
 }
 }
 \seealso{
-Other api-comments: 
-\code{\link{api_comment_recipe}()},
-\code{\link{api_comment_workflow}()},
-\code{\link{api_delete_comment}()},
-\code{\link{api_get_workflow_comments}()}
+Other api-comments:
+\code{\link[=api_comment_recipe]{api_comment_recipe()}},
+\code{\link[=api_comment_workflow]{api_comment_workflow()}},
+\code{\link[=api_delete_comment]{api_delete_comment()}},
+\code{\link[=api_get_workflow_comments]{api_get_workflow_comments()}}
 }
 \concept{api-comments}

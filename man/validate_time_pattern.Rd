@@ -26,12 +26,12 @@ validate_time_pattern(
 )
 }
 \seealso{
-Other survey-loading: 
-\code{\link{extract_time_pattern}()},
-\code{\link{group_dates}()},
-\code{\link{load_panel_survey}()},
-\code{\link{load_survey}()},
-\code{\link{load_survey_example}()}
+Other survey-loading:
+\code{\link[=extract_time_pattern]{extract_time_pattern()}},
+\code{\link[=group_dates]{group_dates()}},
+\code{\link[=load_panel_survey]{load_panel_survey()}},
+\code{\link[=load_survey]{load_survey()}},
+\code{\link[=load_survey_example]{load_survey_example()}}
 }
 \concept{survey-loading}
 \keyword{utils}

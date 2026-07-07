@@ -270,9 +270,7 @@ extract_surveys <- function(RotativePanelSurvey,
                             quarterly = NULL,
                             biannual = NULL,
                             use.parallel = FALSE) {
-  if (is.null(monthly) && is.null(annual) &&
-    is.null(quarterly) && is.null(biannual) &&
-    is.null(index)) {
+  if (is.null(monthly) && is.null(annual) && is.null(quarterly) && is.null(biannual) && is.null(index)) {
     warning(paste0(
       "At least one interval argument must be ",
       "different from NULL. ",
@@ -612,10 +610,11 @@ get_implantation <- function(RotativePanelSurvey) {
 
 
 get_follow_up <- function(
-    RotativePanelSurvey,
-    index = seq_along(
-      RotativePanelSurvey$follow_up
-    )) {
+  RotativePanelSurvey,
+  index = seq_along(
+    RotativePanelSurvey$follow_up
+  )
+) {
   if (!inherits(
     RotativePanelSurvey,
     "RotativePanelSurvey"

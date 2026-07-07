@@ -18,11 +18,11 @@ api_logout()
 }
 }
 \seealso{
-Other api-auth: 
-\code{\link{api_login}()},
-\code{\link{api_me}()},
-\code{\link{api_refresh_token}()},
-\code{\link{api_register}()},
-\code{\link{configure_api}()}
+Other api-auth:
+\code{\link[=api_login]{api_login()}},
+\code{\link[=api_me]{api_me()}},
+\code{\link[=api_refresh_token]{api_refresh_token()}},
+\code{\link[=api_register]{api_register()}},
+\code{\link[=configure_api]{configure_api()}}
 }
 \concept{api-auth}

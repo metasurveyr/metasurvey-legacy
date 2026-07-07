@@ -263,8 +263,7 @@ transpile_stata_module <- function(year_dir, year, user = "iecon",
       certification = cert,
       user_info = iecon_user,
       depends_on_recipes = as.list(dep_recipe_ids),
-      labels = if (length(module_labels$var_labels) > 0 ||
-        length(module_labels$val_labels) > 0) {
+      labels = if (length(module_labels$var_labels) > 0 || length(module_labels$val_labels) > 0) {
         module_labels
       } else {
         NULL
@@ -385,8 +384,7 @@ translate_gen_block <- function(commands, start_idx) {
     next_cmd <- commands[[j]]
     if (next_cmd$cmd == "replace") {
       rep_parsed <- parse_replace_args(next_cmd$args)
-      if (!is.null(rep_parsed) && rep_parsed$var_name == var_name &&
-        !is.null(next_cmd$if_clause)) {
+      if (!is.null(rep_parsed) && rep_parsed$var_name == var_name && !is.null(next_cmd$if_clause)) {
         replace_cmds <- c(replace_cmds, list(list(
           expr = rep_parsed$expr,
           if_clause = next_cmd$if_clause
@@ -442,12 +440,10 @@ translate_gen_block <- function(commands, start_idx) {
     # Build step_recode (RHS must be quoted strings for step_recode)
     quote_recode_val <- function(val) {
       if (grepl('^"', val)) {
-        val
-      } # already quoted
-      else if (val == "NA") {
-        val
-      } # NA stays unquoted
-      else {
+        val # already quoted
+      } else if (val == "NA") {
+        val # NA stays unquoted
+      } else {
         paste0('"', val, '"')
       }
     }
@@ -868,8 +864,7 @@ optimize_steps <- function(steps) {
     if (grepl("^step_compute\\(", step)) {
       compute_steps <- step
       j <- i + 1
-      while (j <= length(steps) &&
-        grepl("^step_compute\\(", steps[[j]])) {
+      while (j <= length(steps) && grepl("^step_compute\\(", steps[[j]])) {
         compute_steps <- c(compute_steps, steps[[j]])
         j <- j + 1
       }

@@ -146,9 +146,6 @@ recode <- function(svy, new_var, ...,
     ))
 
 
-
-
-
     if (.to_factor) {
       .data[
         ,
@@ -329,11 +326,12 @@ filter_rows <- function(svy, ..., .by = NULL,
 #' @export
 
 step_compute <- function(
-    svy = NULL, ..., .by = NULL,
-    .copy = use_copy_default(),
-    comment = "Compute step",
-    .level = "auto",
-    use_copy = deprecated()) {
+  svy = NULL, ..., .by = NULL,
+  .copy = use_copy_default(),
+  comment = "Compute step",
+  .level = "auto",
+  use_copy = deprecated()
+) {
   if (lifecycle::is_present(use_copy)) {
     lifecycle::deprecate_warn("0.0.12", "step_compute(use_copy)", "step_compute(.copy)")
     .copy <- use_copy
@@ -452,10 +450,11 @@ step_compute <- function(
 
 
 step_compute_rotative <- function(
-    svy, ..., .by = NULL,
-    .copy = use_copy_default(),
-    comment = "Compute step",
-    .level = "auto", .call) {
+  svy, ..., .by = NULL,
+  .copy = use_copy_default(),
+  comment = "Compute step",
+  .level = "auto", .call
+) {
   follow_up_processed <- svy$follow_up
   implantation_processed <- svy$implantation
 
@@ -481,14 +480,11 @@ step_compute_rotative <- function(
   }
 
 
-
   if (length(implantation_processed$steps) > 0) {
     steps <- implantation_processed$steps
   } else {
     steps <- follow_up_processed[[1]]$steps
   }
-
-
 
 
   result <- RotativePanelSurvey$new(
@@ -614,16 +610,17 @@ step_compute_rotative <- function(
 #' @export
 
 step_recode <- function(
-    svy,
-    new_var, ...,
-    .default = NA_character_,
-    .name_step = NULL,
-    ordered = FALSE,
-    .copy = use_copy_default(),
-    comment = "Recode step",
-    .to_factor = FALSE,
-    .level = "auto",
-    use_copy = deprecated()) {
+  svy,
+  new_var, ...,
+  .default = NA_character_,
+  .name_step = NULL,
+  ordered = FALSE,
+  .copy = use_copy_default(),
+  comment = "Recode step",
+  .to_factor = FALSE,
+  .level = "auto",
+  use_copy = deprecated()
+) {
   if (lifecycle::is_present(use_copy)) {
     lifecycle::deprecate_warn("0.0.12", "step_recode(use_copy)", "step_recode(.copy)")
     .copy <- use_copy
@@ -633,8 +630,7 @@ step_recode <- function(
   conditions <- list(...)
   # A single pre-built list of formulas is a supported input path
   # (recode() unwraps it downstream): validate its elements instead
-  if (length(conditions) == 1L && is.list(conditions[[1]]) &&
-    !inherits(conditions[[1]], "formula")) {
+  if (length(conditions) == 1L && is.list(conditions[[1]]) && !inherits(conditions[[1]], "formula")) {
     conditions <- conditions[[1]]
   }
   if (length(conditions) == 0) {
@@ -705,14 +701,15 @@ step_recode <- function(
 #' @keywords internal
 
 step_recode_survey <- function(
-    svy, new_var, ...,
-    .default = NA_character_,
-    .name_step = NULL,
-    ordered = FALSE,
-    .copy = use_copy_default(),
-    comment = "Recode step",
-    .to_factor = FALSE,
-    .call = .call) {
+  svy, new_var, ...,
+  .default = NA_character_,
+  .name_step = NULL,
+  ordered = FALSE,
+  .copy = use_copy_default(),
+  comment = "Recode step",
+  .to_factor = FALSE,
+  .call = .call
+) {
   new_var <- as.character(new_var)
   check_svy <- is.null(get_data(svy))
   if (check_svy) {
@@ -818,14 +815,15 @@ step_recode_survey <- function(
 #' @keywords internal
 
 step_recode_rotative <- function(
-    svy, new_var, ...,
-    .default = NA_character_,
-    .name_step = NULL,
-    ordered = FALSE,
-    .copy = use_copy_default(),
-    comment = "Recode step",
-    .to_factor = FALSE,
-    .level = "auto", .call) {
+  svy, new_var, ...,
+  .default = NA_character_,
+  .name_step = NULL,
+  ordered = FALSE,
+  .copy = use_copy_default(),
+  comment = "Recode step",
+  .to_factor = FALSE,
+  .level = "auto", .call
+) {
   follow_up_processed <- svy$follow_up
   implantation_processed <- svy$implantation
 
@@ -996,16 +994,17 @@ get_comments <- function(steps) {
 #' @family steps
 #' @export
 step_join <- function(
-    svy,
-    x,
-    by = NULL,
-    type = c("left", "inner", "right", "full"),
-    suffixes = c("", ".y"),
-    .copy = use_copy_default(),
-    comment = "Join step",
-    use_copy = deprecated(),
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy,
+  x,
+  by = NULL,
+  type = c("left", "inner", "right", "full"),
+  suffixes = c("", ".y"),
+  .copy = use_copy_default(),
+  comment = "Join step",
+  use_copy = deprecated(),
+  lazy = lazy_default(),
+  record = TRUE
+) {
   if (lifecycle::is_present(use_copy)) {
     lifecycle::deprecate_warn("0.0.12", "step_join(use_copy)", "step_join(.copy)")
     .copy <- use_copy
@@ -1222,13 +1221,14 @@ step_join <- function(
 #' @family steps
 #' @export
 step_remove <- function(
-    svy, ...,
-    vars = NULL,
-    .copy = use_copy_default(),
-    comment = "Remove variables",
-    use_copy = deprecated(),
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy, ...,
+  vars = NULL,
+  .copy = use_copy_default(),
+  comment = "Remove variables",
+  use_copy = deprecated(),
+  lazy = lazy_default(),
+  record = TRUE
+) {
   if (lifecycle::is_present(use_copy)) {
     lifecycle::deprecate_warn("0.0.12", "step_remove(use_copy)", "step_remove(.copy)")
     .copy <- use_copy
@@ -1400,13 +1400,14 @@ step_remove <- function(
 #' @family steps
 #' @export
 step_rename <- function(
-    svy, ...,
-    mapping = NULL,
-    .copy = use_copy_default(),
-    comment = "Rename variables",
-    use_copy = deprecated(),
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy, ...,
+  mapping = NULL,
+  .copy = use_copy_default(),
+  comment = "Rename variables",
+  use_copy = deprecated(),
+  lazy = lazy_default(),
+  record = TRUE
+) {
   if (lifecycle::is_present(use_copy)) {
     lifecycle::deprecate_warn("0.0.12", "step_rename(use_copy)", "step_rename(.copy)")
     .copy <- use_copy
@@ -1602,11 +1603,12 @@ get_type_step <- function(steps) {
 #' @family steps
 #' @export
 step_validate <- function(
-    svy, ...,
-    .action = c("stop", "warn"),
-    .min_n = NULL,
-    .copy = use_copy_default(),
-    comment = "Validate step") {
+  svy, ...,
+  .action = c("stop", "warn"),
+  .min_n = NULL,
+  .copy = use_copy_default(),
+  comment = "Validate step"
+) {
   .action <- match.arg(.action)
   .call <- canonicalize_step_call(match.call())
 
@@ -1709,11 +1711,12 @@ step_validate <- function(
 #' @family steps
 #' @export
 step_filter <- function(
-    svy, ...,
-    .by = NULL,
-    .copy = use_copy_default(),
-    comment = "Filter step",
-    .level = "auto") {
+  svy, ...,
+  .by = NULL,
+  .copy = use_copy_default(),
+  comment = "Filter step",
+  .level = "auto"
+) {
   .level <- match.arg(.level, c("auto", "implantation", "follow_up"))
   .call <- canonicalize_step_call(match.call())
 
@@ -1771,11 +1774,12 @@ step_filter <- function(
 #' @keywords internal
 #' @noRd
 step_filter_rotative <- function(
-    svy, ...,
-    .by = NULL,
-    .copy = use_copy_default(),
-    comment = "Filter step",
-    .level = "auto", .call) {
+  svy, ...,
+  .by = NULL,
+  .copy = use_copy_default(),
+  comment = "Filter step",
+  .level = "auto", .call
+) {
   follow_up_processed <- svy$follow_up
   implantation_processed <- svy$implantation
 
@@ -1853,13 +1857,14 @@ step_filter_rotative <- function(
 #' @family steps
 #' @export
 step_weight <- function(
-    svy,
-    spec,
-    weight_var = ".weight",
-    .copy = use_copy_default(),
-    comment = "Weight step (weightflow)",
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy,
+  spec,
+  weight_var = ".weight",
+  .copy = use_copy_default(),
+  comment = "Weight step (weightflow)",
+  lazy = lazy_default(),
+  record = TRUE
+) {
   if (!requireNamespace("weightflow", quietly = TRUE)) {
     stop(
       "Package 'weightflow' is required for step_weight(). ",
@@ -2075,16 +2080,17 @@ weighted_quantile <- function(x, w, probs) {
 #' @family steps
 #' @export
 step_quantile <- function(
-    svy,
-    new_var,
-    x,
-    n = 5,
-    weight = NULL,
-    .by = NULL,
-    .copy = use_copy_default(),
-    comment = "Quantile step",
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy,
+  new_var,
+  x,
+  n = 5,
+  weight = NULL,
+  .by = NULL,
+  .copy = use_copy_default(),
+  comment = "Quantile step",
+  lazy = lazy_default(),
+  record = TRUE
+) {
   .call <- canonicalize_step_call(match.call())
 
   # Accept unquoted names or character strings (character is what
@@ -2269,13 +2275,14 @@ step_quantile <- function(
 #' @family steps
 #' @export
 step_collapse <- function(
-    svy,
-    by,
-    rule = c("first", "max", "min"),
-    .copy = use_copy_default(),
-    comment = "Collapse step",
-    lazy = lazy_default(),
-    record = TRUE) {
+  svy,
+  by,
+  rule = c("first", "max", "min"),
+  .copy = use_copy_default(),
+  comment = "Collapse step",
+  lazy = lazy_default(),
+  record = TRUE
+) {
   .call <- canonicalize_step_call(match.call())
   rule <- match.arg(rule)
 

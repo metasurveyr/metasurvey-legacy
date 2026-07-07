@@ -17,13 +17,13 @@ Lazy processing
 lazy_default()
 }
 \seealso{
-Other options: 
-\code{\link{get_engine}()},
-\code{\link{set_engine}()},
-\code{\link{set_lazy_processing}()},
-\code{\link{set_use_copy}()},
-\code{\link{show_engines}()},
-\code{\link{use_copy_default}()}
+Other options:
+\code{\link[=get_engine]{get_engine()}},
+\code{\link[=set_engine]{set_engine()}},
+\code{\link[=set_lazy_processing]{set_lazy_processing()}},
+\code{\link[=set_use_copy]{set_use_copy()}},
+\code{\link[=show_engines]{show_engines()}},
+\code{\link[=use_copy_default]{use_copy_default()}}
 }
 \concept{options}
 \keyword{utils}

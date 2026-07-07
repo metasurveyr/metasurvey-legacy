@@ -23,9 +23,9 @@ options.
 set_workflow_backend("local", path = tempfile(fileext = ".json"))
 }
 \seealso{
-Other backends: 
-\code{\link{get_backend}()},
-\code{\link{get_workflow_backend}()},
-\code{\link{set_backend}()}
+Other backends:
+\code{\link[=get_backend]{get_backend()}},
+\code{\link[=get_workflow_backend]{get_workflow_backend()}},
+\code{\link[=set_backend]{set_backend()}}
 }
 \concept{backends}

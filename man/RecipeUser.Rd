@@ -23,71 +23,72 @@ member <- recipe_user(
 
 }
 \seealso{
-Other tidy-api: 
-\code{\link{RecipeCategory}},
+Other tidy-api:
+\code{\link{RecipeCategory-from_list}},
 \code{\link{RecipeCertification}},
-\code{\link{add_category}()},
-\code{\link{certify_recipe}()},
-\code{\link{default_categories}()},
-\code{\link{filter_recipes}()},
-\code{\link{filter_workflows}()},
-\code{\link{find_workflows_for_recipe}()},
-\code{\link{list_recipes}()},
-\code{\link{list_workflows}()},
-\code{\link{rank_recipes}()},
-\code{\link{rank_workflows}()},
-\code{\link{recipe_category}()},
-\code{\link{recipe_certification}()},
-\code{\link{recipe_user}()},
-\code{\link{remove_category}()},
-\code{\link{search_recipes}()},
-\code{\link{search_workflows}()},
-\code{\link{set_user_info}()},
-\code{\link{set_version}()}
+\code{\link[=add_category]{add_category()}},
+\code{\link[=certify_recipe]{certify_recipe()}},
+\code{\link[=default_categories]{default_categories()}},
+\code{\link[=filter_recipes]{filter_recipes()}},
+\code{\link[=filter_workflows]{filter_workflows()}},
+\code{\link[=find_workflows_for_recipe]{find_workflows_for_recipe()}},
+\code{\link[=list_recipes]{list_recipes()}},
+\code{\link[=list_workflows]{list_workflows()}},
+\code{\link[=rank_recipes]{rank_recipes()}},
+\code{\link[=rank_workflows]{rank_workflows()}},
+\code{\link[=recipe_category]{recipe_category()}},
+\code{\link[=recipe_certification]{recipe_certification()}},
+\code{\link[=recipe_user]{recipe_user()}},
+\code{\link[=remove_category]{remove_category()}},
+\code{\link[=search_recipes]{search_recipes()}},
+\code{\link[=search_workflows]{search_workflows()}},
+\code{\link[=set_user_info]{set_user_info()}},
+\code{\link[=set_version]{set_version()}}
 }
 \concept{tidy-api}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{Character. User or institution name.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{Character. User or institution name.}
 
-\item{\code{email}}{Character or NULL. Email address.}
+    \item{\code{email}}{Character or NULL. Email address.}
 
-\item{\code{user_type}}{Character. One of "individual",
+    \item{\code{user_type}}{Character. One of "individual",
 "institutional_member", "institution".}
 
-\item{\code{affiliation}}{Character or NULL. Organizational affiliation.}
+    \item{\code{affiliation}}{Character or NULL. Organizational affiliation.}
 
-\item{\code{institution}}{RecipeUser or NULL. Parent institution
+    \item{\code{institution}}{RecipeUser or NULL. Parent institution
 (for institutional_member).}
 
-\item{\code{url}}{Character or NULL. Institution URL.}
+    \item{\code{url}}{Character or NULL. Institution URL.}
 
-\item{\code{verified}}{Logical. Whether the account is verified.}
+    \item{\code{verified}}{Logical. Whether the account is verified.}
 
-\item{\code{review_status}}{Character. One of "approved",
+    \item{\code{review_status}}{Character. One of "approved",
 "pending", "rejected".}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RecipeUser-new}{\code{RecipeUser$new()}}
-\item \href{#method-RecipeUser-trust_level}{\code{RecipeUser$trust_level()}}
-\item \href{#method-RecipeUser-can_certify}{\code{RecipeUser$can_certify()}}
-\item \href{#method-RecipeUser-to_list}{\code{RecipeUser$to_list()}}
-\item \href{#method-RecipeUser-print}{\code{RecipeUser$print()}}
-\item \href{#method-RecipeUser-clone}{\code{RecipeUser$clone()}}
-}
+  \itemize{
+    \item \href{#method-RecipeUser-initialize}{\code{RecipeUser$new()}}
+    \item \href{#method-RecipeUser-trust_level}{\code{RecipeUser$trust_level()}}
+    \item \href{#method-RecipeUser-can_certify}{\code{RecipeUser$can_certify()}}
+    \item \href{#method-RecipeUser-to_list}{\code{RecipeUser$to_list()}}
+    \item \href{#method-RecipeUser-print}{\code{RecipeUser$print()}}
+    \item \href{#method-RecipeUser-clone}{\code{RecipeUser$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RecipeUser-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RecipeUser-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new RecipeUser
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$new(
+\if{html}{\out{<a id="method-RecipeUser-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeUser-initialize}{}}}
+\subsection{\code{RecipeUser$new()}}{
+  Create a new RecipeUser
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$new(
   name,
   user_type,
   email = NULL,
@@ -96,113 +97,117 @@ Create a new RecipeUser
   url = NULL,
   verified = FALSE,
   review_status = "approved"
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Character. User or institution name.}
-
-\item{\code{user_type}}{Character. One of "individual",
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character. User or institution name.}
+      \item{\code{user_type}}{Character. One of "individual",
 "institutional_member", "institution".}
-
-\item{\code{email}}{Character or NULL. Email address.}
-
-\item{\code{affiliation}}{Character or NULL. Organizational affiliation.}
-
-\item{\code{institution}}{RecipeUser or NULL. Parent
+      \item{\code{email}}{Character or NULL. Email address.}
+      \item{\code{affiliation}}{Character or NULL. Organizational affiliation.}
+      \item{\code{institution}}{RecipeUser or NULL. Parent
 institution for institutional_member.}
-
-\item{\code{url}}{Character or NULL. Institution URL.}
-
-\item{\code{verified}}{Logical. Whether account is verified.}
-
-\item{\code{review_status}}{Character. "approved", "pending",
+      \item{\code{url}}{Character or NULL. Institution URL.}
+      \item{\code{verified}}{Logical. Whether account is verified.}
+      \item{\code{review_status}}{Character. "approved", "pending",
 or "rejected".}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeUser-trust_level"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeUser-trust_level}{}}}
-\subsection{Method \code{trust_level()}}{
-Get trust level (1=individual, 2=member, 3=institution)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$trust_level()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeUser$trust_level()}}{
+  Get trust level (1=individual, 2=member, 3=institution)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$trust_level()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Integer trust level
+  }
 }
 
-\subsection{Returns}{
-Integer trust level
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeUser-can_certify"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeUser-can_certify}{}}}
-\subsection{Method \code{can_certify()}}{
-Check if user can certify at a given level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$can_certify(level)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeUser$can_certify()}}{
+  Check if user can certify at a given level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$can_certify(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{Character. Certification level
+("reviewed" or "official").}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Logical
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{Character. Certification level
-("reviewed" or "official").}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Logical
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeUser-to_list"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeUser-to_list}{}}}
-\subsection{Method \code{to_list()}}{
-Serialize to list for JSON
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$to_list()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeUser$to_list()}}{
+  Serialize to list for JSON
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$to_list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List representation
+  }
 }
 
-\subsection{Returns}{
-List representation
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeUser-print"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeUser-print}{}}}
-\subsection{Method \code{print()}}{
-Print user card
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeUser$print()}}{
+  Print user card
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments (not used)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeUser-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeUser-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeUser$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeUser$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeUser$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

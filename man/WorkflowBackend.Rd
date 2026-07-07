@@ -11,241 +11,261 @@ backends.
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{type}}{Character backend type ("local" or "api").}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{type}}{Character backend type ("local" or "api").}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-WorkflowBackend-new}{\code{WorkflowBackend$new()}}
-\item \href{#method-WorkflowBackend-publish}{\code{WorkflowBackend$publish()}}
-\item \href{#method-WorkflowBackend-search}{\code{WorkflowBackend$search()}}
-\item \href{#method-WorkflowBackend-get}{\code{WorkflowBackend$get()}}
-\item \href{#method-WorkflowBackend-increment_downloads}{\code{WorkflowBackend$increment_downloads()}}
-\item \href{#method-WorkflowBackend-find_by_recipe}{\code{WorkflowBackend$find_by_recipe()}}
-\item \href{#method-WorkflowBackend-rank}{\code{WorkflowBackend$rank()}}
-\item \href{#method-WorkflowBackend-filter}{\code{WorkflowBackend$filter()}}
-\item \href{#method-WorkflowBackend-list_all}{\code{WorkflowBackend$list_all()}}
-\item \href{#method-WorkflowBackend-save}{\code{WorkflowBackend$save()}}
-\item \href{#method-WorkflowBackend-load}{\code{WorkflowBackend$load()}}
-\item \href{#method-WorkflowBackend-clone}{\code{WorkflowBackend$clone()}}
-}
+  \itemize{
+    \item \href{#method-WorkflowBackend-initialize}{\code{WorkflowBackend$new()}}
+    \item \href{#method-WorkflowBackend-publish}{\code{WorkflowBackend$publish()}}
+    \item \href{#method-WorkflowBackend-search}{\code{WorkflowBackend$search()}}
+    \item \href{#method-WorkflowBackend-get}{\code{WorkflowBackend$get()}}
+    \item \href{#method-WorkflowBackend-increment_downloads}{\code{WorkflowBackend$increment_downloads()}}
+    \item \href{#method-WorkflowBackend-find_by_recipe}{\code{WorkflowBackend$find_by_recipe()}}
+    \item \href{#method-WorkflowBackend-rank}{\code{WorkflowBackend$rank()}}
+    \item \href{#method-WorkflowBackend-filter}{\code{WorkflowBackend$filter()}}
+    \item \href{#method-WorkflowBackend-list_all}{\code{WorkflowBackend$list_all()}}
+    \item \href{#method-WorkflowBackend-save}{\code{WorkflowBackend$save()}}
+    \item \href{#method-WorkflowBackend-load}{\code{WorkflowBackend$load()}}
+    \item \href{#method-WorkflowBackend-clone}{\code{WorkflowBackend$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-WorkflowBackend-new"></a>}}
-\if{latex}{\out{\hypertarget{method-WorkflowBackend-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new WorkflowBackend
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$new(type, path = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-WorkflowBackend-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-WorkflowBackend-initialize}{}}}
+\subsection{\code{WorkflowBackend$new()}}{
+  Create a new WorkflowBackend
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$new(type, path = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{type}}{Character. "local" or "api".}
+      \item{\code{path}}{Character. File path for local backend (optional).}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{Character. "local" or "api".}
-
-\item{\code{path}}{Character. File path for local backend (optional).}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-publish"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-publish}{}}}
-\subsection{Method \code{publish()}}{
-Publish a workflow to the backend
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$publish(wf)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$publish()}}{
+  Publish a workflow to the backend
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$publish(wf)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{wf}}{RecipeWorkflow object}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{wf}}{RecipeWorkflow object}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-search"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-search}{}}}
-\subsection{Method \code{search()}}{
-Search workflows
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$search(query)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$search()}}{
+  Search workflows
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$search(query)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{query}}{Character search string}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching RecipeWorkflow objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{query}}{Character search string}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-get"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-get}{}}}
-\subsection{Method \code{get()}}{
-Get a workflow by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$get(id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$get()}}{
+  Get a workflow by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$get(id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{Workflow id}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    RecipeWorkflow object or NULL
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Workflow id}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-RecipeWorkflow object or NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-increment_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-increment_downloads}{}}}
-\subsection{Method \code{increment_downloads()}}{
-Increment download count for a workflow
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$increment_downloads(id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$increment_downloads()}}{
+  Increment download count for a workflow
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$increment_downloads(id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{Workflow id}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Workflow id}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-find_by_recipe"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-find_by_recipe}{}}}
-\subsection{Method \code{find_by_recipe()}}{
-Find workflows that reference a specific recipe
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$find_by_recipe(recipe_id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$find_by_recipe()}}{
+  Find workflows that reference a specific recipe
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$find_by_recipe(recipe_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe_id}}{Character recipe ID}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of RecipeWorkflow objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe_id}}{Character recipe ID}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-rank"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-rank}{}}}
-\subsection{Method \code{rank()}}{
-Rank workflows by downloads
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$rank(n = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$rank()}}{
+  Rank workflows by downloads
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$rank(n = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Integer max to return}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of RecipeWorkflow objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Integer max to return}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-filter"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-filter}{}}}
-\subsection{Method \code{filter()}}{
-Filter workflows by criteria
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$filter(
+\subsection{\code{WorkflowBackend$filter()}}{
+  Filter workflows by criteria
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$filter(
   survey_type = NULL,
   edition = NULL,
   recipe_id = NULL,
   certification_level = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{survey_type}}{Character or NULL}
+      \item{\code{edition}}{Character or NULL}
+      \item{\code{recipe_id}}{Character or NULL}
+      \item{\code{certification_level}}{Character or NULL}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching RecipeWorkflow objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{survey_type}}{Character or NULL}
-
-\item{\code{edition}}{Character or NULL}
-
-\item{\code{recipe_id}}{Character or NULL}
-
-\item{\code{certification_level}}{Character or NULL}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-list_all"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-list_all}{}}}
-\subsection{Method \code{list_all()}}{
-List all workflows
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$list_all()}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$list_all()}}{
+  List all workflows
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$list_all()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of RecipeWorkflow objects
+  }
 }
 
-\subsection{Returns}{
-List of RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-save"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-save}{}}}
-\subsection{Method \code{save()}}{
-Save local backend to disk
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$save()}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$save()}}{
+  Save local backend to disk
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$save()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-load"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-load}{}}}
-\subsection{Method \code{load()}}{
-Load local backend from disk
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$load()}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$load()}}{
+  Load local backend from disk
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$load()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowBackend-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowBackend-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowBackend$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowBackend$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowBackend$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

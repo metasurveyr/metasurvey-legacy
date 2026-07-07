@@ -56,8 +56,8 @@ svy <- load_survey(path, svy_type = "ech", svy_edition = "2023")
 }
 }
 \seealso{
-Other anda: 
-\code{\link{anda_variables}()},
-\code{\link{api_get_anda_variables}()}
+Other anda:
+\code{\link[=anda_variables]{anda_variables()}},
+\code{\link[=api_get_anda_variables]{api_get_anda_variables()}}
 }
 \concept{anda}

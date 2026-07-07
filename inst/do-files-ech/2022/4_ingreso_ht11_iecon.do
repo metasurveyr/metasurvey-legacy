@@ -45,11 +45,11 @@ replace cuotmilit_hogar=(cuotmilit2-(tot_cuotmilit_op+tot_cuotmilit_os))*mto_cuo
 ************************* FONASA *************************
 * FONASA trabajador ocupacion principal
 g ytdop_3=0
-replace ytdop_3=mto_cuot if (((e27>=14) & (f73<3 | f73==7 | f73==8) & f82==1) & (e45_1_1_cv==1| e45_2_1_cv==1 | e45_3_1_cv==1)) 
+replace ytdop_3=mto_cuot if (((e27>=14) & (f73<3 | f73==7 | f73==8) & f82==1) & (e45_1_1_cv==1| e45_2_1_cv==1 | e45_3_1_cv==1))
 
 *FONASA trabajador ocupación secundaria.
 gen ytdos_3=0
-replace ytdos_3=mto_cuot if (((e27>=14 & (f92<3 | f92==7 | f92==8) & ytdop_2==0 & ytdop_3==0) & f96==1) & (e45_1_1_cv==1| e45_2_1_cv==1 | e45_3_1_cv==1)) 
+replace ytdos_3=mto_cuot if (((e27>=14 & (f92<3 | f92==7 | f92==8) & ytdop_2==0 & ytdop_3==0) & f96==1) & (e45_1_1_cv==1| e45_2_1_cv==1 | e45_3_1_cv==1))
 
 * FONASA trabajador independiente
 * Toma en cuenta la posibilidad de que el trabajo independiente sea principal o secundario
@@ -79,7 +79,7 @@ foreach i of num 1/14 {
 foreach i of num 1/14 {
 	egen aux`i'_max = max(aux`i'), by(bc_correlat)
 }
-gen	 CuotasGeneradas=0 
+gen	 CuotasGeneradas=0
 replace  CuotasGeneradas  = aux1_max  if bc_nper==1
 replace  CuotasGeneradas  = aux2_max  if bc_nper==2
 replace  CuotasGeneradas  = aux3_max  if bc_nper==3
@@ -111,7 +111,7 @@ foreach i of num 1/14 {
 }
 foreach i of num 1/14 {
 	egen aux`i'_max = max(aux`i'), by(bc_correlat)
-}	
+}
 
 gen CuotasGeneradas2=0
 replace CuotasGeneradas2  = aux1_max  if bc_nper==1
@@ -148,7 +148,7 @@ foreach i of num 1/14 {
 }
 foreach i of num 1/14 {
 	egen aux`i'_max = max(aux`i'), by(bc_correlat)
-}	
+}
 gen CuotasGeneradas3=0
 replace CuotasGeneradas3 = aux1_max if bc_nper==1
 replace CuotasGeneradas3 = aux2_max if bc_nper==2
@@ -171,7 +171,7 @@ drop aux1-aux14_max
 
 
 ************************* EMERGENCIA MOVIL *************************
-* Paga por el empleador 
+* Paga por el empleador
 gen EMER_EMP=0
 replace EMER_EMP=1 if e47_cv==4
 egen EMER_EMP2 = sum(EMER_EMP), by (bc_correlat e47_1_cv)
@@ -182,7 +182,7 @@ foreach i of num 1/14 {
 }
 foreach i of num 1/14 {
 	egen aux`i'_max = max(aux`i'), by(bc_correlat)
-}	
+}
 
 gen	emergeneradas = aux1_max if bc_nper==1
 replace emergeneradas = aux2_max if bc_nper==2
@@ -207,7 +207,7 @@ drop aux1-aux14_max
 ** Paga por otro hogar
 gen EMER_OTRO=0
 replace EMER_OTRO=1 if e47_cv==3
-egen EMER_OTRO2 = sum(EMER_OTRO), by (bc_correlat)	
+egen EMER_OTRO2 = sum(EMER_OTRO), by (bc_correlat)
 replace EMER_OTRO2=0 if bc_nper!=1
 gen EMER_OTRO_TOT = EMER_OTRO2*mto_emer
 
@@ -227,7 +227,7 @@ g  YTDOS =  ytdos_1 + ytdos_2 + ytdos_3 // ver missings en ytdos_2
 replace g144_1="0" if g144_1=="NA"
 destring g144_1, replace
 g YTINDE_1 = g142 + (g143/12) + g144_1 + g144_2_1 + g144_2_2  + g144_2_3 + g144_2_4 + g144_2_5 + (g145/12) + (g146/12) + (g147/12)
-g YTINDE = YTINDE_1 + YTINDE_2	
+g YTINDE = YTINDE_1 + YTINDE_2
 
 
 ************************* ASIGNACIONES Y HOGAR CONSTITUIDO *************************
@@ -252,14 +252,14 @@ g ALMYCEN = 0
 g CANASTA = 0
 	replace CANASTA = e247*indaceli if e246 == 7
 	replace CANASTA = e247*indaemer if e246 == 14
-	
+
 * Tarjetas TUS-MIDES y TUS-INDA
 g tusmides = e560_1_1
 g tusinda = e560_2_1
 g tus = tusmides + tusinda
 
 * Genero variable "LECHE"
-g leche = e561_1*lecheenpol 
+g leche = e561_1*lecheenpol
 
 * Creo una variable de alimentos para todos sin importar si son mayores de 14 años o no
 g YALIMENT=DESAYMER + ALMYCEN + tus + CANASTA + leche
@@ -327,7 +327,7 @@ g pt2_iecon= 0
 * PT4: Total de ingresos por trabajo (para actividad primaria y secundaria, tanto privada, publica e independiente)
 g pt4_iecon = 0
 	replace pt4_iecon = YTDOP + YTDOS + YTINDE
-	
+
 
 ************************* INGRESOS DEL HOGAR (YHOG, HT13 Y HT11) *************************
 * YHOG
@@ -362,8 +362,8 @@ replace ysvl_iecon=0 if bc_nper!=1
 
 compare ine_pt1 pt1_iecon if abs( ine_pt1- pt1_iecon)>1
 compare ine_pt2 pt2_iecon if abs( ine_pt2- pt2_iecon)>1
-compare ine_pt4 pt4_iecon if abs( ine_pt4- pt4_iecon)>1	
-compare ht11 ht11_iecon if abs( ht11- ht11_iecon)>1 & bc_nper==1	
+compare ine_pt4 pt4_iecon if abs( ine_pt4- pt4_iecon)>1
+compare ht11 ht11_iecon if abs( ht11- ht11_iecon)>1 & bc_nper==1
 
 *Hasta aquí se replican resultados de INE
 
@@ -371,17 +371,17 @@ compare ht11 ht11_iecon if abs( ht11- ht11_iecon)>1 & bc_nper==1
 
 
 
-	
+
 
 *-------------------------------------------------------------------------------
 * ASIGNACIONES
 * Sintaxis del Mides
 *AFAM-PE
 g afam_pe=0
-	replace afam_pe=1 if g256==2 & g152==1 // Cobra asignación por separado del sueldo en local de cobranza todos los meses 
-	replace afam_pe=1 if g150==1 & (pobpcoac== 1 | pobpcoac== 3 | pobpcoac== 4 | pobpcoac== 6 | pobpcoac== 7 | /* // Cobra asignaciones familiares, son inactivos 
+	replace afam_pe=1 if g256==2 & g152==1 // Cobra asignación por separado del sueldo en local de cobranza todos los meses
+	replace afam_pe=1 if g150==1 & (pobpcoac== 1 | pobpcoac== 3 | pobpcoac== 4 | pobpcoac== 6 | pobpcoac== 7 | /* // Cobra asignaciones familiares, son inactivos
 	*/ pobpcoac== 8 | pobpcoac== 11 | (pobpcoac== 2 & f82!= 1 & f96!= 1)) // (a excepción de jubilados y pensionistas), desempleaods que no están en seguro de paro o menores de 14 años.
-	replace afam_pe=1 if (g255==1)	// Declaran recibir asignación familiar-plan de equidad								  
+	replace afam_pe=1 if (g255==1)	// Declaran recibir asignación familiar-plan de equidad
 
 *Otras AFAM
 g afam_cont=0
@@ -393,7 +393,7 @@ g afam_cont_priv=0
 gen afam_total=(afam_pe==1 | afam_cont==1)
 
 *** BENEFICIARIOS ***
-g cant_af=(g151_6+g151_3+g151_4) 
+g cant_af=(g151_6+g151_3+g151_4)
 
 *** HOGARES ***
 egen afam_pe_hog=max(afam_pe), by (bc_correlat)
@@ -406,7 +406,7 @@ egen afam_total_hog=max(afam_total), by (bc_correlat)
 g monto_afam_pe=0
 	replace monto_afam_pe=((1757.21*((g151_6+g151_3)^0.6)+753.1*(g151_3^0.6))+g151_4*(1757.21+753.1)) if bc_mes==1 & afam_pe==1 // enero
 	replace monto_afam_pe=((1922.6*((g151_6+g151_3)^0.6)+823.9*(g151_3^0.6))+g151_4*(1922.6+823.9)) if bc_mes>1 & afam_pe==1 // febrero a diciembre
-	
+
 *-------------------------------------------------------------------------------
 * AFAM_CON - Código Iecon
 

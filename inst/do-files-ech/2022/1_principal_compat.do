@@ -4,7 +4,7 @@ clear all
 set more off
 
 *gl ruta "C:\Users\feder\OneDrive\Desktop\2022" // Fede
-gl ruta "C:\Users\Ignacio Cabrera\Desktop\ech\2022" 
+gl ruta "C:\Users\Ignacio Cabrera\Desktop\ech\2022"
 
 gl rutaprogramas "$ruta\programas"
 gl rutaoriginales "$ruta\originales"
@@ -13,7 +13,7 @@ gl rutainterm "$ruta\intermedias"
 
 /*------------------------------------------------------------------------------
 0_correc_segsem
-	*- Abre la base del segundo semestre 
+	*- Abre la base del segundo semestre
 	*- Corrige algunas varibles que están en distintos formatos para poder juntarlas después
 */
 *run "$rutaprogramas/0_correc_segsem.do"
@@ -22,7 +22,7 @@ gl rutainterm "$ruta\intermedias"
 2_correc_datos
 	*- Abre base original y arma fusionada con hogares (si es necesario)
 	*- Renombra y recodifica variables y casos de la encuesta
-*/	
+*/
 run "$rutaprogramas/2_correc_datos.do"
 
 /*------------------------------------------------------------------------------
@@ -37,18 +37,18 @@ run "$rutaprogramas/3_compatibilizacion_mod_1_4.do"
 
 /*------------------------------------------------------------------------------
 4_ingreso_ht11_iecon
-	*- Genera un ingreso del hogar (ht11_iecon) sumando todos los ingresos que se 
-	declaran en la encuesta, sin descomponer por fuentes, que incluye seguro 
+	*- Genera un ingreso del hogar (ht11_iecon) sumando todos los ingresos que se
+	declaran en la encuesta, sin descomponer por fuentes, que incluye seguro
 	de salud (si corresponde).
 	*- Genera variables intermedias como cuotas militares, ingresos por alimentos
-	transferidos a menores, etc. que luego se utilizan para la descomposicion 
+	transferidos a menores, etc. que luego se utilizan para la descomposicion
 	por fuentes.
 */
 run "$rutaprogramas/4_ingreso_ht11_iecon.do"
 
 /*------------------------------------------------------------------------------
 5_descomp_fuentes
-	*- Genera variables de ingresos descomponiendo por fuentes y sin incluir 
+	*- Genera variables de ingresos descomponiendo por fuentes y sin incluir
 	seguro de salud.
 */
 run "$rutaprogramas/5_descomp_fuentes.do"
@@ -59,7 +59,7 @@ run "$rutaprogramas/5_descomp_fuentes.do"
 	por capital, jubilaciones y pensiones, etc.
 	*- Genera un ingreso del hogar como resultado de sumar las distintas fuentes
 	de ingresos.
-	*- Imputa seguro de salud para el hogar y se genera ht11_css para comparar 
+	*- Imputa seguro de salud para el hogar y se genera ht11_css para comparar
 	con el ht11_iecon.
 	*- Genera ingresos per cÃ¡pita incluyendo seguro y sin incluir
 */

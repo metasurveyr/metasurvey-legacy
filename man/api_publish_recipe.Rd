@@ -23,9 +23,9 @@ api_publish_recipe(my_recipe)
 }
 }
 \seealso{
-Other api-recipes: 
-\code{\link{api_get_recipe}()},
-\code{\link{api_get_recipe_dependents}()},
-\code{\link{api_list_recipes}()}
+Other api-recipes:
+\code{\link[=api_get_recipe]{api_get_recipe()}},
+\code{\link[=api_get_recipe_dependents]{api_get_recipe_dependents()}},
+\code{\link[=api_list_recipes]{api_list_recipes()}}
 }
 \concept{api-recipes}

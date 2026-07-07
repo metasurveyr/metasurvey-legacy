@@ -502,14 +502,16 @@ shiny_fetch_workflows <- function(filter = list()) {
 }
 
 shiny_fetch_wf_for_recipe <- function(
-    recipe_id) {
+  recipe_id
+) {
   shiny_fetch_workflows(
     filter = list(recipe_id = recipe_id)
   )
 }
 
 shiny_incr_wf_downloads <- function(
-    workflow_id) {
+  workflow_id
+) {
   tryCatch(
     shiny_api_request(
       "POST",

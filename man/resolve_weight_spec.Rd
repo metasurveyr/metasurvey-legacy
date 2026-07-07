@@ -27,8 +27,8 @@ weight <- resolve_weight_spec(wf$weight_spec)
 }
 }
 \seealso{
-Other weights: 
-\code{\link{add_replicate}()},
-\code{\link{add_weight}()}
+Other weights:
+\code{\link[=add_replicate]{add_replicate()}},
+\code{\link[=add_weight]{add_weight()}}
 }
 \concept{weights}

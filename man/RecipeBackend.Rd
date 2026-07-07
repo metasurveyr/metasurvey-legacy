@@ -10,223 +10,240 @@ RecipeRegistry) and "api" (remote plumber API) backends.
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{type}}{Character backend type ("local" or "api").}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{type}}{Character backend type ("local" or "api").}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RecipeBackend-new}{\code{RecipeBackend$new()}}
-\item \href{#method-RecipeBackend-publish}{\code{RecipeBackend$publish()}}
-\item \href{#method-RecipeBackend-search}{\code{RecipeBackend$search()}}
-\item \href{#method-RecipeBackend-get}{\code{RecipeBackend$get()}}
-\item \href{#method-RecipeBackend-increment_downloads}{\code{RecipeBackend$increment_downloads()}}
-\item \href{#method-RecipeBackend-rank}{\code{RecipeBackend$rank()}}
-\item \href{#method-RecipeBackend-filter}{\code{RecipeBackend$filter()}}
-\item \href{#method-RecipeBackend-list_all}{\code{RecipeBackend$list_all()}}
-\item \href{#method-RecipeBackend-save}{\code{RecipeBackend$save()}}
-\item \href{#method-RecipeBackend-load}{\code{RecipeBackend$load()}}
-\item \href{#method-RecipeBackend-clone}{\code{RecipeBackend$clone()}}
-}
+  \itemize{
+    \item \href{#method-RecipeBackend-initialize}{\code{RecipeBackend$new()}}
+    \item \href{#method-RecipeBackend-publish}{\code{RecipeBackend$publish()}}
+    \item \href{#method-RecipeBackend-search}{\code{RecipeBackend$search()}}
+    \item \href{#method-RecipeBackend-get}{\code{RecipeBackend$get()}}
+    \item \href{#method-RecipeBackend-increment_downloads}{\code{RecipeBackend$increment_downloads()}}
+    \item \href{#method-RecipeBackend-rank}{\code{RecipeBackend$rank()}}
+    \item \href{#method-RecipeBackend-filter}{\code{RecipeBackend$filter()}}
+    \item \href{#method-RecipeBackend-list_all}{\code{RecipeBackend$list_all()}}
+    \item \href{#method-RecipeBackend-save}{\code{RecipeBackend$save()}}
+    \item \href{#method-RecipeBackend-load}{\code{RecipeBackend$load()}}
+    \item \href{#method-RecipeBackend-clone}{\code{RecipeBackend$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RecipeBackend-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RecipeBackend-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new RecipeBackend
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$new(type, path = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-RecipeBackend-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeBackend-initialize}{}}}
+\subsection{\code{RecipeBackend$new()}}{
+  Create a new RecipeBackend
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$new(type, path = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{type}}{Character. "local" or "api".}
+      \item{\code{path}}{Character. File path for local backend (optional).}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{Character. "local" or "api".}
-
-\item{\code{path}}{Character. File path for local backend (optional).}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-publish"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-publish}{}}}
-\subsection{Method \code{publish()}}{
-Publish a recipe to the backend
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$publish(recipe)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$publish()}}{
+  Publish a recipe to the backend
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$publish(recipe)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe}}{Recipe object}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe}}{Recipe object}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-search"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-search}{}}}
-\subsection{Method \code{search()}}{
-Search recipes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$search(query)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$search()}}{
+  Search recipes
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$search(query)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{query}}{Character search string}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{query}}{Character search string}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-get"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-get}{}}}
-\subsection{Method \code{get()}}{
-Get a recipe by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$get(id)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$get()}}{
+  Get a recipe by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$get(id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{Recipe id}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Recipe object or NULL
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Recipe id}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Recipe object or NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-increment_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-increment_downloads}{}}}
-\subsection{Method \code{increment_downloads()}}{
-Increment download count for a recipe
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$increment_downloads(id)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$increment_downloads()}}{
+  Increment download count for a recipe
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$increment_downloads(id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{Recipe id}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Recipe id}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-rank"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-rank}{}}}
-\subsection{Method \code{rank()}}{
-Rank recipes by downloads
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$rank(n = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$rank()}}{
+  Rank recipes by downloads
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$rank(n = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Integer max to return}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Integer max to return}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-filter"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-filter}{}}}
-\subsection{Method \code{filter()}}{
-Filter recipes by criteria
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$filter(
+\subsection{\code{RecipeBackend$filter()}}{
+  Filter recipes by criteria
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$filter(
   survey_type = NULL,
   edition = NULL,
   category = NULL,
   certification_level = NULL,
   topic = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{survey_type}}{Character or NULL}
+      \item{\code{edition}}{Character or NULL}
+      \item{\code{category}}{Character or NULL}
+      \item{\code{certification_level}}{Character or NULL}
+      \item{\code{topic}}{Character or NULL}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{survey_type}}{Character or NULL}
-
-\item{\code{edition}}{Character or NULL}
-
-\item{\code{category}}{Character or NULL}
-
-\item{\code{certification_level}}{Character or NULL}
-
-\item{\code{topic}}{Character or NULL}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-list_all"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-list_all}{}}}
-\subsection{Method \code{list_all()}}{
-List all recipes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$list_all()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$list_all()}}{
+  List all recipes
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$list_all()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of Recipe objects
+  }
 }
 
-\subsection{Returns}{
-List of Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-save"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-save}{}}}
-\subsection{Method \code{save()}}{
-Save local backend to disk
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$save()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$save()}}{
+  Save local backend to disk
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$save()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-load"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-load}{}}}
-\subsection{Method \code{load()}}{
-Load local backend from disk
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$load()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$load()}}{
+  Load local backend from disk
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$load()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeBackend-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeBackend-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeBackend$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeBackend$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeBackend$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

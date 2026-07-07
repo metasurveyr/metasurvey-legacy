@@ -295,9 +295,7 @@ execute_estimation <- function(svy, calls, estimation_type, filters) {
     call_str <- calls[[i]]
 
     # If by_variable is specified, wrap non-svyby calls
-    if (!is.null(filters$by_variable) &&
-      nzchar(filters$by_variable) &&
-      !grepl("svyby", call_str)) {
+    if (!is.null(filters$by_variable) && nzchar(filters$by_variable) && !grepl("svyby", call_str)) {
       # Transform svymean(~var, ...) -> svyby(~var, ~by, design, svymean, ...)
       call_str <- transform_to_svyby(call_str, filters$by_variable)
     }
@@ -786,9 +784,7 @@ run_queue_consumer <- function(redis_host, redis_port, redis_password,
         results_list <- list()
         for (call_str in calls) {
           # Transform to svyby if by_variable specified
-          if (!is.null(filters$by_variable) &&
-            nzchar(filters$by_variable) &&
-            !grepl("svyby", call_str)) {
+          if (!is.null(filters$by_variable) && nzchar(filters$by_variable) && !grepl("svyby", call_str)) {
             call_expr <- parse(text = call_str)[[1]]
             cl <- as.list(call_expr)
             fn_name <- deparse(cl[[1]])

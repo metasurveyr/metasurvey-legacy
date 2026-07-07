@@ -22,9 +22,9 @@ api_get_recipe_dependents("r_1739654400_742")
 }
 }
 \seealso{
-Other api-recipes: 
-\code{\link{api_get_recipe}()},
-\code{\link{api_list_recipes}()},
-\code{\link{api_publish_recipe}()}
+Other api-recipes:
+\code{\link[=api_get_recipe]{api_get_recipe()}},
+\code{\link[=api_list_recipes]{api_list_recipes()}},
+\code{\link[=api_publish_recipe]{api_publish_recipe()}}
 }
 \concept{api-recipes}

@@ -122,11 +122,11 @@ results <- workflow(
 \code{\link{get_follow_up}} for obtaining follow-up data
 \code{\link{workflow}} for using extracted surveys in analysis
 
-Other panel-surveys: 
+Other panel-surveys:
 \code{\link{PoolSurvey}},
 \code{\link{RotativePanelSurvey}},
-\code{\link{get_follow_up}()},
-\code{\link{get_implantation}()}
+\code{\link[=get_follow_up]{get_follow_up()}},
+\code{\link[=get_implantation]{get_implantation()}}
 }
 \concept{panel-surveys}
 \keyword{panel-survey}

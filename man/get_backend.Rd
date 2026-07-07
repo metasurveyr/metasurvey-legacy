@@ -19,9 +19,9 @@ backend <- get_backend()
 backend
 }
 \seealso{
-Other backends: 
-\code{\link{get_workflow_backend}()},
-\code{\link{set_backend}()},
-\code{\link{set_workflow_backend}()}
+Other backends:
+\code{\link[=get_workflow_backend]{get_workflow_backend()}},
+\code{\link[=set_backend]{set_backend()}},
+\code{\link[=set_workflow_backend]{set_workflow_backend()}}
 }
 \concept{backends}

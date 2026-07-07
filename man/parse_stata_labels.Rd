@@ -31,10 +31,10 @@ labels$val_labels
 }
 }
 \seealso{
-Other transpiler: 
-\code{\link{parse_do_file}()},
-\code{\link{transpile_coverage}()},
-\code{\link{transpile_stata}()},
-\code{\link{transpile_stata_module}()}
+Other transpiler:
+\code{\link[=parse_do_file]{parse_do_file()}},
+\code{\link[=transpile_coverage]{transpile_coverage()}},
+\code{\link[=transpile_stata]{transpile_stata()}},
+\code{\link[=transpile_stata_module]{transpile_stata_module()}}
 }
 \concept{transpiler}

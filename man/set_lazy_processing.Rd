@@ -23,13 +23,13 @@ lazy_default() # now FALSE
 set_lazy_processing(old) # restore
 }
 \seealso{
-Other options: 
-\code{\link{get_engine}()},
-\code{\link{lazy_default}()},
-\code{\link{set_engine}()},
-\code{\link{set_use_copy}()},
-\code{\link{show_engines}()},
-\code{\link{use_copy_default}()}
+Other options:
+\code{\link[=get_engine]{get_engine()}},
+\code{\link[=lazy_default]{lazy_default()}},
+\code{\link[=set_engine]{set_engine()}},
+\code{\link[=set_use_copy]{set_use_copy()}},
+\code{\link[=show_engines]{show_engines()}},
+\code{\link[=use_copy_default]{use_copy_default()}}
 }
 \concept{options}
 \keyword{utils}

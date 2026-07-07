@@ -89,9 +89,9 @@ weight_config <- add_weight(
 \code{\link[survey]{svrepdesign}} for replicate design in survey package
 \code{\link{load_survey}} where this configuration is used
 
-Other weights: 
-\code{\link{add_weight}()},
-\code{\link{resolve_weight_spec}()}
+Other weights:
+\code{\link[=add_weight]{add_weight()}},
+\code{\link[=resolve_weight_spec]{resolve_weight_spec()}}
 }
 \concept{weights}
 \keyword{utils}

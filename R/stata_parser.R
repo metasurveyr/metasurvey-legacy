@@ -207,8 +207,7 @@ join_broken_expressions <- function(lines) {
 
     # Check if this line ends with an operator or open paren
     # (suggesting the expression continues on next line)
-    if (nchar(trimmed) > 0 &&
-      grepl("[&|+\\-*/( ,]\\s*$", trimmed, perl = TRUE)) {
+    if (nchar(trimmed) > 0 && grepl("[&|+\\-*/( ,]\\s*$", trimmed, perl = TRUE)) {
       buffer <- trimmed
     } else {
       result <- c(result, line)

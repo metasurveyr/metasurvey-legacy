@@ -163,9 +163,7 @@ WorkflowBackend <- R6::R6Class(
 
     #' @description Load local backend from disk
     load = function() {
-      if (self$type == "local" &&
-        !is.null(private$.path) &&
-        file.exists(private$.path)) {
+      if (self$type == "local" && !is.null(private$.path) && file.exists(private$.path)) {
         private$.registry$load(private$.path)
       }
     }

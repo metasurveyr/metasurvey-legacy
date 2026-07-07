@@ -78,10 +78,11 @@ explore_ui <- function(id) {
 }
 
 explore_server <- function(
-    id,
-    auth_state,
-    navigate_to_workflow = NULL,
-    pending_recipe_id = NULL) {
+  id,
+  auth_state,
+  navigate_to_workflow = NULL,
+  pending_recipe_id = NULL
+) {
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

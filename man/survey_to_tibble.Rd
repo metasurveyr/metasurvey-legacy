@@ -10,7 +10,7 @@ survey_to_tibble(svy)
 \item{svy}{Survey object}
 }
 \value{
-A tibble (\link[tibble:tbl_df-class]{tbl_df}) containing the survey data.
+A tibble (\link[tibble:tbl_df]{tbl_df}) containing the survey data.
 }
 \description{
 Convert survey to tibble
@@ -30,20 +30,20 @@ class(tbl)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other survey-objects: 
+Other survey-objects:
 \code{\link{Survey}},
-\code{\link{cat_design}()},
-\code{\link{cat_design_type}()},
-\code{\link{get_data}()},
-\code{\link{get_metadata}()},
-\code{\link{has_design}()},
-\code{\link{has_recipes}()},
-\code{\link{has_steps}()},
-\code{\link{is_baked}()},
-\code{\link{set_data}()},
-\code{\link{survey_empty}()},
-\code{\link{survey_to_data_frame}()},
-\code{\link{survey_to_datatable}()}
+\code{\link[=cat_design]{cat_design()}},
+\code{\link[=cat_design_type]{cat_design_type()}},
+\code{\link[=get_data]{get_data()}},
+\code{\link[=get_metadata]{get_metadata()}},
+\code{\link[=has_design]{has_design()}},
+\code{\link[=has_recipes]{has_recipes()}},
+\code{\link[=has_steps]{has_steps()}},
+\code{\link[=is_baked]{is_baked()}},
+\code{\link[=set_data]{set_data()}},
+\code{\link[=survey_empty]{survey_empty()}},
+\code{\link[=survey_to_data_frame]{survey_to_data_frame()}},
+\code{\link[=survey_to_datatable]{survey_to_datatable()}}
 }
 \concept{survey-objects}
 \keyword{survey}

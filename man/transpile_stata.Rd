@@ -42,10 +42,10 @@ result$stats
 }
 }
 \seealso{
-Other transpiler: 
-\code{\link{parse_do_file}()},
-\code{\link{parse_stata_labels}()},
-\code{\link{transpile_coverage}()},
-\code{\link{transpile_stata_module}()}
+Other transpiler:
+\code{\link[=parse_do_file]{parse_do_file()}},
+\code{\link[=parse_stata_labels]{parse_stata_labels()}},
+\code{\link[=transpile_coverage]{transpile_coverage()}},
+\code{\link[=transpile_stata_module]{transpile_stata_module()}}
 }
 \concept{transpiler}

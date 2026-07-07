@@ -23,9 +23,9 @@ api_star_workflow("w_1739654400_123", 4)
 }
 }
 \seealso{
-Other api-stars: 
-\code{\link{api_get_recipe_stars}()},
-\code{\link{api_get_workflow_stars}()},
-\code{\link{api_star_recipe}()}
+Other api-stars:
+\code{\link[=api_get_recipe_stars]{api_get_recipe_stars()}},
+\code{\link[=api_get_workflow_stars]{api_get_workflow_stars()}},
+\code{\link[=api_star_recipe]{api_star_recipe()}}
 }
 \concept{api-stars}

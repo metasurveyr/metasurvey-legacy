@@ -22,9 +22,9 @@ Configure the active recipe backend via options.
 set_backend("local", path = tempfile(fileext = ".json"))
 }
 \seealso{
-Other backends: 
-\code{\link{get_backend}()},
-\code{\link{get_workflow_backend}()},
-\code{\link{set_workflow_backend}()}
+Other backends:
+\code{\link[=get_backend]{get_backend()}},
+\code{\link[=get_workflow_backend]{get_workflow_backend()}},
+\code{\link[=set_workflow_backend]{set_workflow_backend()}}
 }
 \concept{backends}

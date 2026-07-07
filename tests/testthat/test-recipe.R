@@ -1284,7 +1284,10 @@ test_that("publish_recipe stores recipe in local backend", {
 test_that("read_recipe handles minimal JSON", {
   tmp <- tempfile(fileext = ".json")
   on.exit(unlink(tmp))
-  writeLines('{"name":"test","steps":[],"edition":"2023","survey_type":"ech","user":"t","description":"d","id":"r1"}', tmp)
+  writeLines(
+    '{"name":"test","steps":[],"edition":"2023","survey_type":"ech","user":"t","description":"d","id":"r1"}',
+    tmp
+  )
   result <- read_recipe(tmp)
   expect_true(inherits(result, "Recipe") || is.list(result))
 })

@@ -22,8 +22,8 @@ api_publish_workflow(my_workflow)
 }
 }
 \seealso{
-Other api-workflows: 
-\code{\link{api_get_workflow}()},
-\code{\link{api_list_workflows}()}
+Other api-workflows:
+\code{\link[=api_get_workflow]{api_get_workflow()}},
+\code{\link[=api_list_workflows]{api_list_workflows()}}
 }
 \concept{api-workflows}

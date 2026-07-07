@@ -33,10 +33,10 @@ provenance_diff(provenance(svy1), provenance(svy2))
 
 }
 \seealso{
-Other provenance: 
-\code{\link{print.metasurvey_provenance}()},
-\code{\link{print.metasurvey_provenance_diff}()},
-\code{\link{provenance}()},
-\code{\link{provenance_to_json}()}
+Other provenance:
+\code{\link[=print.metasurvey_provenance]{print.metasurvey_provenance()}},
+\code{\link[=print.metasurvey_provenance_diff]{print.metasurvey_provenance_diff()}},
+\code{\link[=provenance]{provenance()}},
+\code{\link[=provenance_to_json]{provenance_to_json()}}
 }
 \concept{provenance}

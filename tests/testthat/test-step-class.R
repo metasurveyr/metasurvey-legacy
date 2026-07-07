@@ -194,9 +194,6 @@ test_that("bake_step skips already-baked steps", {
 })
 
 
-
-
-
 # --- bake_steps_survey ---
 
 test_that("bake_steps_survey bakes all pending steps", {

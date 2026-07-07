@@ -12,11 +12,6 @@ An R6 class generator (R6ClassGenerator)
 An object of class \code{Recipe}.
 }
 \description{
-Recipe R6 class
-
-Recipe R6 class
-}
-\details{
 R6 class representing a reproducible data transformation recipe for
 surveys. It encapsulates metadata, declared dependencies, and a list of
 transformation steps to be applied to a Survey object.
@@ -49,94 +44,95 @@ r <- recipe(
 \code{\link{recipe}}, \code{\link{save_recipe}},
 \code{\link{read_recipe}}, \code{\link{bake_recipes}}
 
-Other recipes: 
-\code{\link{add_recipe}()},
-\code{\link{bake_recipes}()},
-\code{\link{explore_recipes}()},
-\code{\link{get_recipe}()},
-\code{\link{harmonize}()},
-\code{\link{print.Recipe}()},
-\code{\link{publish_recipe}()},
-\code{\link{read_recipe}()},
-\code{\link{recipe}()},
-\code{\link{save_recipe}()},
-\code{\link{steps_to_recipe}()}
+Other recipes:
+\code{\link[=add_recipe]{add_recipe()}},
+\code{\link[=bake_recipes]{bake_recipes()}},
+\code{\link[=explore_recipes]{explore_recipes()}},
+\code{\link[=get_recipe]{get_recipe()}},
+\code{\link[=harmonize]{harmonize()}},
+\code{\link[=print.Recipe]{print.Recipe()}},
+\code{\link[=publish_recipe]{publish_recipe()}},
+\code{\link[=read_recipe]{read_recipe()}},
+\code{\link[=recipe]{recipe()}},
+\code{\link[=save_recipe]{save_recipe()}},
+\code{\link[=steps_to_recipe]{steps_to_recipe()}}
 }
 \concept{recipes}
 \keyword{recipe}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{Descriptive name of the recipe (character).}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{Descriptive name of the recipe (character).}
 
-\item{\code{edition}}{Target edition/period (character or Date).}
+    \item{\code{edition}}{Target edition/period (character or Date).}
 
-\item{\code{survey_type}}{Survey type (character), e.g., "ech", "eaii".}
+    \item{\code{survey_type}}{Survey type (character), e.g., "ech", "eaii".}
 
-\item{\code{default_engine}}{Default evaluation engine (character).}
+    \item{\code{default_engine}}{Default evaluation engine (character).}
 
-\item{\code{depends_on}}{Vector/list of dependencies declared by the steps.}
+    \item{\code{depends_on}}{Vector/list of dependencies declared by the steps.}
 
-\item{\code{user}}{Author/owner (character).}
+    \item{\code{user}}{Author/owner (character).}
 
-\item{\code{description}}{Recipe description (character).}
+    \item{\code{description}}{Recipe description (character).}
 
-\item{\code{id}}{Unique identifier (character/numeric).}
+    \item{\code{id}}{Unique identifier (character/numeric).}
 
-\item{\code{steps}}{List of step calls that make up the workflow.}
+    \item{\code{steps}}{List of step calls that make up the workflow.}
 
-\item{\code{doi}}{DOI or external identifier (character|NULL).}
+    \item{\code{doi}}{DOI or external identifier (character|NULL).}
 
-\item{\code{bake}}{Logical flag indicating whether it has been applied.}
+    \item{\code{bake}}{Logical flag indicating whether it has been applied.}
 
-\item{\code{topic}}{Recipe topic (character|NULL).}
+    \item{\code{topic}}{Recipe topic (character|NULL).}
 
-\item{\code{step_objects}}{List of Step R6 objects (list|NULL),
+    \item{\code{step_objects}}{List of Step R6 objects (list|NULL),
 used for documentation generation.}
 
-\item{\code{categories}}{List of RecipeCategory objects for classification.}
+    \item{\code{categories}}{List of RecipeCategory objects for classification.}
 
-\item{\code{downloads}}{Integer download/usage count.}
+    \item{\code{downloads}}{Integer download/usage count.}
 
-\item{\code{certification}}{RecipeCertification object (default community).}
+    \item{\code{certification}}{RecipeCertification object (default community).}
 
-\item{\code{user_info}}{RecipeUser object or NULL.}
+    \item{\code{user_info}}{RecipeUser object or NULL.}
 
-\item{\code{version}}{Recipe version string.}
+    \item{\code{version}}{Recipe version string.}
 
-\item{\code{depends_on_recipes}}{List of recipe IDs that must
+    \item{\code{depends_on_recipes}}{List of recipe IDs that must
 be applied before this one.}
 
-\item{\code{data_source}}{List with S3 bucket info
+    \item{\code{data_source}}{List with S3 bucket info
 (s3_bucket, s3_prefix, file_pattern, provider)
 or NULL.}
 
-\item{\code{labels}}{List with variable and value labels
+    \item{\code{labels}}{List with variable and value labels
 (var_labels, val_labels) or NULL.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Recipe-new}{\code{Recipe$new()}}
-\item \href{#method-Recipe-increment_downloads}{\code{Recipe$increment_downloads()}}
-\item \href{#method-Recipe-certify}{\code{Recipe$certify()}}
-\item \href{#method-Recipe-add_category}{\code{Recipe$add_category()}}
-\item \href{#method-Recipe-remove_category}{\code{Recipe$remove_category()}}
-\item \href{#method-Recipe-to_list}{\code{Recipe$to_list()}}
-\item \href{#method-Recipe-doc}{\code{Recipe$doc()}}
-\item \href{#method-Recipe-validate}{\code{Recipe$validate()}}
-\item \href{#method-Recipe-clone}{\code{Recipe$clone()}}
-}
+  \itemize{
+    \item \href{#method-Recipe-initialize}{\code{Recipe$new()}}
+    \item \href{#method-Recipe-increment_downloads}{\code{Recipe$increment_downloads()}}
+    \item \href{#method-Recipe-certify}{\code{Recipe$certify()}}
+    \item \href{#method-Recipe-add_category}{\code{Recipe$add_category()}}
+    \item \href{#method-Recipe-remove_category}{\code{Recipe$remove_category()}}
+    \item \href{#method-Recipe-to_list}{\code{Recipe$to_list()}}
+    \item \href{#method-Recipe-doc}{\code{Recipe$doc()}}
+    \item \href{#method-Recipe-validate}{\code{Recipe$validate()}}
+    \item \href{#method-Recipe-clone}{\code{Recipe$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Recipe-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Recipe-new}{}}}
-\subsection{Method \code{new()}}{
-Create a Recipe object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$new(
+\if{html}{\out{<a id="method-Recipe-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Recipe-initialize}{}}}
+\subsection{\code{Recipe$new()}}{
+  Create a Recipe object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$new(
   name,
   edition,
   survey_type,
@@ -158,188 +154,184 @@ Create a Recipe object
   depends_on_recipes = list(),
   data_source = NULL,
   labels = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Descriptive name of the recipe (character)}
-
-\item{\code{edition}}{Target edition/period (character or Date)}
-
-\item{\code{survey_type}}{Survey type (character), e.g., "ech", "eaii"}
-
-\item{\code{default_engine}}{Default evaluation engine (character)}
-
-\item{\code{depends_on}}{Vector or list of declared dependencies}
-
-\item{\code{user}}{Author or owner of the recipe (character)}
-
-\item{\code{description}}{Detailed description of the recipe (character)}
-
-\item{\code{steps}}{List of step calls that make up the workflow}
-
-\item{\code{id}}{Unique identifier (character or numeric)}
-
-\item{\code{doi}}{DOI or external identifier (character or NULL)}
-
-\item{\code{topic}}{Recipe topic (character or NULL)}
-
-\item{\code{step_objects}}{List of Step R6 objects
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Descriptive name of the recipe (character)}
+      \item{\code{edition}}{Target edition/period (character or Date)}
+      \item{\code{survey_type}}{Survey type (character), e.g., "ech", "eaii"}
+      \item{\code{default_engine}}{Default evaluation engine (character)}
+      \item{\code{depends_on}}{Vector or list of declared dependencies}
+      \item{\code{user}}{Author or owner of the recipe (character)}
+      \item{\code{description}}{Detailed description of the recipe (character)}
+      \item{\code{steps}}{List of step calls that make up the workflow}
+      \item{\code{id}}{Unique identifier (character or numeric)}
+      \item{\code{doi}}{DOI or external identifier (character or NULL)}
+      \item{\code{topic}}{Recipe topic (character or NULL)}
+      \item{\code{step_objects}}{List of Step R6 objects
 (optional, used for doc generation)}
-
-\item{\code{cached_doc}}{Pre-computed documentation
+      \item{\code{cached_doc}}{Pre-computed documentation
 (optional, used when loading from JSON)}
-
-\item{\code{categories}}{List of RecipeCategory objects (optional)}
-
-\item{\code{downloads}}{Integer download count (default 0)}
-
-\item{\code{certification}}{RecipeCertification object
+      \item{\code{categories}}{List of RecipeCategory objects (optional)}
+      \item{\code{downloads}}{Integer download count (default 0)}
+      \item{\code{certification}}{RecipeCertification object
 (optional, default community)}
-
-\item{\code{user_info}}{RecipeUser object (optional)}
-
-\item{\code{version}}{Recipe version string (default "1.0.0")}
-
-\item{\code{depends_on_recipes}}{List of recipe IDs
+      \item{\code{user_info}}{RecipeUser object (optional)}
+      \item{\code{version}}{Recipe version string (default "1.0.0")}
+      \item{\code{depends_on_recipes}}{List of recipe IDs
 that must be applied before this one (optional)}
+      \item{\code{data_source}}{List with S3 bucket info (optional)}
+      \item{\code{labels}}{List with var_labels and val_labels (optional)}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{data_source}}{List with S3 bucket info (optional)}
-
-\item{\code{labels}}{List with var_labels and val_labels (optional)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-increment_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-increment_downloads}{}}}
-\subsection{Method \code{increment_downloads()}}{
-Increment the download counter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$increment_downloads()}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$increment_downloads()}}{
+  Increment the download counter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$increment_downloads()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-certify"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-certify}{}}}
-\subsection{Method \code{certify()}}{
-Certify the recipe at a given level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$certify(user, level)}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$certify()}}{
+  Certify the recipe at a given level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$certify(user, level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{user}}{RecipeUser who is certifying}
+      \item{\code{level}}{Character certification level ("reviewed" or "official")}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{user}}{RecipeUser who is certifying}
-
-\item{\code{level}}{Character certification level ("reviewed" or "official")}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-add_category"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-add_category}{}}}
-\subsection{Method \code{add_category()}}{
-Add a category to the recipe
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$add_category(category)}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$add_category()}}{
+  Add a category to the recipe
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$add_category(category)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{category}}{RecipeCategory to add}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{category}}{RecipeCategory to add}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-remove_category"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-remove_category}{}}}
-\subsection{Method \code{remove_category()}}{
-Remove a category by name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$remove_category(name)}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$remove_category()}}{
+  Remove a category by name
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$remove_category(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character category name to remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Character category name to remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-to_list"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-to_list}{}}}
-\subsection{Method \code{to_list()}}{
-Serialize Recipe to a plain list suitable for JSON/API publishing.
+\subsection{\code{Recipe$to_list()}}{
+  Serialize Recipe to a plain list suitable for JSON/API publishing.
 Steps are encoded as character strings via deparse().
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$to_list()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$to_list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A named list with all recipe fields.
+  }
 }
 
-\subsection{Returns}{
-A named list with all recipe fields.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-doc"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-doc}{}}}
-\subsection{Method \code{doc()}}{
-Auto-generate documentation from recipe steps
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$doc()}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$doc()}}{
+  Auto-generate documentation from recipe steps
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$doc()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with metadata, input_variables,
+output_variables, and pipeline information
+  }
 }
 
-\subsection{Returns}{
-A list with metadata, input_variables,
-output_variables, and pipeline information
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-validate}{}}}
-\subsection{Method \code{validate()}}{
-Validate that a survey has all required input variables
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$validate(svy)}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$validate()}}{
+  Validate that a survey has all required input variables
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$validate(svy)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{svy}}{A Survey object}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    TRUE if valid, otherwise stops with
+error listing missing variables
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{svy}}{A Survey object}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-TRUE if valid, otherwise stops with
-error listing missing variables
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Recipe-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Recipe-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Recipe$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Recipe$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Recipe$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }
