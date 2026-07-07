@@ -37,8 +37,7 @@ Markdown syntax. Defaults to "Compute step"}
 
 \item{.level}{For RotativePanelSurvey objects (default \code{"auto"}),
 specifies the level where computations are
-applied: \code{"implantation"}, \code{"follow_up"}, \code{"quarter"},
-\code{"month"}, or \code{"auto"}}
+applied: \code{"auto"} (both), \code{"implantation"}, or \code{"follow_up"}}
 
 \item{use_copy}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{.copy} instead.}
 }

@@ -742,6 +742,21 @@ add_weight <- function(
 
   weight_list_clean <- weight_list[!vapply(weight_list, is.null, logical(1))]
 
+  for (nm in names(weight_list_clean)) {
+    w <- weight_list_clean[[nm]]
+    valid <- (is.character(w) && length(w) == 1L && nzchar(w)) || is.list(w)
+    if (!valid) {
+      stop_input(
+        "add_weight", nm,
+        paste0(
+          "must be a weight variable name (single string) ",
+          "or an add_replicate() specification"
+        ),
+        got = describe_class(w)
+      )
+    }
+  }
+
   return(weight_list_clean)
 }
 

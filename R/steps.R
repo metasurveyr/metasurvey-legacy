@@ -260,8 +260,7 @@ filter_rows <- function(svy, ..., .by = NULL,
 #'   Markdown syntax. Defaults to "Compute step"
 #' @param .level For RotativePanelSurvey objects (default `"auto"`),
 #'   specifies the level where computations are
-#'   applied: `"implantation"`, `"follow_up"`, `"quarter"`,
-#'   `"month"`, or `"auto"`
+#'   applied: `"auto"` (both), `"implantation"`, or `"follow_up"`
 #'
 #' @return Same type of input object (`Survey` or `RotativePanelSurvey`)
 #'   with new computed variables and the step added to the history
@@ -324,6 +323,7 @@ step_compute <- function(
     lifecycle::deprecate_warn("0.0.12", "step_compute(use_copy)", "step_compute(.copy)")
     .copy <- use_copy
   }
+  .level <- match.arg(.level, c("auto", "implantation", "follow_up"))
   .call <- canonicalize_step_call(match.call())
 
   # Capture and prepare expressions
@@ -532,8 +532,7 @@ step_compute_rotative <- function(
 #'   Defaults to FALSE
 #' @param .level For RotativePanelSurvey objects (default `"auto"`),
 #'   specifies the level where recoding is applied:
-#'   `"implantation"`, `"follow_up"`, `"quarter"`,
-#'   `"month"`, or `"auto"`
+#'   `"auto"` (both), `"implantation"`, or `"follow_up"`
 #'
 #' @return Same type of input object (`Survey` or `RotativePanelSurvey`)
 #'   with the new recoded variable and the step added to the history
@@ -609,6 +608,28 @@ step_recode <- function(
     lifecycle::deprecate_warn("0.0.12", "step_recode(use_copy)", "step_recode(.copy)")
     .copy <- use_copy
   }
+  .level <- match.arg(.level, c("auto", "implantation", "follow_up"))
+
+  conditions <- list(...)
+  if (length(conditions) == 0) {
+    stop_input(
+      "step_recode", "...",
+      "must contain at least one two-sided formula (condition ~ value)"
+    )
+  }
+  is_two_sided <- vapply(
+    conditions,
+    function(f) inherits(f, "formula") && length(f) == 3L,
+    logical(1)
+  )
+  if (!all(is_two_sided)) {
+    stop_input(
+      "step_recode", "...",
+      "must contain only two-sided formulas (condition ~ value)",
+      got = describe_class(conditions[[which(!is_two_sided)[1]]])
+    )
+  }
+
   .call <- canonicalize_step_call(match.call())
 
   if (is(svy, "RotativePanelSurvey")) {
@@ -1348,6 +1369,24 @@ step_rename <- function(
       return(svy)
     }
     new_names <- names(pairs)
+    if (is.null(new_names) || any(!nzchar(new_names))) {
+      stop_input(
+        "step_rename", "...",
+        "must be named pairs of the form new_name = old_name"
+      )
+    }
+    is_name <- vapply(
+      pairs,
+      function(x) is.symbol(x) || (is.character(x) && length(x) == 1L),
+      logical(1)
+    )
+    if (!all(is_name)) {
+      stop_input(
+        "step_rename", "...",
+        "values must be variable names (bare names or single strings)",
+        got = sprintf("`%s`", deparse1(pairs[[which(!is_name)[1]]]))
+      )
+    }
     old_names <- vapply(
       pairs,
       function(x) {
@@ -1618,6 +1657,7 @@ step_filter <- function(
     .copy = use_copy_default(),
     comment = "Filter step",
     .level = "auto") {
+  .level <- match.arg(.level, c("auto", "implantation", "follow_up"))
   .call <- canonicalize_step_call(match.call())
 
   # Capture filter expressions
@@ -1625,6 +1665,15 @@ step_filter <- function(
 
   if (length(exprs) == 0) {
     stop("step_filter requires at least one filter expression", call. = FALSE)
+  }
+
+  is_literal <- vapply(exprs, is.atomic, logical(1))
+  if (any(is_literal)) {
+    stop_input(
+      "step_filter", "...",
+      "must be logical expressions on survey variables, not literal values",
+      got = sprintf("`%s`", deparse1(exprs[[which(is_literal)[1]]]))
+    )
   }
 
   # Collect dependencies

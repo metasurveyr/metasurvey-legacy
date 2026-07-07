@@ -4,9 +4,8 @@
 #' objects, applying functions from the R survey package with appropriate
 #' metadata. Automatically handles different survey types and periodicities.
 #'
-#' @param svy A **list** of Survey objects, or a PoolSurvey.
-#'   Even for a single survey, wrap it in `list()`:
-#'   `workflow(svy = list(my_survey), ...)`.
+#' @param svy A Survey object, a **list** of Survey objects, or a
+#'   PoolSurvey. A single Survey is automatically wrapped in `list()`.
 #'   Must contain properly configured sample design.
 #' @param ... Calls to survey package functions (such as \code{svymean},
 #'   \code{svytotal}, \code{svyratio}, etc.) that will be executed sequentially
@@ -116,13 +115,42 @@ workflow <- function(svy, ..., estimation_type = "monthly",
       estimation_type = estimation_type,
       level = level
     ))
-  } else {
-    return(workflow_default(
-      svy, ...,
-      estimation_type = estimation_type,
-      level = level
-    ))
   }
+
+  if (is(svy, "Survey")) {
+    svy <- list(svy)
+  }
+  if (!is.list(svy) || length(svy) == 0 ||
+    !all(vapply(svy, function(x) is(x, "Survey"), logical(1)))) {
+    stop_input(
+      "workflow", "svy",
+      "must be a Survey, a list of Survey objects, or a PoolSurvey",
+      got = describe_class(svy)
+    )
+  }
+
+  .calls <- substitute(list(...))
+  estimation_exprs <- as.list(.calls)[-1]
+  if (length(estimation_exprs) == 0) {
+    stop_input(
+      "workflow", "...",
+      "must contain at least one estimation call, e.g. survey::svymean(~var)"
+    )
+  }
+  is_call <- vapply(estimation_exprs, is.call, logical(1))
+  if (!all(is_call)) {
+    stop_input(
+      "workflow", "...",
+      "must contain estimation calls such as survey::svymean(~var)",
+      got = sprintf("`%s`", deparse1(estimation_exprs[[which(!is_call)[1]]]))
+    )
+  }
+
+  workflow_default(
+    svy, ...,
+    estimation_type = estimation_type,
+    level = level
+  )
 }
 
 
