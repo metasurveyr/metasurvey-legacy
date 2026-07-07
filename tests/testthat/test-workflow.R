@@ -699,3 +699,20 @@ test_that("per-call level overrides workflow default", {
   expect_equal(result$confint_lower, r80$confint_lower)
   expect_equal(result$confint_upper, r80$confint_upper)
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("cat_estimation.svyby manual CI fallback produces ordered bounds", {
+  # Synthetic svyby object where confint()/cv() fail, forcing the
+  # manual value +/- z * se fallback branch
+  fake <- data.frame(group = c(1, 2), income = c(100, 200), se = c(10, 20))
+  attr(fake, "svyby") <- list(margins = 1)
+  class(fake) <- c("svyby", "data.frame")
+
+  res <- metasurvey:::cat_estimation(fake, "svymean", level = 0.95)
+  z <- stats::qnorm(0.975)
+  expect_true(all(res$confint_lower < res$value))
+  expect_true(all(res$value < res$confint_upper))
+  expect_equal(res$confint_lower, res$value - z * res$se)
+  expect_equal(res$confint_upper, res$value + z * res$se)
+})

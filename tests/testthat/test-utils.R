@@ -769,3 +769,64 @@ test_that("set_use_copy rejects non-scalar logical", {
   expect_error(set_use_copy(c(TRUE, FALSE)), "single logical")
   expect_error(set_use_copy(42), "single logical")
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("validate_replicate attaches replicate_file when pattern matches", {
+  rep_file <- tempfile(fileext = ".csv")
+  on.exit(unlink(rep_file), add = TRUE)
+  rep_dt <- data.table::data.table(
+    id = 1:10,
+    wrep1 = runif(10), wrep2 = runif(10), wrep3 = runif(10)
+  )
+  data.table::fwrite(rep_dt, rep_file)
+  svy_data <- make_test_data()
+
+  spec <- add_replicate(
+    weight = "w",
+    replicate_pattern = "wrep[0-9]+",
+    replicate_path = rep_file,
+    replicate_id = c(id = "id"),
+    replicate_type = "bootstrap"
+  )
+  res <- metasurvey:::validate_replicate(svy_data, spec)
+  expect_true("replicate_file" %in% names(res))
+  expect_true(any(grepl("wrep[0-9]+", names(res$replicate_file))))
+})
+
+test_that("validate_replicate errors when pattern not found in replicate file", {
+  rep_file <- tempfile(fileext = ".csv")
+  on.exit(unlink(rep_file), add = TRUE)
+  rep_dt <- data.table::data.table(id = 1:10, wrep1 = runif(10))
+  data.table::fwrite(rep_dt, rep_file)
+  svy_data <- make_test_data()
+
+  spec <- add_replicate(
+    weight = "w",
+    replicate_pattern = "boot_rep[0-9]+",
+    replicate_path = rep_file,
+    replicate_id = c(id = "id"),
+    replicate_type = "bootstrap"
+  )
+  expect_error(
+    metasurvey:::validate_replicate(svy_data, spec),
+    "Replicate pattern not found"
+  )
+})
+
+test_that("validate_replicate errors on non-character replicate_pattern", {
+  rep_file <- tempfile(fileext = ".csv")
+  on.exit(unlink(rep_file), add = TRUE)
+  data.table::fwrite(data.table::data.table(id = 1:5, wrep1 = runif(5)), rep_file)
+  svy_data <- make_test_data()
+
+  spec <- list(
+    replicate_id = c(id = "id"),
+    replicate_path = rep_file,
+    replicate_pattern = 123
+  )
+  expect_error(
+    metasurvey:::validate_replicate(svy_data, spec),
+    "Replicate pattern must be a character"
+  )
+})

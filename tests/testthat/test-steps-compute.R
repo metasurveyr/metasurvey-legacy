@@ -90,3 +90,49 @@ test_that("step_compute overwriting a column applies exactly once (deflation pat
   s2 <- bake_steps(step_compute(s, income = income / ipc))
   expect_equal(get_data(s2)$income, c(50, 100, 150, 200))
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("step_compute depends_on excludes temporaries assigned in { } blocks", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    z = {
+      tmp <- x + 1
+      tmp * 2
+    },
+    .copy = TRUE
+  )
+  step <- s2$steps[[length(s2$steps)]]
+  expect_setequal(step$depends_on, "x")
+  expect_false("tmp" %in% step$depends_on)
+  expect_equal(get_data(s2)$z, (get_data(s)$x + 1) * 2)
+})
+
+test_that("collect_assigned_vars finds all assignment forms in a { } block", {
+  e <- quote({
+    a <- x + 1
+    b <- a * 2
+    d <<- b + zz
+    b
+  })
+  expect_setequal(metasurvey:::collect_assigned_vars(e), c("a", "b", "d"))
+  expect_setequal(
+    setdiff(all.vars(e), metasurvey:::collect_assigned_vars(e)),
+    c("x", "zz")
+  )
+})
+
+test_that("step_compute with .by recomputes an existing column without .x/.y suffixes", {
+  s <- make_test_survey()
+  dat_before <- data.table::copy(get_data(s))
+  # "y" already exists: without the pre-merge column drop, merge()
+  # would produce y.x/y.y suffixes instead of overwriting
+  s2 <- step_compute(s, y = max(income), .by = "region", .copy = TRUE)
+  dat <- get_data(s2)
+  expect_true("y" %in% names(dat))
+  expect_false(any(grepl("^y\\.(x|y)$", names(dat))))
+  expected <- dat_before[, list(exp_y = max(income)), by = "region"]
+  merged <- merge(dat_before[, list(id, region)], expected, by = "region")
+  expect_equal(dat[order(id)]$y, merged[order(id)]$exp_y)
+})

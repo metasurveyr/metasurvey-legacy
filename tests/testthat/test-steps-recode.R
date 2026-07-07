@@ -251,3 +251,17 @@ test_that("re-baking legacy recode step with non-literal option fails loudly", {
   s2$steps[[length(s2$steps)]]$bake <- FALSE
   expect_error(bake_steps(s2), "not a literal")
 })
+
+# --- Mutation testing regression tests (issue #220) ---
+
+test_that("step_recode accepts a pre-built list of formulas", {
+  s <- make_test_survey()
+  s2 <- step_recode(
+    s, "x_cat",
+    list(x <= 5 ~ "low", x > 5 ~ "high"),
+    .default = "other", .copy = TRUE
+  )
+  dat <- get_data(s2)
+  expect_true("x_cat" %in% names(dat))
+  expect_equal(dat$x_cat, ifelse(dat$x <= 5, "low", "high"))
+})
