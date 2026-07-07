@@ -4,15 +4,19 @@
 #' objects, applying functions from the R survey package with appropriate
 #' metadata. Automatically handles different survey types and periodicities.
 #'
-#' @param svy A Survey object, a **list** of Survey objects, or a
-#'   PoolSurvey. A single Survey is automatically wrapped in `list()`.
+#' @param svy A Survey object, a **list** of Survey objects, a PoolSurvey,
+#'   or a RotativePanelSurvey. A single Survey is automatically wrapped
+#'   in `list()`.
 #'   Must contain properly configured sample design.
 #' @param ... Calls to survey package functions (such as \code{svymean},
 #'   \code{svytotal}, \code{svyratio}, etc.) that will be executed sequentially
 #' @param estimation_type Type of estimation (default `"monthly"`) that
 #'   determines which weight to use. Options:
 #'   `"monthly"`, `"quarterly"`, `"annual"`, or vector
-#'   with multiple types
+#'   with multiple types. For PoolSurvey and RotativePanelSurvey
+#'   objects, compound types such as `"annual:monthly"` or
+#'   `"annual:mean_of_months"` aggregate monthly estimates into an
+#'   annual one (see Details)
 #' @param level Confidence level for the interval (default `0.95`).
 #'   Passed to \code{\link[stats]{confint}}.
 #'   Can also be set per-call inside the estimation function
@@ -73,6 +77,19 @@
 #' correlation between waves of a rotating panel. The former `R` argument
 #' is deprecated and ignored.
 #'
+#' For RotativePanelSurvey objects with monthly follow-up surveys (e.g.
+#' ECH 2021+), `estimation_type = "annual:mean_of_months"` computes the
+#' annual estimate as the simple average of the monthly estimates: each
+#' follow-up is estimated with its monthly weight (replicate weights are
+#' used when the monthly design has them), the point estimates are
+#' averaged within each year, and the standard errors are combined
+#' assuming independence between months
+#' (`se = sqrt(mean(variance) / k)` for `k` months, or with the `rho`
+#' correction described above when `rho` is supplied). One row per year
+#' and statistic is returned, with the year in the `type` column. The
+#' alias `"annual:mean_of_months"` is also accepted for PoolSurvey
+#' objects, where it is equivalent to `"annual:monthly"`.
+#'
 #' @examples
 #' # Simple estimation
 #' dt <- data.table::data.table(
@@ -132,7 +149,13 @@
 
 workflow <- function(svy, ..., estimation_type = "monthly",
                      level = 0.95) {
-  if (is(svy, "PoolSurvey")) {
+  if (is(svy, "RotativePanelSurvey")) {
+    return(workflow_panel(
+      svy, ...,
+      estimation_type = estimation_type,
+      level = level
+    ))
+  } else if (is(svy, "PoolSurvey")) {
     return(workflow_pool(
       svy, ...,
       estimation_type = estimation_type,
@@ -263,6 +286,82 @@ workflow_default <- function(survey, ..., estimation_type = "monthly",
   return(result)
 }
 
+#' @title Workflow panel
+#' @description Annual aggregator for rotating panels: estimates each
+#'   monthly follow-up with its monthly weight, averages the point
+#'   estimates within each year and combines the standard errors
+#'   assuming independence between months (UMAD annual estimator for
+#'   ECH 2021+). Delegates the aggregation to `workflow_pool()` so the
+#'   pooled-SE combiner lives in a single place.
+#' @param survey RotativePanelSurvey object
+#' @param ... Calls
+#' @param estimation_type Estimation type (only compound annual types,
+#'   e.g. `"annual:mean_of_months"`)
+#' @keywords internal
+#' @noRd
+
+workflow_panel <- function(survey, ...,
+                           estimation_type = "annual:mean_of_months",
+                           level = 0.95) {
+  parts <- strsplit(estimation_type, ":", fixed = TRUE)[[1]]
+  supported <- length(parts) == 2L &&
+    parts[1] == "annual" &&
+    parts[2] %in% c("mean_of_months", "monthly")
+  if (!supported) {
+    stop(
+      "For RotativePanelSurvey objects, workflow() only supports ",
+      "estimation_type = \"annual:mean_of_months\" (annual estimate ",
+      "as the mean of the monthly estimates). For other estimations ",
+      "use extract_surveys() and pass the resulting surveys instead.",
+      call. = FALSE
+    )
+  }
+
+  follow_up <- unname(survey$follow_up)
+  if (length(follow_up) == 0) {
+    stop(
+      "The RotativePanelSurvey has no follow-up surveys: the annual ",
+      "mean-of-months estimator needs monthly follow-ups.",
+      call. = FALSE
+    )
+  }
+
+  years <- vapply(
+    follow_up,
+    function(s) .edition_year(s$edition),
+    character(1)
+  )
+
+  pool <- PoolSurvey$new(list(annual = split(follow_up, years)))
+
+  workflow_pool(
+    pool, ...,
+    estimation_type = "annual:monthly",
+    level = level
+  )
+}
+
+#' Extract the year from a survey edition
+#' @param edition Edition value (Date, "YYYY-MM-DD", "YYYY-MM", "YYYY")
+#' @return Character year, or the edition itself if no year is found
+#' @keywords internal
+#' @noRd
+.edition_year <- function(edition) {
+  edition <- as.character(edition)
+  date <- tryCatch(
+    as.Date(edition),
+    error = function(e) as.Date(NA)
+  )
+  if (!is.na(date)) {
+    return(format(date, "%Y"))
+  }
+  year <- regmatches(edition, regexpr("\\d{4}", edition))
+  if (length(year) == 1L) {
+    return(year)
+  }
+  edition
+}
+
 #' @title Workflow pool
 #' @description Workflow pool
 #' @keywords survey
@@ -282,6 +381,9 @@ workflow_pool <- function(survey, ..., estimation_type = "monthly",
   } else {
     estimation_type <- estimation_type
     estimation_type_first <- estimation_type
+  }
+  if (estimation_type == "mean_of_months") {
+    estimation_type <- "monthly"
   }
 
   .calls <- substitute(list(...))
