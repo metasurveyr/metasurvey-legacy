@@ -59,11 +59,16 @@ steps are skipped, so expressions are never applied twice.
 
 \strong{Expression processing:}
 Expressions are evaluated using data.table's \verb{:=} operator.
-Variable dependencies are detected automatically via \code{all.vars()}.
+Within a single call, expressions are evaluated sequentially, so a
+later expression can reference variables created by earlier ones
+(mutate semantics): \code{step_compute(svy, horamen = f85 * 4.3, yhora = pt4 / horamen)}. Variable dependencies are detected
+automatically via \code{all.vars()}; names created by earlier expressions
+of the same call are not reported as dependencies.
 Missing variables are caught before execution.
 
 \strong{Grouped computations:} Use \code{.by} to compute aggregated values
-(e.g., group means) that are automatically joined back to the data.
+(e.g., group means) broadcast to all rows of each group. Row order
+is preserved.
 
 For RotativePanelSurvey objects, \code{.level} controls where computations
 are applied:

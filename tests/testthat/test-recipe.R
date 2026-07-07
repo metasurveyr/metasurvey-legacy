@@ -440,6 +440,36 @@ test_that("recipe depends_on excludes variables created by earlier steps", {
   )
 })
 
+test_that("recipe round-trips a chained step_compute call", {
+  s <- make_test_survey()
+  s2 <- step_compute(
+    s,
+    horamen = age * 4.3,
+    yhora = income / horamen
+  )
+
+  r <- steps_to_recipe(
+    name = "chained compute",
+    user = "tester",
+    svy = s,
+    description = "Chained expressions in one call",
+    steps = s2$steps
+  )
+
+  deps <- unlist(r$depends_on)
+  expect_false("horamen" %in% deps)
+  expect_true(all(c("age", "income") %in% deps))
+
+  fresh <- make_test_survey()
+  expect_no_warning(fresh <- add_recipe(fresh, r))
+  baked <- bake_recipes(fresh)
+
+  dt <- get_data(baked)
+  expect_true(all(c("horamen", "yhora") %in% names(dt)))
+  expect_equal(dt$horamen, dt$age * 4.3)
+  expect_equal(dt$yhora, dt$income / dt$horamen)
+})
+
 # --- save_recipe + read_recipe roundtrip with steps ---
 
 # Test removido: step_remove genera código con <- que no se puede parsear al hacer roundtrip
