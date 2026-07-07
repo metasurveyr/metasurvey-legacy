@@ -220,6 +220,51 @@ test_that("build_plan: chained renames compose the mapping", {
   expect_equal(plan$nodes[[3]]$consumes, "a")
 })
 
+test_that("compose_rename_map resolves origins against the pre-step snapshot", {
+  # step_rename applies its mapping in ONE vectorized setnames() call:
+  # every old name resolves in the naming space before the step, never
+  # against entries added by the same step
+  # swap in a single call
+  expect_equal(
+    compose_rename_map(character(0), c(a = "b", b = "a")),
+    c(a = "b", b = "a")
+  )
+  # chain in a single call: new b comes from old a, new c from old b
+  expect_equal(
+    compose_rename_map(character(0), c(b = "a", c = "b")),
+    c(b = "a", c = "b")
+  )
+  # composition across steps still follows the accumulated map
+  expect_equal(compose_rename_map(c(x = "a"), c(y = "x")), c(y = "a"))
+})
+
+test_that("build_plan: swap rename in one call keeps setnames semantics", {
+  steps <- list(
+    mk_step("step_rename", exprs = list(mapping = c(a = "b", b = "a"))),
+    mk_step("filter", depends_on = "a"),
+    mk_step("filter", depends_on = "b")
+  )
+  plan <- build_plan(steps)
+  expect_equal(plan$nodes[[1]]$consumes, c("b", "a"))
+  expect_equal(plan$nodes[[1]]$produces, c("a", "b"))
+  # after the atomic swap, new `a` holds old `b` and vice versa
+  expect_equal(plan$nodes[[2]]$consumes, "b")
+  expect_equal(plan$nodes[[3]]$consumes, "a")
+})
+
+test_that("build_plan: chained mapping inside one rename call", {
+  # setnames renames old a -> b and old b -> c atomically: the new `c`
+  # column holds old `b`, NOT old `a`
+  steps <- list(
+    mk_step("step_rename", exprs = list(mapping = c(b = "a", c = "b"))),
+    mk_step("filter", depends_on = "c"),
+    mk_step("filter", depends_on = "b")
+  )
+  plan <- build_plan(steps)
+  expect_equal(plan$nodes[[2]]$consumes, "b")
+  expect_equal(plan$nodes[[3]]$consumes, "a")
+})
+
 test_that("build_plan: consumes includes grouping and join keys", {
   steps <- list(
     mk_step(

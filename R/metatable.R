@@ -233,16 +233,27 @@ translate_names <- function(x, rename_map) {
 #' The result maps each current name to its original (pre-plan) name,
 #' so `consumes`/`produces` of later nodes can be expressed in the
 #' original space for dependency analysis (RFC §3).
+#'
+#' step_rename applies its whole mapping in a single vectorized
+#' `setnames()` call (R/steps.R), i.e. atomically: every old name is
+#' resolved in the naming space *before* the step. Composition must
+#' therefore resolve all origins against a snapshot of the accumulated
+#' map, never against a partially updated one — otherwise swaps
+#' (`c(a = "b", b = "a")`) and chains (`c(b = "a", c = "b")`) inside a
+#' single step corrupt the map.
 #' @noRd
 #' @keywords internal
 compose_rename_map <- function(rename_map, mapping) {
-  for (new in names(mapping)) {
-    old <- mapping[[new]]
-    origin <- if (old %in% names(rename_map)) rename_map[[old]] else old
-    # the old current-space name no longer exists after the rename
-    rename_map <- rename_map[names(rename_map) != old]
-    rename_map[[new]] <- origin
-  }
+  # 1) resolve every origin against the pre-step snapshot
+  origins <- vapply(
+    unname(mapping),
+    function(old) if (old %in% names(rename_map)) rename_map[[old]] else old,
+    character(1)
+  )
+  # 2) all old current-space names disappear atomically after the rename
+  rename_map <- rename_map[!names(rename_map) %in% unname(mapping)]
+  # 3) insert all the new names at once
+  rename_map[names(mapping)] <- origins
   rename_map
 }
 
