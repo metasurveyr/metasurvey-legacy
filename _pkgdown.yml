@@ -139,7 +139,7 @@ reference:
   - survey_to_datatable
   - survey_to_tibble
 - title: Steps
-  desc: Lazy transformations on surveys
+  desc: Reproducible transformations on surveys
   contents:
   - step_compute
   - step_recode
@@ -148,6 +148,8 @@ reference:
   - step_remove
   - step_join
   - step_weight
+  - step_quantile
+  - step_collapse
   - step_validate
   - bake_steps
 - title: Recipes

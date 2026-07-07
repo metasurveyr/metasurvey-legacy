@@ -200,13 +200,16 @@ get_engine()
 show_engines()
 ```
 
-### Lazy Processing
+### Step Execution and Lazy Processing
 
-By default, steps are recorded but not executed until `bake_steps()` is
-called. This allows validations to be performed before execution:
+`step_compute()`, `step_recode()` and `step_join()` execute eagerly when
+created; `step_filter()` and `step_validate()` are always deferred until
+`bake_steps()`, since filtering affects the sampling design. The
+lazy-processing setting only controls `step_rename()` and `step_remove()`
+(deferred by default):
 
 ```{r lazy}
-# Check current setting
+# Check current setting (applies to rename/remove only)
 lazy_default()
 
 # Change for the session (not recommended for most workflows)
@@ -283,9 +286,9 @@ svy_v <- step_compute(svy_simple,
   comment = "API score difference"
 )
 
-# Check that the step was recorded
+# The compute already executed; the step is recorded in the pipeline
 steps <- get_steps(svy_v)
-cat("Pending steps:", length(steps), "\n")
+cat("Recorded steps:", length(steps), "\n")
 ```
 
 ### Cross-Validation with the survey Package

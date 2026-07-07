@@ -111,12 +111,16 @@ head(get_data(svy), 3)
 
 ## Trabajo con Steps
 
-Los steps son **lazy por defecto**: se registran pero no se ejecutan hasta que
-se llama a `bake_steps()`. Esto permite:
+Los steps que transforman datos (`step_compute()`, `step_recode()`,
+`step_join()`) **se ejecutan de inmediato** al crearse: `get_data()` justo
+despues de la llamada ya muestra las columnas nuevas. Los steps que afectan
+el diseno muestral (`step_filter()`, `step_validate()`) quedan **diferidos**
+y recien se materializan al llamar a `bake_steps()`. En todos los casos el
+step queda registrado en el pipeline de la encuesta, lo que permite:
 
-1. Construir un pipeline de transformacion completo
-2. Inspeccionar y validar los steps antes de la ejecucion
-3. Reutilizar secuencias de steps como recetas
+1. Mantener un registro completo y documentado del pipeline de transformacion
+2. Inspeccionar y validar los steps en cualquier momento
+3. Reutilizar secuencias de steps como recetas sobre datos nuevos
 4. Asegurar que todas las dependencias existan antes del procesamiento
 
 ### Calculo de nuevas variables
@@ -191,8 +195,9 @@ svy <- step_recode(svy, gender,
 ### Filtrado de filas
 
 Se utiliza `step_filter()` para seleccionar filas segun condiciones logicas.
-Multiples condiciones se combinan con AND. Al igual que los demas steps,
-los filtros son lazy por defecto.
+Multiples condiciones se combinan con AND. A diferencia de compute/recode/join,
+los filtros estan **siempre diferidos**: como eliminar filas cambia el diseno
+muestral, recien se aplican al llamar a `bake_steps()`.
 
 ```{r step-filter}
 # Mantener solo individuos en edad de trabajar (14+)
@@ -219,6 +224,10 @@ Se eliminan variables que ya no son necesarias:
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
+
+Tanto `step_rename()` como `step_remove()` respetan la configuracion de
+procesamiento diferido (`lazy_default()`, `TRUE` por defecto), por lo que
+quedan pendientes hasta `bake_steps()`.
 
 ### Union con datos externos
 
@@ -251,7 +260,11 @@ svy <- step_join(svy,
 
 ### Aplicacion de steps (bake)
 
-Se llama a `bake_steps()` para ejecutar todas las transformaciones pendientes:
+Se llama a `bake_steps()` para materializar los steps diferidos (filtros,
+renombres, eliminaciones) y actualizar el diseno muestral. Los steps que ya
+se ejecutaron de forma eager se saltean, asi que nunca hay doble ejecucion:
+llamar a `bake_steps()` es seguro e idempotente, y sigue siendo parte del
+flujo recomendado:
 
 ```{r bake}
 svy <- bake_steps(svy)
@@ -471,7 +484,9 @@ metasurvey ofrece configuraciones globales que se pueden ajustar segun el flujo 
 
 ```{r config}
 # Check current lazy-processing setting
-lazy_default() # TRUE = steps recorded but not executed immediately
+# (only affects step_rename/step_remove; compute/recode/join are always
+# eager, and filter/validate are always deferred)
+lazy_default() # TRUE = rename/remove deferred until bake_steps()
 
 # Check data-copy behavior
 use_copy_default() # TRUE = operate on copies (safer but slower)
@@ -483,7 +498,7 @@ show_engines() # "data.table", "dplyr", etc.
 Se pueden modificar las configuraciones para la sesion actual:
 
 ```{r config-set}
-# Disable lazy evaluation (execute steps immediately)
+# Apply rename/remove steps immediately instead of deferring them
 set_lazy_processing(FALSE)
 
 # Modify inplace (faster, but modifies original data)
