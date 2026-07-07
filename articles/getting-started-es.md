@@ -619,7 +619,7 @@ use_copy_default() # TRUE = operate on copies (safer but slower)
 
 # View available computation engines
 show_engines() # "data.table", "dplyr", etc.
-#> [1] "data.table" "tidyverse"  "dplyr"
+#> [1] "data.table" "tidyverse"  "dplyr"      "metatable"
 ```
 
 Se pueden modificar las configuraciones para la sesion actual:

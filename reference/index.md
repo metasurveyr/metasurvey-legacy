@@ -69,6 +69,9 @@ Reproducible transformations on surveys
   : Validate data during the step pipeline
 - [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
   : Execute all pending steps
+- [`explain()`](https://metasurveyr.github.io/metasurvey/reference/explain.md)
+  [`print(`*`<meta_plan>`*`)`](https://metasurveyr.github.io/metasurvey/reference/explain.md)
+  : Explain the execution plan of the pending steps
 
 ## Recipes
 
