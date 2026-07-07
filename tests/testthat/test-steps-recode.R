@@ -89,3 +89,25 @@ test_that("step_recode does not modify original survey with use_copy=TRUE", {
   expect_false("new_col" %in% names(s$data))
   expect_true("new_col" %in% names(s2$data))
 })
+
+test_that("bake_steps preserves .default and .to_factor on recode steps", {
+  s <- make_test_survey()
+  s2 <- step_recode(s, nivel,
+    age < 30 ~ "joven",
+    .default = "sin_dato",
+    .copy = TRUE
+  )
+  baked <- bake_steps(s2)
+  expect_setequal(unique(baked$data$nivel), c("joven", "sin_dato"))
+  expect_false(anyNA(baked$data$nivel))
+
+  s3 <- step_recode(s, region_f,
+    region == 1 ~ "North",
+    .default = "Other",
+    .to_factor = TRUE,
+    .copy = TRUE
+  )
+  baked3 <- bake_steps(s3)
+  expect_true(is.factor(baked3$data$region_f))
+  expect_false(anyNA(baked3$data$region_f))
+})
