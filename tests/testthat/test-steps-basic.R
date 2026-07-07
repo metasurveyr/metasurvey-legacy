@@ -714,6 +714,38 @@ test_that("step_remove evaluates character vector in dots", {
   expect_false("y" %in% names(get_data(result)))
 })
 
+test_that("step_remove bare symbol matching a column ignores homonymous local variable", {
+  s <- make_test_survey()
+  x <- "income" # local variable named like column "x", pointing elsewhere
+  result <- bake_steps(step_remove(s, x))
+  expect_false("x" %in% names(get_data(result)))
+  expect_true("income" %in% names(get_data(result)))
+})
+
+test_that("step_remove column precedence applies with multiple bare symbols", {
+  s <- make_test_survey()
+  x <- "age"
+  y <- "region"
+  result <- bake_steps(step_remove(s, x, y))
+  expect_false("x" %in% names(get_data(result)))
+  expect_false("y" %in% names(get_data(result)))
+  expect_true(all(c("age", "region") %in% names(get_data(result))))
+})
+
+test_that("step_remove evaluates non-symbol expressions in the calling env", {
+  s <- make_test_survey()
+  result <- bake_steps(step_remove(s, c("x", "y"), paste0("reg", "ion")))
+  expect_false(any(c("x", "y", "region") %in% names(get_data(result))))
+  expect_true("age" %in% names(get_data(result)))
+})
+
+test_that("step_remove symbol not matching a column still resolves from calling env", {
+  s <- make_test_survey()
+  to_drop <- c("age", "income")
+  result <- bake_steps(step_remove(s, to_drop))
+  expect_false(any(c("age", "income") %in% names(get_data(result))))
+})
+
 # --- view_graph package requirement checks ---
 
 test_that("view_graph errors when visNetwork not available", {
