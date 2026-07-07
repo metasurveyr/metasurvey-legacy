@@ -384,20 +384,30 @@ results <- workflow(
 )
 
 results
-#>                                       stat               variable        value
-#>                                     <char>                 <char>        <num>
-#> 1:                   survey::svymean: HT11                   HT11 1.103893e+05
-#> 2:              survey::svytotal: employed               employed 1.426200e+04
-#> 3:   survey::svymean: labor_statusEmployed   labor_statusEmployed 5.551576e-01
-#> 4:   survey::svymean: labor_statusInactive   labor_statusInactive 3.860646e-01
-#> 5: survey::svymean: labor_statusUnemployed labor_statusUnemployed 5.877773e-02
-#>              se         cv confint_lower confint_upper   evaluate
-#>           <num>      <num>         <num>         <num>     <char>
-#> 1: 4.076154e+03 0.03692528  1.024001e+05  1.183784e+05  Excellent
-#> 2: 6.756206e+02 0.04737208  1.293781e+04  1.558619e+04  Excellent
-#> 3: 2.610113e-02 0.04701571  5.040004e-01  6.063149e-01  Excellent
-#> 4: 2.551750e-02 0.06609646  3.360512e-01  4.360780e-01  Very good
-#> 5: 1.309115e-02 0.22272291  3.311956e-02  8.443591e-02 Acceptable
+#>                                           stat                   variable
+#>                                         <char>                     <char>
+#> 1:                       survey::svymean: HT11                       HT11
+#> 2:                  survey::svytotal: employed                   employed
+#> 3:       survey::svymean: labor_statusEmployed       labor_statusEmployed
+#> 4:       survey::svymean: labor_statusInactive       labor_statusInactive
+#> 5: survey::svymean: labor_statusNot classified labor_statusNot classified
+#> 6:     survey::svymean: labor_statusUnemployed     labor_statusUnemployed
+#>           value           se         cv confint_lower confint_upper
+#>           <num>        <num>      <num>         <num>         <num>
+#> 1: 1.103893e+05 4.076154e+03 0.03692528  1.024001e+05  1.183784e+05
+#> 2: 1.426200e+04 6.756206e+02 0.04737208  1.293781e+04  1.558619e+04
+#> 3: 5.480115e-01 2.596045e-02 0.04737208  4.971300e-01  5.988931e-01
+#> 4: 3.810951e-01 2.528765e-02 0.06635522  3.315322e-01  4.306580e-01
+#> 5: 1.287224e-02 5.797576e-03 0.45039378  1.509198e-03  2.423528e-02
+#> 6: 5.802113e-02 1.292837e-02 0.22282174  3.268199e-02  8.336027e-02
+#>          evaluate
+#>            <char>
+#> 1:      Excellent
+#> 2:      Excellent
+#> 3:      Excellent
+#> 4:      Very good
+#> 5: Do not publish
+#> 6:     Acceptable
 ```
 
 ### Domain estimation
