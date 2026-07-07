@@ -1,3 +1,45 @@
+# metasurvey (development version)
+
+## New features
+* `step_compute()` chains expressions within a single call (`mutate()`
+  semantics): later expressions see columns created by earlier ones, with
+  all-or-nothing evaluation and internal names excluded from `depends_on`
+  (#215).
+* `workflow()` supports per-call `domain =` for subpopulation estimation via
+  `survey::subset.survey.design()` — e.g.
+  `svymean(~pea, domain = e27 >= 14)` — combinable with `level =` and
+  `svyby` grouping (#219).
+* `workflow()` accepts a `RotativePanelSurvey` with
+  `estimation_type = "annual:mean_of_months"`: the UMAD annual estimator
+  (mean of monthly estimates with combined SEs), delegating to
+  `workflow_pool()` (#223).
+* New `step_quantile()` (weighted quantiles, optional `.by`) and
+  `step_collapse()` (one row per household within the pipeline) (#222).
+* `svyratio` results in `workflow()` now expose clean
+  `variable`/`denominator` columns instead of packed strings (#224).
+* New input-validation layer on exported functions with actionable error
+  messages; `workflow()` auto-wraps a single Survey in `list()` (#218).
+* Design RFC for the `metatable` lazy plan/optimizer engine in
+  `design/metatable-rfc.md` (#214).
+
+## Bug fixes
+* `step_compute(.by =)` no longer reorders rows, leaves a residual key, or
+  moves grouping columns to the front (#221).
+* `step_remove()` resolves bare symbols as columns before the calling
+  environment: a local variable named like a column can no longer silently
+  remove the wrong column (#216).
+* `.level = "quarter"/"month"` now fail clearly via `match.arg()` instead of
+  silently registering zero steps (#217).
+* `load_survey()` cache messages respect `options(metasurvey.verbose)`
+  (#224).
+
+## Internal
+* 15 regression tests derived from mutation testing (recipe round-trips with
+  step content, `.by` recompute, replicate validation, CI fallback) raise the
+  suite to 3,340 passing tests (#220).
+* Pre-existing indentation lints cleaned in `R/utils.R` and
+  `inst/shiny/R/ui_components.R` (#225).
+
 # metasurvey 0.1.0
 
 ## Breaking changes
