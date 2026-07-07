@@ -8,7 +8,7 @@ gen bc_pa32 = 0
 gen bc_pa33 = 0
 
 * pasamos seguro de desempleo (encubierto)
-* son personas que están en el seguro de paro y la ech los identifica como ocupados. suponemos que los ingresos que declaran en su ocupación principal son 
+* son personas que están en el seguro de paro y la ech los identifica como ocupados. suponemos que los ingresos que declaran en su ocupación principal son
 * en realidad ingresos por seguro de paro
 
 cap drop bc_seguro
@@ -128,7 +128,7 @@ replace bc_cooperat=bc_cooperat-bc_seguro if bc_cooperat>0 & bc_pf41==3
 cap drop cooperath
 egen cooperath=sum(bc_cooperat) if bc_pe4!=7, by(bc_correlat)
 
-*otros ingresos laborales agropecuarios 
+*otros ingresos laborales agropecuarios
 cap drop bc_ot_agropec
 gen bc_ot_agropec= 0
 replace bc_ot_agropec=(bc_pa11 +bc_pa12+ bc_pa13+ bc_pa21+ bc_pa22+ bc_pa31+ bc_pa32)*bc_ipc if bc_anio<1991 & bc_anio>1987 & cat2==9
@@ -149,11 +149,11 @@ mvencode bc_as_privados  bc_as_publicos  bc_cpropiasl bc_cpropiacl bc_patrones  
 ** Total ingresos laborales ocupación principal
 cap drop bc_principal
 g bc_principal=bc_as_privados+bc_as_publicos
-replace bc_principal=bc_patrones+bc_cpropiasl+bc_cpropiacl+bc_cooperat if bc_pf41>2 & bc_pf41<7 
+replace bc_principal=bc_patrones+bc_cpropiasl+bc_cpropiacl+bc_cooperat if bc_pf41>2 & bc_pf41<7
 
 capture drop bc_ing_lab
 gen bc_ing_lab=0
-replace bc_ing_lab= bc_as_privados+ bc_as_publicos+ bc_patrones+ bc_cpropiasl+ bc_cpropiacl+ bc_cooperat +bc_as_otros+bc_as_agropec+bc_cp_agropec+ /* 
+replace bc_ing_lab= bc_as_privados+ bc_as_publicos+ bc_patrones+ bc_cpropiasl+ bc_cpropiacl+ bc_cooperat +bc_as_otros+bc_as_agropec+bc_cp_agropec+ /*
 */ bc_pat_agropec+bc_ot_agropec+(bc_otros_lab+bc_otros_lab2)*bc_ipc
 
 cap drop ing_labh
@@ -179,11 +179,11 @@ gen bc_intereses=(bc_pg131+bc_pg132)*bc_ipc
 cap drop interesesh
 gen interesesh=bc_intereses
 
-* Utilidades de agropecuarios 
+* Utilidades de agropecuarios
 cap drop bc_ut_agropec
 gen bc_ut_agropec= 0
-replace bc_ut_agropec=(bc_pa33)*bc_ipc if bc_anio<1991 & bc_anio>1987 
-replace bc_ut_agropec=((bc_pa33)/1000)*bc_ipc if bc_anio<1988 
+replace bc_ut_agropec=(bc_pa33)*bc_ipc if bc_anio<1991 & bc_anio>1987
+replace bc_ut_agropec=((bc_pa33)/1000)*bc_ipc if bc_anio<1988
 cap drop ut_agropech
 egen ut_agropech=sum(bc_ut_agropec)if bc_pe4!=7, by(bc_correlat)
 
@@ -258,7 +258,7 @@ egen transf_hogh=sum(bc_transf_hog) if bc_pe4!=7, by(bc_correlat)
 cap drop bc_beneficios
 gen bc_beneficios=ingre_ciud+bc_bs_sociales
 cap drop beneficiosh
-gen beneficiosh=ingre_ciudh+bs_socialesh 
+gen beneficiosh=ingre_ciudh+bs_socialesh
 
 *valor locativo
 cap drop val_loc

@@ -263,8 +263,7 @@ Recipe <- R6Class("Recipe",
             "ast_compute" = {
               var_names <- character(0)
 
-              if (!is.null(names(step$exprs)) &&
-                length(names(step$exprs)) > 0) {
+              if (!is.null(names(step$exprs)) && length(names(step$exprs)) > 0) {
                 var_names <- setdiff(names(step$exprs), "")
               }
 
@@ -317,12 +316,8 @@ Recipe <- R6Class("Recipe",
       if (!is.null(private$.cached_doc)) {
         return(list(
           meta = meta,
-          input_variables =
-            private$.cached_doc$input_variables %||%
-              character(0),
-          output_variables =
-            private$.cached_doc$output_variables %||%
-              character(0),
+          input_variables = private$.cached_doc$input_variables %||% character(0),
+          output_variables = private$.cached_doc$output_variables %||% character(0),
           pipeline = private$.cached_doc$pipeline %||% list()
         ))
       }
@@ -702,9 +697,7 @@ read_recipe <- function(file) {
         for (i in seq_len(nrow(raw_cats))) {
           row <- as.list(raw_cats[i, ])
           # Handle empty data.frame parents from simplifyVector
-          if (is.data.frame(row$parent) &&
-            (nrow(row$parent) == 0 ||
-              ncol(row$parent) == 0)) {
+          if (is.data.frame(row$parent) && (nrow(row$parent) == 0 || ncol(row$parent) == 0)) {
             row$parent <- NULL
           }
           categories[[i]] <- RecipeCategory$from_list(row)
@@ -868,10 +861,11 @@ read_recipe <- function(file) {
 #' @export
 
 get_recipe <- function(
-    svy_type = NULL,
-    svy_edition = NULL,
-    topic = NULL,
-    allowMultiple = TRUE) {
+  svy_type = NULL,
+  svy_edition = NULL,
+  topic = NULL,
+  allowMultiple = TRUE
+) {
   # Check if recipes should be skipped (offline mode)
   if (isTRUE(getOption("metasurvey.skip_recipes", FALSE))) {
     warning(
@@ -955,11 +949,12 @@ get_recipe <- function(
 #' @export
 
 steps_to_recipe <- function(
-    name,
-    user,
-    svy = survey_empty(type = "eaii", edition = "2019-2021"),
-    description,
-    steps, doi = NULL, topic = NULL) {
+  name,
+  user,
+  svy = survey_empty(type = "eaii", edition = "2019-2021"),
+  description,
+  steps, doi = NULL, topic = NULL
+) {
   return(
     recipe(
       name = name,
@@ -1109,8 +1104,7 @@ print.Recipe <- function(x, ...) {
       }
 
       comment_str <- ""
-      if (!is.null(step_info$comment) && length(step_info$comment) == 1 &&
-        nzchar(step_info$comment)) {
+      if (!is.null(step_info$comment) && length(step_info$comment) == 1 && nzchar(step_info$comment)) {
         comment_str <- paste0("  \"", step_info$comment, "\"")
       }
 
@@ -1134,8 +1128,7 @@ print.Recipe <- function(x, ...) {
     ))))
 
     output_details <- lapply(doc_info$pipeline, function(step) {
-      if (length(step$outputs) > 0 && !is.null(step$inferred_type) &&
-        !is.na(step$inferred_type)) {
+      if (length(step$outputs) > 0 && !is.null(step$inferred_type) && !is.na(step$inferred_type)) {
         data.frame(
           var = step$outputs,
           type = step$inferred_type,

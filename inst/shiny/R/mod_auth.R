@@ -192,8 +192,7 @@ auth_server <- function(id, auth_state) {
           paste("Welcome,", result$user$name, "!"),
           type = "message", duration = 3
         )
-      } else if (!is.null(result$review_status) &&
-        result$review_status == "pending") {
+      } else if (!is.null(result$review_status) && result$review_status == "pending") {
         output$login_feedback <- shiny::renderUI(
           htmltools::tags$div(
             class = "alert alert-info mt-3",
@@ -205,8 +204,7 @@ auth_server <- function(id, auth_state) {
             )
           )
         )
-      } else if (!is.null(result$review_status) &&
-        result$review_status == "rejected") {
+      } else if (!is.null(result$review_status) && result$review_status == "rejected") {
         output$login_feedback <- shiny::renderUI(
           htmltools::tags$div(
             class = "alert alert-danger mt-3",

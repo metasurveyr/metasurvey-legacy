@@ -51,17 +51,18 @@
 #' @family workflows
 #' @export
 workflow_table <- function(
-    result,
-    ci = 0.95,
-    digits = 2,
-    compare_by = NULL,
-    show_cv = TRUE,
-    show_se = TRUE,
-    title = NULL,
-    subtitle = NULL,
-    source_note = TRUE,
-    locale = "en",
-    theme = "publication") {
+  result,
+  ci = 0.95,
+  digits = 2,
+  compare_by = NULL,
+  show_cv = TRUE,
+  show_se = TRUE,
+  title = NULL,
+  subtitle = NULL,
+  source_note = TRUE,
+  locale = "en",
+  theme = "publication"
+) {
   if (!requireNamespace("gt", quietly = TRUE)) {
     warning(
       "Package 'gt' is required for formatted tables. ",
@@ -292,10 +293,11 @@ workflow_table <- function(
 
 # Compare-by pivot: side-by-side editions
 .workflow_table_compare <- function(
-    dt, compare_by,
-    ci, digits, show_cv, show_se,
-    title, subtitle, source_note,
-    locale, theme, result) {
+  dt, compare_by,
+  ci, digits, show_cv, show_se,
+  title, subtitle, source_note,
+  locale, theme, result
+) {
   groups <- unique(dt[[compare_by]])
 
   # Build base: stat + group cols

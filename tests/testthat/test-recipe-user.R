@@ -149,7 +149,10 @@ test_that("from_list deserializes institutional_member", {
 
 test_that("to_list/from_list round-trip", {
   inst <- RecipeUser$new(name = "IECON", user_type = "institution", url = "https://iecon.edu.uy", verified = TRUE)
-  member <- RecipeUser$new(name = "Maria Garcia", email = "m@iecon.edu.uy", user_type = "institutional_member", institution = inst)
+  member <- RecipeUser$new(
+    name = "Maria Garcia", email = "m@iecon.edu.uy",
+    user_type = "institutional_member", institution = inst
+  )
 
   restored <- RecipeUser$from_list(member$to_list())
   expect_equal(restored$name, "Maria Garcia")

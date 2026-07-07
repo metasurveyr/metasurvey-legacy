@@ -561,9 +561,11 @@ function(req, res, name, email, password,
   }
 
   # Prevent NoSQL injection
-  if (!is.character(name) || !is.character(email) ||
-    !is.character(password) || length(name) != 1 ||
-    length(email) != 1 || length(password) != 1) {
+  if (
+    !is.character(name) || !is.character(email) ||
+      !is.character(password) || length(name) != 1 ||
+      length(email) != 1 || length(password) != 1
+  ) {
     res$status <- 400L
     return(list(error = "name, email, and password are required"))
   }
@@ -577,9 +579,7 @@ function(req, res, name, email, password,
     )))
   }
 
-  if (user_type == "institutional_member" &&
-    (is.null(institution) ||
-      !nzchar(institution))) {
+  if (user_type == "institutional_member" && (is.null(institution) || !nzchar(institution))) {
     res$status <- 400L
     return(list(error = "institution is required for institutional_member"))
   }
@@ -677,8 +677,7 @@ function(req, res, email, password) {
   }
 
   # Prevent NoSQL injection: ensure email/password are plain strings
-  if (!is.character(email) || !is.character(password) ||
-    length(email) != 1 || length(password) != 1) {
+  if (!is.character(email) || !is.character(password) || length(email) != 1 || length(password) != 1) {
     res$status <- 400L
     return(list(error = "email and password are required"))
   }

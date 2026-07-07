@@ -1,6 +1,9 @@
 test_that("step_remove removes columns and records step", {
   df <- data.frame(id = 1:3, a = 1, b = 2, w = 1)
-  s <- Survey$new(data = data.table::data.table(df), edition = "2023", type = "ech", psu = NULL, engine = "data.table", weight = add_weight(annual = "w"))
+  s <- Survey$new(
+    data = data.table::data.table(df), edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
 
   s2 <- step_remove(s, a, b)
   expect_true(any(grepl("Remove:", names(s2$steps))))
@@ -11,7 +14,10 @@ test_that("step_remove removes columns and records step", {
 
 test_that("step_rename renames columns and records step", {
   df <- data.frame(id = 1:3, a = 1, w = 1)
-  s <- Survey$new(data = data.table::data.table(df), edition = "2023", type = "ech", psu = NULL, engine = "data.table", weight = add_weight(annual = "w"))
+  s <- Survey$new(
+    data = data.table::data.table(df), edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
 
   s2 <- step_rename(s, alpha = a)
   expect_true(any(grepl("Rename:", names(s2$steps))))
@@ -23,7 +29,10 @@ test_that("step_rename renames columns and records step", {
 test_that("step_join with data.frame RHS performs left/inner/full joins", {
   lhs <- data.frame(id = 1:3, a = c("x", "y", "z"), w = 1)
   rhs <- data.frame(id = c(2, 3, 4), b = c(20, 30, 40))
-  s <- Survey$new(data = data.table::data.table(lhs), edition = "2023", type = "ech", psu = NULL, engine = "data.table", weight = add_weight(annual = "w"))
+  s <- Survey$new(
+    data = data.table::data.table(lhs), edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
 
   # Left join keeps all LHS rows
   s_left <- bake_steps(step_join(s, rhs, by = "id", type = "left"))
@@ -42,8 +51,14 @@ test_that("step_join with data.frame RHS performs left/inner/full joins", {
 test_that("step_join accepts Survey as RHS and handles key mapping", {
   lhs <- data.frame(id = 1:2, a = 1:2, w = 1)
   rhs <- data.frame(code = 2:3, b = 10:11, w2 = 1)
-  s_left <- Survey$new(data = data.table::data.table(lhs), edition = "2023", type = "ech", psu = NULL, engine = "data.table", weight = add_weight(annual = "w"))
-  s_right <- Survey$new(data = data.table::data.table(rhs), edition = "2023", type = "ech", psu = NULL, engine = "data.table", weight = add_weight(annual = "w2"))
+  s_left <- Survey$new(
+    data = data.table::data.table(lhs), edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w")
+  )
+  s_right <- Survey$new(
+    data = data.table::data.table(rhs), edition = "2023", type = "ech",
+    psu = NULL, engine = "data.table", weight = add_weight(annual = "w2")
+  )
 
   s_out <- bake_steps(step_join(s_left, s_right, by = c("id" = "code"), type = "left"))
   expect_true("b" %in% names(s_out$data))
@@ -535,43 +550,6 @@ test_that("recode handles default values", {
 # Tests for advanced steps.R functions
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # --- step_recode with Survey ---
 
 test_that("step_recode creates recoded variable on Survey", {
@@ -610,7 +588,6 @@ test_that("step_compute with .by computes grouped", {
 })
 
 
-
 # --- step_compute with use_copy=FALSE ---
 
 test_that("step_compute with use_copy=FALSE records step", {
@@ -619,8 +596,6 @@ test_that("step_compute with use_copy=FALSE records step", {
   # With lazy_default()=TRUE, step is recorded but not applied yet
   expect_true(length(s2$steps) > 0)
 })
-
-
 
 
 # --- step_recode use_copy=FALSE ---

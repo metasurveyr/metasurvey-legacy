@@ -98,14 +98,15 @@
 #' @family survey-loading
 #' @export
 load_survey <- function(
-    path = NULL,
-    svy_type = NULL,
-    svy_edition = NULL,
-    svy_weight = NULL,
-    svy_psu = NULL,
-    svy_strata = NULL,
-    ..., bake = FALSE,
-    recipes = NULL) {
+  path = NULL,
+  svy_type = NULL,
+  svy_edition = NULL,
+  svy_weight = NULL,
+  svy_psu = NULL,
+  svy_strata = NULL,
+  ..., bake = FALSE,
+  recipes = NULL
+) {
   path_null <- missing(path)
 
   svy_args_null <- missing(svy_type) ||
@@ -140,7 +141,6 @@ load_survey <- function(
     recipes = recipes,
     ...
   )
-
 
 
   .call_engine <- paste0(
@@ -235,13 +235,14 @@ load_survey <- function(
 #' @export
 
 load_panel_survey <- function(
-    path_implantation,
-    path_follow_up,
-    svy_type,
-    svy_weight_implantation,
-    svy_weight_follow_up,
-    svy_strata = NULL,
-    ...) {
+  path_implantation,
+  path_follow_up,
+  svy_type,
+  svy_weight_implantation,
+  svy_weight_follow_up,
+  svy_strata = NULL,
+  ...
+) {
   names_survey <- gsub(
     "\\..*",
     "",
@@ -264,8 +265,6 @@ load_panel_survey <- function(
   path_survey <- list.files(path_follow_up, full.names = TRUE, pattern = ".csv")
 
   names(path_survey) <- names_survey
-
-
 
 
   implantation <- load_survey(
@@ -483,7 +482,6 @@ read_file <- function(file, .args = NULL, convert = FALSE) {
   .names_args <- .names_args[!.names_args %in% .metadata_args]
 
 
-
   .fn <- get(.read_function$read_function,
     envir = asNamespace(.read_function$package),
     mode = "function"
@@ -586,7 +584,6 @@ load_survey.data.table <- function(...) {
     return(Survey)
   }
 }
-
 
 
 #' Config survey

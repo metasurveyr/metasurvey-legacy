@@ -226,7 +226,7 @@ cap lab drop 	bc_pf34
 cap lab drop 	sino
 
 lab def bc_filtloc 1 "Localidades de más de 5mil habitantes" ///
-  2 "Localidades de 5mil habitantes o menos" 
+  2 "Localidades de 5mil habitantes o menos"
 lab def bc_mes 1 "Enero" ///
   2 "Febrero" ///
   3 "Marzo" ///
@@ -238,7 +238,7 @@ lab def bc_mes 1 "Enero" ///
   9 "Septiembre" ///
   10 "Octubre" ///
   11 "Noviembre" ///
-  12 "Diciembre" 
+  12 "Diciembre"
 lab def bc_dpto 1 "Montevideo" ///
   2 "Artigas" ///
   3 "Canelones" ///
@@ -257,7 +257,7 @@ lab def bc_dpto 1 "Montevideo" ///
   16 "San José " ///
   17 "Soriano" ///
   18 "Tacuarembó " ///
-  19 "Treinta y Tres" 
+  19 "Treinta y Tres"
 lab def bc_ccz 1 "CCZ 1" ///
   2 "CCZ 2" ///
   3 "CCZ 3" ///
@@ -275,42 +275,42 @@ lab def bc_ccz 1 "CCZ 1" ///
   15 "CCZ 15" ///
   16 "CCZ 16" ///
   17 "CCZ 17" ///
-  18 "CCZ 18" 
+  18 "CCZ 18"
 lab def bc_area 1 "Montevideo" ///
   2 "Interior >5000" ///
   3 "Interior <5000" ///
-  4 "Rural disperso" 
+  4 "Rural disperso"
 lab def bc_pe2 1 "Varón" ///
-  2 "Mujer" 
+  2 "Mujer"
 lab def bc_pe4 1 "Jefe" ///
   2 "Cónyugue" ///
   3 "Hijo" ///
   4 "Padres o suegros " ///
   5 "Otro pariente" ///
   6 "Otro no pariente" ///
-  7 "Servicio doméstico" 
+  7 "Servicio doméstico"
 lab def bc_pe5 1 "Unión libre" ///
   2 "Casado" ///
   3 "Divorciado o separado" ///
   4 "Viudo" ///
-  5 "Soltero" 
+  5 "Soltero"
 lab def bc_pe6a 1 "Sin atención" ///
   2 "Mutualista" ///
   3 "Disse" ///
   4 "Salud pública" ///
-  5 "Otros privados" 
+  5 "Otros privados"
 lab def bc_pe6b 1 "Sin atención" ///
   2 "Mutualista" ///
   3 "Salud pública" ///
-  4 "Otros privados" 
+  4 "Otros privados"
 lab def bc_pe13 1 "Público" ///
-  2 "Privado" 
+  2 "Privado"
 lab def bc_nivel 0 "Sin instrucción" ///
   1 "Primaria" ///
   2 "Secundaria" ///
   3 "Enseñanza técnica o UTU" ///
   4 "Magisterio o Profesorado" ///
-  5 "Universidad o similar" 
+  5 "Universidad o similar"
 lab def bc_pobp 1 "Menor de 14 años" ///
   2 "Ocupados" ///
   3 "Desocupados, busca trabajo por primera vez" ///
@@ -320,23 +320,23 @@ lab def bc_pobp 1 "Menor de 14 años" ///
   7 "Inactivo – Estudiante" ///
   8 "Inactivo – Rentista" ///
   9 "Inactivo – Pensionista y Jubilado" ///
-  11 "Inactivo – Otros" 
+  11 "Inactivo – Otros"
 lab def bc_pf41 1 "Asalariado privado" ///
   2 "Asalariado público" ///
   3 "Cooperativista" ///
   4 "Patrón" ///
   9 "Cuenta propia" ///
-  7 "Otras actividades" 
+  7 "Otras actividades"
 lab def bc_cat2 1 "Asalariado privado" ///
   2 "Asalariado público" ///
   3 "Patrón" ///
   4 "Cuenta propia" ///
-  5 "Otras actividades" 
+  5 "Otras actividades"
 lab def bc_pf081 1 "Menos de 10 personas" ///
-  2 "10 personas o más" 
+  2 "10 personas o más"
 lab def bc_pf082 1 "Una persona" ///
   2 "Dos a cuatro personas" ///
-  3 "Cinco a nueve personas" 
+  3 "Cinco a nueve personas"
 lab def bc_rama 1 "Agropecuaria y Minería" ///
   2 "Industria Manufactureras" ///
   3 "Electricidad, Gas y Agua" ///
@@ -344,7 +344,7 @@ lab def bc_rama 1 "Agropecuaria y Minería" ///
   5 "Comercio, Restaurantes y Hoteles" ///
   6 "Transportes y Comunicaciones" ///
   7 "Servicios a empresas" ///
-  8 "Servicios comunales, sociales y personales" 
+  8 "Servicios comunales, sociales y personales"
 lab def bc_tipo_ocup 0 "Fuerzas Armadas" ///
   1 "Miembro de poder ejecutivo y cuerpos legislativos y personal directivo de la administración pública y de las empresas" ///
   2 "Profesionales científicos e intelectuales" ///
@@ -354,22 +354,22 @@ lab def bc_tipo_ocup 0 "Fuerzas Armadas" ///
   6 "Agricultores y trabajadores calificados agropecuarios y pesqueros" ///
   7 "Oficiales, operarios y artesanos de artes mecánicas y de otros oficios" ///
   8 "Operadores y montadores de instalaciones y máquinas" ///
-  9 "Trabajadores no calificados" 
+  9 "Trabajadores no calificados"
 lab def bc_pf04 1 "Licencia" ///
   2 "Poco trabajo o mal tiempo" ///
   3 "Huelga o estar suspendido" ///
-  4 "Otro motivo" 
+  4 "Otro motivo"
 lab def bc_pf22 1 "Volverá a trabajar en 30 días" ///
   2 "Espera resultados de gestiones" ///
   3 "Buscó antes y dejo de buscar" ///
-  4 "Otros motivos" 
+  4 "Otros motivos"
 lab def bc_pf34 1 "Cerró el establecimiento" ///
   2 "Lo despidieron" ///
-  3 "Otro motivo" 
+  3 "Otro motivo"
 lab def sino 1 "Si" ///
-  2 "No" 
-  
-lab def bc_pe6a1 1 "Trabajo" 2 "Otro" 
+  2 "No"
+
+lab def bc_pe6a1 1 "Trabajo" 2 "Otro"
 
 lab val bc_filtloc bc_filtloc
 lab val bc_mes bc_mes

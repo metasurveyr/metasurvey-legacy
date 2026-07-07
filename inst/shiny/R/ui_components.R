@@ -1920,12 +1920,13 @@ recipe_card_ui <- function(recipe, ns, index) {
 }
 
 recipe_detail_ui <- function(
-    recipe,
-    ns = NULL,
-    referencing_workflows = list(),
-    graph_output_id = "recipe_graph",
-    all_recipes = list(),
-    anda_labels = list()) {
+  recipe,
+  ns = NULL,
+  referencing_workflows = list(),
+  graph_output_id = "recipe_graph",
+  all_recipes = list(),
+  anda_labels = list()
+) {
   doc <- recipe$doc()
   cert_level <- recipe$certification$level %||% "community"
   cert_cls <- paste0("cert-", cert_level)

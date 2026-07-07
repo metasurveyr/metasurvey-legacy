@@ -582,9 +582,10 @@ test_that("transpile 2022 do-files and bake sequentially on ECH data", {
       tryCatch(
         {
           step_call <- parse(text = step_str)[[1]]
-          if (is.call(step_call) && length(step_call) >= 2 &&
-            is.name(step_call[[2]]) &&
-            as.character(step_call[[2]]) == ".") {
+          if (
+            is.call(step_call) && length(step_call) >= 2 &&
+              is.name(step_call[[2]]) && as.character(step_call[[2]]) == "."
+          ) {
             step_call[[2]] <- as.name("svy")
           }
           eval_env$svy <- eval(step_call, envir = eval_env)
@@ -1304,8 +1305,7 @@ test_that("transpile_stata_module processes a year directory with .do files", {
   expect_true(length(result$demographics$steps) > 0)
 
   # Demographics recipe should depend on data_prep
-  expect_true("data_prep" %in%
-    sub("^ech_2023_", "", result$demographics$depends_on_recipes))
+  expect_true("data_prep" %in% sub("^ech_2023_", "", result$demographics$depends_on_recipes))
 })
 
 test_that("transpile_stata_module with output_dir writes JSON files", {

@@ -17,13 +17,13 @@ knitr::opts_chunk$set(
 # Encuesta de Actividades de Innovación e Investigación y Desarrollo (EAII) 2019-2021
 
 Esta encuesta es utilizada para obtener información sobre las actividades de innovación e investigación y desarrollo en las empresas, instituciones y organismos del país, es realizada por la Agencia Nacional de Innovación e Investigación (ANII) en conjunto con el Instituto Nacional de Estadística (INE).
-Los microdatos oficiales se encuentran diposibles en [PRISMA](https://prisma.uy/indicadores/innovacion/periodo-actual) junto con la documentación de la encuesta. En el paquete se encuentra el mismo archivo de microdatos en formato CSV unicamente 
+Los microdatos oficiales se encuentran diposibles en [PRISMA](https://prisma.uy/indicadores/innovacion/periodo-actual) junto con la documentación de la encuesta. En el paquete se encuentra el mismo archivo de microdatos en formato CSV unicamente
 con fines de ejemplo.
 
- 
+
 ## Configuración del motor
 
-El paquete tiene diferentes motores para trabajar con datos, en este caso se usará el motor `data.table`. Para cambiar el motor se puede usar la función `set_engine` y para ver los motores disponibles se puede usar la función `show_engines`, 
+El paquete tiene diferentes motores para trabajar con datos, en este caso se usará el motor `data.table`. Para cambiar el motor se puede usar la función `set_engine` y para ver los motores disponibles se puede usar la función `show_engines`,
 en este ejemplo se usará el motor `data.table`.
 
 ```{r setup}
@@ -254,7 +254,7 @@ eaii_2019 <- eaii_2019 %>%
 ```
 
 
-Una vez realizada la recodificación de variables se puede obtener cada paso realizado con la función `get_steps` o visualizarlo en forma de DAG con la función  
+Una vez realizada la recodificación de variables se puede obtener cada paso realizado con la función `get_steps` o visualizarlo en forma de DAG con la función
 
 ```{r}
 metasurvey::view_graph(eaii_2019)

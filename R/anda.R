@@ -172,8 +172,7 @@ anda_parse_variables <- function(ddi_xml_path) {
 
     # Label
     labl_node <- xml2::xml_find_first(v, "d1:labl", ns)
-    label <- if (!is.null(labl_node) &&
-      !inherits(labl_node, "xml_missing")) {
+    label <- if (!is.null(labl_node) && !inherits(labl_node, "xml_missing")) {
       trimws(xml2::xml_text(labl_node))
     } else {
       ""
@@ -181,8 +180,7 @@ anda_parse_variables <- function(ddi_xml_path) {
 
     # Description text
     txt_node <- xml2::xml_find_first(v, "d1:txt", ns)
-    description <- if (!is.null(txt_node) &&
-      !inherits(txt_node, "xml_missing")) {
+    description <- if (!is.null(txt_node) && !inherits(txt_node, "xml_missing")) {
       trimws(xml2::xml_text(txt_node))
     } else {
       ""
@@ -196,8 +194,7 @@ anda_parse_variables <- function(ddi_xml_path) {
       for (cat in catgry_nodes) {
         cat_val <- xml2::xml_find_first(cat, "d1:catValu", ns)
         cat_lab <- xml2::xml_find_first(cat, "d1:labl", ns)
-        if (!inherits(cat_val, "xml_missing") &&
-          !inherits(cat_lab, "xml_missing")) {
+        if (!inherits(cat_val, "xml_missing") && !inherits(cat_lab, "xml_missing")) {
           val <- trimws(xml2::xml_text(cat_val))
           lab <- trimws(xml2::xml_text(cat_lab))
           value_labels[[val]] <- lab
@@ -605,8 +602,7 @@ anda_download_microdata <- function(edition,
     "\\.(zip|rar)$", extracted,
     value = TRUE, ignore.case = TRUE
   )
-  if (length(archives) > 0 &&
-    length(extracted) == length(archives)) {
+  if (length(archives) > 0 && length(extracted) == length(archives)) {
     for (a in archives) {
       sub_result <- tryCatch(
         .anda_extract_file(

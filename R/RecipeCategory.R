@@ -169,8 +169,7 @@ RecipeCategory$from_list <- function(lst) {
     return(NULL)
   }
   # Handle empty data.frames from JSON simplifyVector
-  if (is.data.frame(lst) &&
-    (nrow(lst) == 0 || ncol(lst) == 0)) {
+  if (is.data.frame(lst) && (nrow(lst) == 0 || ncol(lst) == 0)) {
     return(NULL)
   }
   # Handle empty lists from JSON (NULL serialized as {})
@@ -178,12 +177,11 @@ RecipeCategory$from_list <- function(lst) {
     return(NULL)
   }
   parent_obj <- NULL
-  if (!is.null(lst$parent) &&
-    !(is.data.frame(lst$parent) &&
-      (nrow(lst$parent) == 0 ||
-        ncol(lst$parent) == 0)) &&
-    !(is.list(lst$parent) &&
-      length(lst$parent) == 0)) {
+  if (
+    !is.null(lst$parent) &&
+      !(is.data.frame(lst$parent) && (nrow(lst$parent) == 0 || ncol(lst$parent) == 0)) &&
+      !(is.list(lst$parent) && length(lst$parent) == 0)
+  ) {
     parent_obj <- RecipeCategory$from_list(lst$parent)
   }
   RecipeCategory$new(

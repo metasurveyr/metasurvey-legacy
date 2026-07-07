@@ -199,7 +199,9 @@ parse_gen_args <- function(args) {
     for (ch in strsplit(inner, "")[[1]]) {
       if (ch == "(") {
         depth <- depth + 1
-      } else if (ch == ")") depth <- depth - 1
+      } else if (ch == ")") {
+        depth <- depth - 1
+      }
       if (depth < 0) {
         balanced <- FALSE
         break

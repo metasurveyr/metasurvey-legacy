@@ -242,9 +242,7 @@ workflow_from_list <- function(lst) {
     if (is.data.frame(raw_cats)) {
       for (i in seq_len(nrow(raw_cats))) {
         row <- as.list(raw_cats[i, ])
-        if (is.data.frame(row$parent) &&
-          (nrow(row$parent) == 0 ||
-            ncol(row$parent) == 0)) {
+        if (is.data.frame(row$parent) && (nrow(row$parent) == 0 || ncol(row$parent) == 0)) {
           row$parent <- NULL
         }
         categories[[i]] <- RecipeCategory$from_list(row)

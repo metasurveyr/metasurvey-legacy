@@ -145,9 +145,7 @@ api_request <- function(endpoint, method = "GET",
   # Headers — auto-refresh token if close to expiry
   headers <- c("Content-Type" = "application/json")
   token <- api_token()
-  if (!is.null(token) &&
-    token_expires_soon(token) &&
-    endpoint != "auth/refresh") {
+  if (!is.null(token) && token_expires_soon(token) && endpoint != "auth/refresh") {
     tryCatch(
       {
         refreshed <- api_refresh_token()
@@ -237,9 +235,7 @@ api_request <- function(endpoint, method = "GET",
 #' @family api-auth
 api_register <- function(name, email, password,
                          user_type = "individual", institution = NULL) {
-  if (!is.character(password) ||
-    nchar(password) < 8 ||
-    nchar(password) > 128) {
+  if (!is.character(password) || nchar(password) < 8 || nchar(password) > 128) {
     stop(
       "Password must be between 8 and 128 characters.",
       call. = FALSE
@@ -342,8 +338,7 @@ api_logout <- function() {
 
 #' @keywords internal
 validate_api_id <- function(id) {
-  if (!is.character(id) || length(id) != 1L ||
-    !grepl("^[a-zA-Z0-9_.-]+$", id)) {
+  if (!is.character(id) || length(id) != 1L || !grepl("^[a-zA-Z0-9_.-]+$", id)) {
     stop(
       "Invalid API ID: must be a single ",
       "alphanumeric string (a-z, 0-9, _, ., -)",

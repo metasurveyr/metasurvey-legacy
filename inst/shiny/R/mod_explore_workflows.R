@@ -75,11 +75,12 @@ explore_workflows_ui <- function(id) {
 }
 
 explore_workflows_server <- function(
-    id,
-    auth_state,
-    all_recipes = shiny::reactiveVal(list()),
-    navigate_to_recipe = NULL,
-    pending_workflow_id = NULL) {
+  id,
+  auth_state,
+  all_recipes = shiny::reactiveVal(list()),
+  navigate_to_recipe = NULL,
+  pending_workflow_id = NULL
+) {
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
