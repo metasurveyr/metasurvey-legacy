@@ -14,8 +14,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-# Chunks need the weightflow >= 0.1.0 API (e.g. step_trim_weights(method=));
-# binary mirrors can lag CRAN, so guard on the version, not just presence
+# Chunks need weightflow >= 0.1.0 (CRAN API): guard on the version,
+# not just presence, in case binary mirrors lag CRAN
 can_run <- requireNamespace("weightflow", quietly = TRUE) &&
   utils::packageVersion("weightflow") >= "0.1.0"
 ```
@@ -76,7 +76,7 @@ spec <- weighting_spec(microdata, base_weights = dw) |>
     sex     = pop_sex,
     age_grp = pop_age
   )) |>
-  step_trim_weights(method = "tukey")
+  step_trim_weights()
 
 prepped <- prep(spec)
 summary(prepped)
@@ -109,7 +109,7 @@ spec <- weighting_spec(microdata, base_weights = dw) |>
     sex     = pop_sex,
     age_grp = pop_age
   )) |>
-  step_trim_weights(method = "tukey")
+  step_trim_weights()
 
 svy <- svy |>
   step_weight(spec) |>
