@@ -1,3 +1,37 @@
+# metasurvey 0.1.0
+
+## Breaking changes
+* Step execution model: `step_compute()`, `step_recode()` and `step_join()`
+  now record their `Step` as already executed (`bake = TRUE`). They still run
+  eagerly on creation, but `bake_steps()` no longer re-executes them.
+  Previously every eager step ran twice (once on creation, once on bake),
+  silently corrupting non-idempotent expressions (e.g. `age = age * 2` ended
+  up as `age * 4`). `step_remove()`/`step_rename()` now record
+  `bake = !lazy`, closing the double-execution gotcha with
+  `lazy_processing = FALSE`.
+* `step_recode()`: conditions are now evaluated first-match-wins
+  (`dplyr::case_when()` semantics), as documented. Previously the last
+  matching condition won. The STATA transpiler now emits `gen` + `replace`
+  chains with reversed conditions to preserve their original
+  last-write-wins semantics.
+
+## New features
+* `step_recode()` accepts non-character RHS values (numeric, integer,
+  logical); previously anything but character failed with an internal
+  `vapply` error.
+
+## Bug fixes
+* `workflow()`: survey editions stored as `Date` are handled in the workflow
+  capture, and pooled estimations (`workflow_pool`) use the correct grouped
+  standard error.
+* `add_replicate()`: `svrepdesign` is built with the full replicate-weight
+  set; step calls captured in recipes are portable across sessions.
+* Recipes: `depends_on` lists only external inputs (columns not created by
+  the recipe's own steps).
+* Recode steps preserve their evaluated `.default`, `ordered` and
+  `.to_factor` options, so `bake_recipes()` reproduces them exactly on new
+  data.
+
 # metasurvey 0.0.24
 
 ## Breaking changes
