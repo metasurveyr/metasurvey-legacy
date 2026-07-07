@@ -1,4 +1,21 @@
-# metasurvey (development version)
+# metasurvey 0.2.0
+
+## Migration notes (from 0.0.x)
+
+Together with 0.1.0 (below), this release changes two behaviors you may
+rely on:
+
+1. **Steps execute exactly once.** `step_compute()`/`step_recode()`/
+   `step_join()` run eagerly on creation and `bake_steps()` no longer
+   re-executes them. If your code depended on the double execution
+   (non-idempotent expressions like `age = age * 2` yielding `age * 4`),
+   results change — the new values are the correct ones. `bake_steps()`
+   is still part of the flow: it materializes deferred steps
+   (`step_filter`, `step_validate`, lazy `step_remove`/`step_rename`)
+   and refreshes the design.
+2. **`step_recode()` is first-match-wins** (`case_when()` semantics). If
+   you ordered overlapping conditions for the old last-match behavior,
+   reverse them.
 
 ## New features
 * `step_compute()` chains expressions within a single call (`mutate()`

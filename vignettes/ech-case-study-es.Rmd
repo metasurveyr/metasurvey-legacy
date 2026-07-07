@@ -378,7 +378,7 @@ aquí hay un mapeo de operaciones comunes:
 
 | STATA | metasurvey | Notas |
 |-------|-----------|-------|
-| `gen var = expr` | `step_compute(svy, var = expr)` | Lazy por defecto; llamar a `bake_steps()` para ejecutar |
+| `gen var = expr` | `step_compute(svy, var = expr)` | Se ejecuta de inmediato y registra el step en el pipeline |
 | `replace var = x if cond` | `step_compute(svy, var = ifelse(cond, x, var))` | Asignación condicional |
 | `recode var (old=new)` | `step_recode(svy, new_var, old == val ~ "label")` | Crea una nueva variable |
 | `rename old new` | `step_rename(svy, new = old)` | |
@@ -392,9 +392,11 @@ aquí hay un mapeo de operaciones comunes:
 
 ### Diferencias clave
 
-1. **Evaluación lazy**: En STATA, los comandos se ejecutan inmediatamente. En
-   metasurvey, los steps se registran y se ejecutan juntos con `bake_steps()`.
-   Esto permite validación y optimización antes de la ejecución.
+1. **Pipeline registrado**: En STATA, los comandos se ejecutan sin dejar
+   rastro. En metasurvey, compute/recode/join también se ejecutan de
+   inmediato, pero cada step queda registrado en el pipeline de la encuesta
+   (provenance, `view_graph()`, recipes). Los filtros quedan diferidos hasta
+   `bake_steps()` porque afectan el diseño muestral.
 
 2. **Inmutabilidad**: metasurvey crea nuevas variables en lugar de modificar
    las existentes. `step_recode()` crea una nueva columna; no sobreescribe

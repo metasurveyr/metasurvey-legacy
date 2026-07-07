@@ -112,12 +112,16 @@ head(get_data(svy), 3)
 
 ## Working with Steps
 
-Steps are **lazy by default**: they are recorded but not executed until
-`bake_steps()` is called. This allows you to:
+Data-transforming steps (`step_compute()`, `step_recode()`, `step_join()`)
+**execute immediately** when created: `get_data()` right after the call
+already shows the new columns. Steps that affect the sampling design
+(`step_filter()`, `step_validate()`) are **deferred** and only materialize
+when `bake_steps()` is called. In every case the step is recorded in the
+survey's pipeline, which allows you to:
 
-1. Build a complete transformation pipeline
-2. Inspect and validate the steps before execution
-3. Reuse step sequences as recipes
+1. Keep a complete, documented record of the transformation pipeline
+2. Inspect and validate the steps at any point
+3. Reuse step sequences as recipes on new data
 4. Ensure all dependencies exist before processing
 
 ### Computing new variables
@@ -191,8 +195,9 @@ svy <- step_recode(svy, gender,
 ### Filtering rows
 
 Use `step_filter()` to subset rows based on logical conditions. Multiple
-conditions are combined with AND. Like other steps, filters are lazy by
-default.
+conditions are combined with AND. Unlike compute/recode/join, filters are
+**always deferred**: because dropping rows changes the sampling design,
+they only apply when `bake_steps()` is called.
 
 ```{r step-filter}
 # Keep only working-age individuals (14+)
@@ -219,6 +224,10 @@ Remove variables that are no longer needed:
 # Remove intermediate calculations
 svy <- step_remove(svy, working_age, mean_income_dept)
 ```
+
+Both `step_rename()` and `step_remove()` follow the lazy-processing
+setting (`lazy_default()`, `TRUE` by default), so they are deferred until
+`bake_steps()`.
 
 ### Joining external data
 
@@ -251,7 +260,11 @@ svy <- step_join(svy,
 
 ### Applying steps (bake)
 
-Call `bake_steps()` to execute all pending transformations:
+Call `bake_steps()` to materialize the deferred steps (filters, renames,
+removals) and update the sampling design. Steps that already executed
+eagerly are skipped, so there is never double execution — calling
+`bake_steps()` is safe and idempotent, and it remains part of the
+recommended flow:
 
 ```{r bake}
 svy <- bake_steps(svy)
@@ -473,7 +486,9 @@ metasurvey provides global settings that can be adjusted to suit your workflow:
 
 ```{r config}
 # Check current lazy-processing setting
-lazy_default() # TRUE = steps recorded but not executed immediately
+# (only affects step_rename/step_remove; compute/recode/join are always
+# eager, and filter/validate are always deferred)
+lazy_default() # TRUE = rename/remove deferred until bake_steps()
 
 # Check data-copy behavior
 use_copy_default() # TRUE = operate on copies (safer but slower)
@@ -485,7 +500,7 @@ show_engines() # "data.table", "dplyr", etc.
 You can modify settings for the current session:
 
 ```{r config-set}
-# Disable lazy evaluation (execute steps immediately)
+# Apply rename/remove steps immediately instead of deferring them
 set_lazy_processing(FALSE)
 
 # Modify inplace (faster, but modifies original data)

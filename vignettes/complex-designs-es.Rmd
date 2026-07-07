@@ -201,14 +201,16 @@ get_engine()
 show_engines()
 ```
 
-### Procesamiento diferido (lazy)
+### Ejecución de steps y procesamiento diferido
 
-Por defecto, los steps se registran pero no se ejecutan hasta que se
-invoca `bake_steps()`. Esto permite realizar validaciones antes de la
-ejecución:
+`step_compute()`, `step_recode()` y `step_join()` se ejecutan de forma
+eager al crearse; `step_filter()` y `step_validate()` quedan siempre
+diferidos hasta `bake_steps()`, porque el filtrado afecta el diseño
+muestral. La configuración de procesamiento diferido solo controla
+`step_rename()` y `step_remove()` (diferidos por defecto):
 
 ```{r lazy}
-# Check current setting
+# Check current setting (applies to rename/remove only)
 lazy_default()
 
 # Change for the session (not recommended for most workflows)
@@ -285,9 +287,9 @@ svy_v <- step_compute(svy_simple,
   comment = "API score difference"
 )
 
-# Check that the step was recorded
+# The compute already executed; the step is recorded in the pipeline
 steps <- get_steps(svy_v)
-cat("Pending steps:", length(steps), "\n")
+cat("Recorded steps:", length(steps), "\n")
 ```
 
 ### Validación cruzada con el paquete survey
