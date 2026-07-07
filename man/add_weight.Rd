@@ -70,9 +70,9 @@ weights_with_replicates <- add_weight(
 \code{\link{load_survey}} where this configuration is used
 \code{\link{workflow}} that automatically selects weights
 
-Other weights: 
-\code{\link{add_replicate}()},
-\code{\link{resolve_weight_spec}()}
+Other weights:
+\code{\link[=add_replicate]{add_replicate()}},
+\code{\link[=resolve_weight_spec]{resolve_weight_spec()}}
 }
 \concept{weights}
 \keyword{utils}

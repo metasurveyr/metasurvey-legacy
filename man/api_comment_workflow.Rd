@@ -23,10 +23,10 @@ api_comment_workflow("w_1739654400_123", "Very useful workflow!")
 }
 }
 \seealso{
-Other api-comments: 
-\code{\link{api_comment_recipe}()},
-\code{\link{api_delete_comment}()},
-\code{\link{api_get_recipe_comments}()},
-\code{\link{api_get_workflow_comments}()}
+Other api-comments:
+\code{\link[=api_comment_recipe]{api_comment_recipe()}},
+\code{\link[=api_delete_comment]{api_delete_comment()}},
+\code{\link[=api_get_recipe_comments]{api_get_recipe_comments()}},
+\code{\link[=api_get_workflow_comments]{api_get_workflow_comments()}}
 }
 \concept{api-comments}

@@ -31,18 +31,18 @@ f <- tempfile(fileext = ".json")
 save_recipe(r, f)
 }
 \seealso{
-Other recipes: 
+Other recipes:
 \code{\link{Recipe-class}},
-\code{\link{add_recipe}()},
-\code{\link{bake_recipes}()},
-\code{\link{explore_recipes}()},
-\code{\link{get_recipe}()},
-\code{\link{harmonize}()},
-\code{\link{print.Recipe}()},
-\code{\link{publish_recipe}()},
-\code{\link{read_recipe}()},
-\code{\link{recipe}()},
-\code{\link{steps_to_recipe}()}
+\code{\link[=add_recipe]{add_recipe()}},
+\code{\link[=bake_recipes]{bake_recipes()}},
+\code{\link[=explore_recipes]{explore_recipes()}},
+\code{\link[=get_recipe]{get_recipe()}},
+\code{\link[=harmonize]{harmonize()}},
+\code{\link[=print.Recipe]{print.Recipe()}},
+\code{\link[=publish_recipe]{publish_recipe()}},
+\code{\link[=read_recipe]{read_recipe()}},
+\code{\link[=recipe]{recipe()}},
+\code{\link[=steps_to_recipe]{steps_to_recipe()}}
 }
 \concept{recipes}
 \keyword{utils}

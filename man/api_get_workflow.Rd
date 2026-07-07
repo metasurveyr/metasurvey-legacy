@@ -21,8 +21,8 @@ api_get_workflow("w_1739654400_123")
 }
 }
 \seealso{
-Other api-workflows: 
-\code{\link{api_list_workflows}()},
-\code{\link{api_publish_workflow}()}
+Other api-workflows:
+\code{\link[=api_list_workflows]{api_list_workflows()}},
+\code{\link[=api_publish_workflow]{api_publish_workflow()}}
 }
 \concept{api-workflows}

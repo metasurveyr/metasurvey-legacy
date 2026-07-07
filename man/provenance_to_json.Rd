@@ -29,10 +29,10 @@ provenance_to_json(prov)
 
 }
 \seealso{
-Other provenance: 
-\code{\link{print.metasurvey_provenance}()},
-\code{\link{print.metasurvey_provenance_diff}()},
-\code{\link{provenance}()},
-\code{\link{provenance_diff}()}
+Other provenance:
+\code{\link[=print.metasurvey_provenance]{print.metasurvey_provenance()}},
+\code{\link[=print.metasurvey_provenance_diff]{print.metasurvey_provenance_diff()}},
+\code{\link[=provenance]{provenance()}},
+\code{\link[=provenance_diff]{provenance_diff()}}
 }
 \concept{provenance}

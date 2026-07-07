@@ -12,11 +12,6 @@ An R6 class generator (R6ClassGenerator)
 An object of class \code{RecipeWorkflow}.
 }
 \description{
-RecipeWorkflow R6 class
-
-RecipeWorkflow R6 class
-}
-\details{
 R6 class representing a publishable workflow that captures statistical
 estimations applied to survey data. Workflows reference the recipes they
 use and document the estimation calls made.
@@ -46,81 +41,82 @@ wf <- RecipeWorkflow$new(
 \code{\link{save_workflow}}, \code{\link{read_workflow}},
 \code{\link{workflow}}
 
-Other workflows: 
-\code{\link{evaluate_cv}()},
-\code{\link{print.RecipeWorkflow}()},
-\code{\link{publish_workflow}()},
-\code{\link{read_workflow}()},
-\code{\link{reproduce_workflow}()},
-\code{\link{save_workflow}()},
-\code{\link{workflow}()},
-\code{\link{workflow_from_list}()},
-\code{\link{workflow_table}()}
+Other workflows:
+\code{\link[=evaluate_cv]{evaluate_cv()}},
+\code{\link[=print.RecipeWorkflow]{print.RecipeWorkflow()}},
+\code{\link[=publish_workflow]{publish_workflow()}},
+\code{\link[=read_workflow]{read_workflow()}},
+\code{\link[=reproduce_workflow]{reproduce_workflow()}},
+\code{\link[=save_workflow]{save_workflow()}},
+\code{\link[=workflow]{workflow()}},
+\code{\link[=workflow_from_list]{workflow_from_list()}},
+\code{\link[=workflow_table]{workflow_table()}}
 }
 \concept{workflows}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{id}}{Unique identifier (character).}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{id}}{Unique identifier (character).}
 
-\item{\code{name}}{Descriptive name (character).}
+    \item{\code{name}}{Descriptive name (character).}
 
-\item{\code{description}}{Workflow description (character).}
+    \item{\code{description}}{Workflow description (character).}
 
-\item{\code{user}}{Author/owner (character).}
+    \item{\code{user}}{Author/owner (character).}
 
-\item{\code{user_info}}{RecipeUser object or NULL.}
+    \item{\code{user_info}}{RecipeUser object or NULL.}
 
-\item{\code{survey_type}}{Survey type (character).}
+    \item{\code{survey_type}}{Survey type (character).}
 
-\item{\code{edition}}{Survey edition (character).}
+    \item{\code{edition}}{Survey edition (character).}
 
-\item{\code{estimation_type}}{Character vector of estimation types used.}
+    \item{\code{estimation_type}}{Character vector of estimation types used.}
 
-\item{\code{recipe_ids}}{Character vector of recipe IDs referenced.}
+    \item{\code{recipe_ids}}{Character vector of recipe IDs referenced.}
 
-\item{\code{calls}}{List of deparsed call strings.}
+    \item{\code{calls}}{List of deparsed call strings.}
 
-\item{\code{call_metadata}}{List of lists with type,
+    \item{\code{call_metadata}}{List of lists with type,
 formula, by, description fields.}
 
-\item{\code{categories}}{List of RecipeCategory objects.}
+    \item{\code{categories}}{List of RecipeCategory objects.}
 
-\item{\code{downloads}}{Integer download count.}
+    \item{\code{downloads}}{Integer download count.}
 
-\item{\code{certification}}{RecipeCertification object.}
+    \item{\code{certification}}{RecipeCertification object.}
 
-\item{\code{version}}{Version string.}
+    \item{\code{version}}{Version string.}
 
-\item{\code{doi}}{DOI or external identifier (character|NULL).}
+    \item{\code{doi}}{DOI or external identifier (character|NULL).}
 
-\item{\code{created_at}}{Creation timestamp (character).}
+    \item{\code{created_at}}{Creation timestamp (character).}
 
-\item{\code{weight_spec}}{Named list with weight
+    \item{\code{weight_spec}}{Named list with weight
 configuration per periodicity (list|NULL).}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RecipeWorkflow-new}{\code{RecipeWorkflow$new()}}
-\item \href{#method-RecipeWorkflow-doc}{\code{RecipeWorkflow$doc()}}
-\item \href{#method-RecipeWorkflow-to_list}{\code{RecipeWorkflow$to_list()}}
-\item \href{#method-RecipeWorkflow-increment_downloads}{\code{RecipeWorkflow$increment_downloads()}}
-\item \href{#method-RecipeWorkflow-certify}{\code{RecipeWorkflow$certify()}}
-\item \href{#method-RecipeWorkflow-add_category}{\code{RecipeWorkflow$add_category()}}
-\item \href{#method-RecipeWorkflow-remove_category}{\code{RecipeWorkflow$remove_category()}}
-\item \href{#method-RecipeWorkflow-clone}{\code{RecipeWorkflow$clone()}}
-}
+  \itemize{
+    \item \href{#method-RecipeWorkflow-initialize}{\code{RecipeWorkflow$new()}}
+    \item \href{#method-RecipeWorkflow-doc}{\code{RecipeWorkflow$doc()}}
+    \item \href{#method-RecipeWorkflow-to_list}{\code{RecipeWorkflow$to_list()}}
+    \item \href{#method-RecipeWorkflow-increment_downloads}{\code{RecipeWorkflow$increment_downloads()}}
+    \item \href{#method-RecipeWorkflow-certify}{\code{RecipeWorkflow$certify()}}
+    \item \href{#method-RecipeWorkflow-add_category}{\code{RecipeWorkflow$add_category()}}
+    \item \href{#method-RecipeWorkflow-remove_category}{\code{RecipeWorkflow$remove_category()}}
+    \item \href{#method-RecipeWorkflow-clone}{\code{RecipeWorkflow$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RecipeWorkflow-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RecipeWorkflow-new}{}}}
-\subsection{Method \code{new()}}{
-Create a RecipeWorkflow object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$new(
+\if{html}{\out{<a id="method-RecipeWorkflow-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeWorkflow-initialize}{}}}
+\subsection{\code{RecipeWorkflow$new()}}{
+  Create a RecipeWorkflow object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$new(
   id = NULL,
   name,
   description = "",
@@ -139,155 +135,152 @@ Create a RecipeWorkflow object
   doi = NULL,
   created_at = NULL,
   weight_spec = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{Unique identifier}
+      \item{\code{name}}{Descriptive name}
+      \item{\code{description}}{Workflow description}
+      \item{\code{user}}{Author name}
+      \item{\code{user_info}}{RecipeUser object or NULL}
+      \item{\code{survey_type}}{Survey type}
+      \item{\code{edition}}{Survey edition}
+      \item{\code{estimation_type}}{Character vector of estimation types}
+      \item{\code{recipe_ids}}{Character vector of recipe IDs}
+      \item{\code{calls}}{List of deparsed call strings}
+      \item{\code{call_metadata}}{List of call metadata lists}
+      \item{\code{categories}}{List of RecipeCategory objects}
+      \item{\code{downloads}}{Integer download count}
+      \item{\code{certification}}{RecipeCertification or NULL}
+      \item{\code{version}}{Version string}
+      \item{\code{doi}}{DOI or NULL}
+      \item{\code{created_at}}{Timestamp string or NULL (auto-generated)}
+      \item{\code{weight_spec}}{Named list with weight configuration per periodicity}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{Unique identifier}
-
-\item{\code{name}}{Descriptive name}
-
-\item{\code{description}}{Workflow description}
-
-\item{\code{user}}{Author name}
-
-\item{\code{user_info}}{RecipeUser object or NULL}
-
-\item{\code{survey_type}}{Survey type}
-
-\item{\code{edition}}{Survey edition}
-
-\item{\code{estimation_type}}{Character vector of estimation types}
-
-\item{\code{recipe_ids}}{Character vector of recipe IDs}
-
-\item{\code{calls}}{List of deparsed call strings}
-
-\item{\code{call_metadata}}{List of call metadata lists}
-
-\item{\code{categories}}{List of RecipeCategory objects}
-
-\item{\code{downloads}}{Integer download count}
-
-\item{\code{certification}}{RecipeCertification or NULL}
-
-\item{\code{version}}{Version string}
-
-\item{\code{doi}}{DOI or NULL}
-
-\item{\code{created_at}}{Timestamp string or NULL (auto-generated)}
-
-\item{\code{weight_spec}}{Named list with weight configuration per periodicity}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-doc"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-doc}{}}}
-\subsection{Method \code{doc()}}{
-Generate documentation for this workflow
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$doc()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$doc()}}{
+  Generate documentation for this workflow
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$doc()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List with meta, recipe_ids, estimations, and estimation_types
+  }
 }
 
-\subsection{Returns}{
-List with meta, recipe_ids, estimations, and estimation_types
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-to_list"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-to_list}{}}}
-\subsection{Method \code{to_list()}}{
-Serialize to a plain list for JSON export
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$to_list()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$to_list()}}{
+  Serialize to a plain list for JSON export
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$to_list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list suitable for jsonlite::write_json
+  }
 }
 
-\subsection{Returns}{
-A list suitable for jsonlite::write_json
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-increment_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-increment_downloads}{}}}
-\subsection{Method \code{increment_downloads()}}{
-Increment the download counter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$increment_downloads()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$increment_downloads()}}{
+  Increment the download counter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$increment_downloads()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-certify"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-certify}{}}}
-\subsection{Method \code{certify()}}{
-Certify the workflow at a given level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$certify(user, level)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$certify()}}{
+  Certify the workflow at a given level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$certify(user, level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{user}}{RecipeUser who is certifying}
+      \item{\code{level}}{Character certification level}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{user}}{RecipeUser who is certifying}
-
-\item{\code{level}}{Character certification level}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-add_category"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-add_category}{}}}
-\subsection{Method \code{add_category()}}{
-Add a category to the workflow
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$add_category(category)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$add_category()}}{
+  Add a category to the workflow
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$add_category(category)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{category}}{RecipeCategory to add}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{category}}{RecipeCategory to add}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-remove_category"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-remove_category}{}}}
-\subsection{Method \code{remove_category()}}{
-Remove a category by name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$remove_category(name)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$remove_category()}}{
+  Remove a category by name
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$remove_category(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character category name to remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Character category name to remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeWorkflow-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeWorkflow-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeWorkflow$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeWorkflow$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeWorkflow$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

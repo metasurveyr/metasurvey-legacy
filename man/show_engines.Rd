@@ -17,12 +17,12 @@ engines that can be used for loading surveys.
 show_engines()
 }
 \seealso{
-Other options: 
-\code{\link{get_engine}()},
-\code{\link{lazy_default}()},
-\code{\link{set_engine}()},
-\code{\link{set_lazy_processing}()},
-\code{\link{set_use_copy}()},
-\code{\link{use_copy_default}()}
+Other options:
+\code{\link[=get_engine]{get_engine()}},
+\code{\link[=lazy_default]{lazy_default()}},
+\code{\link[=set_engine]{set_engine()}},
+\code{\link[=set_lazy_processing]{set_lazy_processing()}},
+\code{\link[=set_use_copy]{set_use_copy()}},
+\code{\link[=use_copy_default]{use_copy_default()}}
 }
 \concept{options}

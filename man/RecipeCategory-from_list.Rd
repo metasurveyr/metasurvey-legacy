@@ -2,15 +2,249 @@
 % Please edit documentation in R/RecipeCategory.R
 \name{RecipeCategory-from_list}
 \alias{RecipeCategory-from_list}
-\title{Deserialize a RecipeCategory from a list}
-\arguments{
-\item{lst}{List with name, description, parent fields, or NULL.}
-}
+\alias{RecipeCategory}
+\title{RecipeCategory}
 \value{
-RecipeCategory object or NULL
+An object of class \code{RecipeCategory}.
 }
 \description{
-Class method to reconstruct a
-RecipeCategory from its list representation.
+Standardized taxonomy for classifying recipes by domain.
+Supports hierarchical categories with parent-child relationships.
 }
-\keyword{internal}
+\section{Methods}{
+
+\describe{
+\item{$new(name, description, parent)}{Constructor
+for creating a new category}
+\item{$is_subcategory_of(ancestor_name)}{Check if
+this category is a subcategory of another}
+\item{$get_path()}{Get full hierarchical path}
+\item{$equals(other)}{Check equality by name}
+\item{$to_list()}{Serialize to list for JSON}
+\item{$print(...)}{Print category information}
+\item{$from_list(lst)}{Class method to reconstruct
+from list (see details)}
+}
+}
+
+\examples{
+# Use recipe_category() for the public API:
+cat <- recipe_category(
+  "economics", "Economic indicators"
+)
+sub <- recipe_category(
+  "labor_market", "Labor market",
+  parent = "economics"
+)
+
+}
+\seealso{
+Other tidy-api:
+\code{\link{RecipeCertification}},
+\code{\link{RecipeUser}},
+\code{\link[=add_category]{add_category()}},
+\code{\link[=certify_recipe]{certify_recipe()}},
+\code{\link[=default_categories]{default_categories()}},
+\code{\link[=filter_recipes]{filter_recipes()}},
+\code{\link[=filter_workflows]{filter_workflows()}},
+\code{\link[=find_workflows_for_recipe]{find_workflows_for_recipe()}},
+\code{\link[=list_recipes]{list_recipes()}},
+\code{\link[=list_workflows]{list_workflows()}},
+\code{\link[=rank_recipes]{rank_recipes()}},
+\code{\link[=rank_workflows]{rank_workflows()}},
+\code{\link[=recipe_category]{recipe_category()}},
+\code{\link[=recipe_certification]{recipe_certification()}},
+\code{\link[=recipe_user]{recipe_user()}},
+\code{\link[=remove_category]{remove_category()}},
+\code{\link[=search_recipes]{search_recipes()}},
+\code{\link[=search_workflows]{search_workflows()}},
+\code{\link[=set_user_info]{set_user_info()}},
+\code{\link[=set_version]{set_version()}}
+}
+\concept{tidy-api}
+\section{Public fields}{
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{Character. Category identifier.}
+
+    \item{\code{description}}{Character. Human-readable description.}
+
+    \item{\code{parent}}{RecipeCategory or NULL. Parent category for hierarchy.}
+  }
+  \if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+  \itemize{
+    \item \href{#method-RecipeCategory-initialize}{\code{RecipeCategory$new()}}
+    \item \href{#method-RecipeCategory-is_subcategory_of}{\code{RecipeCategory$is_subcategory_of()}}
+    \item \href{#method-RecipeCategory-get_path}{\code{RecipeCategory$get_path()}}
+    \item \href{#method-RecipeCategory-equals}{\code{RecipeCategory$equals()}}
+    \item \href{#method-RecipeCategory-to_list}{\code{RecipeCategory$to_list()}}
+    \item \href{#method-RecipeCategory-print}{\code{RecipeCategory$print()}}
+    \item \href{#method-RecipeCategory-from_list}{\code{RecipeCategory$from_list()}}
+    \item \href{#method-RecipeCategory-clone}{\code{RecipeCategory$clone()}}
+  }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-initialize}{}}}
+\subsection{\code{RecipeCategory$new()}}{
+  Create a new RecipeCategory
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$new(name, description, parent = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character. Category identifier (non-empty string).}
+      \item{\code{description}}{Character. Description of the category.}
+      \item{\code{parent}}{RecipeCategory or NULL. Parent category.}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-is_subcategory_of"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-is_subcategory_of}{}}}
+\subsection{\code{RecipeCategory$is_subcategory_of()}}{
+  Check if this category is a subcategory of another
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$is_subcategory_of(ancestor_name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{ancestor_name}}{Character. Name of the potential
+ancestor category.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Logical
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-get_path"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-get_path}{}}}
+\subsection{\code{RecipeCategory$get_path()}}{
+  Get full hierarchical path
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$get_path()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Character string with slash-separated path
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-equals"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-equals}{}}}
+\subsection{\code{RecipeCategory$equals()}}{
+  Check equality by name
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$equals(other)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{other}}{RecipeCategory to compare with.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Logical
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-to_list"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-to_list}{}}}
+\subsection{\code{RecipeCategory$to_list()}}{
+  Serialize to list for JSON
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$to_list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List representation
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-print"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-print}{}}}
+\subsection{\code{RecipeCategory$print()}}{
+  Print category
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-from_list"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-from_list}{}}}
+\subsection{\code{RecipeCategory$from_list()}}{
+  Deserialize a RecipeCategory from a list
+
+
+  Class method to reconstruct a
+RecipeCategory from its list representation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$from_list(lst)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lst}}{List with name, description, parent fields, or NULL}
+      \item{\code{lst}}{List with name, description, parent fields, or NULL.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    RecipeCategory object or NULL
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-RecipeCategory-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCategory-clone}{}}}
+\subsection{\code{RecipeCategory$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCategory$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+}

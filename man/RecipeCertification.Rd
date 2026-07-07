@@ -19,160 +19,169 @@ official <- recipe_certification("official", certified_by = inst)
 
 }
 \seealso{
-Other tidy-api: 
-\code{\link{RecipeCategory}},
+Other tidy-api:
+\code{\link{RecipeCategory-from_list}},
 \code{\link{RecipeUser}},
-\code{\link{add_category}()},
-\code{\link{certify_recipe}()},
-\code{\link{default_categories}()},
-\code{\link{filter_recipes}()},
-\code{\link{filter_workflows}()},
-\code{\link{find_workflows_for_recipe}()},
-\code{\link{list_recipes}()},
-\code{\link{list_workflows}()},
-\code{\link{rank_recipes}()},
-\code{\link{rank_workflows}()},
-\code{\link{recipe_category}()},
-\code{\link{recipe_certification}()},
-\code{\link{recipe_user}()},
-\code{\link{remove_category}()},
-\code{\link{search_recipes}()},
-\code{\link{search_workflows}()},
-\code{\link{set_user_info}()},
-\code{\link{set_version}()}
+\code{\link[=add_category]{add_category()}},
+\code{\link[=certify_recipe]{certify_recipe()}},
+\code{\link[=default_categories]{default_categories()}},
+\code{\link[=filter_recipes]{filter_recipes()}},
+\code{\link[=filter_workflows]{filter_workflows()}},
+\code{\link[=find_workflows_for_recipe]{find_workflows_for_recipe()}},
+\code{\link[=list_recipes]{list_recipes()}},
+\code{\link[=list_workflows]{list_workflows()}},
+\code{\link[=rank_recipes]{rank_recipes()}},
+\code{\link[=rank_workflows]{rank_workflows()}},
+\code{\link[=recipe_category]{recipe_category()}},
+\code{\link[=recipe_certification]{recipe_certification()}},
+\code{\link[=recipe_user]{recipe_user()}},
+\code{\link[=remove_category]{remove_category()}},
+\code{\link[=search_recipes]{search_recipes()}},
+\code{\link[=search_workflows]{search_workflows()}},
+\code{\link[=set_user_info]{set_user_info()}},
+\code{\link[=set_version]{set_version()}}
 }
 \concept{tidy-api}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{level}}{Character. Certification level.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{level}}{Character. Certification level.}
 
-\item{\code{certified_by}}{RecipeUser or NULL. The certifying user.}
+    \item{\code{certified_by}}{RecipeUser or NULL. The certifying user.}
 
-\item{\code{certified_at}}{POSIXct. Timestamp of certification.}
+    \item{\code{certified_at}}{POSIXct. Timestamp of certification.}
 
-\item{\code{notes}}{Character or NULL. Additional notes.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{notes}}{Character or NULL. Additional notes.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RecipeCertification-new}{\code{RecipeCertification$new()}}
-\item \href{#method-RecipeCertification-numeric_level}{\code{RecipeCertification$numeric_level()}}
-\item \href{#method-RecipeCertification-is_at_least}{\code{RecipeCertification$is_at_least()}}
-\item \href{#method-RecipeCertification-to_list}{\code{RecipeCertification$to_list()}}
-\item \href{#method-RecipeCertification-print}{\code{RecipeCertification$print()}}
-\item \href{#method-RecipeCertification-clone}{\code{RecipeCertification$clone()}}
-}
+  \itemize{
+    \item \href{#method-RecipeCertification-initialize}{\code{RecipeCertification$new()}}
+    \item \href{#method-RecipeCertification-numeric_level}{\code{RecipeCertification$numeric_level()}}
+    \item \href{#method-RecipeCertification-is_at_least}{\code{RecipeCertification$is_at_least()}}
+    \item \href{#method-RecipeCertification-to_list}{\code{RecipeCertification$to_list()}}
+    \item \href{#method-RecipeCertification-print}{\code{RecipeCertification$print()}}
+    \item \href{#method-RecipeCertification-clone}{\code{RecipeCertification$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RecipeCertification-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RecipeCertification-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new RecipeCertification
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$new(
+\if{html}{\out{<a id="method-RecipeCertification-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeCertification-initialize}{}}}
+\subsection{\code{RecipeCertification$new()}}{
+  Create a new RecipeCertification
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$new(
   level,
   certified_by = NULL,
   notes = NULL,
   certified_at = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{Character. One of "community", "reviewed", "official".}
+      \item{\code{certified_by}}{RecipeUser or NULL. Required for reviewed/official.}
+      \item{\code{notes}}{Character or NULL. Additional notes.}
+      \item{\code{certified_at}}{POSIXct or NULL. Auto-set if NULL.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{Character. One of "community", "reviewed", "official".}
-
-\item{\code{certified_by}}{RecipeUser or NULL. Required for reviewed/official.}
-
-\item{\code{notes}}{Character or NULL. Additional notes.}
-
-\item{\code{certified_at}}{POSIXct or NULL. Auto-set if NULL.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeCertification-numeric_level"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeCertification-numeric_level}{}}}
-\subsection{Method \code{numeric_level()}}{
-Get numeric level for ordering
+\subsection{\code{RecipeCertification$numeric_level()}}{
+  Get numeric level for ordering
 (1=community, 2=reviewed, 3=official)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$numeric_level()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$numeric_level()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Integer
+  }
 }
 
-\subsection{Returns}{
-Integer
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeCertification-is_at_least"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeCertification-is_at_least}{}}}
-\subsection{Method \code{is_at_least()}}{
-Check if certification is at least a given level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$is_at_least(level)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeCertification$is_at_least()}}{
+  Check if certification is at least a given level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$is_at_least(level)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{level}}{Character. Level to compare against.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Logical
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{level}}{Character. Level to compare against.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Logical
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeCertification-to_list"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeCertification-to_list}{}}}
-\subsection{Method \code{to_list()}}{
-Serialize to list for JSON
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$to_list()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeCertification$to_list()}}{
+  Serialize to list for JSON
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$to_list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List representation
+  }
 }
 
-\subsection{Returns}{
-List representation
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeCertification-print"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeCertification-print}{}}}
-\subsection{Method \code{print()}}{
-Print certification badge
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeCertification$print()}}{
+  Print certification badge
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments (not used)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeCertification-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeCertification-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeCertification$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeCertification$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeCertification$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -23,15 +23,15 @@ lst <- list(
 wf <- workflow_from_list(lst)
 }
 \seealso{
-Other workflows: 
+Other workflows:
 \code{\link{RecipeWorkflow-class}},
-\code{\link{evaluate_cv}()},
-\code{\link{print.RecipeWorkflow}()},
-\code{\link{publish_workflow}()},
-\code{\link{read_workflow}()},
-\code{\link{reproduce_workflow}()},
-\code{\link{save_workflow}()},
-\code{\link{workflow}()},
-\code{\link{workflow_table}()}
+\code{\link[=evaluate_cv]{evaluate_cv()}},
+\code{\link[=print.RecipeWorkflow]{print.RecipeWorkflow()}},
+\code{\link[=publish_workflow]{publish_workflow()}},
+\code{\link[=read_workflow]{read_workflow()}},
+\code{\link[=reproduce_workflow]{reproduce_workflow()}},
+\code{\link[=save_workflow]{save_workflow()}},
+\code{\link[=workflow]{workflow()}},
+\code{\link[=workflow_table]{workflow_table()}}
 }
 \concept{workflows}

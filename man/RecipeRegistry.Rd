@@ -10,315 +10,343 @@ discovery, ranking, and filtering.
 \keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RecipeRegistry-new}{\code{RecipeRegistry$new()}}
-\item \href{#method-RecipeRegistry-register}{\code{RecipeRegistry$register()}}
-\item \href{#method-RecipeRegistry-unregister}{\code{RecipeRegistry$unregister()}}
-\item \href{#method-RecipeRegistry-search}{\code{RecipeRegistry$search()}}
-\item \href{#method-RecipeRegistry-filter}{\code{RecipeRegistry$filter()}}
-\item \href{#method-RecipeRegistry-rank_by_downloads}{\code{RecipeRegistry$rank_by_downloads()}}
-\item \href{#method-RecipeRegistry-rank_by_certification}{\code{RecipeRegistry$rank_by_certification()}}
-\item \href{#method-RecipeRegistry-get}{\code{RecipeRegistry$get()}}
-\item \href{#method-RecipeRegistry-list_all}{\code{RecipeRegistry$list_all()}}
-\item \href{#method-RecipeRegistry-save}{\code{RecipeRegistry$save()}}
-\item \href{#method-RecipeRegistry-load}{\code{RecipeRegistry$load()}}
-\item \href{#method-RecipeRegistry-list_by_user}{\code{RecipeRegistry$list_by_user()}}
-\item \href{#method-RecipeRegistry-list_by_institution}{\code{RecipeRegistry$list_by_institution()}}
-\item \href{#method-RecipeRegistry-stats}{\code{RecipeRegistry$stats()}}
-\item \href{#method-RecipeRegistry-print}{\code{RecipeRegistry$print()}}
-\item \href{#method-RecipeRegistry-clone}{\code{RecipeRegistry$clone()}}
-}
+  \itemize{
+    \item \href{#method-RecipeRegistry-initialize}{\code{RecipeRegistry$new()}}
+    \item \href{#method-RecipeRegistry-register}{\code{RecipeRegistry$register()}}
+    \item \href{#method-RecipeRegistry-unregister}{\code{RecipeRegistry$unregister()}}
+    \item \href{#method-RecipeRegistry-search}{\code{RecipeRegistry$search()}}
+    \item \href{#method-RecipeRegistry-filter}{\code{RecipeRegistry$filter()}}
+    \item \href{#method-RecipeRegistry-rank_by_downloads}{\code{RecipeRegistry$rank_by_downloads()}}
+    \item \href{#method-RecipeRegistry-rank_by_certification}{\code{RecipeRegistry$rank_by_certification()}}
+    \item \href{#method-RecipeRegistry-get}{\code{RecipeRegistry$get()}}
+    \item \href{#method-RecipeRegistry-list_all}{\code{RecipeRegistry$list_all()}}
+    \item \href{#method-RecipeRegistry-save}{\code{RecipeRegistry$save()}}
+    \item \href{#method-RecipeRegistry-load}{\code{RecipeRegistry$load()}}
+    \item \href{#method-RecipeRegistry-list_by_user}{\code{RecipeRegistry$list_by_user()}}
+    \item \href{#method-RecipeRegistry-list_by_institution}{\code{RecipeRegistry$list_by_institution()}}
+    \item \href{#method-RecipeRegistry-stats}{\code{RecipeRegistry$stats()}}
+    \item \href{#method-RecipeRegistry-print}{\code{RecipeRegistry$print()}}
+    \item \href{#method-RecipeRegistry-clone}{\code{RecipeRegistry$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RecipeRegistry-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RecipeRegistry-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new empty RecipeRegistry
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-RecipeRegistry-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RecipeRegistry-initialize}{}}}
+\subsection{\code{RecipeRegistry$new()}}{
+  Create a new empty RecipeRegistry
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$new()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-register"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-register}{}}}
-\subsection{Method \code{register()}}{
-Register a recipe in the catalog
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$register(recipe)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$register()}}{
+  Register a recipe in the catalog
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$register(recipe)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe}}{Recipe object to register}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe}}{Recipe object to register}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-unregister"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-unregister}{}}}
-\subsection{Method \code{unregister()}}{
-Remove a recipe from the catalog by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$unregister(recipe_id)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$unregister()}}{
+  Remove a recipe from the catalog by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$unregister(recipe_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe_id}}{Recipe id to remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe_id}}{Recipe id to remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-search"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-search}{}}}
-\subsection{Method \code{search()}}{
-Search recipes by name or description (case-insensitive)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$search(query)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$search()}}{
+  Search recipes by name or description (case-insensitive)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$search(query)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{query}}{Character search query}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{query}}{Character search query}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-filter"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-filter}{}}}
-\subsection{Method \code{filter()}}{
-Filter recipes by criteria
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$filter(
+\subsection{\code{RecipeRegistry$filter()}}{
+  Filter recipes by criteria
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$filter(
   survey_type = NULL,
   edition = NULL,
   category = NULL,
   certification_level = NULL,
   topic = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{survey_type}}{Character survey type or NULL}
+      \item{\code{edition}}{Character edition or NULL}
+      \item{\code{category}}{Character category name or NULL}
+      \item{\code{certification_level}}{Character certification level or NULL}
+      \item{\code{topic}}{Character topic name or NULL}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{survey_type}}{Character survey type or NULL}
-
-\item{\code{edition}}{Character edition or NULL}
-
-\item{\code{category}}{Character category name or NULL}
-
-\item{\code{certification_level}}{Character certification level or NULL}
-
-\item{\code{topic}}{Character topic name or NULL}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-rank_by_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-rank_by_downloads}{}}}
-\subsection{Method \code{rank_by_downloads()}}{
-Rank recipes by download count (descending)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$rank_by_downloads(n = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$rank_by_downloads()}}{
+  Rank recipes by download count (descending)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$rank_by_downloads(n = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Integer max number to return, or NULL for all}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of Recipe objects sorted by downloads
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Integer max number to return, or NULL for all}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of Recipe objects sorted by downloads
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-rank_by_certification"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-rank_by_certification}{}}}
-\subsection{Method \code{rank_by_certification()}}{
-Rank recipes by certification level then downloads
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$rank_by_certification(n = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$rank_by_certification()}}{
+  Rank recipes by certification level then downloads
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$rank_by_certification(n = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Integer max number to return, or NULL for all}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of Recipe objects sorted by cert level then downloads
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Integer max number to return, or NULL for all}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of Recipe objects sorted by cert level then downloads
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-get"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-get}{}}}
-\subsection{Method \code{get()}}{
-Get a single recipe by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$get(recipe_id)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$get()}}{
+  Get a single recipe by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$get(recipe_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe_id}}{Recipe id}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Recipe object or NULL
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe_id}}{Recipe id}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Recipe object or NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-list_all"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-list_all}{}}}
-\subsection{Method \code{list_all()}}{
-List all registered recipes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$list_all()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$list_all()}}{
+  List all registered recipes
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$list_all()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of all Recipe objects
+  }
 }
 
-\subsection{Returns}{
-List of all Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-save"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-save}{}}}
-\subsection{Method \code{save()}}{
-Save the registry catalog to a JSON file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$save(path)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$save()}}{
+  Save the registry catalog to a JSON file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$save(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{Character file path}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{Character file path}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-load"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-load}{}}}
-\subsection{Method \code{load()}}{
-Load a registry catalog from a JSON file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$load(path)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$load()}}{
+  Load a registry catalog from a JSON file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$load(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{Character file path}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{Character file path}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-list_by_user"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-list_by_user}{}}}
-\subsection{Method \code{list_by_user()}}{
-List recipes by author user name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$list_by_user(user_name)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$list_by_user()}}{
+  List recipes by author user name
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$list_by_user(user_name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{user_name}}{Character user name}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{user_name}}{Character user name}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-list_by_institution"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-list_by_institution}{}}}
-\subsection{Method \code{list_by_institution()}}{
-List recipes by institution (including members)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$list_by_institution(institution_name)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$list_by_institution()}}{
+  List recipes by institution (including members)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$list_by_institution(institution_name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{institution_name}}{Character institution name}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching Recipe objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{institution_name}}{Character institution name}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching Recipe objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-stats"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-stats}{}}}
-\subsection{Method \code{stats()}}{
-Get registry statistics
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$stats()}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$stats()}}{
+  Get registry statistics
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$stats()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List with total, by_category, by_certification counts
+  }
 }
 
-\subsection{Returns}{
-List with total, by_category, by_certification counts
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-print"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-print}{}}}
-\subsection{Method \code{print()}}{
-Print registry summary
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$print()}}{
+  Print registry summary
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments (not used)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RecipeRegistry-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RecipeRegistry-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RecipeRegistry$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RecipeRegistry$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RecipeRegistry$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -68,11 +68,11 @@ get_implantation(panel)
 \code{\link{load_panel_survey}} for loading rotating panels
 \code{\link{workflow}} for analysis with the implantation survey
 
-Other panel-surveys: 
+Other panel-surveys:
 \code{\link{PoolSurvey}},
 \code{\link{RotativePanelSurvey}},
-\code{\link{extract_surveys}()},
-\code{\link{get_follow_up}()}
+\code{\link[=extract_surveys]{extract_surveys()}},
+\code{\link[=get_follow_up]{get_follow_up()}}
 }
 \concept{panel-surveys}
 \keyword{panel-survey}

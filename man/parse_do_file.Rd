@@ -30,10 +30,10 @@ cmds[[1]]$cmd
 }
 }
 \seealso{
-Other transpiler: 
-\code{\link{parse_stata_labels}()},
-\code{\link{transpile_coverage}()},
-\code{\link{transpile_stata}()},
-\code{\link{transpile_stata_module}()}
+Other transpiler:
+\code{\link[=parse_stata_labels]{parse_stata_labels()}},
+\code{\link[=transpile_coverage]{transpile_coverage()}},
+\code{\link[=transpile_stata]{transpile_stata()}},
+\code{\link[=transpile_stata_module]{transpile_stata_module()}}
 }
 \concept{transpiler}

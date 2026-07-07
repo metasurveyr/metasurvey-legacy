@@ -71,6 +71,7 @@ activeTarget
 activeTrigger
 actividad
 Actividad
+Actividades
 activo
 actualizaci
 actualización
@@ -249,6 +250,7 @@ apdoroju
 apellido
 aperturas
 api
+API's
 aplica
 aplicable
 Aplicacion
@@ -415,6 +417,7 @@ babbbc
 bacbe
 backface
 Backlinks
+backlinks
 badce
 bae
 bajo
@@ -694,6 +697,7 @@ cec
 ced
 Censo
 centerOffset
+CEPAL
 cero
 cerrado
 certificacion
@@ -788,6 +792,7 @@ cM
 cmake
 cmap
 CMD
+cmd
 CmZ
 cn
 Cn
@@ -850,6 +855,7 @@ compartido
 compartir
 Compartir
 CompartirIgual
+compat
 compatibilidad
 compatibilizaci
 compatibilizacion
@@ -1286,6 +1292,7 @@ desde
 desea
 desean
 desempleo
+Deserialize
 desglose
 desigualdad
 Desocupado
@@ -1477,6 +1484,7 @@ dt
 dT
 Dt
 DT
+dta
 dtNVNzvjLu
 dtplyr
 dTZ
@@ -1632,6 +1640,7 @@ encontrados
 encontrar
 encontrarla
 Encontraron
+Encuensta
 encuentra
 encuentren
 Encuesta
@@ -2047,6 +2056,7 @@ fORYtLTgKGwoKCjgaGg
 forzar
 Fow
 fP
+FPC
 fQC
 FqtuEfe
 fragmento
@@ -2619,6 +2629,8 @@ innerHTML
 innerText
 innerWidth
 Innovaci
+Innovacion
+Innovación
 innovador
 innovadora
 inocua
@@ -3312,6 +3324,7 @@ mLc
 mlr
 MLUOl
 MmM
+MMYYYY
 mn
 Modalidad
 modelo
@@ -3330,6 +3343,7 @@ modulares
 momento
 MONGO
 Mongo
+mongo
 mongodb
 mongolite
 mongosh
@@ -3561,6 +3575,7 @@ nThEAv
 nuestras
 nueva
 nuevos
+NULLs
 Nulo
 num
 numericos
@@ -3795,6 +3810,7 @@ paquete
 Paquete
 paquetes
 paradigma
+parallelization
 param
 parametro
 parcial
@@ -3881,6 +3897,8 @@ personalizados
 pertinente
 período
 pesar
+pesoano
+pesomes
 pF
 Pfisterer
 pG
@@ -3983,6 +4001,7 @@ posicional
 posición
 positionToggle
 positivas
+POSIXct
 posteriores
 Posteriormente
 postulación
@@ -4270,6 +4289,7 @@ rb
 Rbuildignore
 rC
 rcoreteam
+rds
 Rd̥
 readerMode
 README
@@ -4307,6 +4327,7 @@ recoding
 recognises
 Recomendacion
 recomendado
+Recomended
 recomienda
 recompilar
 Reconstruir
@@ -4407,6 +4428,7 @@ reporten
 representa
 representacion
 representativas
+representativeness
 reprex
 reproducci
 reproducibilidad
@@ -4527,6 +4549,7 @@ ropensci
 Rosas
 Rosati
 rotateY
+rotative
 RotativePanelSurvey
 rotativo
 rotativos
@@ -4555,6 +4578,7 @@ RsWUL
 rT
 rtaIV
 rtl
+rtx
 ru
 Rubro
 rud
@@ -4598,6 +4622,7 @@ Santi
 sapply
 sarase
 SAU
+sav
 saveInitialAttribute
 sbnM
 sBvp
@@ -4663,6 +4688,7 @@ selectMenuItem
 selectNodeContents
 selectorsToSync
 selectstart
+Semestral
 semibold
 semver
 semántica
@@ -4811,6 +4837,7 @@ sourceforge
 sourceMappingURL
 sp
 sP
+specifing
 Spitzer
 spotify
 spr
@@ -4836,6 +4863,7 @@ startsWith
 STATA
 stata
 Stata
+StataCommand
 StataCorp
 stateful
 Statistique
@@ -4884,6 +4912,7 @@ superficie
 Superficie
 supportPointerEvents
 sur
+surveyrep
 sus
 sustantivo
 sv
@@ -5069,6 +5098,7 @@ toggler
 toggleTab
 toggleTitle
 toHtml
+tokenization
 toLowerCase
 toma
 tomaria
@@ -5654,6 +5684,7 @@ Xs
 xsA
 xt
 Xt
+xtsx
 xu
 xU
 Xu

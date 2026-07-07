@@ -22,10 +22,10 @@ api_delete_comment("c_abc123")
 }
 }
 \seealso{
-Other api-comments: 
-\code{\link{api_comment_recipe}()},
-\code{\link{api_comment_workflow}()},
-\code{\link{api_get_recipe_comments}()},
-\code{\link{api_get_workflow_comments}()}
+Other api-comments:
+\code{\link[=api_comment_recipe]{api_comment_recipe()}},
+\code{\link[=api_comment_workflow]{api_comment_workflow()}},
+\code{\link[=api_get_recipe_comments]{api_get_recipe_comments()}},
+\code{\link[=api_get_workflow_comments]{api_get_workflow_comments()}}
 }
 \concept{api-comments}

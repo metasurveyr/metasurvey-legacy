@@ -24,11 +24,11 @@ api_login("ana@example.com", "s3cret")
 }
 }
 \seealso{
-Other api-auth: 
-\code{\link{api_logout}()},
-\code{\link{api_me}()},
-\code{\link{api_refresh_token}()},
-\code{\link{api_register}()},
-\code{\link{configure_api}()}
+Other api-auth:
+\code{\link[=api_logout]{api_logout()}},
+\code{\link[=api_me]{api_me()}},
+\code{\link[=api_refresh_token]{api_refresh_token()}},
+\code{\link[=api_register]{api_register()}},
+\code{\link[=configure_api]{configure_api()}}
 }
 \concept{api-auth}

@@ -19,60 +19,61 @@ complete workflow.
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{The name of the step.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{The name of the step.}
 
-\item{\code{edition}}{The edition of the survey associated with the step.}
+    \item{\code{edition}}{The edition of the survey associated with the step.}
 
-\item{\code{survey_type}}{The type of survey associated with the step.}
+    \item{\code{survey_type}}{The type of survey associated with the step.}
 
-\item{\code{type}}{The type of operation performed by the step
+    \item{\code{type}}{The type of operation performed by the step
 (e.g., "compute", "recode").}
 
-\item{\code{new_var}}{The name of the new variable created by
+    \item{\code{new_var}}{The name of the new variable created by
 the step, if applicable.}
 
-\item{\code{exprs}}{A list of expressions defining the step's
+    \item{\code{exprs}}{A list of expressions defining the step's
 operations.}
 
-\item{\code{call}}{The function call associated with the step.}
+    \item{\code{call}}{The function call associated with the step.}
 
-\item{\code{svy_before}}{Deprecated. Always NULL to prevent memory
+    \item{\code{svy_before}}{Deprecated. Always NULL to prevent memory
 retention chains. Kept for backwards compatibility.}
 
-\item{\code{default_engine}}{The default engine used for
+    \item{\code{default_engine}}{The default engine used for
 processing the step.}
 
-\item{\code{depends_on}}{A list of variables that the step
+    \item{\code{depends_on}}{A list of variables that the step
 depends on.}
 
-\item{\code{comment}}{Comments or notes about the step.}
+    \item{\code{comment}}{Comments or notes about the step.}
 
-\item{\code{bake}}{A logical value indicating whether the step
+    \item{\code{bake}}{A logical value indicating whether the step
 has been executed.}
 
-\item{\code{by_vars}}{Character vector of grouping variables or NULL.}
+    \item{\code{by_vars}}{Character vector of grouping variables or NULL.}
 
-\item{\code{recode_opts}}{Named list of evaluated recode options
+    \item{\code{recode_opts}}{Named list of evaluated recode options
 (\code{.default}, \code{ordered}, \code{.to_factor}) or NULL.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Step-new}{\code{Step$new()}}
-\item \href{#method-Step-clone}{\code{Step$clone()}}
-}
+  \itemize{
+    \item \href{#method-Step-initialize}{\code{Step$new()}}
+    \item \href{#method-Step-clone}{\code{Step$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Step-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Step-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new Step object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Step$new(
+\if{html}{\out{<a id="method-Step-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Step-initialize}{}}}
+\subsection{\code{Step$new()}}{
+  Create a new Step object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Step$new(
   name,
   edition,
   survey_type,
@@ -88,71 +89,60 @@ Create a new Step object
   comments = NULL,
   by_vars = NULL,
   recode_opts = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the step.}
-
-\item{\code{edition}}{The edition of the survey associated with the step.}
-
-\item{\code{survey_type}}{The type of survey associated with the step.}
-
-\item{\code{type}}{The type of operation performed by the
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the step.}
+      \item{\code{edition}}{The edition of the survey associated with the step.}
+      \item{\code{survey_type}}{The type of survey associated with the step.}
+      \item{\code{type}}{The type of operation performed by the
 step (e.g., "compute" or "recode").}
-
-\item{\code{new_var}}{The name of the new variable created
+      \item{\code{new_var}}{The name of the new variable created
 by the step, if applicable.}
-
-\item{\code{exprs}}{A list of expressions defining the
+      \item{\code{exprs}}{A list of expressions defining the
 step's operations.}
-
-\item{\code{call}}{The function call associated with the
+      \item{\code{call}}{The function call associated with the
 step.}
-
-\item{\code{svy_before}}{Deprecated. Ignored (always set to
+      \item{\code{svy_before}}{Deprecated. Ignored (always set to
 NULL) to prevent memory retention chains.}
-
-\item{\code{default_engine}}{The default engine used for
+      \item{\code{default_engine}}{The default engine used for
 processing the step.}
-
-\item{\code{depends_on}}{A list of variables that the step
+      \item{\code{depends_on}}{A list of variables that the step
 depends on.}
-
-\item{\code{comment}}{Comments or notes about the step.}
-
-\item{\code{bake}}{A logical value indicating whether the
+      \item{\code{comment}}{Comments or notes about the step.}
+      \item{\code{bake}}{A logical value indicating whether the
 step has been executed.}
-
-\item{\code{comments}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{comment} instead.}
-
-\item{\code{by_vars}}{Character vector of grouping variables for
+      \item{\code{comments}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{comment} instead.}
+      \item{\code{by_vars}}{Character vector of grouping variables for
 grouped computations, or NULL.}
-
-\item{\code{recode_opts}}{Named list of evaluated recode options
+      \item{\code{recode_opts}}{Named list of evaluated recode options
 (\code{.default}, \code{ordered}, \code{.to_factor}), or NULL for
 non-recode steps.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Step-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Step-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Step$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Step$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Step$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

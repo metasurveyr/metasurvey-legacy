@@ -25,12 +25,12 @@ extract_time_pattern("2023")
 extract_time_pattern("2023-06")
 }
 \seealso{
-Other survey-loading: 
-\code{\link{group_dates}()},
-\code{\link{load_panel_survey}()},
-\code{\link{load_survey}()},
-\code{\link{load_survey_example}()},
-\code{\link{validate_time_pattern}()}
+Other survey-loading:
+\code{\link[=group_dates]{group_dates()}},
+\code{\link[=load_panel_survey]{load_panel_survey()}},
+\code{\link[=load_survey]{load_survey()}},
+\code{\link[=load_survey_example]{load_survey_example()}},
+\code{\link[=validate_time_pattern]{validate_time_pattern()}}
 }
 \concept{survey-loading}
 \keyword{utils}

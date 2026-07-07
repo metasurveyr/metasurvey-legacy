@@ -31,63 +31,64 @@ panel <- RotativePanelSurvey$new(
 
 }
 \seealso{
-Other panel-surveys: 
+Other panel-surveys:
 \code{\link{PoolSurvey}},
-\code{\link{extract_surveys}()},
-\code{\link{get_follow_up}()},
-\code{\link{get_implantation}()}
+\code{\link[=extract_surveys]{extract_surveys()}},
+\code{\link[=get_follow_up]{get_follow_up()}},
+\code{\link[=get_implantation]{get_implantation()}}
 }
 \concept{panel-surveys}
 \keyword{panel-survey}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{implantation}}{A survey object representing the implantation survey.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{implantation}}{A survey object representing the implantation survey.}
 
-\item{\code{follow_up}}{A list of survey objects representing the follow-up surveys.}
+    \item{\code{follow_up}}{A list of survey objects representing the follow-up surveys.}
 
-\item{\code{type}}{A string indicating the type of the survey.}
+    \item{\code{type}}{A string indicating the type of the survey.}
 
-\item{\code{default_engine}}{A string specifying the default
+    \item{\code{default_engine}}{A string specifying the default
 engine used for processing.}
 
-\item{\code{steps}}{A list of steps applied to the survey.}
+    \item{\code{steps}}{A list of steps applied to the survey.}
 
-\item{\code{recipes}}{A list of recipes associated with the survey.}
+    \item{\code{recipes}}{A list of recipes associated with the survey.}
 
-\item{\code{workflows}}{A list of workflows associated with the survey.}
+    \item{\code{workflows}}{A list of workflows associated with the survey.}
 
-\item{\code{design}}{A design object for the survey.}
+    \item{\code{design}}{A design object for the survey.}
 
-\item{\code{periodicity}}{A list containing the periodicity of
+    \item{\code{periodicity}}{A list containing the periodicity of
 the implantation and follow-up surveys.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-RotativePanelSurvey-new}{\code{RotativePanelSurvey$new()}}
-\item \href{#method-RotativePanelSurvey-get_implantation}{\code{RotativePanelSurvey$get_implantation()}}
-\item \href{#method-RotativePanelSurvey-get_follow_up}{\code{RotativePanelSurvey$get_follow_up()}}
-\item \href{#method-RotativePanelSurvey-get_type}{\code{RotativePanelSurvey$get_type()}}
-\item \href{#method-RotativePanelSurvey-get_default_engine}{\code{RotativePanelSurvey$get_default_engine()}}
-\item \href{#method-RotativePanelSurvey-get_steps}{\code{RotativePanelSurvey$get_steps()}}
-\item \href{#method-RotativePanelSurvey-get_recipes}{\code{RotativePanelSurvey$get_recipes()}}
-\item \href{#method-RotativePanelSurvey-get_workflows}{\code{RotativePanelSurvey$get_workflows()}}
-\item \href{#method-RotativePanelSurvey-get_design}{\code{RotativePanelSurvey$get_design()}}
-\item \href{#method-RotativePanelSurvey-print}{\code{RotativePanelSurvey$print()}}
-\item \href{#method-RotativePanelSurvey-clone}{\code{RotativePanelSurvey$clone()}}
-}
+  \itemize{
+    \item \href{#method-RotativePanelSurvey-initialize}{\code{RotativePanelSurvey$new()}}
+    \item \href{#method-RotativePanelSurvey-get_implantation}{\code{RotativePanelSurvey$get_implantation()}}
+    \item \href{#method-RotativePanelSurvey-get_follow_up}{\code{RotativePanelSurvey$get_follow_up()}}
+    \item \href{#method-RotativePanelSurvey-get_type}{\code{RotativePanelSurvey$get_type()}}
+    \item \href{#method-RotativePanelSurvey-get_default_engine}{\code{RotativePanelSurvey$get_default_engine()}}
+    \item \href{#method-RotativePanelSurvey-get_steps}{\code{RotativePanelSurvey$get_steps()}}
+    \item \href{#method-RotativePanelSurvey-get_recipes}{\code{RotativePanelSurvey$get_recipes()}}
+    \item \href{#method-RotativePanelSurvey-get_workflows}{\code{RotativePanelSurvey$get_workflows()}}
+    \item \href{#method-RotativePanelSurvey-get_design}{\code{RotativePanelSurvey$get_design()}}
+    \item \href{#method-RotativePanelSurvey-print}{\code{RotativePanelSurvey$print()}}
+    \item \href{#method-RotativePanelSurvey-clone}{\code{RotativePanelSurvey$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RotativePanelSurvey-new"></a>}}
-\if{latex}{\out{\hypertarget{method-RotativePanelSurvey-new}{}}}
-\subsection{Method \code{new()}}{
-Initializes a new instance of the
+\if{html}{\out{<a id="method-RotativePanelSurvey-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-RotativePanelSurvey-initialize}{}}}
+\subsection{\code{RotativePanelSurvey$new()}}{
+  Initializes a new instance of the
 RotativePanelSurvey class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$new(
   implantation,
   follow_up,
   type,
@@ -96,185 +97,195 @@ RotativePanelSurvey class.
   recipes,
   workflows,
   design
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{implantation}}{A survey object representing the implantation survey.}
-
-\item{\code{follow_up}}{A list of survey objects representing
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{implantation}}{A survey object representing the implantation survey.}
+      \item{\code{follow_up}}{A list of survey objects representing
 the follow-up surveys.}
-
-\item{\code{type}}{A string indicating the type of the survey.}
-
-\item{\code{default_engine}}{A string specifying the default
+      \item{\code{type}}{A string indicating the type of the survey.}
+      \item{\code{default_engine}}{A string specifying the default
 engine used for processing.}
-
-\item{\code{steps}}{A list of steps applied to the survey.}
-
-\item{\code{recipes}}{A list of recipes associated with the survey.}
-
-\item{\code{workflows}}{A list of workflows associated with the survey.}
-
-\item{\code{design}}{A design object for the survey.}
+      \item{\code{steps}}{A list of steps applied to the survey.}
+      \item{\code{recipes}}{A list of recipes associated with the survey.}
+      \item{\code{workflows}}{A list of workflows associated with the survey.}
+      \item{\code{design}}{A design object for the survey.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_implantation"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_implantation}{}}}
-\subsection{Method \code{get_implantation()}}{
-Retrieves the implantation survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_implantation()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_implantation()}}{
+  Retrieves the implantation survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_implantation()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A survey object representing the implantation survey.
+  }
 }
 
-\subsection{Returns}{
-A survey object representing the implantation survey.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_follow_up"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_follow_up}{}}}
-\subsection{Method \code{get_follow_up()}}{
-Retrieves the follow-up surveys.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_follow_up(
+\subsection{\code{RotativePanelSurvey$get_follow_up()}}{
+  Retrieves the follow-up surveys.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_follow_up(
   index = length(self$follow_up),
   monthly = NULL,
   quarterly = NULL,
   semiannual = NULL,
   annual = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{index}}{An integer specifying the index of the
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{index}}{An integer specifying the index of the
 follow-up survey to retrieve.}
-
-\item{\code{monthly}}{A vector of integers specifying monthly intervals.}
-
-\item{\code{quarterly}}{A vector of integers specifying quarterly intervals.}
-
-\item{\code{semiannual}}{A vector of integers specifying semiannual intervals.}
-
-\item{\code{annual}}{A vector of integers specifying annual intervals.}
+      \item{\code{monthly}}{A vector of integers specifying monthly intervals.}
+      \item{\code{quarterly}}{A vector of integers specifying quarterly intervals.}
+      \item{\code{semiannual}}{A vector of integers specifying semiannual intervals.}
+      \item{\code{annual}}{A vector of integers specifying annual intervals.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list of follow-up surveys matching the specified criteria.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list of follow-up surveys matching the specified criteria.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_type"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_type}{}}}
-\subsection{Method \code{get_type()}}{
-Retrieves the type of the survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_type()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_type()}}{
+  Retrieves the type of the survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_type()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A string indicating the type of the survey.
+  }
 }
 
-\subsection{Returns}{
-A string indicating the type of the survey.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_default_engine"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_default_engine}{}}}
-\subsection{Method \code{get_default_engine()}}{
-Retrieves the default engine used for processing.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_default_engine()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_default_engine()}}{
+  Retrieves the default engine used for processing.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_default_engine()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A string specifying the default engine.
+  }
 }
 
-\subsection{Returns}{
-A string specifying the default engine.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_steps"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_steps}{}}}
-\subsection{Method \code{get_steps()}}{
-Retrieves the steps applied to the survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_steps()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_steps()}}{
+  Retrieves the steps applied to the survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_steps()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list containing the steps for the
+implantation and follow-up surveys.
+  }
 }
 
-\subsection{Returns}{
-A list containing the steps for the
-implantation and follow-up surveys.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_recipes"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_recipes}{}}}
-\subsection{Method \code{get_recipes()}}{
-Retrieves the recipes associated with the survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_recipes()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_recipes()}}{
+  Retrieves the recipes associated with the survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_recipes()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list of recipes.
+  }
 }
 
-\subsection{Returns}{
-A list of recipes.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_workflows"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_workflows}{}}}
-\subsection{Method \code{get_workflows()}}{
-Retrieves the workflows associated with the survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_workflows()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_workflows()}}{
+  Retrieves the workflows associated with the survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_workflows()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list of workflows.
+  }
 }
 
-\subsection{Returns}{
-A list of workflows.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-get_design"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-get_design}{}}}
-\subsection{Method \code{get_design()}}{
-Retrieves the design object for the survey.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$get_design()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$get_design()}}{
+  Retrieves the design object for the survey.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$get_design()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A design object.
+  }
 }
 
-\subsection{Returns}{
-A design object.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-print"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-print}{}}}
-\subsection{Method \code{print()}}{
-Prints metadata about the RotativePanelSurvey object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$print()}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$print()}}{
+  Prints metadata about the RotativePanelSurvey object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RotativePanelSurvey-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-RotativePanelSurvey-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RotativePanelSurvey$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{RotativePanelSurvey$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{RotativePanelSurvey$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

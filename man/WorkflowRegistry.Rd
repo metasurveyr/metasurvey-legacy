@@ -10,271 +10,296 @@ discovery, ranking, and filtering.
 \keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-WorkflowRegistry-new}{\code{WorkflowRegistry$new()}}
-\item \href{#method-WorkflowRegistry-register}{\code{WorkflowRegistry$register()}}
-\item \href{#method-WorkflowRegistry-unregister}{\code{WorkflowRegistry$unregister()}}
-\item \href{#method-WorkflowRegistry-search}{\code{WorkflowRegistry$search()}}
-\item \href{#method-WorkflowRegistry-filter}{\code{WorkflowRegistry$filter()}}
-\item \href{#method-WorkflowRegistry-find_by_recipe}{\code{WorkflowRegistry$find_by_recipe()}}
-\item \href{#method-WorkflowRegistry-rank_by_downloads}{\code{WorkflowRegistry$rank_by_downloads()}}
-\item \href{#method-WorkflowRegistry-get}{\code{WorkflowRegistry$get()}}
-\item \href{#method-WorkflowRegistry-list_all}{\code{WorkflowRegistry$list_all()}}
-\item \href{#method-WorkflowRegistry-save}{\code{WorkflowRegistry$save()}}
-\item \href{#method-WorkflowRegistry-load}{\code{WorkflowRegistry$load()}}
-\item \href{#method-WorkflowRegistry-stats}{\code{WorkflowRegistry$stats()}}
-\item \href{#method-WorkflowRegistry-print}{\code{WorkflowRegistry$print()}}
-\item \href{#method-WorkflowRegistry-clone}{\code{WorkflowRegistry$clone()}}
-}
+  \itemize{
+    \item \href{#method-WorkflowRegistry-initialize}{\code{WorkflowRegistry$new()}}
+    \item \href{#method-WorkflowRegistry-register}{\code{WorkflowRegistry$register()}}
+    \item \href{#method-WorkflowRegistry-unregister}{\code{WorkflowRegistry$unregister()}}
+    \item \href{#method-WorkflowRegistry-search}{\code{WorkflowRegistry$search()}}
+    \item \href{#method-WorkflowRegistry-filter}{\code{WorkflowRegistry$filter()}}
+    \item \href{#method-WorkflowRegistry-find_by_recipe}{\code{WorkflowRegistry$find_by_recipe()}}
+    \item \href{#method-WorkflowRegistry-rank_by_downloads}{\code{WorkflowRegistry$rank_by_downloads()}}
+    \item \href{#method-WorkflowRegistry-get}{\code{WorkflowRegistry$get()}}
+    \item \href{#method-WorkflowRegistry-list_all}{\code{WorkflowRegistry$list_all()}}
+    \item \href{#method-WorkflowRegistry-save}{\code{WorkflowRegistry$save()}}
+    \item \href{#method-WorkflowRegistry-load}{\code{WorkflowRegistry$load()}}
+    \item \href{#method-WorkflowRegistry-stats}{\code{WorkflowRegistry$stats()}}
+    \item \href{#method-WorkflowRegistry-print}{\code{WorkflowRegistry$print()}}
+    \item \href{#method-WorkflowRegistry-clone}{\code{WorkflowRegistry$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-WorkflowRegistry-new"></a>}}
-\if{latex}{\out{\hypertarget{method-WorkflowRegistry-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new empty WorkflowRegistry
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-WorkflowRegistry-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-WorkflowRegistry-initialize}{}}}
+\subsection{\code{WorkflowRegistry$new()}}{
+  Create a new empty WorkflowRegistry
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$new()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-register"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-register}{}}}
-\subsection{Method \code{register()}}{
-Register a workflow in the catalog
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$register(wf)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$register()}}{
+  Register a workflow in the catalog
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$register(wf)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{wf}}{RecipeWorkflow object to register}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{wf}}{RecipeWorkflow object to register}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-unregister"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-unregister}{}}}
-\subsection{Method \code{unregister()}}{
-Remove a workflow from the catalog by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$unregister(workflow_id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$unregister()}}{
+  Remove a workflow from the catalog by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$unregister(workflow_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{workflow_id}}{Workflow id to remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{workflow_id}}{Workflow id to remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-search"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-search}{}}}
-\subsection{Method \code{search()}}{
-Search workflows by name or description (case-insensitive)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$search(query)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$search()}}{
+  Search workflows by name or description (case-insensitive)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$search(query)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{query}}{Character search query}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching RecipeWorkflow objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{query}}{Character search query}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-filter"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-filter}{}}}
-\subsection{Method \code{filter()}}{
-Filter workflows by criteria
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$filter(
+\subsection{\code{WorkflowRegistry$filter()}}{
+  Filter workflows by criteria
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$filter(
   survey_type = NULL,
   edition = NULL,
   recipe_id = NULL,
   certification_level = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{survey_type}}{Character survey type or NULL}
-
-\item{\code{edition}}{Character edition or NULL}
-
-\item{\code{recipe_id}}{Character recipe ID or NULL
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{survey_type}}{Character survey type or NULL}
+      \item{\code{edition}}{Character edition or NULL}
+      \item{\code{recipe_id}}{Character recipe ID or NULL
 (find workflows using this recipe)}
+      \item{\code{certification_level}}{Character certification level or NULL}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of matching RecipeWorkflow objects
+  }
+}
 
-\item{\code{certification_level}}{Character certification level or NULL}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of matching RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-find_by_recipe"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-find_by_recipe}{}}}
-\subsection{Method \code{find_by_recipe()}}{
-Find workflows that reference a specific recipe
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$find_by_recipe(recipe_id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$find_by_recipe()}}{
+  Find workflows that reference a specific recipe
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$find_by_recipe(recipe_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe_id}}{Character recipe ID}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of RecipeWorkflow objects referencing this recipe
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe_id}}{Character recipe ID}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of RecipeWorkflow objects referencing this recipe
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-rank_by_downloads"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-rank_by_downloads}{}}}
-\subsection{Method \code{rank_by_downloads()}}{
-Rank workflows by download count (descending)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$rank_by_downloads(n = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$rank_by_downloads()}}{
+  Rank workflows by download count (descending)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$rank_by_downloads(n = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Integer max number to return, or NULL for all}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of RecipeWorkflow objects sorted by downloads
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Integer max number to return, or NULL for all}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of RecipeWorkflow objects sorted by downloads
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-get"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-get}{}}}
-\subsection{Method \code{get()}}{
-Get a single workflow by id
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$get(workflow_id)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$get()}}{
+  Get a single workflow by id
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$get(workflow_id)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{workflow_id}}{Workflow id}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    RecipeWorkflow object or NULL
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{workflow_id}}{Workflow id}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-RecipeWorkflow object or NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-list_all"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-list_all}{}}}
-\subsection{Method \code{list_all()}}{
-List all registered workflows
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$list_all()}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$list_all()}}{
+  List all registered workflows
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$list_all()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of all RecipeWorkflow objects
+  }
 }
 
-\subsection{Returns}{
-List of all RecipeWorkflow objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-save"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-save}{}}}
-\subsection{Method \code{save()}}{
-Save the registry catalog to a JSON file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$save(path)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$save()}}{
+  Save the registry catalog to a JSON file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$save(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{Character file path}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{Character file path}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-load"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-load}{}}}
-\subsection{Method \code{load()}}{
-Load a registry catalog from a JSON file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$load(path)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$load()}}{
+  Load a registry catalog from a JSON file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$load(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{Character file path}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{Character file path}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-stats"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-stats}{}}}
-\subsection{Method \code{stats()}}{
-Get registry statistics
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$stats()}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$stats()}}{
+  Get registry statistics
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$stats()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List with total, by_survey_type, by_certification counts
+  }
 }
 
-\subsection{Returns}{
-List with total, by_survey_type, by_certification counts
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-print"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-print}{}}}
-\subsection{Method \code{print()}}{
-Print registry summary
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$print()}}{
+  Print registry summary
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments (not used)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-WorkflowRegistry-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-WorkflowRegistry-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{WorkflowRegistry$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{WorkflowRegistry$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{WorkflowRegistry$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

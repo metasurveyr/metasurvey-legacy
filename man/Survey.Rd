@@ -11,11 +11,6 @@ An R6 class generator (R6ClassGenerator)
 R6 class generator for Survey.
 }
 \description{
-Survey R6 class
-
-Survey R6 class
-}
-\details{
 R6 class that encapsulates survey data, metadata (type, edition,
 periodicity), sampling design (simple/replicate), steps/recipes/workflows,
 and utilities to manage them.
@@ -56,95 +51,96 @@ svy
 \code{\link{survey_empty}}, \code{\link{bake_recipes}},
 \code{\link{cat_design}}, \code{\link{cat_recipes}}
 
-Other survey-objects: 
-\code{\link{cat_design}()},
-\code{\link{cat_design_type}()},
-\code{\link{get_data}()},
-\code{\link{get_metadata}()},
-\code{\link{has_design}()},
-\code{\link{has_recipes}()},
-\code{\link{has_steps}()},
-\code{\link{is_baked}()},
-\code{\link{set_data}()},
-\code{\link{survey_empty}()},
-\code{\link{survey_to_data_frame}()},
-\code{\link{survey_to_datatable}()},
-\code{\link{survey_to_tibble}()}
+Other survey-objects:
+\code{\link[=cat_design]{cat_design()}},
+\code{\link[=cat_design_type]{cat_design_type()}},
+\code{\link[=get_data]{get_data()}},
+\code{\link[=get_metadata]{get_metadata()}},
+\code{\link[=has_design]{has_design()}},
+\code{\link[=has_recipes]{has_recipes()}},
+\code{\link[=has_steps]{has_steps()}},
+\code{\link[=is_baked]{is_baked()}},
+\code{\link[=set_data]{set_data()}},
+\code{\link[=survey_empty]{survey_empty()}},
+\code{\link[=survey_to_data_frame]{survey_to_data_frame()}},
+\code{\link[=survey_to_datatable]{survey_to_datatable()}},
+\code{\link[=survey_to_tibble]{survey_to_tibble()}}
 }
 \concept{survey-objects}
 \keyword{survey}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{data}}{Survey data (data.frame/data.table).}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{data}}{Survey data (data.frame/data.table).}
 
-\item{\code{edition}}{Reference edition or period.}
+    \item{\code{edition}}{Reference edition or period.}
 
-\item{\code{type}}{Survey type, e.g., "ech" (character).}
+    \item{\code{type}}{Survey type, e.g., "ech" (character).}
 
-\item{\code{periodicity}}{Periodicity detected by validate_time_pattern.}
+    \item{\code{periodicity}}{Periodicity detected by validate_time_pattern.}
 
-\item{\code{default_engine}}{Default engine (character).}
+    \item{\code{default_engine}}{Default engine (character).}
 
-\item{\code{weight}}{List with weight specifications per estimation type.}
+    \item{\code{weight}}{List with weight specifications per estimation type.}
 
-\item{\code{steps}}{List of steps applied to the survey.}
+    \item{\code{steps}}{List of steps applied to the survey.}
 
-\item{\code{recipes}}{List of \link{Recipe} objects associated.}
+    \item{\code{recipes}}{List of \link{Recipe} objects associated.}
 
-\item{\code{workflows}}{List of workflows.}
+    \item{\code{workflows}}{List of workflows.}
 
-\item{\code{design}}{List of survey design objects (survey/surveyrep).}
+    \item{\code{design}}{List of survey design objects (survey/surveyrep).}
 
-\item{\code{psu}}{Primary Sampling Unit specification (formula or character).}
+    \item{\code{psu}}{Primary Sampling Unit specification (formula or character).}
 
-\item{\code{strata}}{Stratification variable name (character or NULL).}
+    \item{\code{strata}}{Stratification variable name (character or NULL).}
 
-\item{\code{design_initialized}}{Logical flag for lazy design initialization.}
+    \item{\code{design_initialized}}{Logical flag for lazy design initialization.}
 
-\item{\code{provenance}}{Data lineage metadata (see \code{\link[=provenance]{provenance()}}).}
-}
-\if{html}{\out{</div>}}
+    \item{\code{provenance}}{Data lineage metadata (see \code{\link[=provenance]{provenance()}}).}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{design_active}}{Deprecated. Use \code{ensure_design()} instead.}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{design_active}}{Deprecated. Use \code{ensure_design()} instead.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Survey-new}{\code{Survey$new()}}
-\item \href{#method-Survey-get_data}{\code{Survey$get_data()}}
-\item \href{#method-Survey-get_edition}{\code{Survey$get_edition()}}
-\item \href{#method-Survey-get_type}{\code{Survey$get_type()}}
-\item \href{#method-Survey-set_data}{\code{Survey$set_data()}}
-\item \href{#method-Survey-set_edition}{\code{Survey$set_edition()}}
-\item \href{#method-Survey-set_type}{\code{Survey$set_type()}}
-\item \href{#method-Survey-set_weight}{\code{Survey$set_weight()}}
-\item \href{#method-Survey-print}{\code{Survey$print()}}
-\item \href{#method-Survey-add_step}{\code{Survey$add_step()}}
-\item \href{#method-Survey-add_recipe}{\code{Survey$add_recipe()}}
-\item \href{#method-Survey-add_workflow}{\code{Survey$add_workflow()}}
-\item \href{#method-Survey-bake}{\code{Survey$bake()}}
-\item \href{#method-Survey-head}{\code{Survey$head()}}
-\item \href{#method-Survey-str}{\code{Survey$str()}}
-\item \href{#method-Survey-set_design}{\code{Survey$set_design()}}
-\item \href{#method-Survey-ensure_design}{\code{Survey$ensure_design()}}
-\item \href{#method-Survey-update_design}{\code{Survey$update_design()}}
-\item \href{#method-Survey-shallow_clone}{\code{Survey$shallow_clone()}}
-\item \href{#method-Survey-clone}{\code{Survey$clone()}}
-}
+  \itemize{
+    \item \href{#method-Survey-initialize}{\code{Survey$new()}}
+    \item \href{#method-Survey-get_data}{\code{Survey$get_data()}}
+    \item \href{#method-Survey-get_edition}{\code{Survey$get_edition()}}
+    \item \href{#method-Survey-get_type}{\code{Survey$get_type()}}
+    \item \href{#method-Survey-set_data}{\code{Survey$set_data()}}
+    \item \href{#method-Survey-set_edition}{\code{Survey$set_edition()}}
+    \item \href{#method-Survey-set_type}{\code{Survey$set_type()}}
+    \item \href{#method-Survey-set_weight}{\code{Survey$set_weight()}}
+    \item \href{#method-Survey-print}{\code{Survey$print()}}
+    \item \href{#method-Survey-add_step}{\code{Survey$add_step()}}
+    \item \href{#method-Survey-add_recipe}{\code{Survey$add_recipe()}}
+    \item \href{#method-Survey-add_workflow}{\code{Survey$add_workflow()}}
+    \item \href{#method-Survey-bake}{\code{Survey$bake()}}
+    \item \href{#method-Survey-head}{\code{Survey$head()}}
+    \item \href{#method-Survey-str}{\code{Survey$str()}}
+    \item \href{#method-Survey-set_design}{\code{Survey$set_design()}}
+    \item \href{#method-Survey-ensure_design}{\code{Survey$ensure_design()}}
+    \item \href{#method-Survey-update_design}{\code{Survey$update_design()}}
+    \item \href{#method-Survey-shallow_clone}{\code{Survey$shallow_clone()}}
+    \item \href{#method-Survey-clone}{\code{Survey$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Survey-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Survey-new}{}}}
-\subsection{Method \code{new()}}{
-Create a Survey object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$new(
+\if{html}{\out{<a id="method-Survey-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-initialize}{}}}
+\subsection{\code{Survey$new()}}{
+  Create a Survey object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$new(
   data,
   edition,
   type,
@@ -155,295 +151,324 @@ Create a Survey object
   design = NULL,
   steps = NULL,
   recipes = list()
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{Survey data}
+      \item{\code{edition}}{Edition or period}
+      \item{\code{type}}{Survey type (character)}
+      \item{\code{psu}}{PSU variable or formula (optional)}
+      \item{\code{strata}}{Stratification variable name (optional)}
+      \item{\code{engine}}{Default engine}
+      \item{\code{weight}}{Weight specification(s) per estimation type}
+      \item{\code{design}}{Pre-built design (optional)}
+      \item{\code{steps}}{Initial steps list (optional)}
+      \item{\code{recipes}}{List of Recipe (optional)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{Survey data}
-
-\item{\code{edition}}{Edition or period}
-
-\item{\code{type}}{Survey type (character)}
-
-\item{\code{psu}}{PSU variable or formula (optional)}
-
-\item{\code{strata}}{Stratification variable name (optional)}
-
-\item{\code{engine}}{Default engine}
-
-\item{\code{weight}}{Weight specification(s) per estimation type}
-
-\item{\code{design}}{Pre-built design (optional)}
-
-\item{\code{steps}}{Initial steps list (optional)}
-
-\item{\code{recipes}}{List of Recipe (optional)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-get_data"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-get_data}{}}}
-\subsection{Method \code{get_data()}}{
-Return the underlying data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$get_data()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$get_data()}}{
+  Return the underlying data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$get_data()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-get_edition"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-get_edition}{}}}
-\subsection{Method \code{get_edition()}}{
-Return the survey edition/period
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$get_edition()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$get_edition()}}{
+  Return the survey edition/period
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$get_edition()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-get_type"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-get_type}{}}}
-\subsection{Method \code{get_type()}}{
-Return the survey type identifier
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$get_type()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$get_type()}}{
+  Return the survey type identifier
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$get_type()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-set_data"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-set_data}{}}}
-\subsection{Method \code{set_data()}}{
-Set the underlying data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$set_data(data)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$set_data()}}{
+  Set the underlying data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$set_data(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{New survey data}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{New survey data}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-set_edition"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-set_edition}{}}}
-\subsection{Method \code{set_edition()}}{
-Set the survey edition/period
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$set_edition(edition)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$set_edition()}}{
+  Set the survey edition/period
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$set_edition(edition)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{edition}}{New edition or period}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{edition}}{New edition or period}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-set_type"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-set_type}{}}}
-\subsection{Method \code{set_type()}}{
-Set the survey type
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$set_type(type)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$set_type()}}{
+  Set the survey type
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$set_type(type)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{type}}{New type identifier}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{New type identifier}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-set_weight"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-set_weight}{}}}
-\subsection{Method \code{set_weight()}}{
-Set weight specification(s) per estimation type
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$set_weight(weight)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$set_weight()}}{
+  Set weight specification(s) per estimation type
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$set_weight(weight)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{weight}}{Weight specification list or character}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{weight}}{Weight specification list or character}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-print}{}}}
-\subsection{Method \code{print()}}{
-Print summarized metadata to console
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$print()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$print()}}{
+  Print summarized metadata to console
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-add_step"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-add_step}{}}}
-\subsection{Method \code{add_step()}}{
-Add a step and invalidate design
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$add_step(step)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$add_step()}}{
+  Add a step and invalidate design
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$add_step(step)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{step}}{Step object}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{step}}{Step object}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-add_recipe"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-add_recipe}{}}}
-\subsection{Method \code{add_recipe()}}{
-Add a recipe
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$add_recipe(recipe, bake = lazy_default())}\if{html}{\out{</div>}}
+\subsection{\code{Survey$add_recipe()}}{
+  Add a recipe
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$add_recipe(recipe, bake = lazy_default())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recipe}}{Recipe object}
+      \item{\code{bake}}{Whether to bake lazily (internal flag)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recipe}}{Recipe object}
-
-\item{\code{bake}}{Whether to bake lazily (internal flag)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-add_workflow"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-add_workflow}{}}}
-\subsection{Method \code{add_workflow()}}{
-Add a workflow to the survey
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$add_workflow(workflow)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$add_workflow()}}{
+  Add a workflow to the survey
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$add_workflow(workflow)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{workflow}}{Workflow object}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{workflow}}{Workflow object}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-bake"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-bake}{}}}
-\subsection{Method \code{bake()}}{
-Apply recipes and return updated Survey
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$bake()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$bake()}}{
+  Apply recipes and return updated Survey
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$bake()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-head"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-head}{}}}
-\subsection{Method \code{head()}}{
-Return the head of the underlying data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$head()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$head()}}{
+  Return the head of the underlying data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$head()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-str"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-str}{}}}
-\subsection{Method \code{str()}}{
-Display the structure of the underlying data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$str()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$str()}}{
+  Display the structure of the underlying data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$str()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-set_design"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-set_design}{}}}
-\subsection{Method \code{set_design()}}{
-Set the survey design object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$set_design(design)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$set_design()}}{
+  Set the survey design object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$set_design(design)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{design}}{Survey design object or list}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{design}}{Survey design object or list}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-ensure_design"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-ensure_design}{}}}
-\subsection{Method \code{ensure_design()}}{
-Ensure survey design is initialized (lazy initialization)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$ensure_design()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$ensure_design()}}{
+  Ensure survey design is initialized (lazy initialization)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$ensure_design()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Invisibly returns self
+  }
 }
 
-\subsection{Returns}{
-Invisibly returns self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-update_design"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-update_design}{}}}
-\subsection{Method \code{update_design()}}{
-Update design variables using current data and weight
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$update_design()}\if{html}{\out{</div>}}
+\subsection{\code{Survey$update_design()}}{
+  Update design variables using current data and weight
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$update_design()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-shallow_clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-shallow_clone}{}}}
-\subsection{Method \code{shallow_clone()}}{
-Create a shallow copy of the Survey
+\subsection{\code{Survey$shallow_clone()}}{
+  Create a shallow copy of the Survey
 (optimized for performance)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$shallow_clone()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$shallow_clone()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    New Survey object with copied data but shared design
+  }
 }
 
-\subsection{Returns}{
-New Survey object with copied data but shared design
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Survey-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Survey-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Survey$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Survey$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Survey$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

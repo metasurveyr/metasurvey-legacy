@@ -25,11 +25,11 @@ configure_api(url = "https://metasurvey-api.example.com")
 }
 }
 \seealso{
-Other api-auth: 
-\code{\link{api_login}()},
-\code{\link{api_logout}()},
-\code{\link{api_me}()},
-\code{\link{api_refresh_token}()},
-\code{\link{api_register}()}
+Other api-auth:
+\code{\link[=api_login]{api_login()}},
+\code{\link[=api_logout]{api_logout()}},
+\code{\link[=api_me]{api_me()}},
+\code{\link[=api_refresh_token]{api_refresh_token()}},
+\code{\link[=api_register]{api_register()}}
 }
 \concept{api-auth}

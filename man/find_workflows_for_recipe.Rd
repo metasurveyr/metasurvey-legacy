@@ -24,26 +24,26 @@ length(wfs)
 \seealso{
 \code{\link{filter_workflows}}
 
-Other tidy-api: 
-\code{\link{RecipeCategory}},
+Other tidy-api:
+\code{\link{RecipeCategory-from_list}},
 \code{\link{RecipeCertification}},
 \code{\link{RecipeUser}},
-\code{\link{add_category}()},
-\code{\link{certify_recipe}()},
-\code{\link{default_categories}()},
-\code{\link{filter_recipes}()},
-\code{\link{filter_workflows}()},
-\code{\link{list_recipes}()},
-\code{\link{list_workflows}()},
-\code{\link{rank_recipes}()},
-\code{\link{rank_workflows}()},
-\code{\link{recipe_category}()},
-\code{\link{recipe_certification}()},
-\code{\link{recipe_user}()},
-\code{\link{remove_category}()},
-\code{\link{search_recipes}()},
-\code{\link{search_workflows}()},
-\code{\link{set_user_info}()},
-\code{\link{set_version}()}
+\code{\link[=add_category]{add_category()}},
+\code{\link[=certify_recipe]{certify_recipe()}},
+\code{\link[=default_categories]{default_categories()}},
+\code{\link[=filter_recipes]{filter_recipes()}},
+\code{\link[=filter_workflows]{filter_workflows()}},
+\code{\link[=list_recipes]{list_recipes()}},
+\code{\link[=list_workflows]{list_workflows()}},
+\code{\link[=rank_recipes]{rank_recipes()}},
+\code{\link[=rank_workflows]{rank_workflows()}},
+\code{\link[=recipe_category]{recipe_category()}},
+\code{\link[=recipe_certification]{recipe_certification()}},
+\code{\link[=recipe_user]{recipe_user()}},
+\code{\link[=remove_category]{remove_category()}},
+\code{\link[=search_recipes]{search_recipes()}},
+\code{\link[=search_workflows]{search_workflows()}},
+\code{\link[=set_user_info]{set_user_info()}},
+\code{\link[=set_version]{set_version()}}
 }
 \concept{tidy-api}

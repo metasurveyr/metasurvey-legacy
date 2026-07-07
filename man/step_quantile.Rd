@@ -86,19 +86,19 @@ get_data(svy)$income_q
 \code{\link[=step_collapse]{step_collapse()}} to collapse to household level before
 computing household quantiles.
 
-Other steps: 
-\code{\link{bake_steps}()},
-\code{\link{get_steps}()},
-\code{\link{step_collapse}()},
-\code{\link{step_compute}()},
-\code{\link{step_filter}()},
-\code{\link{step_join}()},
-\code{\link{step_recode}()},
-\code{\link{step_remove}()},
-\code{\link{step_rename}()},
-\code{\link{step_validate}()},
-\code{\link{step_weight}()},
-\code{\link{view_graph}()}
+Other steps:
+\code{\link[=bake_steps]{bake_steps()}},
+\code{\link[=get_steps]{get_steps()}},
+\code{\link[=step_collapse]{step_collapse()}},
+\code{\link[=step_compute]{step_compute()}},
+\code{\link[=step_filter]{step_filter()}},
+\code{\link[=step_join]{step_join()}},
+\code{\link[=step_recode]{step_recode()}},
+\code{\link[=step_remove]{step_remove()}},
+\code{\link[=step_rename]{step_rename()}},
+\code{\link[=step_validate]{step_validate()}},
+\code{\link[=step_weight]{step_weight()}},
+\code{\link[=view_graph]{view_graph()}}
 }
 \concept{steps}
 \keyword{step}

@@ -31,12 +31,12 @@ print(current_setting)
 \seealso{
 \code{\link{set_use_copy}} to change the setting
 
-Other options: 
-\code{\link{get_engine}()},
-\code{\link{lazy_default}()},
-\code{\link{set_engine}()},
-\code{\link{set_lazy_processing}()},
-\code{\link{set_use_copy}()},
-\code{\link{show_engines}()}
+Other options:
+\code{\link[=get_engine]{get_engine()}},
+\code{\link[=lazy_default]{lazy_default()}},
+\code{\link[=set_engine]{set_engine()}},
+\code{\link[=set_lazy_processing]{set_lazy_processing()}},
+\code{\link[=set_use_copy]{set_use_copy()}},
+\code{\link[=show_engines]{show_engines()}}
 }
 \concept{options}

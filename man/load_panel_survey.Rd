@@ -103,12 +103,12 @@ print(panel_survey)
 }
 }
 \seealso{
-Other survey-loading: 
-\code{\link{extract_time_pattern}()},
-\code{\link{group_dates}()},
-\code{\link{load_survey}()},
-\code{\link{load_survey_example}()},
-\code{\link{validate_time_pattern}()}
+Other survey-loading:
+\code{\link[=extract_time_pattern]{extract_time_pattern()}},
+\code{\link[=group_dates]{group_dates()}},
+\code{\link[=load_survey]{load_survey()}},
+\code{\link[=load_survey_example]{load_survey_example()}},
+\code{\link[=validate_time_pattern]{validate_time_pattern()}}
 }
 \concept{survey-loading}
 \keyword{preprocessing}

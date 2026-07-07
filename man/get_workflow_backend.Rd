@@ -17,9 +17,9 @@ Defaults to "local" if not configured.
 backend <- get_workflow_backend()
 }
 \seealso{
-Other backends: 
-\code{\link{get_backend}()},
-\code{\link{set_backend}()},
-\code{\link{set_workflow_backend}()}
+Other backends:
+\code{\link[=get_backend]{get_backend()}},
+\code{\link[=set_backend]{set_backend()}},
+\code{\link[=set_workflow_backend]{set_workflow_backend()}}
 }
 \concept{backends}
