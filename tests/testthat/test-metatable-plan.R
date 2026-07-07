@@ -265,6 +265,22 @@ test_that("build_plan: chained mapping inside one rename call", {
   expect_equal(plan$nodes[[3]]$consumes, "a")
 })
 
+test_that("build_plan: on_unknown = 'passthrough' leaves the node NULL", {
+  steps <- list(
+    mk_step("filter", depends_on = "age"),
+    mk_step("step_teleport"),
+    mk_step("compute", new_var = "a", depends_on = "x")
+  )
+  # default (explain() path): explicit plan-time error (RFC section 8)
+  expect_error(build_plan(steps), "unknown step type 'step_teleport'")
+  # executor path: the unknown node is deferred to bake_step()
+  plan <- build_plan(steps, on_unknown = "passthrough")
+  expect_length(plan$nodes, 3)
+  expect_null(plan$nodes[[2]])
+  expect_equal(plan$nodes[[1]]$kind, "filter")
+  expect_equal(plan$nodes[[3]]$kind, "narrow")
+})
+
 test_that("build_plan: consumes includes grouping and join keys", {
   steps <- list(
     mk_step(

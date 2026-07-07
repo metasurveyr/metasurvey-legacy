@@ -161,6 +161,55 @@ test_that("parity: workflow() estimations are identical between engines", {
   expect_identical(alt, ref)
 })
 
+test_that("parity: unknown step type errors at the same node with the same state", {
+  # A step type outside the bake_step() whitelist must produce the SAME
+  # error message, at the SAME node position (after the previous
+  # pending steps ran) and leave the SAME partial state in both engines
+  # (contract section 5.2): the metatable plan must not abort the bake
+  # at plan time with the classify_step() error.
+  make_unknown_step <- function() {
+    Step$new(
+      name = "weird", edition = "2023", survey_type = "test",
+      type = "frobnicate", new_var = NULL, exprs = list(), call = NULL,
+      svy_before = NULL, default_engine = "data.table",
+      depends_on = list(), comment = NULL, bake = FALSE
+    )
+  }
+  run <- function(engine) {
+    run_with_engine(engine, function() {
+      old_copy <- set_use_copy(FALSE)
+      on.exit(options(metasurvey.use_copy = old_copy), add = TRUE)
+      svy <- make_test_survey(n = 10)
+      svy <- step_filter(svy, age >= 20)
+      svy$add_step(make_unknown_step())
+      err <- tryCatch(
+        {
+          bake_steps(svy)
+          NULL
+        },
+        error = function(e) conditionMessage(e)
+      )
+      list(
+        error = err,
+        data = get_data(svy),
+        bakes = vapply(svy$steps, function(s) s$bake, logical(1)),
+        provenance = provenance_core(svy)
+      )
+    })
+  }
+  ref <- run("data.table")
+  alt <- run("metatable")
+  # same message (bake_step whitelist), not the plan-time classify one
+  expect_match(ref$error, "Invalid step type: 'frobnicate'")
+  expect_identical(alt$error, ref$error)
+  # same partial state: the pending filter ran BEFORE the error in both
+  expect_identical(alt$data, ref$data)
+  expect_true(all(alt$data$age >= 20))
+  expect_identical(alt$bakes, ref$bakes)
+  expect_identical(alt$provenance, ref$provenance)
+  expect_length(alt$provenance, 1L)
+})
+
 test_that("metatable bake marks steps and leaves no pending plan", {
   res <- run_with_engine("metatable", function() {
     svy <- make_test_survey(n = 15)

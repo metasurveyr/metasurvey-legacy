@@ -270,15 +270,35 @@ compose_rename_map <- function(rename_map, mapping) {
 #'   ones (`bake = FALSE`) in effective execution order.
 #' @param sinks Character vector of columns required downstream, or
 #'   NULL when the consumer is unknown (no projection pruning).
+#' @param on_unknown What to do with a step type missing from the
+#'   classification table. `"error"` (default, used by `explain()`)
+#'   fails at plan time with the explicit `classify_step()` message
+#'   (RFC §8). `"passthrough"` (used by the bake executor) leaves the
+#'   node NULL so the executor falls back to `bake_step()`, which
+#'   raises its whitelist error at that node's position with all
+#'   previous steps already executed — same error timing and same
+#'   post-error state as the data.table engine (contract §5.2).
 #' @return A `meta_plan` object.
 #' @noRd
 #' @keywords internal
-build_plan <- function(steps, sinks = NULL) {
+build_plan <- function(steps, sinks = NULL,
+                       on_unknown = c("error", "passthrough")) {
+  on_unknown <- match.arg(on_unknown)
   nodes <- vector("list", length(steps))
   rename_map <- character(0)
   for (i in seq_along(steps)) {
     step <- steps[[i]]
-    cls <- classify_step(step)
+    cls <- if (identical(on_unknown, "passthrough")) {
+      tryCatch(classify_step(step), error = function(e) NULL)
+    } else {
+      classify_step(step)
+    }
+    if (is.null(cls)) {
+      # unknown type: no node — the executor delegates this position
+      # to bake_step(), preserving the current engine's error message,
+      # error order and partial state (previous steps applied)
+      next
+    }
     nodes[[i]] <- meta_node(
       step_idx = i,
       step = step,
@@ -313,10 +333,19 @@ metatable_plan_nodes <- function(steps) {
   if (length(pending) == 0L) {
     return(NULL)
   }
-  plan <- build_plan(steps[pending])
+  # on_unknown = "passthrough": a step type missing from the
+  # classification table must NOT abort the bake at plan time — the
+  # data.table engine only errors when the loop reaches that step
+  # (bake_step() whitelist), with the previous pending steps already
+  # applied. Its node stays NULL and the executor falls back to
+  # bake_step() at the same position (contract §5.2).
+  plan <- build_plan(steps[pending], on_unknown = "passthrough")
   nodes <- vector("list", length(steps))
   for (k in seq_along(pending)) {
     node <- plan$nodes[[k]]
+    if (is.null(node)) {
+      next
+    }
     node$step_idx <- pending[[k]]
     nodes[[pending[[k]]]] <- node
   }
