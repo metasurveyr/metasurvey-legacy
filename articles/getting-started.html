@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Getting Started with metasurvey</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
@@ -411,16 +411,11 @@ transformations:</p>
 <span><span class="co">#&gt; 1:        2         0  55429.6       0    57        55.4296        1</span></span>
 <span><span class="co">#&gt; 2:        4         0  55429.6       0    57        55.4296        0</span></span>
 <span><span class="co">#&gt; 3:        2         0 152958.8       0    54       152.9588        1</span></span>
-<span><span class="co">#&gt;    labor_status      age_group gender poverty_line region_name poverty_line.y</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;         &lt;fctr&gt; &lt;char&gt;        &lt;num&gt;      &lt;char&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:     Employed Mature (45-64) Female        19000  Montevideo          19000</span></span>
-<span><span class="co">#&gt; 2:   Unemployed Mature (45-64) Female        19000  Montevideo          19000</span></span>
-<span><span class="co">#&gt; 3:     Employed Mature (45-64)   Male        19000  Montevideo          19000</span></span>
-<span><span class="co">#&gt;    region_name.y</span></span>
-<span><span class="co">#&gt;           &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:    Montevideo</span></span>
-<span><span class="co">#&gt; 2:    Montevideo</span></span>
-<span><span class="co">#&gt; 3:    Montevideo</span></span></code></pre></div>
+<span><span class="co">#&gt;    labor_status      age_group gender poverty_line region_name</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;          &lt;ord&gt; &lt;char&gt;        &lt;num&gt;      &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     Employed  Adult (25-44) Female        19000  Montevideo</span></span>
+<span><span class="co">#&gt; 2:   Unemployed Mature (45-64) Female        19000  Montevideo</span></span>
+<span><span class="co">#&gt; 3:     Employed Mature (45-64)   Male        19000  Montevideo</span></span></code></pre></div>
 <p>The step history is preserved for documentation and
 reproducibility:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">

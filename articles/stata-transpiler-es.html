@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Transpilando archivos .do de STATA a Recetas metasurvey (ES)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/vignettes/stata-transpiler-es.Rmd" class="external-link"><code>vignettes/stata-transpiler-es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/vignettes/stata-transpiler-es.Rmd" class="external-link"><code>vignettes/stata-transpiler-es.Rmd</code></a></small>
       <div class="d-none name"><code>stata-transpiler-es.Rmd</code></div>
     </div>
 
@@ -647,11 +647,11 @@ reales de procesamiento de la ECH.</p>
 <span><span class="co">#&gt; step_rename(svy, hh_id = "id", person_id = "nper") </span></span>
 <span><span class="co">#&gt; step_compute(svy, weight_yr = pesoano, weight_qt = pesotri, sex = q01) </span></span>
 <span><span class="co">#&gt; step_recode(svy, relationship,</span></span>
-<span><span class="co">#&gt;     q05 == 1 ~ "1",</span></span>
-<span><span class="co">#&gt;     q05 == 2 ~ "2",</span></span>
-<span><span class="co">#&gt;     (q05 &gt;= 3 &amp; q05 &lt;= 5) ~ "3",</span></span>
-<span><span class="co">#&gt;     q05 == 6 ~ "4",</span></span>
 <span><span class="co">#&gt;     q05 == 7 ~ "5",</span></span>
+<span><span class="co">#&gt;     q05 == 6 ~ "4",</span></span>
+<span><span class="co">#&gt;     (q05 &gt;= 3 &amp; q05 &lt;= 5) ~ "3",</span></span>
+<span><span class="co">#&gt;     q05 == 2 ~ "2",</span></span>
+<span><span class="co">#&gt;     q05 == 1 ~ "1",</span></span>
 <span><span class="co">#&gt;     .default = "-9") </span></span>
 <span><span class="co">#&gt; step_compute(svy, area = NA, area = data.table::fifelse(region == 1, 1, area), area = data.table::fifelse(region == 2, 2, area), area = data.table::fifelse(region == 3, 3, area), edu_compat = q20, edu_compat = data.table::fifelse(q20 == 2, 2, edu_compat), edu_compat = data.table::fifelse(q20 == 3, -9, edu_compat), edu_compat = data.table::fifelse(q20 == 4, 3, edu_compat), edu_compat = data.table::fifelse(q20 == 5, 4, edu_compat)) </span></span>
 <span><span class="co">#&gt; step_compute(svy, max_age = max(edad, na.rm = TRUE), n_members = sum(!is.na(person_id)), .by = "hh_id") </span></span>

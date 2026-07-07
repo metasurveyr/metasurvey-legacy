@@ -284,16 +284,11 @@ head(get_data(svy), 3)
 #> 1:        2         0  55429.6       0    57        55.4296        1
 #> 2:        4         0  55429.6       0    57        55.4296        0
 #> 3:        2         0 152958.8       0    54       152.9588        1
-#>    labor_status      age_group gender poverty_line region_name poverty_line.y
-#>          <char>         <fctr> <char>        <num>      <char>          <num>
-#> 1:     Employed Mature (45-64) Female        19000  Montevideo          19000
-#> 2:   Unemployed Mature (45-64) Female        19000  Montevideo          19000
-#> 3:     Employed Mature (45-64)   Male        19000  Montevideo          19000
-#>    region_name.y
-#>           <char>
-#> 1:    Montevideo
-#> 2:    Montevideo
-#> 3:    Montevideo
+#>    labor_status      age_group gender poverty_line region_name
+#>          <char>          <ord> <char>        <num>      <char>
+#> 1:     Employed  Adult (25-44) Female        19000  Montevideo
+#> 2:   Unemployed Mature (45-64) Female        19000  Montevideo
+#> 3:     Employed Mature (45-64)   Male        19000  Montevideo
 ```
 
 The step history is preserved for documentation and reproducibility:

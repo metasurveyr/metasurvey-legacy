@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,9 +95,32 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.0" id="metasurvey-010">metasurvey 0.1.0<a class="anchor" aria-label="anchor" href="#metasurvey-010"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
+<ul><li>Step execution model: <code><a href="../reference/step_compute.html">step_compute()</a></code>, <code><a href="../reference/step_recode.html">step_recode()</a></code> and <code><a href="../reference/step_join.html">step_join()</a></code> now record their <code>Step</code> as already executed (<code>bake = TRUE</code>). They still run eagerly on creation, but <code><a href="../reference/bake_steps.html">bake_steps()</a></code> no longer re-executes them. Previously every eager step ran twice (once on creation, once on bake), silently corrupting non-idempotent expressions (e.g. <code>age = age * 2</code> ended up as <code>age * 4</code>). <code><a href="../reference/step_remove.html">step_remove()</a></code>/<code><a href="../reference/step_rename.html">step_rename()</a></code> now record <code>bake = !lazy</code>, closing the double-execution gotcha with <code>lazy_processing = FALSE</code>.</li>
+<li>
+<code><a href="../reference/step_recode.html">step_recode()</a></code>: conditions are now evaluated first-match-wins (<code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code> semantics), as documented. Previously the last matching condition won. The STATA transpiler now emits <code>gen</code> + <code>replace</code> chains with reversed conditions to preserve their original last-write-wins semantics.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/step_recode.html">step_recode()</a></code> accepts non-character RHS values (numeric, integer, logical); previously anything but character failed with an internal <code>vapply</code> error.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/workflow.html">workflow()</a></code>: survey editions stored as <code>Date</code> are handled in the workflow capture, and pooled estimations (<code>workflow_pool</code>) use the correct grouped standard error.</li>
+<li>
+<code><a href="../reference/add_replicate.html">add_replicate()</a></code>: <code>svrepdesign</code> is built with the full replicate-weight set; step calls captured in recipes are portable across sessions.</li>
+<li>Recipes: <code>depends_on</code> lists only external inputs (columns not created by the recipe’s own steps).</li>
+<li>Recode steps preserve their evaluated <code>.default</code>, <code>ordered</code> and <code>.to_factor</code> options, so <code><a href="../reference/bake_recipes.html">bake_recipes()</a></code> reproduces them exactly on new data.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.24" id="metasurvey-0024">metasurvey 0.0.24<a class="anchor" aria-label="anchor" href="#metasurvey-0024"></a></h2><p class="text-muted">CRAN release: 2026-06-27</p>
 <div class="section level3">

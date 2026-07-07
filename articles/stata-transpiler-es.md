@@ -495,11 +495,11 @@ for (s in result$steps) cat(s, "\n")
 #> step_rename(svy, hh_id = "id", person_id = "nper") 
 #> step_compute(svy, weight_yr = pesoano, weight_qt = pesotri, sex = q01) 
 #> step_recode(svy, relationship,
-#>     q05 == 1 ~ "1",
-#>     q05 == 2 ~ "2",
-#>     (q05 >= 3 & q05 <= 5) ~ "3",
-#>     q05 == 6 ~ "4",
 #>     q05 == 7 ~ "5",
+#>     q05 == 6 ~ "4",
+#>     (q05 >= 3 & q05 <= 5) ~ "3",
+#>     q05 == 2 ~ "2",
+#>     q05 == 1 ~ "1",
 #>     .default = "-9") 
 #> step_compute(svy, area = NA, area = data.table::fifelse(region == 1, 1, area), area = data.table::fifelse(region == 2, 2, area), area = data.table::fifelse(region == 3, 3, area), edu_compat = q20, edu_compat = data.table::fifelse(q20 == 2, 2, edu_compat), edu_compat = data.table::fifelse(q20 == 3, -9, edu_compat), edu_compat = data.table::fifelse(q20 == 4, 3, edu_compat), edu_compat = data.table::fifelse(q20 == 5, 4, edu_compat)) 
 #> step_compute(svy, max_age = max(edad, na.rm = TRUE), n_members = sum(!is.na(person_id)), .by = "hh_id") 

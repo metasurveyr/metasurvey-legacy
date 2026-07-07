@@ -338,7 +338,7 @@ workflow_table(
 | Statistic | variable | Estimate | SE | CI Lower | CI Upper | CV (%) | Quality |
 | :svygini: gini | gini | 0.48 | 0.033 | 0.42 | 0.55 | 6.9 | Very good |
 | :svyatk: atkinson | atkinson | 0.02 | 0.002 | 0.01 | 0.02 | 8.8 | Very good |
-| metasurvey 0.0.24 \| CI: 95% \| 2026-07-07 |  |  |  |  |  |  |  |
+| metasurvey 0.1.0 \| CI: 95% \| 2026-07-07 |  |  |  |  |  |  |  |
 
 ## Provenance
 
@@ -350,22 +350,22 @@ convey estimates computed, and package versions — is available:
 prov <- provenance(results)
 prov
 #> ── Data Provenance ─────────────────────────────────────────────────────────────
-#> Loaded: 2026-07-07T14:39:16 
+#> Loaded: 2026-07-07T14:41:21 
 #> Initial rows: 200 
 #> 
 #> Pipeline:
-#>   1. step_1 Compute: api_growth  N=200 [1.0ms]
+#>   1. step_1 Compute: api_growth  N=200 [0.0ms]
 #> 
 #> Estimation:
 #>   Type: annual 
-#>   Timestamp: 2026-07-07T14:39:16 
+#>   Timestamp: 2026-07-07T14:41:21 
 #> 
 #> Environment:
-#>   metasurvey: 0.0.24 
+#>   metasurvey: 0.1.0 
 #>   R: 4.6.1 
 #>   survey: 4.5
 cat("metasurvey version:", prov$environment$metasurvey_version, "\n")
-#> metasurvey version: 0.0.24
+#> metasurvey version: 0.1.0
 cat("Steps applied:", length(prov$steps), "\n")
 #> Steps applied: 1
 ```

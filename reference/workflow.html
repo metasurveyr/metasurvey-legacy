@@ -17,7 +17,7 @@ metadata. Automatically handles different survey types and periodicities."><meta
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ metadata. Automatically handles different survey types and periodicities."><meta
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Execute estimation workflow for surveys</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/R/workflow.R" class="external-link"><code>R/workflow.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/R/workflow.R" class="external-link"><code>R/workflow.R</code></a></small>
       <div class="d-none name"><code>workflow.Rd</code></div>
     </div>
 
@@ -170,7 +170,13 @@ it executes all functions specified in <code>...</code> and combines the results
 <li><p>"quarterly": Quarterly estimations</p></li>
 <li><p>"annual": Annual estimations</p></li>
 </ul><p>For PoolSurvey objects, it uses a specialized methodology that handles
-pooling of multiple surveys.</p>
+pooling of multiple surveys. When a compound <code>estimation_type</code> is used
+(e.g. <code>"annual:monthly"</code>), point estimates are averaged across the <code>k</code>
+pooled surveys and the standard error is computed as
+<code>sqrt(mean(variance) * (1 + rho * (k - 1)) / k)</code>, where <code>rho</code>
+(default <code>0</code>, passed as a named argument through <code>...</code>) is the
+correlation between waves of a rotating panel. The former <code>R</code> argument
+is deprecated and ignored.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

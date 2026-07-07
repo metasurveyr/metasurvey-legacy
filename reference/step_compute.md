@@ -63,12 +63,12 @@ computed variables and the step added to the history
 
 ## Details
 
-**Lazy evaluation (default):** By default, steps are recorded but **not
-executed** until
+**Execution model:** The computation is applied immediately when the
+step is created and the step is recorded as already executed
+(`bake = TRUE`). Calling
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-is called. This allows building a full pipeline before materializing any
-changes. Set `options(metasurvey.lazy_processing = FALSE)` to apply
-steps immediately.
+afterwards is safe: executed steps are skipped, so expressions are never
+applied twice.
 
 **Expression processing:** Expressions are evaluated using data.table's
 `:=` operator. Variable dependencies are detected automatically via

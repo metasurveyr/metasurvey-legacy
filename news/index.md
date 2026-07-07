@@ -1,5 +1,53 @@
 # Changelog
 
+## metasurvey 0.1.0
+
+### Breaking changes
+
+- Step execution model:
+  [`step_compute()`](https://metasurveyr.github.io/metasurvey/reference/step_compute.md),
+  [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
+  and
+  [`step_join()`](https://metasurveyr.github.io/metasurvey/reference/step_join.md)
+  now record their `Step` as already executed (`bake = TRUE`). They
+  still run eagerly on creation, but
+  [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
+  no longer re-executes them. Previously every eager step ran twice
+  (once on creation, once on bake), silently corrupting non-idempotent
+  expressions (e.g. `age = age * 2` ended up as `age * 4`).
+  [`step_remove()`](https://metasurveyr.github.io/metasurvey/reference/step_remove.md)/[`step_rename()`](https://metasurveyr.github.io/metasurvey/reference/step_rename.md)
+  now record `bake = !lazy`, closing the double-execution gotcha with
+  `lazy_processing = FALSE`.
+- [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md):
+  conditions are now evaluated first-match-wins
+  ([`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html)
+  semantics), as documented. Previously the last matching condition won.
+  The STATA transpiler now emits `gen` + `replace` chains with reversed
+  conditions to preserve their original last-write-wins semantics.
+
+### New features
+
+- [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
+  accepts non-character RHS values (numeric, integer, logical);
+  previously anything but character failed with an internal `vapply`
+  error.
+
+### Bug fixes
+
+- [`workflow()`](https://metasurveyr.github.io/metasurvey/reference/workflow.md):
+  survey editions stored as `Date` are handled in the workflow capture,
+  and pooled estimations (`workflow_pool`) use the correct grouped
+  standard error.
+- [`add_replicate()`](https://metasurveyr.github.io/metasurvey/reference/add_replicate.md):
+  `svrepdesign` is built with the full replicate-weight set; step calls
+  captured in recipes are portable across sessions.
+- Recipes: `depends_on` lists only external inputs (columns not created
+  by the recipe’s own steps).
+- Recode steps preserve their evaluated `.default`, `ordered` and
+  `.to_factor` options, so
+  [`bake_recipes()`](https://metasurveyr.github.io/metasurvey/reference/bake_recipes.md)
+  reproduces them exactly on new data.
+
 ## metasurvey 0.0.24
 
 CRAN release: 2026-06-27

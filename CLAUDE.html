@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="logo.svg" class="logo" alt=""><h1>CLAUDE.md</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/CLAUDE.md" class="external-link"><code>CLAUDE.md</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/CLAUDE.md" class="external-link"><code>CLAUDE.md</code></a></small>
     </div>
 
 <div id="claudemd" class="section level1">
@@ -186,9 +186,9 @@
 <div class="section level2">
 <h2 id="known-gotchas">Known Gotchas<a class="anchor" aria-label="anchor" href="#known-gotchas"></a></h2>
 <ul><li>
-<strong>recode + bake_steps</strong>: <code>bake_step()</code> passes <code>record=FALSE</code> to internal <code>recode()</code> which doesn’t accept it. Avoid calling <code><a href="reference/bake_steps.html">bake_steps()</a></code> after <code><a href="reference/step_recode.html">step_recode()</a></code> in new tests — test column creation directly with <code>use_copy=TRUE</code>.</li>
+<strong>Step execution model (mixed)</strong>: <code>step_compute</code>/<code>step_recode</code>/<code>step_join</code> execute <strong>eagerly</strong> on creation and record their Step with <code>bake=TRUE</code>, so <code><a href="reference/bake_steps.html">bake_steps()</a></code> never re-executes them (no double application). <code>step_filter</code>/<code>step_validate</code> are always lazy (recorded with <code>bake=FALSE</code>, executed on <code><a href="reference/bake_steps.html">bake_steps()</a></code>). <code>step_remove</code>/<code>step_rename</code> honor <code>lazy</code> and record <code>bake = !lazy</code>.</li>
 <li>
-<strong>lazy_processing=FALSE interaction</strong>: Steps apply immediately but Step objects are created with <code>bake=FALSE</code>, leading to double-execution on <code><a href="reference/bake_steps.html">bake_steps()</a></code>. Prefer <code>lazy_processing=TRUE</code> (the default).</li>
+<strong>step_recode semantics</strong>: first matching condition wins (case_when-style) and RHS values keep their native type (numeric/integer/logical/character all valid).</li>
 <li>
 <strong>PoolSurvey construction</strong>: Use nested list structure: <code>PoolSurvey$new(list(annual = list("group1" = list(s1, s2))))</code>.</li>
 </ul></div>

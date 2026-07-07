@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Flujos de Trabajo y Estimacion (ES)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/vignettes/workflows-and-estimation-es.Rmd" class="external-link"><code>vignettes/workflows-and-estimation-es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/vignettes/workflows-and-estimation-es.Rmd" class="external-link"><code>vignettes/workflows-and-estimation-es.Rmd</code></a></small>
       <div class="d-none name"><code>workflows-and-estimation-es.Rmd</code></div>
     </div>
 
@@ -554,11 +554,11 @@ hasta los datos originales.</p>
 <span><span class="va">prov</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/provenance.html">provenance</a></span><span class="op">(</span><span class="va">svy_full</span><span class="op">)</span></span>
 <span><span class="va">prov</span></span>
 <span><span class="co">#&gt; ── Data Provenance ─────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Loaded: 2026-07-07T14:40:31 </span></span>
+<span><span class="co">#&gt; Loaded: 2026-07-07T14:42:42 </span></span>
 <span><span class="co">#&gt; Initial rows: 200 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Environment:</span></span>
-<span><span class="co">#&gt;   metasurvey: 0.0.24 </span></span>
+<span><span class="co">#&gt;   metasurvey: 0.1.0 </span></span>
 <span><span class="co">#&gt;   R: 4.6.1 </span></span>
 <span><span class="co">#&gt;   survey: 4.5</span></span></code></pre></div>
 <p>El provenance tambien se adjunta a los resultados de
@@ -567,7 +567,7 @@ linaje completo de una estimacion:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prov_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/provenance.html">provenance</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"metasurvey version:"</span>, <span class="va">prov_wf</span><span class="op">$</span><span class="va">environment</span><span class="op">$</span><span class="va">metasurvey_version</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; metasurvey version: 0.0.24</span></span>
+<span><span class="co">#&gt; metasurvey version: 0.1.0</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Steps applied:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">prov_wf</span><span class="op">$</span><span class="va">steps</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Steps applied: 0</span></span></code></pre></div>
 <p>Para pistas de auditoria, se exporta el provenance a JSON:</p>
@@ -1077,7 +1077,7 @@ colores y notas al pie basadas en el provenance.</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="8">metasurvey 0.0.24 | CI: 95% | 2026-07-07</td>
+<td class="gt_sourcenote" colspan="8">metasurvey 0.1.0 | CI: 95% | 2026-07-07</td>
     </tr></tfoot>
 </table>
 </div>
@@ -1579,7 +1579,7 @@ colores y notas al pie basadas en el provenance.</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="7">metasurvey 0.0.24 | CI: 95% | 2026-07-07</td>
+<td class="gt_sourcenote" colspan="7">metasurvey 0.1.0 | CI: 95% | 2026-07-07</td>
     </tr></tfoot>
 </table>
 </div>
@@ -2089,7 +2089,7 @@ columnas de grupo:</p>
 </tr>
 </tbody>
 <tfoot><tr class="gt_sourcenotes">
-<td class="gt_sourcenote" colspan="9">metasurvey 0.0.24 | CI: 95% | 2026-07-07</td>
+<td class="gt_sourcenote" colspan="9">metasurvey 0.1.0 | CI: 95% | 2026-07-07</td>
     </tr></tfoot>
 </table>
 </div>

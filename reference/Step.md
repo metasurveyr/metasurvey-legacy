@@ -67,6 +67,11 @@ workflow.
 
   Character vector of grouping variables or NULL.
 
+- `recode_opts`:
+
+  Named list of evaluated recode options (`.default`, `ordered`,
+  `.to_factor`) or NULL.
+
 ## Methods
 
 ### Public methods
@@ -97,7 +102,8 @@ Create a new Step object
       comment = NULL,
       bake = !lazy_default(),
       comments = NULL,
-      by_vars = NULL
+      by_vars = NULL,
+      recode_opts = NULL
     )
 
 #### Arguments
@@ -160,6 +166,11 @@ Create a new Step object
 
   Character vector of grouping variables for grouped computations, or
   NULL.
+
+- `recode_opts`:
+
+  Named list of evaluated recode options (`.default`, `ordered`,
+  `.to_factor`), or NULL for non-recode steps.
 
 ------------------------------------------------------------------------
 

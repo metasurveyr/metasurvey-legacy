@@ -59,8 +59,8 @@ step_join(
 
 - lazy:
 
-  Internal. Whether to delay execution (default
-  [`lazy_default()`](https://metasurveyr.github.io/metasurvey/reference/lazy_default.md)).
+  Internal. Currently ignored: the join always executes immediately and
+  the step is recorded as executed.
 
 - record:
 
@@ -74,10 +74,13 @@ implantation and every follow_up survey.
 
 ## Details
 
-**Lazy evaluation (default):** By default, steps are recorded but **not
-executed** until
+**Execution model:** The join is applied immediately when the step is
+created and the step is recorded as already executed (`bake = TRUE`).
+Calling
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-is called.
+afterwards is safe: executed steps are skipped, so the join is never
+applied twice (which would duplicate overlapping columns with the `.y`
+suffix).
 
 Supports left, inner, right, and full joins. Allows named `by` mapping
 (e.g., `c("id" = "code")`) or a simple character vector. Conflicting

@@ -16,7 +16,9 @@ evaluate_cv(cv)
 
 ## Value
 
-Character string with the quality category (e.g. "Excellent", "Good").
+Character string with the quality category (e.g. "Excellent", "Good"),
+or `NA` when the CV is not defined (e.g. a zero estimate, where CV =
+0/0).
 
 ## See also
 
@@ -40,4 +42,6 @@ evaluate_cv(12) # "Good"
 #> [1] "Good"
 evaluate_cv(30) # "Use with caution"
 #> [1] "Use with caution"
+evaluate_cv(NaN) # NA
+#> [1] NA
 ```

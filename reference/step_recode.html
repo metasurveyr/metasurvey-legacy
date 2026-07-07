@@ -19,7 +19,7 @@ efficient execution."><meta property="og:image" content="https://metasurveyr.git
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ efficient execution."><meta property="og:image" content="https://metasurveyr.git
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Create recoding steps for categorical variables</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
       <div class="d-none name"><code>step_recode.Rd</code></div>
     </div>
 
@@ -206,12 +206,14 @@ with the new recoded variable and the step added to the history</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><strong>Lazy evaluation (default):</strong> By default, steps are recorded but
-<strong>not executed</strong> until <code><a href="bake_steps.html">bake_steps()</a></code> is called. This allows building
-a full pipeline before materializing any changes.</p>
+    <p><strong>Execution model:</strong> The recoding is applied immediately when the
+step is created and the step is recorded as already executed
+(<code>bake = TRUE</code>). Calling <code><a href="bake_steps.html">bake_steps()</a></code> afterwards is safe: executed
+steps are skipped, so rules are never applied twice.</p>
 <p><strong>Condition evaluation:</strong> Conditions are two-sided formulas evaluated
 in order. The first matching condition determines the assigned value.
-If no condition matches, <code>.default</code> is used.</p>
+If no condition matches, <code>.default</code> is used. Replacement values keep
+their native type (character, numeric, integer or logical).</p>
 <p>Condition examples:</p><ul><li><p>Simple: <code>variable == 1 ~ "Yes"</code></p></li>
 <li><p>Complex: <code>age &gt;= 18 &amp; income &gt; 12000 ~ "High"</code></p></li>
 <li><p>Vectorized: <code>variable %in% c(1,2,3) ~ "Group A"</code></p></li>

@@ -126,17 +126,18 @@ TRUE by default)
 
 ## Known Gotchas
 
-- **recode + bake_steps**: `bake_step()` passes `record=FALSE` to
-  internal `recode()` which doesn’t accept it. Avoid calling
+- **Step execution model (mixed)**:
+  `step_compute`/`step_recode`/`step_join` execute **eagerly** on
+  creation and record their Step with `bake=TRUE`, so
   [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-  after
-  [`step_recode()`](https://metasurveyr.github.io/metasurvey/reference/step_recode.md)
-  in new tests — test column creation directly with `use_copy=TRUE`.
-- **lazy_processing=FALSE interaction**: Steps apply immediately but
-  Step objects are created with `bake=FALSE`, leading to
-  double-execution on
-  [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md).
-  Prefer `lazy_processing=TRUE` (the default).
+  never re-executes them (no double application).
+  `step_filter`/`step_validate` are always lazy (recorded with
+  `bake=FALSE`, executed on
+  [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)).
+  `step_remove`/`step_rename` honor `lazy` and record `bake = !lazy`.
+- **step_recode semantics**: first matching condition wins
+  (case_when-style) and RHS values keep their native type
+  (numeric/integer/logical/character all valid).
 - **PoolSurvey construction**: Use nested list structure:
   `PoolSurvey$new(list(annual = list("group1" = list(s1, s2))))`.
 

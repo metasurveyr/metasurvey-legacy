@@ -88,15 +88,17 @@ new recoded variable and the step added to the history
 
 ## Details
 
-**Lazy evaluation (default):** By default, steps are recorded but **not
-executed** until
+**Execution model:** The recoding is applied immediately when the step
+is created and the step is recorded as already executed (`bake = TRUE`).
+Calling
 [`bake_steps()`](https://metasurveyr.github.io/metasurvey/reference/bake_steps.md)
-is called. This allows building a full pipeline before materializing any
-changes.
+afterwards is safe: executed steps are skipped, so rules are never
+applied twice.
 
 **Condition evaluation:** Conditions are two-sided formulas evaluated in
 order. The first matching condition determines the assigned value. If no
-condition matches, `.default` is used.
+condition matches, `.default` is used. Replacement values keep their
+native type (character, numeric, integer or logical).
 
 Condition examples:
 

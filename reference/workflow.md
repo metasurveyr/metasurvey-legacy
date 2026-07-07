@@ -80,7 +80,13 @@ Supported estimation types:
 - "annual": Annual estimations
 
 For PoolSurvey objects, it uses a specialized methodology that handles
-pooling of multiple surveys.
+pooling of multiple surveys. When a compound `estimation_type` is used
+(e.g. `"annual:monthly"`), point estimates are averaged across the `k`
+pooled surveys and the standard error is computed as
+`sqrt(mean(variance) * (1 + rho * (k - 1)) / k)`, where `rho` (default
+`0`, passed as a named argument through `...`) is the correlation
+between waves of a rotating panel. The former `R` argument is deprecated
+and ignored.
 
 ## See also
 

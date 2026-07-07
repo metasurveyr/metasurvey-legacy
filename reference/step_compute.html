@@ -19,7 +19,7 @@ execution."><meta property="og:image" content="https://metasurveyr.github.io/met
 
     <a class="navbar-brand me-2" href="../index.html">metasurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.24</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ execution."><meta property="og:image" content="https://metasurveyr.github.io/met
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Create computation steps for survey variables</h1>
-      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/develop/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/metasurveyr/metasurvey/blob/fix/intensive-review/R/steps.R" class="external-link"><code>R/steps.R</code></a></small>
       <div class="d-none name"><code>step_compute.Rd</code></div>
     </div>
 
@@ -177,10 +177,10 @@ with new computed variables and the step added to the history</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><strong>Lazy evaluation (default):</strong> By default, steps are recorded but
-<strong>not executed</strong> until <code><a href="bake_steps.html">bake_steps()</a></code> is called. This allows building
-a full pipeline before materializing any changes. Set
-<code>options(metasurvey.lazy_processing = FALSE)</code> to apply steps immediately.</p>
+    <p><strong>Execution model:</strong> The computation is applied immediately when the
+step is created and the step is recorded as already executed
+(<code>bake = TRUE</code>). Calling <code><a href="bake_steps.html">bake_steps()</a></code> afterwards is safe: executed
+steps are skipped, so expressions are never applied twice.</p>
 <p><strong>Expression processing:</strong>
 Expressions are evaluated using data.table's <code>:=</code> operator.
 Variable dependencies are detected automatically via <code><a href="https://rdrr.io/r/base/allnames.html" class="external-link">all.vars()</a></code>.

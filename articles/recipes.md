@@ -292,7 +292,7 @@ head(get_data(svy2)[, .(id, income_thousands, labor_status, age_group)], 5)
 #> 1:     1           47.346   Unemployed    Senior
 #> 2:     2           28.114     Employed    Mature
 #> 3:     3           43.583     Employed    Mature
-#> 4:     4           13.440   Unemployed    Mature
+#> 4:     4           13.440   Unemployed     Adult
 #> 5:     5           55.638     Employed    Senior
 ```
 

@@ -47,7 +47,7 @@ get_steps(svy) # list of Step objects
 #> $`step_1 Compute: age2`
 #> <Step>
 #>   Public:
-#>     bake: FALSE
+#>     bake: TRUE
 #>     by_vars: NULL
 #>     call: call
 #>     clone: function (deep = FALSE) 
@@ -59,6 +59,7 @@ get_steps(svy) # list of Step objects
 #>     initialize: function (name, edition, survey_type, type, new_var, exprs, call, 
 #>     name: step_1 Compute: age2
 #>     new_var: age2
+#>     recode_opts: NULL
 #>     survey_type: ech
 #>     svy_before: NULL
 #>     type: compute
