@@ -7,9 +7,8 @@
 workflow(svy, ..., estimation_type = "monthly", level = 0.95)
 }
 \arguments{
-\item{svy}{A \strong{list} of Survey objects, or a PoolSurvey.
-Even for a single survey, wrap it in \code{list()}:
-\code{workflow(svy = list(my_survey), ...)}.
+\item{svy}{A Survey object, a \strong{list} of Survey objects, or a
+PoolSurvey. A single Survey is automatically wrapped in \code{list()}.
 Must contain properly configured sample design.}
 
 \item{...}{Calls to survey package functions (such as \code{svymean},
