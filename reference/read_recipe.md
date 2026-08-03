@@ -47,7 +47,7 @@ r <- recipe(
 )
 f <- tempfile(fileext = ".json")
 save_recipe(r, f)
-#> The recipe has been saved in /tmp/RtmpgWoga1/file1e46139014bf.json
+#> The recipe has been saved in /tmp/RtmpK5yGnC/file83077442dea5.json
 r2 <- read_recipe(f)
 #> Warning: Failed to parse recipe steps: invalid length 0 argument. Using raw strings as fallback.
 r2

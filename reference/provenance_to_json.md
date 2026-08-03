@@ -44,7 +44,7 @@ provenance_to_json(prov)
 #> {
 #>   "source": {
 #>     "path": null,
-#>     "timestamp": "2026-07-07T21:17:55",
+#>     "timestamp": "2026-08-03T22:18:40",
 #>     "initial_n": 5,
 #>     "hash": null
 #>   },

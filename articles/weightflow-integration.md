@@ -100,8 +100,8 @@ summary(prepped)
 #> Kish deff: 1.031 -> 1.032   |   n_eff: 485 -> 485
 #> 
 #> --- Step 2: auto weight trimming ---
-#>  lower    upper strict n_capped n_raised sum_before sum_after
-#>      1 1017.193   TRUE        0        0     245000    245000
+#>  method lower    upper strict n_capped n_raised sum_before sum_after
+#>   tukey     1 1017.193   TRUE        0        0     245000    245000
 #> (converged/iterated in 1 iterations)
 #> Kish deff: 1.032 -> 1.032   |   n_eff: 485 -> 485
 ```

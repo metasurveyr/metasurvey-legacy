@@ -623,7 +623,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-0-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-6"></a></h3>
-<ul><li>Fixed Codecov GitHub Actions workflow: replaced deprecated <code><a href="http://covr.r-lib.org/reference/codecov.html" class="external-link">covr::codecov()</a></code> with <code><a href="http://covr.r-lib.org/reference/package_coverage.html" class="external-link">covr::package_coverage()</a></code> + <code>codecov/codecov-action@v5</code> for reliable coverage uploads with token authentication.</li>
+<ul><li>Fixed Codecov GitHub Actions workflow: replaced deprecated <code>covr::codecov()</code> with <code>covr::package_coverage()</code> + <code>codecov/codecov-action@v5</code> for reliable coverage uploads with token authentication.</li>
 <li>Added CI guard to <code>.Rprofile</code> to skip example-data setup in GitHub Actions, preventing potential download failures during CI builds.</li>
 <li>Added missing <code>archive</code>, <code>haven</code>, and <code>openxlsx</code> to <code>Suggests</code> in DESCRIPTION, fixing R CMD check warnings about undeclared dependencies.</li>
 </ul></div>
