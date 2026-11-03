@@ -75,8 +75,8 @@ summary(prepped)
 #> Data    : 500 cases
 #> Base wts: dw
 #> Steps   :
-#>   1. calibration (raking)
-#>   2. auto weight trimming
+#>   1. calibration (raking)  [calibrate_1]
+#>   2. auto weight trimming  [trim_weights_1]
 #> Status  : estimated (prep)
 #> 
 #> Stage summary:
@@ -90,12 +90,12 @@ summary(prepped)
 #> improve with trimming.
 #> 
 #> --- Step 1: calibration (raking) ---
-#>  variable category target achieved
-#>       sex        M 120000   120000
-#>       sex        F 125000   125000
-#>   age_grp    18-34  80000    80000
-#>   age_grp    35-54 100000   100000
-#>   age_grp      55+  65000    65000
+#>  variable category target achieved prev_total   factor   n
+#>       sex        M 120000   120000   277.4581 432.4977 241
+#>       sex        F 125000   125000   294.8741 423.9098 259
+#>   age_grp    18-34  80000    80000   193.4054 413.6390 169
+#>   age_grp    35-54 100000   100000   229.8817 435.0063 201
+#>   age_grp      55+  65000    65000   149.0451 436.1096 130
 #> (converged/iterated in 4 iterations)
 #> Kish deff: 1.031 -> 1.032   |   n_eff: 485 -> 485
 #> 
